@@ -1,8 +1,8 @@
 # ng2-auto-complete
 Angular2 Auto Complete
 
-<a href="http://plnkr.co/edit/32syXF?p=preview">
-![example](http://i.imgur.com/g5qbBBz.png)
+<a href="http://embed.plnkr.co/32syXF/">
+  <img src="http://i.imgur.com/dAmheg0.png" />
 </a>
 
 

@@ -15,7 +15,7 @@ import "rxjs/Rx"
  * display auto-complete section with input and dropdown list when it is clicked
  */
 @Directive({
-  selector: '[auto-complete]',
+  selector: '[auto-complete], [jui-auto-complete]',
   host: {
     '(click)': 'showAutoComplete()'
   }

@@ -32,14 +32,14 @@ import {AutoCompleteComponent} from "auto-complete";
     
     <h1> Autocomplete Directive Test - Local Source </h1>
     component test with array of strings: {{arrayOfStrings | json}}<br/>
-    <input auto-complete 
+    <input jui-auto-complete 
       [(ngModel)]="model1"
       [source]="arrayOfStrings"
        placeholder="enter text"/>selected: {{model1 | json}}<br/><br/>
     
     component test with array of id/values: {{arrayOfKeyValues | json}}<br/>
     <input 
-      auto-complete
+      jui-auto-complete
       [(ngModel)]="model2"
       [source]="arrayOfKeyValues" 
       placeholder="enter text"/> selected: {{model2 | json}}<br/><br/>

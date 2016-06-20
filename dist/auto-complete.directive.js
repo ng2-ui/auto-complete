@@ -57,6 +57,7 @@ var AutoCompleteDirective = (function () {
                     }
                     _this.hideAutoComplete();
                 });
+                _this.acEl.style.display = 'none';
                 setTimeout(function () {
                     /* setting width/height auto complete */
                     var thisElBCR = _this.el.getBoundingClientRect();
@@ -65,6 +66,7 @@ var AutoCompleteDirective = (function () {
                     _this.acEl.style.zIndex = '1';
                     _this.acEl.style.top = '0';
                     _this.acEl.style.left = '0';
+                    _this.acEl.style.display = 'inline-block';
                     component.inputEl.style.width = (thisElBCR.width - 30) + 'px';
                     component.inputEl.style.height = thisElBCR.height + 'px';
                     component.inputEl.focus();

@@ -85,6 +85,7 @@ export class AutoCompleteDirective implements OnInit {
           this.hideAutoComplete();
         });
 
+        this.acEl.style.display = 'none';
         setTimeout(() => { // it needs time to run ngOnInit within component
           /* setting width/height auto complete */
           let thisElBCR = this.el.getBoundingClientRect();
@@ -93,6 +94,7 @@ export class AutoCompleteDirective implements OnInit {
           this.acEl.style.zIndex = '1';
           this.acEl.style.top = '0';
           this.acEl.style.left = '0';
+          this.acEl.style.display = 'inline-block';
 
           component.inputEl.style.width = (thisElBCR.width - 30) + 'px';
           component.inputEl.style.height = thisElBCR.height + 'px';

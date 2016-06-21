@@ -1,3 +1,11 @@
+@keyframes slideDown {
+  0% {
+    transform:  translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
 .auto-complete input {
   outline: none;
   border: 2px solid transparent;
@@ -16,6 +24,7 @@
   padding: 0;
   border: 1px solid #ccc;
   box-sizing: border-box;
+  animation: slideDown 0.1s;
 }
 
 .auto-complete ul li {

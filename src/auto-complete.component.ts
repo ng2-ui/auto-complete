@@ -1,7 +1,9 @@
 import {Component, ElementRef, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {Subject} from "rxjs/Subject";
+import {HTTP_PROVIDERS} from "@angular/http"
 import {AutoComplete} from './auto-complete';
 
+var module: any; // just to pass type check
 /**
  * show a selected date in monthly calendar
  * Each filteredList item has the following property in addition to data itself
@@ -9,10 +11,10 @@ import {AutoComplete} from './auto-complete';
  *   2. dataValue as any e.g. 1234
  */
 @Component({
-  providers: [AutoComplete],
   selector: 'auto-complete',
   moduleId: module.id,
   templateUrl: './auto-complete.html',
+  providers: [ HTTP_PROVIDERS, AutoComplete ],
   styleUrls: ['./auto-complete.css'],
   //encapsulation: ViewEncapsulation.Native
   encapsulation: ViewEncapsulation.None

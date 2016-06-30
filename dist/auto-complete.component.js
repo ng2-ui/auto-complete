@@ -10,7 +10,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var Subject_1 = require("rxjs/Subject");
+var http_1 = require("@angular/http");
 var auto_complete_1 = require('./auto-complete');
+var module; // just to pass type check
 /**
  * show a selected date in monthly calendar
  * Each filteredList item has the following property in addition to data itself
@@ -149,12 +151,13 @@ var AutoCompleteComponent = (function () {
         __metadata('design:type', String)
     ], AutoCompleteComponent.prototype, "placeholder", void 0);
     AutoCompleteComponent = __decorate([
+        // just to pass type check
         core_1.Component({
-            providers: [auto_complete_1.AutoComplete],
             selector: 'auto-complete',
             moduleId: module.id,
-            templateUrl: './auto-complete.html',
-            styleUrls: ['./auto-complete.css'],
+            template: "<div class=\"auto-complete\">\n\n  <!-- keyword input -->\n  <input class=\"keyword\"\n         placeholder=\"{{placeholder}}\"\n         (focus)=\"showDropdownList()\"\n         (blur)=\"dropdownVisible=false\"\n         (keydown)=\"inputElKeyHandler($event)\"\n         (input)=\"reloadListInDelay()\"\n         [(ngModel)]=\"keyword\" />\n\n  <!-- dropdown that user can select -->\n  <ul *ngIf=\"dropdownVisible\">\n    <li *ngIf=\"isLoading\" class=\"loading\">Loading</li>\n    <li class=\"item\"\n        *ngFor=\"let item of filteredList; let i=index\"\n        (mousedown)=\"selectOne(item)\"\n        [ngClass]=\"{selected: i === itemIndex}\"\n        [innerHTML]=\"getFormattedList(item)\"\n        ></li>\n  </ul>\n\n</div>",
+            providers: [http_1.HTTP_PROVIDERS, auto_complete_1.AutoComplete],
+            styles: ["@keyframes slideDown {   0% {     transform:  translateY(-10px);   }   100% {     transform: translateY(0px);   } } .auto-complete input {   outline: none;   border: 2px solid transparent;   border-width: 3px 2px;   margin: 0;   box-sizing: border-box;   background-clip: content-box; }  .auto-complete ul {   background-color: #fff;   margin: 0;   width : 100%;   overflow-y: auto;   list-style-type: none;   padding: 0;   border: 1px solid #ccc;   box-sizing: border-box;   animation: slideDown 0.1s; }  .auto-complete ul li {   padding: 2px 5px;   border-bottom: 1px solid #eee; }  .auto-complete ul li.selected {   background-color: #ccc; }  .auto-complete ul li:last-child {   border-bottom: none; }  .auto-complete ul li:hover {   background-color: #ccc; } "],
             //encapsulation: ViewEncapsulation.Native
             encapsulation: core_1.ViewEncapsulation.None
         }), 

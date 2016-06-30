@@ -129,7 +129,7 @@ var AutoCompleteDirective = (function () {
     ], AutoCompleteDirective.prototype, "ngModelChange", void 0);
     AutoCompleteDirective = __decorate([
         core_1.Directive({
-            selector: '[auto-complete], [jui-auto-complete]',
+            selector: '[auto-complete], [ng2-auto-complete]',
             host: {
                 '(click)': 'showAutoComplete()'
             }

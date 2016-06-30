@@ -8,44 +8,44 @@ import {AutoCompleteComponent} from "auto-complete";
     <!--  for component test only
     <h1> Autocomplete Component Test - Local Source </h1>
     component test with array of strings: {{arrayOfStrings | json}}<br/>
-    <auto-complete [source]="arrayOfStrings" placeholder="enter text"></auto-complete>
+    <ng2-auto-complete [source]="arrayOfStrings" placeholder="enter text"></ng2-auto-complete>
     
     component test with array of id/values: {{arrayOfKeyValues | json}}<br/>
-    <auto-complete [source]="arrayOfKeyValues" placeholder="enter text"></auto-complete>
+    <ng2-auto-complete [source]="arrayOfKeyValues" placeholder="enter text"></ng2-auto-complete>
     
     component test with array of key/names: {{arrayOfKeyVaues2 | json}}<br/>
-    <auto-complete [source]="arrayOfKeyValues2"
+    <ng2-auto-complete [source]="arrayOfKeyValues2"
       placeholder="enter text"
       value-property-name="key"
-      display-property-name="name"></auto-complete>
+      display-property-name="name"></ng2-auto-complete>
     
     <h1> Autocomplete Component Test - Remote Source </h1>
     component test with remote source: {{googleGeoCode}}<br/>
-    <auto-complete 
+    <ng2-auto-complete 
       placeholder="Enter Address"
       [source]="googleGeoCode" 
       display-property-name="formatted_address"
-      path-to-data="results" min-chars="2" ></auto-complete>
+      path-to-data="results" min-chars="2" ></ng2-auto-complete>
       
     <hr />
     --> 
     
     <h1> Autocomplete Directive Test - Local Source </h1>
     component test with array of strings: {{arrayOfStrings | json}}<br/>
-    <input jui-auto-complete 
+    <input ng2-auto-complete 
       [(ngModel)]="model1"
       [source]="arrayOfStrings"
        placeholder="enter text"/>selected: {{model1 | json}}<br/><br/>
     
     component test with array of id/values: {{arrayOfKeyValues | json}}<br/>
     <input 
-      jui-auto-complete
+      ng2-auto-complete
       [(ngModel)]="model2"
       [source]="arrayOfKeyValues" 
       placeholder="enter text"/> selected: {{model2 | json}}<br/><br/>
     
     component test with array of key/names: {{arrayOfKeyVaues2 | json}}<br/>
-    <input auto-complete [source]="arrayOfKeyValues2"
+    <input ng2-auto-complete [source]="arrayOfKeyValues2"
       [(ngModel)]="model3"
       placeholder="enter text"
       value-property-name="key"
@@ -53,7 +53,7 @@ import {AutoCompleteComponent} from "auto-complete";
       
     <h1> Autocomplete Directive Test - Remote Source </h1>
     component test with remote source: {{googleGeoCode}}<br/>
-    <input  auto-complete
+    <input  ng2-auto-complete
       [(ngModel)]="model4"
       placeholder="Enter Address(min. 2 chars)"
       [source]="googleGeoCode" 
@@ -64,7 +64,7 @@ import {AutoCompleteComponent} from "auto-complete";
   
   directives: [AutoCompleteDirective, AutoCompleteComponent],
   styles: [`
-    auto-complete, input {
+    ng2-auto-complete, input {
       display: block; border: 1px solid #ccc; width: 300px;
     }
   `]

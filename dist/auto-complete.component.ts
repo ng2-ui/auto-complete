@@ -1,7 +1,9 @@
 import {Component, ElementRef, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {Subject} from "rxjs/Subject";
+import {HTTP_PROVIDERS} from "@angular/http"
 import {AutoComplete} from './auto-complete';
 
+var module: any; // just to pass type check
 /**
  * show a selected date in monthly calendar
  * Each filteredList item has the following property in addition to data itself
@@ -9,11 +11,80 @@ import {AutoComplete} from './auto-complete';
  *   2. dataValue as any e.g. 1234
  */
 @Component({
-  providers: [AutoComplete],
   selector: 'auto-complete',
-  moduleId: module.id,
-  templateUrl: './auto-complete.html',
-  styleUrls: ['./auto-complete.css'],
+  template: `
+  <div class="auto-complete">
+
+    <!-- keyword input -->
+    <input class="keyword"
+           placeholder="{{placeholder}}"
+           (focus)="showDropdownList()"
+           (blur)="dropdownVisible=false"
+           (keydown)="inputElKeyHandler($event)"
+           (input)="reloadListInDelay()"
+           [(ngModel)]="keyword" />
+
+    <!-- dropdown that user can select -->
+    <ul *ngIf="dropdownVisible">
+      <li *ngIf="isLoading" class="loading">Loading</li>
+      <li class="item"
+          *ngFor="let item of filteredList; let i=index"
+          (mousedown)="selectOne(item)"
+          [ngClass]="{selected: i === itemIndex}"
+          [innerHTML]="getFormattedList(item)"
+          ></li>
+    </ul>
+
+  </div>`,
+  providers: [ HTTP_PROVIDERS, AutoComplete ],
+  styles: [`
+  @keyframes slideDown {
+    0% {
+      transform:  translateY(-10px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+  .auto-complete input {
+    outline: none;
+    border: 2px solid transparent;
+    border-width: 3px 2px;
+    margin: 0;
+    box-sizing: border-box;
+    background-clip: content-box;
+  }
+
+  .auto-complete ul {
+    background-color: #fff;
+    margin: 0;
+    width : 100%;
+    overflow-y: auto;
+    list-style-type: none;
+    padding: 0;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    animation: slideDown 0.1s;
+  }
+
+  .auto-complete ul li {
+    padding: 2px 5px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .auto-complete ul li.selected {
+    background-color: #ccc;
+  }
+
+  .auto-complete ul li:last-child {
+    border-bottom: none;
+  }
+
+  .auto-complete ul li:hover {
+    background-color: #ccc;
+  }
+
+`],
   //encapsulation: ViewEncapsulation.Native
   encapsulation: ViewEncapsulation.None
   // encapsulation: ViewEncapsulation.Emulated is default

@@ -28,7 +28,9 @@
     "angular2-in-memory-web-api": "0.0.9",
     "bootstrap": "^3.3.6",
     "core-js": "^2.4.0",
+    "ng2-inline-template": "^0.1.1",
     "plugin-typescript": "^4.0.10",
+    "rimraf": "^2.5.3",
     "typescript": "^1.8.10"
   },
   "repository": {

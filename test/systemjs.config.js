@@ -19,11 +19,11 @@
   };
 
   // for development
-  map['auto-complete'] = '../src';
-  packages['auto-complete'] =  {main: 'index.ts', defaultExtension: 'ts'};
   map['auto-complete'] = '../dist';
   packages['auto-complete'] =  {main: 'index.js', defaultExtension: 'js'};
-  
+  map['auto-complete'] = '../src';
+  packages['auto-complete'] =  {main: 'index.ts', defaultExtension: 'ts'};
+
   var ngPackageNames = [
     'common',
     'compiler',

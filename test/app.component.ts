@@ -5,31 +5,6 @@ import {AutoCompleteComponent} from "auto-complete";
 @Component({
   selector: 'my-app',
   template: `
-    <!--  for component test only
-    <h1> Autocomplete Component Test - Local Source </h1>
-    component test with array of strings: {{arrayOfStrings | json}}<br/>
-    <ng2-auto-complete [source]="arrayOfStrings" placeholder="enter text"></ng2-auto-complete>
-    
-    component test with array of id/values: {{arrayOfKeyValues | json}}<br/>
-    <ng2-auto-complete [source]="arrayOfKeyValues" placeholder="enter text"></ng2-auto-complete>
-    
-    component test with array of key/names: {{arrayOfKeyVaues2 | json}}<br/>
-    <ng2-auto-complete [source]="arrayOfKeyValues2"
-      placeholder="enter text"
-      value-property-name="key"
-      display-property-name="name"></ng2-auto-complete>
-    
-    <h1> Autocomplete Component Test - Remote Source </h1>
-    component test with remote source: {{googleGeoCode}}<br/>
-    <ng2-auto-complete 
-      placeholder="Enter Address"
-      [source]="googleGeoCode" 
-      display-property-name="formatted_address"
-      path-to-data="results" min-chars="2" ></ng2-auto-complete>
-      
-    <hr />
-    --> 
-    
     <h1> Autocomplete Directive Test - Local Source </h1>
     component test with array of strings: {{arrayOfStrings | json}}<br/>
     <input ng2-auto-complete 

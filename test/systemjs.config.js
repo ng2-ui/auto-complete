@@ -4,10 +4,10 @@
 
   //map tells the System loader where to look for things
   var  map = {
-    'app':                        'app',
-    '@angular':                   'node_modules/@angular', // sufficient if we didn't pin the version
-    'rxjs':                       'node_modules/rxjs',
-    'typescript':                 'node_modules/typescript/lib/typescript.js',
+    'app':                        '.',
+    '@angular':                   '../node_modules/@angular', // sufficient if we didn't pin the version
+    'rxjs':                       '../node_modules/rxjs',
+    'typescript':                 '../node_modules/typescript/lib/typescript.js',
     'ts':                         'https://npmcdn.com/plugin-typescript@4.0.10/lib/plugin.js'
   };
 
@@ -19,12 +19,10 @@
   };
 
   // for development
-  map['auto-complete'] = 'src';
+  map['auto-complete'] = '../src';
   packages['auto-complete'] =  {main: 'index.ts', defaultExtension: 'ts'};
-  
-  // for distribution
-  // map['auto-complete'] = 'dist';
-  // packages['auto-complete'] =  {main: 'index.js', defaultExtension: 'js'};
+  map['auto-complete'] = '../dist';
+  packages['auto-complete'] =  {main: 'index.js', defaultExtension: 'js'};
   
   var ngPackageNames = [
     'common',
@@ -42,7 +40,7 @@
   // only because we're pinning the version with `ngVer`.
   ngPackageNames.forEach(function(pkgName) {
     // map['@angular/'+pkgName] = 'https://npmcdn.com/@angular/' + pkgName + ngVer;
-    map['@angular/'+pkgName] = 'node_modules/@angular/' + pkgName;
+    map['@angular/'+pkgName] = '../node_modules/@angular/' + pkgName;
   });
 
   // Add package entries for angular packages
@@ -56,10 +54,9 @@
   });
 
   var config = {
-    // DEMO ONLY! REAL CODE SHOULD NOT TRANSPILE IN THE BROWSER
-    transpiler: 'ts',
-    typescriptOptions: {
-      tsconfig: true
+    transpiler: 'typescript', //use typescript for compilation
+    typescriptOptions: {      //typescript compiler options
+      emitDecoratorMetadata: true
     },
     meta: {
       'typescript': {

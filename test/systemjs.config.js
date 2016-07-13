@@ -17,13 +17,14 @@
 
   map['auto-complete'] = '../dist';
   packages['auto-complete'] =  {main: 'index.js', defaultExtension: 'js'};
-  map['auto-complete'] = '../src';
-  packages['auto-complete'] =  {main: 'index.ts', defaultExtension: 'ts'};
+  // map['auto-complete'] = '../src';
+  // packages['auto-complete'] =  {main: 'index.ts', defaultExtension: 'ts'};
 
   System.config({
     transpiler: 'typescript', //use typescript for compilation
     typescriptOptions: {      //typescript compiler options
       emitDecoratorMetadata: true
+      <!--<script src="https://npmcdn.com/zone.js@0.6.12?main=browser"></script>-->
     },
     map: map,
     packages: packages

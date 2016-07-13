@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import {AutoCompleteDirective} from "auto-complete";
-import {AutoCompleteComponent} from "auto-complete";
+import {AutoCompleteDirective, AutoCompleteComponent} from "auto-complete";
 
 @Component({
   selector: 'my-app',

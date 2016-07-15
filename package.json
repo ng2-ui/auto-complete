@@ -1,6 +1,6 @@
 {
   "name": "ng2-auto-complete",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Angular2 Input Autocomplete",
   "license": "MIT",
   "main": "dist/index.js",
@@ -33,13 +33,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jsvalley/ng2-auto-complete.git"
+    "url": "git+https://github.com/ng2-ui/ng2-auto-complete.git"
   },
   "author": "",
   "bugs": {
-    "url": "https://github.com/jsvalley/ng2-auto-complete/issues"
+    "url": "https://github.com/ng2-ui/ng2-auto-complete/issues"
   },
-  "homepage": "https://github.com/jsvalley/ng2-auto-complete#readme",
+  "homepage": "https://github.com/ng2-ui/ng2-auto-complete#readme",
   "directories": {
     "test": "test"
   },

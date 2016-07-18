@@ -1,6 +1,5 @@
 import {Component, ElementRef, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {Subject} from "rxjs/Subject";
-import {HTTP_PROVIDERS} from "@angular/http"
 import {AutoComplete} from './auto-complete';
 
 var module: any; // just to pass type check
@@ -36,7 +35,7 @@ var module: any; // just to pass type check
     </ul>
 
   </div>`,
-  providers: [ HTTP_PROVIDERS, AutoComplete ],
+  providers: [ AutoComplete ],
   styles: [`
   @keyframes slideDown {
     0% {

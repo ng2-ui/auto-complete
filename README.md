@@ -23,9 +23,11 @@ Angular2 Auto Complete
 1. import and add directive in your component
 
         import {AutoCompleteDirective} from "auto-complete";
+        import {HTTP_PROVIDERS} from "@angular/http";
         ...
         @Component({
           directives: [AutoCompleteDirective],
+          providers: [HTTP_PROVIDERS],
           ..
         });
 

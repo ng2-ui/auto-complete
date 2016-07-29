@@ -24,7 +24,6 @@
     transpiler: 'typescript', //use typescript for compilation
     typescriptOptions: {      //typescript compiler options
       emitDecoratorMetadata: true
-      <!--<script src="https://npmcdn.com/zone.js@0.6.12?main=browser"></script>-->
     },
     map: map,
     packages: packages

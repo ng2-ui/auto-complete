@@ -48,3 +48,13 @@ Angular2 Auto Complete
   * **`value-property-name`**, string, key name of value. default is `id`
   * **`display-property-name`**, string, key name of text to show. default is `value`
 
+## For Developers
+
+### To start
+
+    $ git clone https://github.com/ng2-ui/ng2-map.git
+    $ cd ng2-popup
+    $ npm install
+    $ npm start
+
+

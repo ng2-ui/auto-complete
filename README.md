@@ -1,9 +1,11 @@
 # ng2-auto-complete
 Angular2 Auto Complete
 
-<a href="http://embed.plnkr.co/32syXF/">
+<a href="https://ng2-ui.github.io/#/auto-complete">
   <img src="http://i.imgur.com/dAmheg0.png" />
 </a>
+
+Plunker Example: http://embed.plnkr.co/32syXF/
 
 
 ## Install

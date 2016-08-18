@@ -200,7 +200,9 @@ export class AutoCompleteComponent implements OnInit {
         break;
 
       case 13: // ENTER, choose it!!
-        this.selectOne(this.filteredList[this.itemIndex]);
+        if(this.filteredList.length > 0) {
+          this.selectOne(this.filteredList[this.itemIndex]);
+        }
         evt.preventDefault();
         break;
     }

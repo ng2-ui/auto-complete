@@ -16,26 +16,27 @@ Plunker Example: http://embed.plnkr.co/32syXF/
 
 2. add `map` and `packages` to your `systemjs.config.js`
 
-        map['auto-complete'] = 'node_modules/ng2-auto-complete';
-        // map['auto-complete'] = 'https://npmcdn.com/ng2-auto-complete'; // without npm installation
-        packages['auto-complete'] = { main: 'dist/index.js', defaultExtension: 'js' }
+        map['ng2-auto-complete'] = 'node_modules/ng2-auto-complete/dist';
+        packages['ng2-auto-complete'] = { main: 'index.js', defaultExtension: 'js' }
+        
+3. import Ng2AutoCompleteModule to your AppModule
+
+        import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
+        
+        @NgModule({
+          imports: [BrowserModule, FormsModule, Ng2AutoCompleteModule],
+          declarations: [AppComponent],
+          providers: [HTTP_PROVIDERS],
+          bootstrap: [ AppComponent ]
+        })
+        export class AppModule { }
 
 ## Usage it in your code
 
-1. import and add directive in your component
-
-        import {AutoCompleteDirective} from "auto-complete";
-        import {HTTP_PROVIDERS} from "@angular/http";
-        ...
-        @Component({
-          directives: [AutoCompleteDirective],
-          providers: [HTTP_PROVIDERS],
-          ..
-        });
-
-2. You are ready. use it in your template
-
         <input auto-complete [(ngModel)]="myData" [source]="mySource" />
+        
+    For full example, please check `test` directory to see the example of 
+    `systemjs.config.js`, `app.module.ts` and `app.component.ts`.
         
 ## attributes
   All options are optional except ngModel and source

@@ -58,7 +58,7 @@ In result of your active contribution, you will be listed as a core contributor
 on https://ng2-ui.github.io, and a member of ng2-ui too.
 
 If you are interested in becoming a contributor and/or a member of ng-ui,
-please send me email to allenhwkim AT gmail.com with your github id. 
+please send me email to `allenhwkim AT gmail.com` with your github id. 
 
 ## attributes
   All options are optional except ngModel and source

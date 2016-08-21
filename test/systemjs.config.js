@@ -15,10 +15,10 @@
     rxjs: { defaultExtension: 'js' }
   };
 
-  map['auto-complete'] = '../dist';
-  packages['auto-complete'] =  {main: 'index.js', defaultExtension: 'js'};
-  map['auto-complete'] = '../src';
-  packages['auto-complete'] =  {main: 'index.ts', defaultExtension: 'ts'};
+  map['ng2-auto-complete'] = '../dist';
+  packages['ng2-auto-complete'] =  {main: 'index.js', defaultExtension: 'js'};
+  map['ng2-auto-complete'] = '../src';
+  packages['ng2-auto-complete'] =  {main: 'index.ts', defaultExtension: 'ts'};
 
   System.config({
     transpiler: 'typescript', //use typescript for compilation

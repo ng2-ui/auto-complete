@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { HTTP_PROVIDERS } from '@angular/http';
-import {AutoCompleteDirective, AutoCompleteComponent} from "auto-complete";
 
 @Component({
   selector: 'my-app',
@@ -36,8 +34,6 @@ import {AutoCompleteDirective, AutoCompleteComponent} from "auto-complete";
       path-to-data="results"
       min-chars="2" />selected: {{model4 | json}}<br/><br/>
  `,
-  providers: [HTTP_PROVIDERS], 
-  directives: [AutoCompleteDirective, AutoCompleteComponent],
   styles: [`
     ng2-auto-complete, input {
       display: block; border: 1px solid #ccc; width: 300px;

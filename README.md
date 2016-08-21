@@ -35,9 +35,31 @@ Plunker Example: http://embed.plnkr.co/32syXF/
 
         <input auto-complete [(ngModel)]="myData" [source]="mySource" />
         
-    For full example, please check `test` directory to see the example of 
-    `systemjs.config.js`, `app.module.ts` and `app.component.ts`.
-        
+For full example, please check `test` directory to see the example of;
+
+  - `systemjs.config.js`
+  - `app.module.ts`
+  -  and `app.component.ts`.
+
+## Contributors are welcomed
+
+This module is only improved and maintained by contributors like you;
+
+As a contributor, it's NOT required to be skilled in Javascript nor Angular2. 
+You can contribute to the following;
+
+  * Updating README.md
+  * Making more and clearer comments
+  * Answering issues and building FAQ
+  * Documentation
+  * Translation
+
+In result of your active contribution, you will be listed as a core contributor
+on https://ng2-ui.github.io, and a member of ng2-ui too.
+
+If you are interested in becoming a contributor and/or a member of ng-ui,
+please send me email to allenhwkim AT gmail.com with your github id. 
+
 ## attributes
   All options are optional except ngModel and source
 

@@ -105,7 +105,7 @@ var AutoCompleteComponent = (function () {
                 this.itemIndex = (totalNumItem + this.itemIndex + 1) % totalNumItem;
                 break;
             case 13:
-                if(this.filteredList.length > 0) {
+                if (this.filteredList.length > 0) {
                     this.selectOne(this.filteredList[this.itemIndex]);
                 }
                 evt.preventDefault();

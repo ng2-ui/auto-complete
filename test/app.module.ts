@@ -4,7 +4,7 @@ import { FormsModule }    from "@angular/forms";
 import { HTTP_PROVIDERS } from "@angular/http";
 
 import { AppComponent }   from './app.component';
-import { Ng2AutoCompleteModule }    from 'ng2-auto-complete';
+import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
 
 @NgModule({
   imports: [BrowserModule, FormsModule, Ng2AutoCompleteModule],

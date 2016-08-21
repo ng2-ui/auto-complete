@@ -6,7 +6,6 @@ import { AutoComplete } from './auto-complete';
 import { AutoCompleteComponent } from './auto-complete.component';
 import { AutoCompleteDirective } from './auto-complete.directive';
 
-var directives =
 @NgModule({
   imports: [ BrowserModule, FormsModule ],
   declarations: [AutoCompleteComponent, AutoCompleteDirective],

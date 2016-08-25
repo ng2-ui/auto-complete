@@ -10,6 +10,7 @@ import { AutoCompleteDirective } from './auto-complete.directive';
   imports: [ BrowserModule, FormsModule ],
   declarations: [AutoCompleteComponent, AutoCompleteDirective],
   exports:  [AutoCompleteComponent, AutoCompleteDirective],
+  entryComponents: [AutoCompleteComponent],
   providers: [ AutoComplete ]
 })
 export class Ng2AutoCompleteModule {}

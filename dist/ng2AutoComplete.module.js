@@ -22,6 +22,7 @@ var Ng2AutoCompleteModule = (function () {
             imports: [platform_browser_1.BrowserModule, forms_1.FormsModule],
             declarations: [auto_complete_component_1.AutoCompleteComponent, auto_complete_directive_1.AutoCompleteDirective],
             exports: [auto_complete_component_1.AutoCompleteComponent, auto_complete_directive_1.AutoCompleteDirective],
+            entryComponents: [auto_complete_component_1.AutoCompleteComponent],
             providers: [auto_complete_1.AutoComplete]
         }), 
         __metadata('design:paramtypes', [])

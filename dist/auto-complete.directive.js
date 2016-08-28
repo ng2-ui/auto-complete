@@ -59,7 +59,9 @@ var AutoCompleteDirective = (function () {
         divEl.appendChild(this.el);
     };
     AutoCompleteDirective.prototype.ngOnDestroy = function () {
-        this.componentRef.instance.valueSelected.unsubscribe();
+        if (this.componentRef) {
+            this.componentRef.instance.valueSelected.unsubscribe();
+        }
         document.removeEventListener('click', this.hideAutoCompleteDropdown);
     };
     //show auto-complete list below the current element

@@ -57,7 +57,9 @@ export class AutoCompleteDirective implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.componentRef.instance.valueSelected.unsubscribe();
+    if (this.componentRef) {
+      this.componentRef.instance.valueSelected.unsubscribe();
+    }
     document.removeEventListener('click', this.hideAutoCompleteDropdown);
   }
 

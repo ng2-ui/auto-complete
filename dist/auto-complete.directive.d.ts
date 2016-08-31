@@ -26,4 +26,5 @@ export declare class AutoCompleteDirective implements OnInit {
     showAutoCompleteDropdown(): void;
     hideAutoCompleteDropdown: (event?: any) => void;
     styleAutoCompleteDropdown: () => void;
+    selectNewValue: (val: any) => void;
 }

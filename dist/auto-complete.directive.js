@@ -48,6 +48,17 @@ var AutoCompleteDirective = (function () {
             component.inputEl.style.height = thisElBCR.height + 'px';
             component.inputEl.focus();
         };
+        this.selectNewValue = function (val) {
+            if (val && typeof val !== "string") {
+                var displayVal_1 = val[_this.displayPropertyName || 'value'];
+                val.toString = function () { return displayVal_1; };
+            }
+            _this.ngModelChange.emit(val);
+            if (_this.valueChanged) {
+                _this.valueChanged(val);
+            }
+            _this.hideAutoCompleteDropdown();
+        };
         this.el = this.viewContainerRef.element.nativeElement;
     }
     AutoCompleteDirective.prototype.ngOnInit = function () {
@@ -57,6 +68,7 @@ var AutoCompleteDirective = (function () {
         divEl.style.position = 'relative';
         this.el.parentElement.insertBefore(divEl, this.el.nextSibling);
         divEl.appendChild(this.el);
+        this.selectNewValue(this.ngModel);
     };
     AutoCompleteDirective.prototype.ngOnDestroy = function () {
         if (this.componentRef) {
@@ -66,7 +78,6 @@ var AutoCompleteDirective = (function () {
     };
     //show auto-complete list below the current element
     AutoCompleteDirective.prototype.showAutoCompleteDropdown = function () {
-        var _this = this;
         document.addEventListener('click', this.hideAutoCompleteDropdown);
         this.hideAutoCompleteDropdown();
         var factory = this.resolver.resolveComponentFactory(auto_complete_component_1.AutoCompleteComponent);
@@ -81,17 +92,7 @@ var AutoCompleteDirective = (function () {
         component.displayPropertyName = this.displayPropertyName || 'value';
         component.source = this.source;
         component.placeholder = this.placeholder;
-        component.valueSelected.subscribe(function (val) {
-            if (typeof val !== "string") {
-                var displayVal_1 = val[component.displayPropertyName];
-                val.toString = function () { return displayVal_1; };
-            }
-            _this.ngModelChange.emit(val);
-            if (_this.valueChanged) {
-                _this.valueChanged(val);
-            }
-            _this.hideAutoCompleteDropdown();
-        });
+        component.valueSelected.subscribe(this.selectNewValue);
         this.acEl.style.display = 'none';
         setTimeout(this.styleAutoCompleteDropdown);
     };

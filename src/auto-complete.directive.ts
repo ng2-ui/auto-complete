@@ -54,6 +54,7 @@ export class AutoCompleteDirective implements OnInit {
     divEl.style.position = 'relative';
     this.el.parentElement.insertBefore(divEl, this.el.nextSibling);
     divEl.appendChild(this.el);
+    this.selectNewValue(this.ngModel);
   }
 
   ngOnDestroy(): void {
@@ -82,17 +83,7 @@ export class AutoCompleteDirective implements OnInit {
       component.displayPropertyName = this.displayPropertyName || 'value';
       component.source = this.source;
       component.placeholder = this.placeholder;
-      component.valueSelected.subscribe((val: any) => {
-        if (typeof val !== "string") {
-          let displayVal = val[component.displayPropertyName];
-          val.toString = function() {return displayVal;}
-        }
-        this.ngModelChange.emit(val);
-        if (this.valueChanged) {
-          this.valueChanged(val);
-        }
-        this.hideAutoCompleteDropdown();
-      });
+      component.valueSelected.subscribe(this.selectNewValue);
 
       this.acEl.style.display = 'none';
       setTimeout(this.styleAutoCompleteDropdown);
@@ -129,6 +120,20 @@ export class AutoCompleteDirective implements OnInit {
     component.inputEl.style.width = (thisElBCR.width - 30) + 'px';
     component.inputEl.style.height = thisElBCR.height + 'px';
     component.inputEl.focus();
+  };
+
+  selectNewValue = (val: any) => {
+    if (val && typeof val !== "string") {
+      let displayVal = val[this.displayPropertyName || 'value'];
+      val.toString = function() {return displayVal;}
+    }
+    this.ngModelChange.emit(val);
+    if (this.valueChanged) {
+      this.valueChanged(val);
+    }
+    this.hideAutoCompleteDropdown();
   }
+
+
 
 }

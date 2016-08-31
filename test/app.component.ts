@@ -55,6 +55,6 @@ export class AppComponent {
 
   public model1;
   public model2;
-  public model3;
+  public model3 = {key: 3, name: 'Key Three'};
   public model4;
 }

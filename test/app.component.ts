@@ -53,8 +53,8 @@ export class AppComponent {
   
   public googleGeoCode: string = "https://maps.googleapis.com/maps/api/geocode/json?address=:keyword";
 
-  public model1;
-  public model2;
+  public model1 = "is";
+  public model2 = {id:1, value: 'One'};
   public model3 = {key: 3, name: 'Key Three'};
   public model4;
 }

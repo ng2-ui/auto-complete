@@ -89,7 +89,7 @@ export class AutoCompleteDirective implements OnInit {
       setTimeout(this.styleAutoCompleteDropdown);
   }
 
-  hideAutoCompleteDropdown = (event?): void =>  {
+  hideAutoCompleteDropdown = (event?: any): void =>  {
     if (this.componentRef) {
       if (
         event && event.type === 'click' &&

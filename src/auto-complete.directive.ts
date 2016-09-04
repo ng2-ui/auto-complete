@@ -6,11 +6,10 @@ import {
   ViewContainerRef,
   EventEmitter,
   OnInit,
-  ComponentResolver,
-  Type, ComponentFactoryResolver
+  ComponentFactoryResolver
 } from '@angular/core';
 import {AutoCompleteComponent} from "./auto-complete.component";
-import "rxjs/Rx"
+import "rxjs/Rx";
 
 /**
  * display auto-complete section with input and dropdown list when it is clicked
@@ -125,7 +124,7 @@ export class AutoCompleteDirective implements OnInit {
   selectNewValue = (val: any) => {
     if (val && typeof val !== "string") {
       let displayVal = val[this.displayPropertyName || 'value'];
-      val.toString = function() {return displayVal;}
+      val.toString = function() { return displayVal; };
     }
     this.ngModelChange.emit(val);
     if (this.valueChanged) {

@@ -1,21 +1,11 @@
 {
   "compilerOptions": {
-    "declaration": true,
+    "target": "ES5",
     "module": "commonjs",
-    "target": "es5",
-    "outDir": "dist",
-    "rootDir": "./src",
-    "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node"
+    "sourceMap": true
   },
-  "exclude": [
-    "typings/main.d.ts",
-    "typings/main",
-    "node_modules",
-    "test",
-    "src",
-    "index.ts"
-  ]
+  "compileOnSave": false,
+  "buildOnSave": false
 }

@@ -67,7 +67,7 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   * **`source`**, array or string, required. data source for dropdown list
   * **`placeholder`**,  string, input guide text
   * **`list-formatter`**, function variable name, custom list formatting function.e.g. 'myListFormatter', not 'myListFormatter()'
-  * **`value-changed`**, function variable name, callback function that is executed when dropdown is selected. e.g. `myCallback`, not `myCallback`
+  * **`value-changed`**, function variable name, callback function that is executed when dropdown is selected. e.g. `myCallback`, not `myCallback(object)`
   * **`path-to-data`**, string, e.g., `data.myList`, path to array data in http response
   * **`min-chars, number`**, when source is remote data, the number of character to see dropdown list
   * **`value-property-name`**, string, key name of value. default is `id`

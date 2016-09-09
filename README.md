@@ -17,7 +17,7 @@ Plunker Example: https://plnkr.co/edit/1N4onb
 2. add `map` and `packages` to your `systemjs.config.js`
 
         map['ng2-auto-complete'] = 'node_modules/ng2-auto-complete/dist';
-        packages['ng2-auto-complete'] = { main: 'index.js', defaultExtension: 'js' }
+        packages['ng2-auto-complete'] = { main: 'ng2-auto-complete.umd.js', defaultExtension: 'js' }
         
 3. import Ng2AutoCompleteModule to your AppModule
 

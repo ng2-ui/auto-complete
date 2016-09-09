@@ -23,8 +23,7 @@ module.exports = {
     loaders: [
       { // Support for .ts files.
         test: /\.ts$/,
-        loaders: ['ts', 'angular2-template-loader'],
-        exclude: [/test/, /node_modules\/(?!(ng2-.+))/]
+        loaders: ['ts', 'angular2-template-loader']
       }
     ]
   }

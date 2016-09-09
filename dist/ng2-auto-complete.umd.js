@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@angular/core"), require("@angular/http"), require("rxjs/Rx"), require("rxjs/Subject"), require("@angular/forms"), require("@angular/platform-browser"));
+		module.exports = factory(require("@angular/core"), require("@angular/forms"), require("@angular/platform-browser"), require("@angular/http"), require("rxjs/Rx"), require("rxjs/Subject"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@angular/core", "@angular/http", "rxjs/Rx", "rxjs/Subject", "@angular/forms", "@angular/platform-browser"], factory);
+		define(["@angular/core", "@angular/forms", "@angular/platform-browser", "@angular/http", "rxjs/Rx", "rxjs/Subject"], factory);
 	else if(typeof exports === 'object')
-		exports["ng2-auto-complete"] = factory(require("@angular/core"), require("@angular/http"), require("rxjs/Rx"), require("rxjs/Subject"), require("@angular/forms"), require("@angular/platform-browser"));
+		exports["ng2-auto-complete"] = factory(require("@angular/core"), require("@angular/forms"), require("@angular/platform-browser"), require("@angular/http"), require("rxjs/Rx"), require("rxjs/Subject"));
 	else
-		root["ng2-auto-complete"] = factory(root["@angular/core"], root["@angular/http"], root["rxjs/Rx"], root["rxjs/Subject"], root["@angular/forms"], root["@angular/platform-browser"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_6__, __WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_10__) {
+		root["ng2-auto-complete"] = factory(root["@angular/core"], root["@angular/forms"], root["@angular/platform-browser"], root["@angular/http"], root["rxjs/Rx"], root["rxjs/Subject"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_5__, __WEBPACK_EXTERNAL_MODULE_6__, __WEBPACK_EXTERNAL_MODULE_8__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -55,18 +55,62 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var auto_complete_1 = __webpack_require__(1);
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var forms_1 = __webpack_require__(2);
+	var platform_browser_1 = __webpack_require__(3);
+	var auto_complete_1 = __webpack_require__(4);
 	exports.AutoComplete = auto_complete_1.AutoComplete;
-	var auto_complete_component_1 = __webpack_require__(5);
+	var auto_complete_component_1 = __webpack_require__(7);
 	exports.AutoCompleteComponent = auto_complete_component_1.AutoCompleteComponent;
-	var auto_complete_directive_1 = __webpack_require__(7);
+	var auto_complete_directive_1 = __webpack_require__(9);
 	exports.AutoCompleteDirective = auto_complete_directive_1.AutoCompleteDirective;
-	var ng2AutoComplete_module_1 = __webpack_require__(8);
-	exports.Ng2AutoCompleteModule = ng2AutoComplete_module_1.Ng2AutoCompleteModule;
+	var Ng2AutoCompleteModule = (function () {
+	    function Ng2AutoCompleteModule() {
+	    }
+	    Ng2AutoCompleteModule = __decorate([
+	        core_1.NgModule({
+	            imports: [platform_browser_1.BrowserModule, forms_1.FormsModule],
+	            declarations: [auto_complete_component_1.AutoCompleteComponent, auto_complete_directive_1.AutoCompleteDirective],
+	            exports: [auto_complete_component_1.AutoCompleteComponent, auto_complete_directive_1.AutoCompleteDirective],
+	            entryComponents: [auto_complete_component_1.AutoCompleteComponent],
+	            providers: [auto_complete_1.AutoComplete]
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], Ng2AutoCompleteModule);
+	    return Ng2AutoCompleteModule;
+	}());
+	exports.Ng2AutoCompleteModule = Ng2AutoCompleteModule;
 
 
 /***/ },
 /* 1 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
+
+/***/ },
+/* 2 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
+
+/***/ },
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -79,9 +123,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(2);
-	var http_1 = __webpack_require__(3);
-	__webpack_require__(4);
+	var core_1 = __webpack_require__(1);
+	var http_1 = __webpack_require__(5);
+	__webpack_require__(6);
 	/**
 	 * provides auto-complete related utility functions
 	 */
@@ -140,25 +184,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 2 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
-
-/***/ },
-/* 3 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
-
-/***/ },
-/* 4 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
-
-/***/ },
 /* 5 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_5__;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_6__;
+
+/***/ },
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -171,9 +209,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(2);
-	var Subject_1 = __webpack_require__(6);
-	var auto_complete_1 = __webpack_require__(1);
+	var core_1 = __webpack_require__(1);
+	var Subject_1 = __webpack_require__(8);
+	var auto_complete_1 = __webpack_require__(4);
 	var module; // just to pass type check
 	/**
 	 * show a selected date in monthly calendar
@@ -331,13 +369,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 6 */
+/* 8 */
 /***/ function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_6__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_8__;
 
 /***/ },
-/* 7 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -350,9 +388,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(2);
-	var auto_complete_component_1 = __webpack_require__(5);
-	__webpack_require__(4);
+	var core_1 = __webpack_require__(1);
+	var auto_complete_component_1 = __webpack_require__(7);
+	__webpack_require__(6);
 	/**
 	 * display auto-complete section with input and dropdown list when it is clicked
 	 */
@@ -491,56 +529,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	}());
 	exports.AutoCompleteDirective = AutoCompleteDirective;
 
-
-/***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(2);
-	var forms_1 = __webpack_require__(9);
-	var platform_browser_1 = __webpack_require__(10);
-	var auto_complete_1 = __webpack_require__(1);
-	var auto_complete_component_1 = __webpack_require__(5);
-	var auto_complete_directive_1 = __webpack_require__(7);
-	var Ng2AutoCompleteModule = (function () {
-	    function Ng2AutoCompleteModule() {
-	    }
-	    Ng2AutoCompleteModule = __decorate([
-	        core_1.NgModule({
-	            imports: [platform_browser_1.BrowserModule, forms_1.FormsModule],
-	            declarations: [auto_complete_component_1.AutoCompleteComponent, auto_complete_directive_1.AutoCompleteDirective],
-	            exports: [auto_complete_component_1.AutoCompleteComponent, auto_complete_directive_1.AutoCompleteDirective],
-	            entryComponents: [auto_complete_component_1.AutoCompleteComponent],
-	            providers: [auto_complete_1.AutoComplete]
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], Ng2AutoCompleteModule);
-	    return Ng2AutoCompleteModule;
-	}());
-	exports.Ng2AutoCompleteModule = Ng2AutoCompleteModule;
-
-
-/***/ },
-/* 9 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_9__;
-
-/***/ },
-/* 10 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_10__;
 
 /***/ }
 /******/ ])

@@ -25,8 +25,6 @@ export class AutoCompleteDirective implements OnInit {
 
   @Input() placeholder: string;
   @Input('list-formatter') listFormatter: (arg: any) => void;
-  //@Input('prefill-func') prefillFunc: function;
-  @Input('value-changed') valueChanged: (value: any) => void;
   @Input('source') source: any;
   @Input('path-to-data') pathToData: string;
   @Input('min-chars') minChars: number;
@@ -35,6 +33,8 @@ export class AutoCompleteDirective implements OnInit {
 
   @Input() ngModel: String;
   @Output() ngModelChange = new EventEmitter();
+
+  @Output('value-changed') valueChanged = new EventEmitter();
 
   public componentRef: ComponentRef<AutoCompleteComponent>;
   public el: HTMLElement;   // input or select element
@@ -123,17 +123,21 @@ export class AutoCompleteDirective implements OnInit {
   };
 
   selectNewValue = (val: any) => {
+
+    /* modify toString function of value if value is an object */
     if (val && typeof val !== "string") {
       let displayVal = val[this.displayPropertyName || 'value'];
       val.toString = function() {return displayVal;}
     }
-    this.ngModelChange.emit(val);
-    if (this.valueChanged) {
-      this.valueChanged(val);
+
+    /* emit ngModelChange and valueChanged */
+    if (val !== this.ngModel) {
+      this.ngModelChange.emit(val);
+      this.valueChanged.emit(val);
     }
+
+    /* hide dropdown */
     this.hideAutoCompleteDropdown();
   }
-
-
 
 }

@@ -400,6 +400,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.resolver = resolver;
 	        this.viewContainerRef = viewContainerRef;
 	        this.ngModelChange = new core_1.EventEmitter();
+	        this.valueChanged = new core_1.EventEmitter();
 	        this.hideAutoCompleteDropdown = function (event) {
 	            if (_this.componentRef) {
 	                if (event && event.type === 'click' &&
@@ -429,14 +430,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	            component.inputEl.focus();
 	        };
 	        this.selectNewValue = function (val) {
+	            /* modify toString function of value if value is an object */
 	            if (val && typeof val !== "string") {
 	                var displayVal_1 = val[_this.displayPropertyName || 'value'];
 	                val.toString = function () { return displayVal_1; };
 	            }
-	            _this.ngModelChange.emit(val);
-	            if (_this.valueChanged) {
-	                _this.valueChanged(val);
+	            /* emit ngModelChange and valueChanged */
+	            if (val !== _this.ngModel) {
+	                _this.ngModelChange.emit(val);
+	                _this.valueChanged.emit(val);
 	            }
+	            /* hide dropdown */
 	            _this.hideAutoCompleteDropdown();
 	        };
 	        this.el = this.viewContainerRef.element.nativeElement;
@@ -485,10 +489,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        __metadata('design:type', Function)
 	    ], AutoCompleteDirective.prototype, "listFormatter", void 0);
 	    __decorate([
-	        core_1.Input('value-changed'), 
-	        __metadata('design:type', Function)
-	    ], AutoCompleteDirective.prototype, "valueChanged", void 0);
-	    __decorate([
 	        core_1.Input('source'), 
 	        __metadata('design:type', Object)
 	    ], AutoCompleteDirective.prototype, "source", void 0);
@@ -516,6 +516,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        core_1.Output(), 
 	        __metadata('design:type', Object)
 	    ], AutoCompleteDirective.prototype, "ngModelChange", void 0);
+	    __decorate([
+	        core_1.Output('value-changed'), 
+	        __metadata('design:type', Object)
+	    ], AutoCompleteDirective.prototype, "valueChanged", void 0);
 	    AutoCompleteDirective = __decorate([
 	        core_1.Directive({
 	            selector: '[auto-complete], [ng2-auto-complete]',

@@ -24,6 +24,7 @@ import { Component } from '@angular/core';
       [(ngModel)]="model3"
       placeholder="enter text"
       value-property-name="key"
+      (value-changed)="myCallback($event)"
       display-property-name="name"/>
     <br/>selected: {{model3 | json}}<br/><br/>
       
@@ -46,19 +47,24 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-  public arrayOfStrings: string[] =
+  arrayOfStrings: string[] =
     ["this", "is", "array", "of", "text"];
 
-  public arrayOfKeyValues: any[] =
+  arrayOfKeyValues: any[] =
     [{id:1, value:'One'}, {id:2, value:'Two'}, {id:3, value:'Three'}, {id:4, value:'Four'}];
 
-  public arrayOfKeyValues2: any[] =
+  arrayOfKeyValues2: any[] =
     [{key:1, name:'Key One'}, {key:2, name:'Key Two'}, {key:3, name:'Key Three'}, {key:4, name:'Key Four'}];
   
-  public googleGeoCode: string = "https://maps.googleapis.com/maps/api/geocode/json?address=:keyword";
+  googleGeoCode: string = "https://maps.googleapis.com/maps/api/geocode/json?address=:keyword";
 
-  public model1 = "is";
-  public model2 = {id:1, value: 'One'};
-  public model3 = {key: 3, name: 'Key Three'};
-  public model4;
+  model1 = "is";
+  model2 = {id:1, value: 'One'};
+  model3 = {key: 3, name: 'Key Three'};
+  model4;
+
+  myCallback(newVal) {
+    console.log('value is changed to ', newVal);
+    alert('value is changed to '+ newVal);
+  }
 }

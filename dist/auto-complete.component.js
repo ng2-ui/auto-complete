@@ -81,7 +81,6 @@ var AutoCompleteComponent = (function () {
                     .subscribe(function (resp) {
                     _this.filteredList = resp;
                 }, function (error) { return null; }, function () { return _this.isLoading = false; } //complete
-                 //complete
                 );
             }
         }

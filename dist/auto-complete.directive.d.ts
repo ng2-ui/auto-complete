@@ -1,3 +1,4 @@
+/// <reference types="core-js" />
 import { ComponentRef, ViewContainerRef, EventEmitter, OnInit, ComponentFactoryResolver } from '@angular/core';
 import { AutoCompleteComponent } from "./auto-complete.component";
 import "rxjs/Rx";

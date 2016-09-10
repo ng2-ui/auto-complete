@@ -404,8 +404,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.hideAutoCompleteDropdown = function (event) {
 	            if (_this.componentRef) {
 	                if (event && event.type === 'click' &&
-	                    event.target !== _this.el &&
-	                    event.target !== _this.acEl) {
+	                    event.target.tagName !== 'INPUT' &&
+	                    !_this.elementIn(event.target, _this.acDropdownEl)) {
 	                    _this.componentRef.destroy();
 	                    _this.componentRef = undefined;
 	                }
@@ -419,12 +419,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var component = _this.componentRef.instance;
 	            /* setting width/height auto complete */
 	            var thisElBCR = _this.el.getBoundingClientRect();
-	            _this.acEl.style.width = thisElBCR.width + 'px';
-	            _this.acEl.style.position = 'absolute';
-	            _this.acEl.style.zIndex = '1';
-	            _this.acEl.style.top = '0';
-	            _this.acEl.style.left = '0';
-	            _this.acEl.style.display = 'inline-block';
+	            _this.acDropdownEl.style.width = thisElBCR.width + 'px';
+	            _this.acDropdownEl.style.position = 'absolute';
+	            _this.acDropdownEl.style.zIndex = '1';
+	            _this.acDropdownEl.style.top = '0';
+	            _this.acDropdownEl.style.left = '0';
+	            _this.acDropdownEl.style.display = 'inline-block';
 	            component.inputEl.style.width = (thisElBCR.width - 30) + 'px';
 	            component.inputEl.style.height = thisElBCR.height + 'px';
 	            component.inputEl.focus();
@@ -436,8 +436,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	                val.toString = function () { return displayVal_1; };
 	            }
 	            /* emit ngModelChange and valueChanged */
-	            if (val !== _this.ngModel) {
+	            if (_this.ngModel && val !== _this.ngModel) {
 	                _this.ngModelChange.emit(val);
+	            }
+	            if (val) {
 	                _this.valueChanged.emit(val);
 	            }
 	            /* hide dropdown */
@@ -446,13 +448,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.el = this.viewContainerRef.element.nativeElement;
 	    }
 	    AutoCompleteDirective.prototype.ngOnInit = function () {
+	        // wrap this element with <div class="ng2-auto-complete">
 	        var divEl = document.createElement("div");
 	        divEl.className = 'ng2-auto-complete';
 	        divEl.style.display = 'inline-block';
 	        divEl.style.position = 'relative';
 	        this.el.parentElement.insertBefore(divEl, this.el.nextSibling);
 	        divEl.appendChild(this.el);
+	        // apply toString() method for the object
 	        this.selectNewValue(this.ngModel);
+	        // when somewhere else clicked, hide this autocomplete
+	        document.addEventListener('click', this.hideAutoCompleteDropdown);
 	    };
 	    AutoCompleteDirective.prototype.ngOnDestroy = function () {
 	        if (this.componentRef) {
@@ -462,11 +468,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    //show auto-complete list below the current element
 	    AutoCompleteDirective.prototype.showAutoCompleteDropdown = function () {
-	        document.addEventListener('click', this.hideAutoCompleteDropdown);
 	        this.hideAutoCompleteDropdown();
 	        var factory = this.resolver.resolveComponentFactory(auto_complete_component_1.AutoCompleteComponent);
 	        this.componentRef = this.viewContainerRef.createComponent(factory);
-	        this.acEl = this.componentRef.location.nativeElement;
+	        this.acDropdownEl = this.componentRef.location.nativeElement;
 	        var component = this.componentRef.instance;
 	        component.listFormatter = this.listFormatter;
 	        //component.prefillFunc = this.prefillFunc;
@@ -477,8 +482,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	        component.source = this.source;
 	        component.placeholder = this.placeholder;
 	        component.valueSelected.subscribe(this.selectNewValue);
-	        this.acEl.style.display = 'none';
+	        this.acDropdownEl.style.display = 'none';
+	        //if this element is not an input tag, move dropdown after input tag
+	        //so that it displays correctly
+	        this.moveAutocompleteDropDownAfterInputEl();
 	        setTimeout(this.styleAutoCompleteDropdown);
+	    };
+	    AutoCompleteDirective.prototype.moveAutocompleteDropDownAfterInputEl = function () {
+	        if (this.el.tagName !== "INPUT" && this.acDropdownEl) {
+	            var inputEl = this.el.querySelector('input');
+	            inputEl.parentElement.insertBefore(this.acDropdownEl, inputEl.nextSibling);
+	        }
+	    };
+	    AutoCompleteDirective.prototype.elementIn = function (el, containerEl) {
+	        while (el = el.parentNode) {
+	            if (el === containerEl)
+	                return true;
+	        }
+	        return false;
 	    };
 	    __decorate([
 	        core_1.Input(), 

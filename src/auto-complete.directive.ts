@@ -6,8 +6,7 @@ import {
   ViewContainerRef,
   EventEmitter,
   OnInit,
-  ComponentResolver,
-  Type, ComponentFactoryResolver
+  ComponentFactoryResolver
 } from '@angular/core';
 import {AutoCompleteComponent} from "./auto-complete.component";
 import "rxjs/Rx"
@@ -37,8 +36,8 @@ export class AutoCompleteDirective implements OnInit {
   @Output('value-changed') valueChanged = new EventEmitter();
 
   public componentRef: ComponentRef<AutoCompleteComponent>;
-  public el: HTMLElement;   // input or select element
-  public acEl: HTMLElement; // auto complete element
+  public el: HTMLElement;   // input element
+  public acDropdownEl: HTMLElement; // auto complete element
 
   constructor(
     private resolver: ComponentFactoryResolver,
@@ -48,13 +47,19 @@ export class AutoCompleteDirective implements OnInit {
   }
 
   ngOnInit(): void {
+    // wrap this element with <div class="ng2-auto-complete">
     let divEl = document.createElement("div");
     divEl.className = 'ng2-auto-complete';
     divEl.style.display = 'inline-block';
     divEl.style.position = 'relative';
     this.el.parentElement.insertBefore(divEl, this.el.nextSibling);
     divEl.appendChild(this.el);
+
+    // apply toString() method for the object
     this.selectNewValue(this.ngModel);
+
+    // when somewhere else clicked, hide this autocomplete
+    document.addEventListener('click', this.hideAutoCompleteDropdown);
   }
 
   ngOnDestroy(): void {
@@ -66,35 +71,39 @@ export class AutoCompleteDirective implements OnInit {
 
   //show auto-complete list below the current element
   showAutoCompleteDropdown() {
-    document.addEventListener('click', this.hideAutoCompleteDropdown);
     this.hideAutoCompleteDropdown();
 
     let factory = this.resolver.resolveComponentFactory(AutoCompleteComponent);
 
-      this.componentRef = this.viewContainerRef.createComponent(factory);
-      this.acEl = this.componentRef.location.nativeElement;
-      let component = this.componentRef.instance;
+    this.componentRef = this.viewContainerRef.createComponent(factory);
+    this.acDropdownEl = this.componentRef.location.nativeElement;
+    let component = this.componentRef.instance;
 
-      component.listFormatter = this.listFormatter;
-      //component.prefillFunc = this.prefillFunc;
-      component.pathToData = this.pathToData;
-      component.minChars = this.minChars;
-      component.valuePropertyName = this.valuePropertyName || 'id';
-      component.displayPropertyName = this.displayPropertyName || 'value';
-      component.source = this.source;
-      component.placeholder = this.placeholder;
-      component.valueSelected.subscribe(this.selectNewValue);
+    component.listFormatter = this.listFormatter;
+    //component.prefillFunc = this.prefillFunc;
+    component.pathToData = this.pathToData;
+    component.minChars = this.minChars;
+    component.valuePropertyName = this.valuePropertyName || 'id';
+    component.displayPropertyName = this.displayPropertyName || 'value';
+    component.source = this.source;
+    component.placeholder = this.placeholder;
+    component.valueSelected.subscribe(this.selectNewValue);
 
-      this.acEl.style.display = 'none';
-      setTimeout(this.styleAutoCompleteDropdown);
+    this.acDropdownEl.style.display = 'none';
+
+    //if this element is not an input tag, move dropdown after input tag
+    //so that it displays correctly
+    this.moveAutocompleteDropDownAfterInputEl();
+
+    setTimeout(this.styleAutoCompleteDropdown);
   }
 
   hideAutoCompleteDropdown = (event?: any): void =>  {
     if (this.componentRef) {
       if (
         event && event.type === 'click' &&
-        event.target !== this.el &&
-        event.target !== this.acEl
+        event.target.tagName !== 'INPUT' &&
+        !this.elementIn(event.target, this.acDropdownEl)
       ) {
         this.componentRef.destroy();
         this.componentRef = undefined;
@@ -110,12 +119,12 @@ export class AutoCompleteDirective implements OnInit {
 
     /* setting width/height auto complete */
     let thisElBCR = this.el.getBoundingClientRect();
-    this.acEl.style.width = thisElBCR.width + 'px';
-    this.acEl.style.position = 'absolute';
-    this.acEl.style.zIndex = '1';
-    this.acEl.style.top = '0';
-    this.acEl.style.left = '0';
-    this.acEl.style.display = 'inline-block';
+    this.acDropdownEl.style.width = thisElBCR.width + 'px';
+    this.acDropdownEl.style.position = 'absolute';
+    this.acDropdownEl.style.zIndex = '1';
+    this.acDropdownEl.style.top = '0';
+    this.acDropdownEl.style.left = '0';
+    this.acDropdownEl.style.display = 'inline-block';
 
     component.inputEl.style.width = (thisElBCR.width - 30) + 'px';
     component.inputEl.style.height = thisElBCR.height + 'px';
@@ -131,13 +140,28 @@ export class AutoCompleteDirective implements OnInit {
     }
 
     /* emit ngModelChange and valueChanged */
-    if (val !== this.ngModel) {
+    if (this.ngModel && val !== this.ngModel) {
       this.ngModelChange.emit(val);
+    }
+    if (val) {
       this.valueChanged.emit(val);
     }
 
     /* hide dropdown */
     this.hideAutoCompleteDropdown();
+  };
+
+  private moveAutocompleteDropDownAfterInputEl(): void {
+    if (this.el.tagName !== "INPUT" && this.acDropdownEl) {
+      let inputEl =  this.el.querySelector('input');
+      inputEl.parentElement.insertBefore(this.acDropdownEl, inputEl.nextSibling);
+    }
   }
 
+  private elementIn(el: Node, containerEl: Node): boolean {
+    while ( el = el.parentNode ) {
+      if ( el === containerEl ) return true;
+    }
+    return false;
+  }
 }

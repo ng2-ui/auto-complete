@@ -5,11 +5,14 @@ import { Component } from '@angular/core';
   template: `
     <h1> Autocomplete Directive Test - Local Source </h1>
     component test with array of strings: {{arrayOfStrings | json}}<br/>
-    <input ng2-auto-complete 
-      [(ngModel)]="model1"
-      [source]="arrayOfStrings"
-       placeholder="enter text"/>
+     <div ng2-auto-complete 
+       [source]="arrayOfStrings"
+       (value-changed)="myCallback($event)"
+       placeholder="enter text">
+       <input [(ngModel)]="model1" />
+     </div>
      <br/>selected: {{model1 | json}}<br/><br/>
+    
     
     component test with array of id/values: {{arrayOfKeyValues | json}}<br/>
     <input 
@@ -24,7 +27,6 @@ import { Component } from '@angular/core';
       [(ngModel)]="model3"
       placeholder="enter text"
       value-property-name="key"
-      (value-changed)="myCallback($event)"
       display-property-name="name"/>
     <br/>selected: {{model3 | json}}<br/><br/>
       
@@ -65,6 +67,6 @@ export class AppComponent {
 
   myCallback(newVal) {
     console.log('value is changed to ', newVal);
-    alert('value is changed to '+ newVal);
+    this.model1 = newVal;
   }
 }

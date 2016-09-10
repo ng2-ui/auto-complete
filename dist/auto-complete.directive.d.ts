@@ -19,7 +19,7 @@ export declare class AutoCompleteDirective implements OnInit {
     valueChanged: EventEmitter<{}>;
     componentRef: ComponentRef<AutoCompleteComponent>;
     el: HTMLElement;
-    acEl: HTMLElement;
+    acDropdownEl: HTMLElement;
     constructor(resolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef);
     ngOnInit(): void;
     ngOnDestroy(): void;
@@ -27,4 +27,6 @@ export declare class AutoCompleteDirective implements OnInit {
     hideAutoCompleteDropdown: (event?: any) => void;
     styleAutoCompleteDropdown: () => void;
     selectNewValue: (val: any) => void;
+    private moveAutocompleteDropDownAfterInputEl();
+    private elementIn(el, containerEl);
 }

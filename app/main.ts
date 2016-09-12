@@ -9,9 +9,10 @@ import { HttpModule } from "@angular/http";
 import { AppComponent }   from './app.component';
 //noinspection TypeScriptCheckImport
 import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
+import { MdInputModule } from '@angular2-material/input';
 
 @NgModule({
-  imports: [BrowserModule, HttpModule, FormsModule, Ng2AutoCompleteModule],
+  imports: [BrowserModule, HttpModule, FormsModule, MdInputModule, Ng2AutoCompleteModule],
   declarations: [AppComponent],
   bootstrap: [ AppComponent ]
 })

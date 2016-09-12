@@ -45,13 +45,14 @@ var AutoCompleteDirective = (function () {
             _this.acDropdownEl.style.top = '0';
             _this.acDropdownEl.style.left = '0';
             _this.acDropdownEl.style.display = 'inline-block';
-            component.inputEl.style.width = (thisElBCR.width - 30) + 'px';
-            component.inputEl.style.height = thisElBCR.height + 'px';
+            var thisInputElBCR = _this.inputEl.getBoundingClientRect();
+            component.inputEl.style.width = (thisInputElBCR.width - 30) + 'px';
+            component.inputEl.style.height = thisInputElBCR.height + 'px';
             component.inputEl.focus();
         };
         this.selectNewValue = function (val) {
             /* modify toString function of value if value is an object */
-            if (val && typeof val !== "string") {
+            if (val && typeof val === "object") {
                 var displayVal_1 = val[_this.displayPropertyName || 'value'];
                 val.toString = function () { return displayVal_1; };
             }
@@ -100,7 +101,7 @@ var AutoCompleteDirective = (function () {
         component.valuePropertyName = this.valuePropertyName || 'id';
         component.displayPropertyName = this.displayPropertyName || 'value';
         component.source = this.source;
-        component.placeholder = this.placeholder;
+        component.placeholder = this.autoCompletePlaceholder;
         component.valueSelected.subscribe(this.selectNewValue);
         this.acDropdownEl.style.display = 'none';
         //if this element is not an input tag, move dropdown after input tag
@@ -109,9 +110,10 @@ var AutoCompleteDirective = (function () {
         setTimeout(this.styleAutoCompleteDropdown);
     };
     AutoCompleteDirective.prototype.moveAutocompleteDropDownAfterInputEl = function () {
+        this.inputEl = this.el;
         if (this.el.tagName !== "INPUT" && this.acDropdownEl) {
-            var inputEl = this.el.querySelector('input');
-            inputEl.parentElement.insertBefore(this.acDropdownEl, inputEl.nextSibling);
+            this.inputEl = this.el.querySelector('input');
+            this.inputEl.parentElement.insertBefore(this.acDropdownEl, this.inputEl.nextSibling);
         }
     };
     AutoCompleteDirective.prototype.elementIn = function (el, containerEl) {
@@ -122,9 +124,9 @@ var AutoCompleteDirective = (function () {
         return false;
     };
     __decorate([
-        core_1.Input(), 
+        core_1.Input('auto-complete-placeholder'), 
         __metadata('design:type', String)
-    ], AutoCompleteDirective.prototype, "placeholder", void 0);
+    ], AutoCompleteDirective.prototype, "autoCompletePlaceholder", void 0);
     __decorate([
         core_1.Input('list-formatter'), 
         __metadata('design:type', Function)

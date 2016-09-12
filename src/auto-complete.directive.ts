@@ -22,7 +22,7 @@ import "rxjs/Rx"
 })
 export class AutoCompleteDirective implements OnInit {
 
-  @Input() placeholder: string;
+  @Input('auto-complete-placeholder') autoCompletePlaceholder: string;
   @Input('list-formatter') listFormatter: (arg: any) => void;
   @Input('source') source: any;
   @Input('path-to-data') pathToData: string;
@@ -35,9 +35,10 @@ export class AutoCompleteDirective implements OnInit {
 
   @Output('value-changed') valueChanged = new EventEmitter();
 
-  public componentRef: ComponentRef<AutoCompleteComponent>;
-  public el: HTMLElement;   // input element
-  public acDropdownEl: HTMLElement; // auto complete element
+  componentRef: ComponentRef<AutoCompleteComponent>;
+  el: HTMLElement;   // input element
+  acDropdownEl: HTMLElement; // auto complete element
+  inputEl: HTMLInputElement;  // input tag
 
   constructor(
     private resolver: ComponentFactoryResolver,
@@ -86,7 +87,7 @@ export class AutoCompleteDirective implements OnInit {
     component.valuePropertyName = this.valuePropertyName || 'id';
     component.displayPropertyName = this.displayPropertyName || 'value';
     component.source = this.source;
-    component.placeholder = this.placeholder;
+    component.placeholder = this.autoCompletePlaceholder;
     component.valueSelected.subscribe(this.selectNewValue);
 
     this.acDropdownEl.style.display = 'none';
@@ -126,15 +127,16 @@ export class AutoCompleteDirective implements OnInit {
     this.acDropdownEl.style.left = '0';
     this.acDropdownEl.style.display = 'inline-block';
 
-    component.inputEl.style.width = (thisElBCR.width - 30) + 'px';
-    component.inputEl.style.height = thisElBCR.height + 'px';
+    let thisInputElBCR = this.inputEl.getBoundingClientRect();
+    component.inputEl.style.width = (thisInputElBCR.width - 30) + 'px';
+    component.inputEl.style.height = thisInputElBCR.height + 'px';
     component.inputEl.focus();
   };
 
   selectNewValue = (val: any) => {
 
     /* modify toString function of value if value is an object */
-    if (val && typeof val !== "string") {
+    if (val && typeof val === "object") {
       let displayVal = val[this.displayPropertyName || 'value'];
       val.toString = function() {return displayVal;}
     }
@@ -152,9 +154,10 @@ export class AutoCompleteDirective implements OnInit {
   };
 
   private moveAutocompleteDropDownAfterInputEl(): void {
+    this.inputEl = <HTMLInputElement>this.el;
     if (this.el.tagName !== "INPUT" && this.acDropdownEl) {
-      let inputEl =  this.el.querySelector('input');
-      inputEl.parentElement.insertBefore(this.acDropdownEl, inputEl.nextSibling);
+      this.inputEl =  this.el.querySelector('input');
+      this.inputEl.parentElement.insertBefore(this.acDropdownEl, this.inputEl.nextSibling);
     }
   }
 

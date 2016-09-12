@@ -65,7 +65,7 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
 
   * **`ngModel`**, any, variable that autocomplete result is assigned to
   * **`source`**, array or string, required. data source for dropdown list
-  * **`placeholder`**,  string, input guide text
+  * **`auto-complete-placeholder`**,  string, autocomplete input guide text
   * **`list-formatter`**, function variable name, custom list formatting function.e.g. 'myListFormatter', not 'myListFormatter()'
   * **`path-to-data`**, string, e.g., `data.myList`, path to array data in http response
   * **`min-chars, number`**, when source is remote data, the number of character to see dropdown list

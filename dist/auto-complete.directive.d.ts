@@ -7,7 +7,7 @@ import "rxjs/Rx";
 export declare class AutoCompleteDirective implements OnInit {
     private resolver;
     viewContainerRef: ViewContainerRef;
-    placeholder: string;
+    autoCompletePlaceholder: string;
     listFormatter: (arg: any) => void;
     source: any;
     pathToData: string;
@@ -20,6 +20,7 @@ export declare class AutoCompleteDirective implements OnInit {
     componentRef: ComponentRef<AutoCompleteComponent>;
     el: HTMLElement;
     acDropdownEl: HTMLElement;
+    inputEl: HTMLInputElement;
     constructor(resolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef);
     ngOnInit(): void;
     ngOnDestroy(): void;

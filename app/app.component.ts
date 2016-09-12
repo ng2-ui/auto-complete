@@ -5,6 +5,16 @@ import { Component } from '@angular/core';
   template: `
     <h1> Autocomplete Directive Test - Local Source </h1>
     component test with array of strings: {{arrayOfStrings | json}}<br/>
+    
+     <md-input ng2-auto-complete 
+       [(ngModel)]="myModel"
+       [source]="arrayOfNumbers"
+       placeholder="amount" align="end">
+       <span md-prefix>$&nbsp;</span>
+       <span md-suffix>.00</span>
+     </md-input>
+     <br/>
+     
      <div ng2-auto-complete 
        [source]="arrayOfStrings"
        (value-changed)="myCallback($event)"
@@ -48,6 +58,8 @@ import { Component } from '@angular/core';
   `]
 })
 export class AppComponent {
+
+  arrayOfNumbers: number[] = [100, 200, 300, 400, 500];
 
   arrayOfStrings: string[] =
     ["this", "is", "array", "of", "text"];

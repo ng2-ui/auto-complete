@@ -1,12 +1,12 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@angular/core"), require("@angular/forms"), require("@angular/platform-browser"), require("@angular/http"), require("rxjs/Rx"), require("rxjs/Subject"));
+		module.exports = factory(require("@angular/core"), require("@angular/forms"), require("@angular/common"), require("@angular/http"), require("rxjs/Rx"), require("rxjs/Subject"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@angular/core", "@angular/forms", "@angular/platform-browser", "@angular/http", "rxjs/Rx", "rxjs/Subject"], factory);
+		define(["@angular/core", "@angular/forms", "@angular/common", "@angular/http", "rxjs/Rx", "rxjs/Subject"], factory);
 	else if(typeof exports === 'object')
-		exports["ng2-auto-complete"] = factory(require("@angular/core"), require("@angular/forms"), require("@angular/platform-browser"), require("@angular/http"), require("rxjs/Rx"), require("rxjs/Subject"));
+		exports["ng2-auto-complete"] = factory(require("@angular/core"), require("@angular/forms"), require("@angular/common"), require("@angular/http"), require("rxjs/Rx"), require("rxjs/Subject"));
 	else
-		root["ng2-auto-complete"] = factory(root["@angular/core"], root["@angular/forms"], root["@angular/platform-browser"], root["@angular/http"], root["rxjs/Rx"], root["rxjs/Subject"]);
+		root["ng2-auto-complete"] = factory(root["@angular/core"], root["@angular/forms"], root["@angular/common"], root["@angular/http"], root["rxjs/Rx"], root["rxjs/Subject"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_5__, __WEBPACK_EXTERNAL_MODULE_6__, __WEBPACK_EXTERNAL_MODULE_8__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -66,7 +66,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	var core_1 = __webpack_require__(1);
 	var forms_1 = __webpack_require__(2);
-	var platform_browser_1 = __webpack_require__(3);
+	var common_1 = __webpack_require__(3);
 	var auto_complete_1 = __webpack_require__(4);
 	exports.AutoComplete = auto_complete_1.AutoComplete;
 	var auto_complete_component_1 = __webpack_require__(7);
@@ -78,7 +78,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    Ng2AutoCompleteModule = __decorate([
 	        core_1.NgModule({
-	            imports: [platform_browser_1.BrowserModule, forms_1.FormsModule],
+	            imports: [common_1.CommonModule, forms_1.FormsModule],
 	            declarations: [auto_complete_component_1.AutoCompleteComponent, auto_complete_directive_1.AutoCompleteDirective],
 	            exports: [auto_complete_component_1.AutoCompleteComponent, auto_complete_directive_1.AutoCompleteDirective],
 	            entryComponents: [auto_complete_component_1.AutoCompleteComponent],

@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { BrowserModule  } from "@angular/platform-browser";
+import { CommonModule } from "@angular/common";
 
 import { AutoComplete } from "./auto-complete";
 import { AutoCompleteComponent } from "./auto-complete.component";
@@ -13,7 +13,7 @@ export {
 };
 
 @NgModule({
-  imports: [ BrowserModule, FormsModule ],
+  imports: [ CommonModule, FormsModule ],
   declarations: [AutoCompleteComponent, AutoCompleteDirective],
   exports:  [AutoCompleteComponent, AutoCompleteDirective],
   entryComponents: [AutoCompleteComponent],

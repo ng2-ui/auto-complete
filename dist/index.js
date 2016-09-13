@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
-var platform_browser_1 = require("@angular/platform-browser");
+var common_1 = require("@angular/common");
 var auto_complete_1 = require("./auto-complete");
 exports.AutoComplete = auto_complete_1.AutoComplete;
 var auto_complete_component_1 = require("./auto-complete.component");
@@ -22,7 +22,7 @@ var Ng2AutoCompleteModule = (function () {
     }
     Ng2AutoCompleteModule = __decorate([
         core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule, forms_1.FormsModule],
+            imports: [common_1.CommonModule, forms_1.FormsModule],
             declarations: [auto_complete_component_1.AutoCompleteComponent, auto_complete_directive_1.AutoCompleteDirective],
             exports: [auto_complete_component_1.AutoCompleteComponent, auto_complete_directive_1.AutoCompleteDirective],
             entryComponents: [auto_complete_component_1.AutoCompleteComponent],

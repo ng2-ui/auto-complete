@@ -1,16 +1,15 @@
-import {Component, ElementRef, Input, OnInit, ViewEncapsulation} from '@angular/core';
-import {Subject} from "rxjs/Subject";
-import {AutoComplete} from './auto-complete';
+import { Component, ElementRef, Input, OnInit, ViewEncapsulation } from "@angular/core";
+import { Subject } from "rxjs/Subject";
+import { AutoComplete } from "./auto-complete";
 
-var module: any; // just to pass type check
 /**
  * show a selected date in monthly calendar
  * Each filteredList item has the following property in addition to data itself
  *   1. displayValue as string e.g. Allen Kim
- *   2. dataValue as any e.g. 1234
+ *   2. dataValue as any e.g. 
  */
 @Component({
-  selector: 'auto-complete',
+  selector: "auto-complete",
   template: `
   <div class="auto-complete">
 
@@ -30,12 +29,12 @@ var module: any; // just to pass type check
           *ngFor="let item of filteredList; let i=index"
           (mousedown)="selectOne(item)"
           [ngClass]="{selected: i === itemIndex}"
-          [innerHTML]="getFormattedList(item)"
-          ></li>
+          [innerHtml]="getFormattedList(item)">
+      </li>
     </ul>
 
   </div>`,
-  providers: [ AutoComplete ],
+  providers: [AutoComplete],
   styles: [`
   @keyframes slideDown {
     0% {
@@ -81,25 +80,22 @@ var module: any; // just to pass type check
 
   .auto-complete ul li:hover {
     background-color: #ccc;
-  }
-
-`],
-  //encapsulation: ViewEncapsulation.Native
+  }`
+  ],
   encapsulation: ViewEncapsulation.None
-  // encapsulation: ViewEncapsulation.Emulated is default
 })
 export class AutoCompleteComponent implements OnInit {
 
   /**
-   * public variables
+   * public input properties
    */
-  @Input('list-formatter') listFormatter: (arg: any) => void;
-  @Input('source') source: any;
-  @Input('path-to-data') pathToData: string;
-  @Input('min-chars') minChars: number = 0;
-  @Input('value-property-name') valuePropertyName: string = 'id';
-  @Input('display-property-name') displayPropertyName: string = 'value';
-  @Input('placeholder') placeholder: string;
+  @Input("list-formatter") listFormatter: (arg: any) => string;
+  @Input("source") source: any;
+  @Input("path-to-data") pathToData: string;
+  @Input("min-chars") minChars: number = 0;
+  @Input("value-property-name") valuePropertyName: string = "id";
+  @Input("display-property-name") displayPropertyName: string = "value";
+  @Input("placeholder") placeholder: string;
 
   public el: HTMLElement;
   public inputEl: HTMLInputElement;
@@ -111,6 +107,11 @@ export class AutoCompleteComponent implements OnInit {
   public keyword: string;
 
   public valueSelected: Subject<any> = new Subject();
+
+  isSrcArr(): boolean {
+    return (this.source.constructor.name === "Array");
+  }
+
   /**
    * constructor
    */
@@ -125,54 +126,69 @@ export class AutoCompleteComponent implements OnInit {
    * user enters into input el, shows list to select, then select one
    */
   ngOnInit(): void {
-    this.inputEl = <HTMLInputElement>(this.el.querySelector('input'));
+    this.inputEl = <HTMLInputElement>(this.el.querySelector("input"));
     this.autoComplete.source = this.source;
     this.autoComplete.pathToData = this.pathToData;
   }
-  
+
   reloadListInDelay(): void {
-    let delayMs = this.source.constructor.name == 'Array' ? 10 : 500;
-    //executing after user stopped typing
+    let delayMs = this.isSrcArr() ? 10 : 500;
+
+    // executing after user stopped typing
     this.delay(() => this.reloadList(), delayMs);
   }
 
   showDropdownList(): void {
-    this.keyword = '';
+    this.keyword = "";
     this.inputEl.focus();
     this.reloadList();
   }
-  
+
   hideDropdownList(): void {
     this.dropdownVisible = false;
   }
 
-
   reloadList(): void {
     let keyword = this.inputEl.value;
+
     this.hideDropdownList();
+    this.dropdownVisible = true;
 
-    if (this.source.constructor.name == 'Array') { // local source, not remote
+    if (this.isSrcArr()) {
+      // local source 
+      this.filteredList = this.autoComplete.filter(this.source, this.keyword);
+    } else {
 
-      this.filteredList =
-        this.autoComplete.filter(this.source, this.keyword);
-      this.dropdownVisible = true;
-
-    } else { // remote source
+      this.isLoading = true;
 
       if (keyword.length >= this.minChars) {
+        if (typeof this.source === "function") {
+          // custom function that returns observable 
+          this.source(keyword).subscribe(
+            resp => {
 
-        this.dropdownVisible = true;
-        this.isLoading = true;
+              if (this.pathToData) {
+                var paths = this.pathToData.split(".");
+                paths.forEach(prop => resp = resp[prop]);
+              }
 
-        let query = {keyword: keyword};
-        this.autoComplete.getRemoteData(query)
-          .subscribe(
+              this.filteredList = resp;
+            },
+            error => null,
+            () => this.isLoading = false // complete
+          );
+        } else {
+          // remote source  
+          let query = { keyword: keyword };
+          this.autoComplete.getRemoteData(query)
+            .subscribe(
             resp => {
               this.filteredList = (<any>resp);
             },
             error => null,
-            () => this.isLoading = false //complete
-          );
+            () => this.isLoading = false // complete
+            );
+        }
       }
     }
   }
@@ -185,7 +201,7 @@ export class AutoCompleteComponent implements OnInit {
   inputElKeyHandler(evt: any) {
     let totalNumItem = this.filteredList.length;
 
-    switch(evt.keyCode) {
+    switch (evt.keyCode) {
       case 27: // ESC, hide auto complete
         this.hideDropdownList();
         break;
@@ -195,34 +211,34 @@ export class AutoCompleteComponent implements OnInit {
         break;
 
       case 40: // DOWN, select the next li el or the first one
-        this.dropdownVisible=true;
+        this.dropdownVisible = true;
         this.itemIndex = (totalNumItem + this.itemIndex + 1) % totalNumItem;
         break;
 
       case 13: // ENTER, choose it!!
-        if(this.filteredList.length > 0) {
+        if (this.filteredList.length > 0) {
           this.selectOne(this.filteredList[this.itemIndex]);
         }
         evt.preventDefault();
         break;
     }
   };
-  
+
   getFormattedList(data: any): string {
     let formatter = this.listFormatter || this.defaultListFormatter;
     return formatter.apply(this, [data]);
   }
-  
+
   private defaultListFormatter(data: any): string {
     let html: string = "";
-    html += data[this.valuePropertyName] ? `<b>(${data[this.valuePropertyName]})</b>`: "";
-    html += data[this.displayPropertyName] ? `<span>${data[this.displayPropertyName]}</span>`: data;
+    html += data[this.valuePropertyName] ? `<b>(${data[this.valuePropertyName]})</b>` : "";
+    html += data[this.displayPropertyName] ? `<span>${data[this.displayPropertyName]}</span>` : data;
     return html;
   }
 
-  private delay = (function(){
+  private delay = (function () {
     var timer = 0;
-    return function(callback: any, ms: number){
+    return function (callback: any, ms: number) {
       clearTimeout(timer);
       timer = setTimeout(callback, ms);
     };

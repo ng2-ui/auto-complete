@@ -1,6 +1,6 @@
-import { ComponentRef, ViewContainerRef, EventEmitter, OnInit, ComponentFactoryResolver } from '@angular/core';
-import { AutoCompleteComponent } from "./auto-complete.component";
+import { ComponentRef, ViewContainerRef, EventEmitter, OnInit, ComponentFactoryResolver } from "@angular/core";
 import "rxjs/Rx";
+import { AutoCompleteComponent } from "./auto-complete.component";
 /**
  * display auto-complete section with input and dropdown list when it is clicked
  */
@@ -8,7 +8,7 @@ export declare class AutoCompleteDirective implements OnInit {
     private resolver;
     viewContainerRef: ViewContainerRef;
     autoCompletePlaceholder: string;
-    listFormatter: (arg: any) => void;
+    listFormatter: (arg: any) => string;
     source: any;
     pathToData: string;
     minChars: number;

@@ -8,15 +8,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
+var core_1 = require("@angular/core");
 var Subject_1 = require("rxjs/Subject");
-var auto_complete_1 = require('./auto-complete');
-var module; // just to pass type check
+var auto_complete_1 = require("./auto-complete");
 /**
  * show a selected date in monthly calendar
  * Each filteredList item has the following property in addition to data itself
  *   1. displayValue as string e.g. Allen Kim
- *   2. dataValue as any e.g. 1234
+ *   2. dataValue as any e.g.
  */
 var AutoCompleteComponent = (function () {
     /**
@@ -25,8 +24,8 @@ var AutoCompleteComponent = (function () {
     function AutoCompleteComponent(elementRef, autoComplete) {
         this.autoComplete = autoComplete;
         this.minChars = 0;
-        this.valuePropertyName = 'id';
-        this.displayPropertyName = 'value';
+        this.valuePropertyName = "id";
+        this.displayPropertyName = "value";
         this.dropdownVisible = false;
         this.isLoading = false;
         this.filteredList = [];
@@ -41,22 +40,25 @@ var AutoCompleteComponent = (function () {
         })();
         this.el = elementRef.nativeElement;
     }
+    AutoCompleteComponent.prototype.isSrcArr = function () {
+        return (this.source.constructor.name === "Array");
+    };
     /**
      * user enters into input el, shows list to select, then select one
      */
     AutoCompleteComponent.prototype.ngOnInit = function () {
-        this.inputEl = (this.el.querySelector('input'));
+        this.inputEl = (this.el.querySelector("input"));
         this.autoComplete.source = this.source;
         this.autoComplete.pathToData = this.pathToData;
     };
     AutoCompleteComponent.prototype.reloadListInDelay = function () {
         var _this = this;
-        var delayMs = this.source.constructor.name == 'Array' ? 10 : 500;
-        //executing after user stopped typing
+        var delayMs = this.isSrcArr() ? 10 : 500;
+        // executing after user stopped typing
         this.delay(function () { return _this.reloadList(); }, delayMs);
     };
     AutoCompleteComponent.prototype.showDropdownList = function () {
-        this.keyword = '';
+        this.keyword = "";
         this.inputEl.focus();
         this.reloadList();
     };
@@ -67,21 +69,34 @@ var AutoCompleteComponent = (function () {
         var _this = this;
         var keyword = this.inputEl.value;
         this.hideDropdownList();
-        if (this.source.constructor.name == 'Array') {
-            this.filteredList =
-                this.autoComplete.filter(this.source, this.keyword);
-            this.dropdownVisible = true;
+        this.dropdownVisible = true;
+        if (this.isSrcArr()) {
+            // local source 
+            this.filteredList = this.autoComplete.filter(this.source, this.keyword);
         }
         else {
+            this.isLoading = true;
             if (keyword.length >= this.minChars) {
-                this.dropdownVisible = true;
-                this.isLoading = true;
-                var query = { keyword: keyword };
-                this.autoComplete.getRemoteData(query)
-                    .subscribe(function (resp) {
-                    _this.filteredList = resp;
-                }, function (error) { return null; }, function () { return _this.isLoading = false; } //complete
-                );
+                if (typeof this.source === "function") {
+                    // custom function that returns observable 
+                    this.source(keyword).subscribe(function (resp) {
+                        if (_this.pathToData) {
+                            var paths = _this.pathToData.split(".");
+                            paths.forEach(function (prop) { return resp = resp[prop]; });
+                        }
+                        _this.filteredList = resp;
+                    }, function (error) { return null; }, function () { return _this.isLoading = false; } // complete
+                    );
+                }
+                else {
+                    // remote source  
+                    var query = { keyword: keyword };
+                    this.autoComplete.getRemoteData(query)
+                        .subscribe(function (resp) {
+                        _this.filteredList = resp;
+                    }, function (error) { return null; }, function () { return _this.isLoading = false; } // complete
+                    );
+                }
             }
         }
     };
@@ -123,41 +138,40 @@ var AutoCompleteComponent = (function () {
         return html;
     };
     __decorate([
-        core_1.Input('list-formatter'), 
+        core_1.Input("list-formatter"), 
         __metadata('design:type', Function)
     ], AutoCompleteComponent.prototype, "listFormatter", void 0);
     __decorate([
-        core_1.Input('source'), 
+        core_1.Input("source"), 
         __metadata('design:type', Object)
     ], AutoCompleteComponent.prototype, "source", void 0);
     __decorate([
-        core_1.Input('path-to-data'), 
+        core_1.Input("path-to-data"), 
         __metadata('design:type', String)
     ], AutoCompleteComponent.prototype, "pathToData", void 0);
     __decorate([
-        core_1.Input('min-chars'), 
+        core_1.Input("min-chars"), 
         __metadata('design:type', Number)
     ], AutoCompleteComponent.prototype, "minChars", void 0);
     __decorate([
-        core_1.Input('value-property-name'), 
+        core_1.Input("value-property-name"), 
         __metadata('design:type', String)
     ], AutoCompleteComponent.prototype, "valuePropertyName", void 0);
     __decorate([
-        core_1.Input('display-property-name'), 
+        core_1.Input("display-property-name"), 
         __metadata('design:type', String)
     ], AutoCompleteComponent.prototype, "displayPropertyName", void 0);
     __decorate([
-        core_1.Input('placeholder'), 
+        core_1.Input("placeholder"), 
         __metadata('design:type', String)
     ], AutoCompleteComponent.prototype, "placeholder", void 0);
     AutoCompleteComponent = __decorate([
-        // just to pass type check
         core_1.Component({
-            selector: 'auto-complete',
-            template: "\n  <div class=\"auto-complete\">\n\n    <!-- keyword input -->\n    <input class=\"keyword\"\n           placeholder=\"{{placeholder}}\"\n           (focus)=\"showDropdownList()\"\n           (blur)=\"dropdownVisible=false\"\n           (keydown)=\"inputElKeyHandler($event)\"\n           (input)=\"reloadListInDelay()\"\n           [(ngModel)]=\"keyword\" />\n\n    <!-- dropdown that user can select -->\n    <ul *ngIf=\"dropdownVisible\">\n      <li *ngIf=\"isLoading\" class=\"loading\">Loading</li>\n      <li class=\"item\"\n          *ngFor=\"let item of filteredList; let i=index\"\n          (mousedown)=\"selectOne(item)\"\n          [ngClass]=\"{selected: i === itemIndex}\"\n          [innerHTML]=\"getFormattedList(item)\"\n          ></li>\n    </ul>\n\n  </div>",
+            selector: "auto-complete",
+            template: "\n  <div class=\"auto-complete\">\n\n    <!-- keyword input -->\n    <input class=\"keyword\"\n           placeholder=\"{{placeholder}}\"\n           (focus)=\"showDropdownList()\"\n           (blur)=\"dropdownVisible=false\"\n           (keydown)=\"inputElKeyHandler($event)\"\n           (input)=\"reloadListInDelay()\"\n           [(ngModel)]=\"keyword\" />\n\n    <!-- dropdown that user can select -->\n    <ul *ngIf=\"dropdownVisible\">\n      <li *ngIf=\"isLoading\" class=\"loading\">Loading</li>\n      <li class=\"item\"\n          *ngFor=\"let item of filteredList; let i=index\"\n          (mousedown)=\"selectOne(item)\"\n          [ngClass]=\"{selected: i === itemIndex}\"\n          [innerHtml]=\"getFormattedList(item)\">\n      </li>\n    </ul>\n\n  </div>",
             providers: [auto_complete_1.AutoComplete],
-            styles: ["\n  @keyframes slideDown {\n    0% {\n      transform:  translateY(-10px);\n    }\n    100% {\n      transform: translateY(0px);\n    }\n  }\n  .auto-complete input {\n    outline: none;\n    border: 2px solid transparent;\n    border-width: 3px 2px;\n    margin: 0;\n    box-sizing: border-box;\n    background-clip: content-box;\n  }\n\n  .auto-complete ul {\n    background-color: #fff;\n    margin: 0;\n    width : 100%;\n    overflow-y: auto;\n    list-style-type: none;\n    padding: 0;\n    border: 1px solid #ccc;\n    box-sizing: border-box;\n    animation: slideDown 0.1s;\n  }\n\n  .auto-complete ul li {\n    padding: 2px 5px;\n    border-bottom: 1px solid #eee;\n  }\n\n  .auto-complete ul li.selected {\n    background-color: #ccc;\n  }\n\n  .auto-complete ul li:last-child {\n    border-bottom: none;\n  }\n\n  .auto-complete ul li:hover {\n    background-color: #ccc;\n  }\n\n"],
-            //encapsulation: ViewEncapsulation.Native
+            styles: ["\n  @keyframes slideDown {\n    0% {\n      transform:  translateY(-10px);\n    }\n    100% {\n      transform: translateY(0px);\n    }\n  }\n  .auto-complete input {\n    outline: none;\n    border: 2px solid transparent;\n    border-width: 3px 2px;\n    margin: 0;\n    box-sizing: border-box;\n    background-clip: content-box;\n  }\n\n  .auto-complete ul {\n    background-color: #fff;\n    margin: 0;\n    width : 100%;\n    overflow-y: auto;\n    list-style-type: none;\n    padding: 0;\n    border: 1px solid #ccc;\n    box-sizing: border-box;\n    animation: slideDown 0.1s;\n  }\n\n  .auto-complete ul li {\n    padding: 2px 5px;\n    border-bottom: 1px solid #eee;\n  }\n\n  .auto-complete ul li.selected {\n    background-color: #ccc;\n  }\n\n  .auto-complete ul li:last-child {\n    border-bottom: none;\n  }\n\n  .auto-complete ul li:hover {\n    background-color: #ccc;\n  }"
+            ],
             encapsulation: core_1.ViewEncapsulation.None
         }), 
         __metadata('design:paramtypes', [core_1.ElementRef, auto_complete_1.AutoComplete])

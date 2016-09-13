@@ -1,5 +1,7 @@
-var path = require("path");
+var path = require('path');
 var webpack = require('webpack');
+
+console.log(path.join(__dirname, 'src', 'index.ts'));
 
 module.exports = {
   entry: {

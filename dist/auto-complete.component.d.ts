@@ -1,18 +1,18 @@
-import { ElementRef, OnInit } from '@angular/core';
+import { ElementRef, OnInit } from "@angular/core";
 import { Subject } from "rxjs/Subject";
-import { AutoComplete } from './auto-complete';
+import { AutoComplete } from "./auto-complete";
 /**
  * show a selected date in monthly calendar
  * Each filteredList item has the following property in addition to data itself
  *   1. displayValue as string e.g. Allen Kim
- *   2. dataValue as any e.g. 1234
+ *   2. dataValue as any e.g.
  */
 export declare class AutoCompleteComponent implements OnInit {
     autoComplete: AutoComplete;
     /**
-     * public variables
+     * public input properties
      */
-    listFormatter: (arg: any) => void;
+    listFormatter: (arg: any) => string;
     source: any;
     pathToData: string;
     minChars: number;
@@ -27,6 +27,7 @@ export declare class AutoCompleteComponent implements OnInit {
     itemIndex: number;
     keyword: string;
     valueSelected: Subject<any>;
+    isSrcArr(): boolean;
     /**
      * constructor
      */

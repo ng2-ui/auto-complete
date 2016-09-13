@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
+import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
+
+import { AppSvc } from "./app.service";
 
 @Component({
-  selector: 'my-app',
+  selector: "my-app",
   template: `
     <h1> Autocomplete Directive Test - Local Source </h1>
     component test with array of strings: {{arrayOfStrings | json}}<br/>
@@ -50,12 +53,24 @@ import { Component } from '@angular/core';
       path-to-data="results"
       min-chars="2" />
     <br/>selected: {{model4 | json}}<br/><br/>
+ 
+    component test with Observable array as the source from a remote source "Marvel API"<br/>
+    <input  ng2-auto-complete
+      placeholder="Start typing a hero name (min. 2 chars) ... for example: Hulk"     
+      [(ngModel)]="model5" 
+      [source]="appSvc.findHeroes"  
+      [list-formatter]="renderHero"
+      path-to-data="data.results"
+      min-chars="2" 
+    />
+    <br/>selected: {{model5 | json}}<br/><br/>
  `,
   styles: [`
     ng2-auto-complete, input {
       display: block; border: 1px solid #ccc; width: 300px;
     }
-  `]
+  `],
+   providers : [AppSvc]
 })
 export class AppComponent {
 
@@ -65,20 +80,34 @@ export class AppComponent {
     ["this", "is", "array", "of", "text"];
 
   arrayOfKeyValues: any[] =
-    [{id:1, value:'One'}, {id:2, value:'Two'}, {id:3, value:'Three'}, {id:4, value:'Four'}];
+    [{id:1, value:"One"}, {id:2, value:"Two"}, {id:3, value:"Three"}, {id:4, value:"Four"}];
 
   arrayOfKeyValues2: any[] =
-    [{key:1, name:'Key One'}, {key:2, name:'Key Two'}, {key:3, name:'Key Three'}, {key:4, name:'Key Four'}];
-  
+    [{key:1, name:"Key One"}, {key:2, name:"Key Two"}, {key:3, name:"Key Three"}, {key:4, name:"Key Four"}];
+
   googleGeoCode: string = "https://maps.googleapis.com/maps/api/geocode/json?address=:keyword";
 
   model1 = "is";
-  model2 = {id:1, value: 'One'};
-  model3 = {key: 3, name: 'Key Three'};
+  model2 = {id:1, value: "One"};
+  model3 = {key: 3, name: "Key Three"};
   model4;
+  model5;
+
+  constructor (
+    public appSvc : AppSvc,
+    private _sanitizer: DomSanitizer ) {
+  }
 
   myCallback(newVal) {
-    console.log('value is changed to ', newVal);
+    console.log("value is changed to ", newVal);
     this.model1 = newVal;
+  }
+
+  renderHero = (data: any) : SafeHtml => {
+    let html = `<b style='float:left;width:100%'>${data.name}</b>
+                <img style="float: left;padding: 5px;" src="${data.thumbnail.path}/portrait_small.${data.thumbnail.extension}"> 
+                <span>${data.description}</span>`;
+
+    return this._sanitizer.bypassSecurityTrustHtml(html);
   }
 }

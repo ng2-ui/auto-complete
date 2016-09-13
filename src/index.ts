@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
+import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { BrowserModule  } from '@angular/platform-browser';
+import { BrowserModule  } from "@angular/platform-browser";
 
-import { AutoComplete } from './auto-complete';
-import { AutoCompleteComponent } from './auto-complete.component';
-import { AutoCompleteDirective } from './auto-complete.directive';
+import { AutoComplete } from "./auto-complete";
+import { AutoCompleteComponent } from "./auto-complete.component";
+import { AutoCompleteDirective } from "./auto-complete.directive";
 
 export {
   AutoComplete,

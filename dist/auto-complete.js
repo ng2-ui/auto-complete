@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
-require('rxjs/Rx');
+require("rxjs/Rx");
 /**
  * provides auto-complete related utility functions
  */
@@ -21,39 +21,45 @@ var AutoComplete = (function () {
     }
     AutoComplete.prototype.filter = function (list, keyword) {
         return list.filter(function (el) {
-            return !!JSON.stringify(el).match(new RegExp(keyword, 'i'));
+            return !!JSON.stringify(el).match(new RegExp(keyword, "i"));
         });
     };
     /**
      * return remote data from the given source and options, and data path
+     *
+     * @param {*} options is an object containing the query paramters for the GET call
+     * @returns {Observable<Response>}
+     *
+     * @memberOf AutoComplete
      */
     AutoComplete.prototype.getRemoteData = function (options) {
         var _this = this;
         var keyValues = [];
         var url = "";
         for (var key in options) {
-            var regexp = new RegExp(':' + key, 'g');
-            url = this.source;
-            if (url.match(regexp)) {
-                url = url.replace(regexp, options[key]);
-            }
-            else {
-                keyValues.push(key + "=" + options[key]);
+            if (options.hasOwnProperty(key)) {
+                // replace all keyword to value
+                var regexp = new RegExp(":" + key, "g");
+                url = this.source;
+                if (url.match(regexp)) {
+                    url = url.replace(regexp, options[key]);
+                }
+                else {
+                    keyValues.push(key + "=" + options[key]);
+                }
             }
         }
         if (keyValues.length) {
             var qs = keyValues.join("&");
-            url += url.match(/\?[a-z]/i) ? qs : ('?' + qs);
+            url += url.match(/\?[a-z]/i) ? qs : ("?" + qs);
         }
         return this.http.get(url)
             .map(function (resp) { return resp.json(); })
             .map(function (resp) {
             var list = resp.data || resp;
             if (_this.pathToData) {
-                var paths = _this.pathToData.split('.');
-                paths.forEach(function (el) {
-                    list = list[el];
-                });
+                var paths = _this.pathToData.split(".");
+                paths.forEach(function (prop) { return list = list[prop]; });
             }
             return list;
         });

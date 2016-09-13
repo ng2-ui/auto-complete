@@ -135,7 +135,6 @@ export class AutoCompleteDirective implements OnInit {
   };
 
   selectNewValue = (val: any) => {
-
     /* modify toString function of value if value is an object */
     if (val && typeof val === "object") {
       let displayVal = val[this.displayPropertyName || "value"];
@@ -143,7 +142,7 @@ export class AutoCompleteDirective implements OnInit {
     }
 
     /* emit ngModelChange and valueChanged */
-    if (this.ngModel && val !== this.ngModel) {
+    if (val !== this.ngModel) {
       this.ngModelChange.emit(val);
     }
     if (val) {

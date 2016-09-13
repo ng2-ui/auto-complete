@@ -57,7 +57,7 @@ var AutoCompleteDirective = (function () {
                 val.toString = function () { return displayVal_1; };
             }
             /* emit ngModelChange and valueChanged */
-            if (_this.ngModel && val !== _this.ngModel) {
+            if (val !== _this.ngModel) {
                 _this.ngModelChange.emit(val);
             }
             if (val) {

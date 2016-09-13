@@ -90,8 +90,6 @@ export class AppComponent {
   model1 = "is";
   model2 = {id:1, value: "One"};
   model3 = {key: 3, name: "Key Three"};
-  model4;
-  model5;
 
   constructor (
     public appSvc : AppSvc,

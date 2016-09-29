@@ -238,6 +238,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.filteredList = [];
 	        this.itemIndex = 0;
 	        this.valueSelected = new Subject_1.Subject();
+	        this.inputChanged = new Subject_1.Subject();
 	        this.delay = (function () {
 	            var timer = 0;
 	            return function (callback, ms) {
@@ -260,6 +261,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    AutoCompleteComponent.prototype.reloadListInDelay = function () {
 	        var _this = this;
+	        this.inputChanged.next(this.inputEl.value);
 	        var delayMs = this.isSrcArr() ? 10 : 500;
 	        // executing after user stopped typing
 	        this.delay(function () { return _this.reloadList(); }, delayMs);
@@ -421,6 +423,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.viewContainerRef = viewContainerRef;
 	        this.ngModelChange = new core_1.EventEmitter();
 	        this.valueChanged = new core_1.EventEmitter();
+	        this.inputChanged = new core_1.EventEmitter();
 	        this.hideAutoCompleteDropdown = function (event) {
 	            if (_this.componentRef) {
 	                if (event && event.type === "click" &&
@@ -449,6 +452,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            component.inputEl.style.width = (thisInputElBCR.width - 30) + "px";
 	            component.inputEl.style.height = thisInputElBCR.height + "px";
 	            component.inputEl.focus();
+	        };
+	        this.propagateUpdate = function (val) {
+	            _this.inputChanged.emit(val);
 	        };
 	        this.selectNewValue = function (val) {
 	            /* modify toString function of value if value is an object */
@@ -502,6 +508,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        component.source = this.source;
 	        component.placeholder = this.autoCompletePlaceholder;
 	        component.valueSelected.subscribe(this.selectNewValue);
+	        component.inputChanged.subscribe(this.propagateUpdate);
 	        this.acDropdownEl = this.componentRef.location.nativeElement;
 	        this.acDropdownEl.style.display = "none";
 	        // if this element is not an input tag, move dropdown after input tag
@@ -565,6 +572,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        core_1.Output("value-changed"), 
 	        __metadata('design:type', Object)
 	    ], AutoCompleteDirective.prototype, "valueChanged", void 0);
+	    __decorate([
+	        core_1.Output("input-changed"), 
+	        __metadata('design:type', Object)
+	    ], AutoCompleteDirective.prototype, "inputChanged", void 0);
 	    AutoCompleteDirective = __decorate([
 	        core_1.Directive({
 	            selector: "[auto-complete], [ng2-auto-complete]",

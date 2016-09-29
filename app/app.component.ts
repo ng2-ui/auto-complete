@@ -20,6 +20,7 @@ import { AppSvc } from "./app.service";
      
      <div ng2-auto-complete 
        [source]="arrayOfStrings"
+	   (input-changed)="inputChanged($event)"
        (value-changed)="myCallback($event)"
        placeholder="enter text">
        <input [(ngModel)]="model1" />
@@ -97,6 +98,11 @@ export class AppComponent {
   }
 
   myCallback(newVal) {
+    console.log("value is changed to ", newVal);
+    this.model1 = newVal;
+  }
+  
+  inputChanged(newVal) {
     console.log("value is changed to ", newVal);
     this.model1 = newVal;
   }

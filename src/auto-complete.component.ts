@@ -107,6 +107,7 @@ export class AutoCompleteComponent implements OnInit {
   public keyword: string;
 
   public valueSelected: Subject<any> = new Subject();
+  public inputChanged: Subject<any> = new Subject();
 
   isSrcArr(): boolean {
     return (this.source.constructor.name === "Array");
@@ -132,6 +133,7 @@ export class AutoCompleteComponent implements OnInit {
   }
 
   reloadListInDelay(): void {
+	this.inputChanged.next(this.inputEl.value);
     let delayMs = this.isSrcArr() ? 10 : 500;
 
     // executing after user stopped typing

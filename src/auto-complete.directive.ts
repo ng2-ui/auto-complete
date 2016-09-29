@@ -35,6 +35,7 @@ export class AutoCompleteDirective implements OnInit {
   @Output() ngModelChange = new EventEmitter();
 
   @Output("value-changed") valueChanged = new EventEmitter();
+  @Output("input-changed") inputChanged = new EventEmitter();
 
   componentRef: ComponentRef<AutoCompleteComponent>;
   el: HTMLElement;   // input element
@@ -89,6 +90,7 @@ export class AutoCompleteDirective implements OnInit {
     component.source = this.source;
     component.placeholder = this.autoCompletePlaceholder;
     component.valueSelected.subscribe(this.selectNewValue);
+	component.inputChanged.subscribe(this.propagateUpdate);
 
     this.acDropdownEl = this.componentRef.location.nativeElement;
     this.acDropdownEl.style.display = "none";
@@ -133,6 +135,10 @@ export class AutoCompleteDirective implements OnInit {
     component.inputEl.style.height = thisInputElBCR.height + "px";
     component.inputEl.focus();
   };
+  
+  propagateUpdate = (val : any) =>{
+	  this.inputChanged.emit(val);
+  }
 
   selectNewValue = (val: any) => {
     /* modify toString function of value if value is an object */

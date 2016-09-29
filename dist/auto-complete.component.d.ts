@@ -27,6 +27,7 @@ export declare class AutoCompleteComponent implements OnInit {
     itemIndex: number;
     keyword: string;
     valueSelected: Subject<any>;
+    inputChanged: Subject<any>;
     isSrcArr(): boolean;
     /**
      * constructor

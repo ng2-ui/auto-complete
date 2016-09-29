@@ -31,6 +31,7 @@ var AutoCompleteComponent = (function () {
         this.filteredList = [];
         this.itemIndex = 0;
         this.valueSelected = new Subject_1.Subject();
+        this.inputChanged = new Subject_1.Subject();
         this.delay = (function () {
             var timer = 0;
             return function (callback, ms) {
@@ -53,6 +54,7 @@ var AutoCompleteComponent = (function () {
     };
     AutoCompleteComponent.prototype.reloadListInDelay = function () {
         var _this = this;
+        this.inputChanged.next(this.inputEl.value);
         var delayMs = this.isSrcArr() ? 10 : 500;
         // executing after user stopped typing
         this.delay(function () { return _this.reloadList(); }, delayMs);

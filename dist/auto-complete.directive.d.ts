@@ -17,6 +17,7 @@ export declare class AutoCompleteDirective implements OnInit {
     ngModel: String;
     ngModelChange: EventEmitter<{}>;
     valueChanged: EventEmitter<{}>;
+    inputChanged: EventEmitter<{}>;
     componentRef: ComponentRef<AutoCompleteComponent>;
     el: HTMLElement;
     acDropdownEl: HTMLElement;
@@ -27,6 +28,7 @@ export declare class AutoCompleteDirective implements OnInit {
     showAutoCompleteDropdown(): void;
     hideAutoCompleteDropdown: (event?: any) => void;
     styleAutoCompleteDropdown: () => void;
+    propagateUpdate: (val: any) => void;
     selectNewValue: (val: any) => void;
     private moveAutocompleteDropDownAfterInputEl();
     private elementIn(el, containerEl);

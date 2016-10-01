@@ -138,6 +138,9 @@ export class AutoCompleteDirective implements OnInit {
       component.inputEl.style.width = (thisInputElBCR.width - 30) + "px";
       component.inputEl.style.height = thisInputElBCR.height + "px";
       component.inputEl.focus();
+
+      component.closeToBottom =
+        !!(thisInputElBCR.bottom + 100 > window.innerHeight);
     }
   };
 

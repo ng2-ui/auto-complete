@@ -23,7 +23,9 @@ import { AutoComplete } from "./auto-complete";
            [(ngModel)]="keyword" />
 
     <!-- dropdown that user can select -->
-    <ul *ngIf="dropdownVisible">
+    <ul *ngIf="dropdownVisible"
+      [style.bottom]="inputEl.style.height"
+      [style.position]="closeToBottom ? 'absolute': ''">
       <li *ngIf="isLoading" class="loading">Loading</li>
       <li class="item"
           *ngFor="let item of filteredList; let i=index"

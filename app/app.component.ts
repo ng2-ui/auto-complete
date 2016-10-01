@@ -7,44 +7,38 @@ import { AppSvc } from "./app.service";
   selector: "my-app",
   template: `
     <h1> Autocomplete Directive Test - Local Source </h1>
-    component test with array of strings: {{arrayOfStrings | json}}<br/>
     
-     <md-input ng2-auto-complete 
-       [(ngModel)]="myModel"
-       [source]="arrayOfNumbers"
-       placeholder="amount" align="end">
-       <span md-prefix>$&nbsp;</span>
-       <span md-suffix>.00</span>
-     </md-input>
-     <br/>
-     
-     <div ng2-auto-complete 
-       [source]="arrayOfStrings"
-       (value-changed)="myCallback($event)"
-       placeholder="enter text">
-       <input [(ngModel)]="model1" />
-     </div>
-     <br/>selected: {{model1 | json}}<br/><br/>
+    <h3>With Array of Strings</h3>
+    <pre>source: {{json(arrayOfStrings)}}</pre>
+    <div ng2-auto-complete 
+      [source]="arrayOfStrings"
+      (ngModelChange)="myCallback($event)"
+      placeholder="enter text">
+      <input [ngModel]="model1" />
+    </div>
+    <br/>selected model1: {{json(model1)}}<br/><br/>
     
-    
-    component test with array of id/values: {{arrayOfKeyValues | json}}<br/>
+    <h3>With Array of id/value</h3>
+    <pre>source: {{json(arrayOfKeyValues)}}</pre>
     <input 
       ng2-auto-complete
       [(ngModel)]="model2"
       [source]="arrayOfKeyValues" 
       placeholder="enter text"/> 
-    <br/>selected: {{model2 | json}}<br/><br/>
+    <a href="#" (click)="model2={id:'change', value: 'it'}">Change It</a>
+    <br/>selected model2: {{model2 | json}}<br/><br/>
     
-    component test with array of key/names: {{arrayOfKeyVaues2 | json}}<br/>
+    <h3>With Array of Key/Name</h3>
+    <pre>source: {{json(arrayOfKeyValues2)}}</pre>
     <input ng2-auto-complete [source]="arrayOfKeyValues2"
       [(ngModel)]="model3"
       placeholder="enter text"
       value-property-name="key"
       display-property-name="name"/>
-    <br/>selected: {{model3 | json}}<br/><br/>
+    <br/>selected model3: {{model3 | json}}<br/><br/>
       
-    <h1> Autocomplete Directive Test - Remote Source </h1>
-    component test with remote source: {{googleGeoCode}}<br/>
+    <h3>With Remote Source as HTTP URI String</h3>
+    <pre> source: {{googleGeoCode}}</pre>
     <input  ng2-auto-complete
       [(ngModel)]="model4"
       placeholder="Enter Address(min. 2 chars)"
@@ -52,9 +46,9 @@ import { AppSvc } from "./app.service";
       display-property-name="formatted_address"
       path-to-data="results"
       min-chars="2" />
-    <br/>selected: {{model4 | json}}<br/><br/>
+    <br/>selected model4: {{model4 | json}}<br/><br/>
  
-    component test with Observable array as the source from a remote source "Marvel API"<br/>
+    <h3>With Remote Source as Observable "Marvel API" </h3>
     <input  ng2-auto-complete
       placeholder="Start typing a hero name (min. 2 chars) ... for example: Hulk"     
       [(ngModel)]="model5" 
@@ -63,7 +57,18 @@ import { AppSvc } from "./app.service";
       path-to-data="data.results"
       min-chars="2" 
     />
-    <br/>selected: {{model5 | json}}<br/><br/>
+    <br/>selected model5: {{model5 | json}}<br/><br/>
+    
+    <h3>With Material Design</h3>
+    <md-input ng2-auto-complete 
+      [(ngModel)]="myModel"
+      [source]="arrayOfNumbers"
+      [list-formatter]="rightAligned"
+      placeholder="amount" align="end">
+      <span md-prefix>$&nbsp;</span>
+      <span md-suffix>.00</span>
+    </md-input>
+     
  `,
   styles: [`
     ng2-auto-complete, input {
@@ -107,5 +112,14 @@ export class AppComponent {
                 <span>${data.description}</span>`;
 
     return this._sanitizer.bypassSecurityTrustHtml(html);
+  }
+
+  rightAligned = (data: any) : SafeHtml => {
+    let html = `<div style="text-align:right">${data}.00</div>`;
+    return this._sanitizer.bypassSecurityTrustHtml(html);
+  }
+
+  json(obj) {
+    return JSON.stringify(obj);
   }
 }

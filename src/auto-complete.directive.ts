@@ -6,7 +6,7 @@ import {
   ViewContainerRef,
   EventEmitter,
   OnInit,
-  ComponentFactoryResolver
+  ComponentFactoryResolver, SimpleChange
 } from "@angular/core";
 import "rxjs/Rx";
 
@@ -18,7 +18,8 @@ import {AutoCompleteComponent} from "./auto-complete.component";
 @Directive({
   selector: "[auto-complete], [ng2-auto-complete]",
   host: {
-    "(click)": "showAutoCompleteDropdown()"
+    "(click)": "showAutoCompleteDropdown()",
+    "(focus)": "showAutoCompleteDropdown()"
   }
 })
 export class AutoCompleteDirective implements OnInit {
@@ -33,8 +34,6 @@ export class AutoCompleteDirective implements OnInit {
 
   @Input() ngModel: String;
   @Output() ngModelChange = new EventEmitter();
-
-  @Output("value-changed") valueChanged = new EventEmitter();
 
   componentRef: ComponentRef<AutoCompleteComponent>;
   el: HTMLElement;   // input element
@@ -69,6 +68,12 @@ export class AutoCompleteDirective implements OnInit {
       this.componentRef.instance.valueSelected.unsubscribe();
     }
     document.removeEventListener("click", this.hideAutoCompleteDropdown);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['ngModel']) {
+      this.ngModel = this.addToStringFunction(changes['ngModel'].currentValue);
+    }
   }
 
   //show auto-complete list below the current element
@@ -117,39 +122,37 @@ export class AutoCompleteDirective implements OnInit {
   };
 
   styleAutoCompleteDropdown = () => {
-    let component = this.componentRef.instance;
+    if (this.componentRef) {
+      let component = this.componentRef.instance;
 
-    /* setting width/height auto complete */
-    let thisElBCR = this.el.getBoundingClientRect();
-    this.acDropdownEl.style.width = thisElBCR.width + "px";
-    this.acDropdownEl.style.position = "absolute";
-    this.acDropdownEl.style.zIndex = "1";
-    this.acDropdownEl.style.top = "0";
-    this.acDropdownEl.style.left = "0";
-    this.acDropdownEl.style.display = "inline-block";
+      /* setting width/height auto complete */
+      let thisElBCR = this.el.getBoundingClientRect();
+      this.acDropdownEl.style.width = thisElBCR.width + "px";
+      this.acDropdownEl.style.position = "absolute";
+      this.acDropdownEl.style.zIndex = "1";
+      this.acDropdownEl.style.top = "0";
+      this.acDropdownEl.style.left = "0";
+      this.acDropdownEl.style.display = "inline-block";
 
-    let thisInputElBCR = this.inputEl.getBoundingClientRect();
-    component.inputEl.style.width = (thisInputElBCR.width - 30) + "px";
-    component.inputEl.style.height = thisInputElBCR.height + "px";
-    component.inputEl.focus();
+      let thisInputElBCR = this.inputEl.getBoundingClientRect();
+      component.inputEl.style.width = (thisInputElBCR.width - 30) + "px";
+      component.inputEl.style.height = thisInputElBCR.height + "px";
+      component.inputEl.focus();
+    }
   };
 
-  selectNewValue = (val: any) => {
-    /* modify toString function of value if value is an object */
+  addToStringFunction(val: any): any {
     if (val && typeof val === "object") {
       let displayVal = val[this.displayPropertyName || "value"];
       val.toString = function() {return displayVal;}
     }
+    return val;
+  }
 
-    /* emit ngModelChange and valueChanged */
-    if (val !== this.ngModel) {
-      this.ngModelChange.emit(val);
-    }
-    if (val) {
-      this.valueChanged.emit(val);
-    }
-
-    /* hide dropdown */
+  selectNewValue = (val: any) => {
+    val = this.addToStringFunction(val);
+    (val !== this.ngModel) && this.ngModelChange.emit(val);
+    this.inputEl && (this.inputEl.value = ''+ val);
     this.hideAutoCompleteDropdown();
   };
 

@@ -27,6 +27,9 @@ import { AutoComplete } from "./auto-complete";
       [style.bottom]="inputEl.style.height"
       [style.position]="closeToBottom ? 'absolute': ''">
       <li *ngIf="isLoading" class="loading">Loading</li>
+      <li *ngIf="blankOptionText"
+          (mousedown)="selectOne('')"
+          class="blank-item">{{blankOptionText}}</li>
       <li class="item"
           *ngFor="let item of filteredList; let i=index"
           (mousedown)="selectOne(item)"
@@ -98,6 +101,7 @@ export class AutoCompleteComponent implements OnInit {
   @Input("value-property-name") valuePropertyName: string = "id";
   @Input("display-property-name") displayPropertyName: string = "value";
   @Input("placeholder") placeholder: string;
+  @Input("blank-option-text") blankOptionText: string;
 
   public el: HTMLElement;
   public inputEl: HTMLInputElement;

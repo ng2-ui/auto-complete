@@ -22,6 +22,7 @@ import { AppSvc } from "./app.service";
     <pre>source: {{json(arrayOfKeyValues)}}</pre>
     <input 
       ng2-auto-complete
+      blank-option-text="Select One"
       [(ngModel)]="model2"
       [source]="arrayOfKeyValues" 
       placeholder="enter text"/> 

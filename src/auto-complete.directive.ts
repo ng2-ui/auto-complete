@@ -31,6 +31,7 @@ export class AutoCompleteDirective implements OnInit {
   @Input("min-chars") minChars: number;
   @Input("value-property-name") valuePropertyName: string;
   @Input("display-property-name") displayPropertyName: string;
+  @Input("blank-option-text") blankOptionText: string;
 
   @Input() ngModel: String;
   @Output() ngModelChange = new EventEmitter();
@@ -93,6 +94,7 @@ export class AutoCompleteDirective implements OnInit {
     component.displayPropertyName = this.displayPropertyName || "value";
     component.source = this.source;
     component.placeholder = this.autoCompletePlaceholder;
+    component.blankOptionText = this.blankOptionText;
     component.valueSelected.subscribe(this.selectNewValue);
 
     this.acDropdownEl = this.componentRef.location.nativeElement;
@@ -153,7 +155,9 @@ export class AutoCompleteDirective implements OnInit {
   }
 
   selectNewValue = (val: any) => {
-    val = this.addToStringFunction(val);
+    if (val !== '') {
+      val = this.addToStringFunction(val);
+    }
     (val !== this.ngModel) && this.ngModelChange.emit(val);
     this.inputEl && (this.inputEl.value = ''+ val);
     this.hideAutoCompleteDropdown();

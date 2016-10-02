@@ -71,9 +71,8 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   * **`min-chars, number`**, when source is remote data, the number of character to see dropdown list
   * **`value-property-name`**, string, key name of value. default is `id`
   * **`display-property-name`**, string, key name of text to show. default is `value`
-  * **`blank-option-text`**, string, guide text to allow empty value to be selected as in empty value in `option` tag.
-
-  * **`value-changed`**, callback function that is executed when a new dropdown is selected.
+  * **`blank-option-text`**, string, guide text to allow empty value to be selected as in empty value of `option` tag.
+  * **`valueChanged`** / **`ngModelChange`**, callback function that is executed when a new dropdown is selected.
      e.g. `(valueChanged)="myCallback($event)"`
      
 ## For Developers

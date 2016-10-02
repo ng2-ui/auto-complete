@@ -6,7 +6,8 @@ import {
   ViewContainerRef,
   EventEmitter,
   OnInit,
-  ComponentFactoryResolver, SimpleChange
+  ComponentFactoryResolver,
+  SimpleChanges
 } from "@angular/core";
 import "rxjs/Rx";
 
@@ -35,6 +36,7 @@ export class AutoCompleteDirective implements OnInit {
 
   @Input() ngModel: String;
   @Output() ngModelChange = new EventEmitter();
+  @Output() valueChanged = new EventEmitter();
 
   componentRef: ComponentRef<AutoCompleteComponent>;
   el: HTMLElement;   // input element
@@ -159,6 +161,7 @@ export class AutoCompleteDirective implements OnInit {
       val = this.addToStringFunction(val);
     }
     (val !== this.ngModel) && this.ngModelChange.emit(val);
+    this.valueChanged.emit(val);
     this.inputEl && (this.inputEl.value = ''+ val);
     this.hideAutoCompleteDropdown();
   };

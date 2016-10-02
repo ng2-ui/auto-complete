@@ -1,4 +1,4 @@
-import { ComponentRef, ViewContainerRef, EventEmitter, OnInit, ComponentFactoryResolver } from "@angular/core";
+import { ComponentRef, ViewContainerRef, EventEmitter, OnInit, ComponentFactoryResolver, SimpleChanges } from "@angular/core";
 import "rxjs/Rx";
 import { AutoCompleteComponent } from "./auto-complete.component";
 /**
@@ -14,6 +14,7 @@ export declare class AutoCompleteDirective implements OnInit {
     minChars: number;
     valuePropertyName: string;
     displayPropertyName: string;
+    blankOptionText: string;
     ngModel: String;
     ngModelChange: EventEmitter<{}>;
     valueChanged: EventEmitter<{}>;
@@ -24,9 +25,11 @@ export declare class AutoCompleteDirective implements OnInit {
     constructor(resolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef);
     ngOnInit(): void;
     ngOnDestroy(): void;
+    ngOnChanges(changes: SimpleChanges): void;
     showAutoCompleteDropdown(): void;
     hideAutoCompleteDropdown: (event?: any) => void;
     styleAutoCompleteDropdown: () => void;
+    addToStringFunction(val: any): any;
     selectNewValue: (val: any) => void;
     private moveAutocompleteDropDownAfterInputEl();
     private elementIn(el, containerEl);

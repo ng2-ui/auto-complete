@@ -103,16 +103,18 @@ export class AutoCompleteComponent implements OnInit {
   @Input("placeholder") placeholder: string;
   @Input("blank-option-text") blankOptionText: string;
 
-  public el: HTMLElement;
-  public inputEl: HTMLInputElement;
+  el: HTMLElement;
+  inputEl: HTMLInputElement;
 
-  public dropdownVisible: boolean = false;
-  public isLoading: boolean = false;
-  public filteredList: any[] = [];
-  public itemIndex: number = 0;
-  public keyword: string;
+  closeToBottom: boolean = false;
+  dropdownVisible: boolean = false;
+  isLoading: boolean = false;
 
-  public valueSelected: Subject<any> = new Subject();
+  filteredList: any[] = [];
+  itemIndex: number = 0;
+  keyword: string;
+
+  valueSelected: Subject<any> = new Subject();
 
   isSrcArr(): boolean {
     return (this.source.constructor.name === "Array");

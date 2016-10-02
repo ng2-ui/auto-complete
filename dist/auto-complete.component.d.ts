@@ -19,8 +19,10 @@ export declare class AutoCompleteComponent implements OnInit {
     valuePropertyName: string;
     displayPropertyName: string;
     placeholder: string;
+    blankOptionText: string;
     el: HTMLElement;
     inputEl: HTMLInputElement;
+    closeToBottom: boolean;
     dropdownVisible: boolean;
     isLoading: boolean;
     filteredList: any[];

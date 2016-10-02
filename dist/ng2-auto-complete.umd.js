@@ -233,6 +233,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.minChars = 0;
 	        this.valuePropertyName = "id";
 	        this.displayPropertyName = "value";
+	        this.closeToBottom = false;
 	        this.dropdownVisible = false;
 	        this.isLoading = false;
 	        this.filteredList = [];
@@ -372,10 +373,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        core_1.Input("placeholder"), 
 	        __metadata('design:type', String)
 	    ], AutoCompleteComponent.prototype, "placeholder", void 0);
+	    __decorate([
+	        core_1.Input("blank-option-text"), 
+	        __metadata('design:type', String)
+	    ], AutoCompleteComponent.prototype, "blankOptionText", void 0);
 	    AutoCompleteComponent = __decorate([
 	        core_1.Component({
 	            selector: "auto-complete",
-	            template: "\n  <div class=\"auto-complete\">\n\n    <!-- keyword input -->\n    <input class=\"keyword\"\n           placeholder=\"{{placeholder}}\"\n           (focus)=\"showDropdownList()\"\n           (blur)=\"dropdownVisible=false\"\n           (keydown)=\"inputElKeyHandler($event)\"\n           (input)=\"reloadListInDelay()\"\n           [(ngModel)]=\"keyword\" />\n\n    <!-- dropdown that user can select -->\n    <ul *ngIf=\"dropdownVisible\">\n      <li *ngIf=\"isLoading\" class=\"loading\">Loading</li>\n      <li class=\"item\"\n          *ngFor=\"let item of filteredList; let i=index\"\n          (mousedown)=\"selectOne(item)\"\n          [ngClass]=\"{selected: i === itemIndex}\"\n          [innerHtml]=\"getFormattedList(item)\">\n      </li>\n    </ul>\n\n  </div>",
+	            template: "\n  <div class=\"auto-complete\">\n\n    <!-- keyword input -->\n    <input class=\"keyword\"\n           placeholder=\"{{placeholder}}\"\n           (focus)=\"showDropdownList()\"\n           (blur)=\"dropdownVisible=false\"\n           (keydown)=\"inputElKeyHandler($event)\"\n           (input)=\"reloadListInDelay()\"\n           [(ngModel)]=\"keyword\" />\n\n    <!-- dropdown that user can select -->\n    <ul *ngIf=\"dropdownVisible\"\n      [style.bottom]=\"inputEl.style.height\"\n      [style.position]=\"closeToBottom ? 'absolute': ''\">\n      <li *ngIf=\"isLoading\" class=\"loading\">Loading</li>\n      <li *ngIf=\"blankOptionText\"\n          (mousedown)=\"selectOne('')\"\n          class=\"blank-item\">{{blankOptionText}}</li>\n      <li class=\"item\"\n          *ngFor=\"let item of filteredList; let i=index\"\n          (mousedown)=\"selectOne(item)\"\n          [ngClass]=\"{selected: i === itemIndex}\"\n          [innerHtml]=\"getFormattedList(item)\">\n      </li>\n    </ul>\n\n  </div>",
 	            providers: [auto_complete_1.AutoComplete],
 	            styles: ["\n  @keyframes slideDown {\n    0% {\n      transform:  translateY(-10px);\n    }\n    100% {\n      transform: translateY(0px);\n    }\n  }\n  .auto-complete input {\n    outline: none;\n    border: 2px solid transparent;\n    border-width: 3px 2px;\n    margin: 0;\n    box-sizing: border-box;\n    background-clip: content-box;\n  }\n\n  .auto-complete ul {\n    background-color: #fff;\n    margin: 0;\n    width : 100%;\n    overflow-y: auto;\n    list-style-type: none;\n    padding: 0;\n    border: 1px solid #ccc;\n    box-sizing: border-box;\n    animation: slideDown 0.1s;\n  }\n\n  .auto-complete ul li {\n    padding: 2px 5px;\n    border-bottom: 1px solid #eee;\n  }\n\n  .auto-complete ul li.selected {\n    background-color: #ccc;\n  }\n\n  .auto-complete ul li:last-child {\n    border-bottom: none;\n  }\n\n  .auto-complete ul li:hover {\n    background-color: #ccc;\n  }"
 	            ],
@@ -436,34 +441,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        };
 	        this.styleAutoCompleteDropdown = function () {
-	            var component = _this.componentRef.instance;
-	            /* setting width/height auto complete */
-	            var thisElBCR = _this.el.getBoundingClientRect();
-	            _this.acDropdownEl.style.width = thisElBCR.width + "px";
-	            _this.acDropdownEl.style.position = "absolute";
-	            _this.acDropdownEl.style.zIndex = "1";
-	            _this.acDropdownEl.style.top = "0";
-	            _this.acDropdownEl.style.left = "0";
-	            _this.acDropdownEl.style.display = "inline-block";
-	            var thisInputElBCR = _this.inputEl.getBoundingClientRect();
-	            component.inputEl.style.width = (thisInputElBCR.width - 30) + "px";
-	            component.inputEl.style.height = thisInputElBCR.height + "px";
-	            component.inputEl.focus();
+	            if (_this.componentRef) {
+	                var component = _this.componentRef.instance;
+	                /* setting width/height auto complete */
+	                var thisElBCR = _this.el.getBoundingClientRect();
+	                _this.acDropdownEl.style.width = thisElBCR.width + "px";
+	                _this.acDropdownEl.style.position = "absolute";
+	                _this.acDropdownEl.style.zIndex = "1";
+	                _this.acDropdownEl.style.top = "0";
+	                _this.acDropdownEl.style.left = "0";
+	                _this.acDropdownEl.style.display = "inline-block";
+	                var thisInputElBCR = _this.inputEl.getBoundingClientRect();
+	                component.inputEl.style.width = (thisInputElBCR.width - 30) + "px";
+	                component.inputEl.style.height = thisInputElBCR.height + "px";
+	                component.inputEl.focus();
+	                component.closeToBottom =
+	                    !!(thisInputElBCR.bottom + 100 > window.innerHeight);
+	            }
 	        };
 	        this.selectNewValue = function (val) {
-	            /* modify toString function of value if value is an object */
-	            if (val && typeof val === "object") {
-	                var displayVal_1 = val[_this.displayPropertyName || "value"];
-	                val.toString = function () { return displayVal_1; };
+	            if (val !== '') {
+	                val = _this.addToStringFunction(val);
 	            }
-	            /* emit ngModelChange and valueChanged */
-	            if (val !== _this.ngModel) {
-	                _this.ngModelChange.emit(val);
-	            }
-	            if (val) {
-	                _this.valueChanged.emit(val);
-	            }
-	            /* hide dropdown */
+	            (val !== _this.ngModel) && _this.ngModelChange.emit(val);
+	            _this.valueChanged.emit(val);
+	            _this.inputEl && (_this.inputEl.value = '' + val);
 	            _this.hideAutoCompleteDropdown();
 	        };
 	        this.el = this.viewContainerRef.element.nativeElement;
@@ -487,6 +489,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        document.removeEventListener("click", this.hideAutoCompleteDropdown);
 	    };
+	    AutoCompleteDirective.prototype.ngOnChanges = function (changes) {
+	        if (changes['ngModel']) {
+	            this.ngModel = this.addToStringFunction(changes['ngModel'].currentValue);
+	        }
+	    };
 	    //show auto-complete list below the current element
 	    AutoCompleteDirective.prototype.showAutoCompleteDropdown = function () {
 	        this.hideAutoCompleteDropdown();
@@ -501,6 +508,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        component.displayPropertyName = this.displayPropertyName || "value";
 	        component.source = this.source;
 	        component.placeholder = this.autoCompletePlaceholder;
+	        component.blankOptionText = this.blankOptionText;
 	        component.valueSelected.subscribe(this.selectNewValue);
 	        this.acDropdownEl = this.componentRef.location.nativeElement;
 	        this.acDropdownEl.style.display = "none";
@@ -508,6 +516,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // so that it displays correctly
 	        this.moveAutocompleteDropDownAfterInputEl();
 	        setTimeout(this.styleAutoCompleteDropdown);
+	    };
+	    AutoCompleteDirective.prototype.addToStringFunction = function (val) {
+	        if (val && typeof val === "object") {
+	            var displayVal_1 = val[this.displayPropertyName || "value"];
+	            val.toString = function () { return displayVal_1; };
+	        }
+	        return val;
 	    };
 	    AutoCompleteDirective.prototype.moveAutocompleteDropDownAfterInputEl = function () {
 	        this.inputEl = this.el;
@@ -554,6 +569,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        __metadata('design:type', String)
 	    ], AutoCompleteDirective.prototype, "displayPropertyName", void 0);
 	    __decorate([
+	        core_1.Input("blank-option-text"), 
+	        __metadata('design:type', String)
+	    ], AutoCompleteDirective.prototype, "blankOptionText", void 0);
+	    __decorate([
 	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], AutoCompleteDirective.prototype, "ngModel", void 0);
@@ -562,14 +581,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        __metadata('design:type', Object)
 	    ], AutoCompleteDirective.prototype, "ngModelChange", void 0);
 	    __decorate([
-	        core_1.Output("value-changed"), 
+	        core_1.Output(), 
 	        __metadata('design:type', Object)
 	    ], AutoCompleteDirective.prototype, "valueChanged", void 0);
 	    AutoCompleteDirective = __decorate([
 	        core_1.Directive({
 	            selector: "[auto-complete], [ng2-auto-complete]",
 	            host: {
-	                "(click)": "showAutoCompleteDropdown()"
+	                "(click)": "showAutoCompleteDropdown()",
+	                "(focus)": "showAutoCompleteDropdown()"
 	            }
 	        }), 
 	        __metadata('design:paramtypes', [core_1.ComponentFactoryResolver, core_1.ViewContainerRef])

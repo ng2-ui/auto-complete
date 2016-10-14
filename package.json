@@ -4,7 +4,7 @@
   "description": "Angular2 Input Autocomplete",
   "license": "MIT",
   "main": "dist/ng2-auto-complete.umd.js",
-  "module": "dist/ng2-auto-complete.umd.js",
+  "module": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
     "clean": "rimraf dist",

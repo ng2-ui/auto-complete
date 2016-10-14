@@ -1,9 +1,10 @@
 {
   "name": "ng2-auto-complete",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Angular2 Input Autocomplete",
   "license": "MIT",
   "main": "dist/ng2-auto-complete.umd.js",
+  "module": "dist/ng2-auto-complete.umd.js",
   "typings": "dist/index.d.ts",
   "scripts": {
     "clean": "rimraf dist",

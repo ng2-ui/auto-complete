@@ -5,7 +5,7 @@ Angular2 Auto Complete
   <img src="http://i.imgur.com/dAmheg0.png" />
 </a>
 
-Plunker Example: https://plnkr.co/edit/1N4onb
+Plunker Example: http://plnkr.co/edit/3pB1Gx?p=preview
 
 
 ## Install

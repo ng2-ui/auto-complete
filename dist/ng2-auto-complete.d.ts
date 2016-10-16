@@ -4,7 +4,7 @@ import "rxjs/Rx";
 /**
  * provides auto-complete related utility functions
  */
-export declare class AutoComplete {
+export declare class Ng2AutoComplete {
     private http;
     source: string;
     pathToData: string;

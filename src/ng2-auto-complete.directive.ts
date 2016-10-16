@@ -11,7 +11,7 @@ import {
 } from "@angular/core";
 import "rxjs/Rx";
 
-import {AutoCompleteComponent} from "./auto-complete.component";
+import {Ng2AutoCompleteComponent} from "./ng2-auto-complete.component";
 
 /**
  * display auto-complete section with input and dropdown list when it is clicked
@@ -23,7 +23,7 @@ import {AutoCompleteComponent} from "./auto-complete.component";
     "(focus)": "showAutoCompleteDropdown()"
   }
 })
-export class AutoCompleteDirective implements OnInit {
+export class Ng2AutoCompleteDirective implements OnInit {
 
   @Input("auto-complete-placeholder") autoCompletePlaceholder: string;
   @Input("list-formatter") listFormatter: (arg: any) => string;
@@ -38,7 +38,7 @@ export class AutoCompleteDirective implements OnInit {
   @Output() ngModelChange = new EventEmitter();
   @Output() valueChanged = new EventEmitter();
 
-  componentRef: ComponentRef<AutoCompleteComponent>;
+  componentRef: ComponentRef<Ng2AutoCompleteComponent>;
   el: HTMLElement;   // input element
   acDropdownEl: HTMLElement; // auto complete element
   inputEl: HTMLInputElement;  // input tag
@@ -83,7 +83,7 @@ export class AutoCompleteDirective implements OnInit {
   showAutoCompleteDropdown() {
     this.hideAutoCompleteDropdown();
 
-    let factory = this.resolver.resolveComponentFactory(AutoCompleteComponent);
+    let factory = this.resolver.resolveComponentFactory(Ng2AutoCompleteComponent);
 
     this.componentRef = this.viewContainerRef.createComponent(factory); 
 
@@ -139,7 +139,7 @@ export class AutoCompleteDirective implements OnInit {
       this.acDropdownEl.style.display = "inline-block";
 
       let thisInputElBCR = this.inputEl.getBoundingClientRect();
-      component.inputEl.style.width = (thisInputElBCR.width - 30) + "px";
+      component.inputEl.style.width = thisInputElBCR.width + "px";
       component.inputEl.style.height = thisInputElBCR.height + "px";
       component.inputEl.focus();
 

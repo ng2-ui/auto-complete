@@ -7,7 +7,7 @@ import "rxjs/Rx";
  * provides auto-complete related utility functions
  */
 @Injectable()
-export class AutoComplete {
+export class Ng2AutoComplete {
 
   public source: string;
   public pathToData: string;

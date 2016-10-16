@@ -2,22 +2,22 @@ import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 
-import { AutoComplete } from "./auto-complete";
-import { AutoCompleteComponent } from "./auto-complete.component";
-import { AutoCompleteDirective } from "./auto-complete.directive";
+import { Ng2AutoComplete } from "./ng2-auto-complete";
+import { Ng2AutoCompleteComponent } from "./ng2-auto-complete.component";
+import { Ng2AutoCompleteDirective } from "./ng2-auto-complete.directive";
 
 export {
-  AutoComplete,
-  AutoCompleteComponent,
-  AutoCompleteDirective
+  Ng2AutoComplete,
+  Ng2AutoCompleteComponent,
+  Ng2AutoCompleteDirective
 };
 
 @NgModule({
   imports: [ CommonModule, FormsModule ],
-  declarations: [AutoCompleteComponent, AutoCompleteDirective],
-  exports:  [AutoCompleteComponent, AutoCompleteDirective],
-  entryComponents: [AutoCompleteComponent],
-  providers: [ AutoComplete ]
+  declarations: [Ng2AutoCompleteComponent, Ng2AutoCompleteDirective],
+  exports:  [Ng2AutoCompleteComponent, Ng2AutoCompleteDirective],
+  entryComponents: [Ng2AutoCompleteComponent],
+  providers: [ Ng2AutoComplete ]
 })
 export class Ng2AutoCompleteModule {}
 

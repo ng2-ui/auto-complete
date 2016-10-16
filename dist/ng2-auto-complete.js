@@ -14,12 +14,12 @@ require("rxjs/Rx");
 /**
  * provides auto-complete related utility functions
  */
-var AutoComplete = (function () {
-    function AutoComplete(http) {
+var Ng2AutoComplete = (function () {
+    function Ng2AutoComplete(http) {
         this.http = http;
         // ...
     }
-    AutoComplete.prototype.filter = function (list, keyword) {
+    Ng2AutoComplete.prototype.filter = function (list, keyword) {
         return list.filter(function (el) {
             return !!JSON.stringify(el).match(new RegExp(keyword, "i"));
         });
@@ -32,7 +32,7 @@ var AutoComplete = (function () {
      *
      * @memberOf AutoComplete
      */
-    AutoComplete.prototype.getRemoteData = function (options) {
+    Ng2AutoComplete.prototype.getRemoteData = function (options) {
         var _this = this;
         var keyValues = [];
         var url = "";
@@ -65,11 +65,11 @@ var AutoComplete = (function () {
         });
     };
     ;
-    AutoComplete = __decorate([
+    Ng2AutoComplete = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])
-    ], AutoComplete);
-    return AutoComplete;
+    ], Ng2AutoComplete);
+    return Ng2AutoComplete;
 }());
-exports.AutoComplete = AutoComplete;
-//# sourceMappingURL=auto-complete.js.map
+exports.Ng2AutoComplete = Ng2AutoComplete;
+//# sourceMappingURL=ng2-auto-complete.js.map

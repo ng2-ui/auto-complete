@@ -11,22 +11,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var common_1 = require("@angular/common");
-var auto_complete_1 = require("./auto-complete");
-exports.AutoComplete = auto_complete_1.AutoComplete;
-var auto_complete_component_1 = require("./auto-complete.component");
-exports.AutoCompleteComponent = auto_complete_component_1.AutoCompleteComponent;
-var auto_complete_directive_1 = require("./auto-complete.directive");
-exports.AutoCompleteDirective = auto_complete_directive_1.AutoCompleteDirective;
+var ng2_auto_complete_1 = require("./ng2-auto-complete");
+exports.Ng2AutoComplete = ng2_auto_complete_1.Ng2AutoComplete;
+var ng2_auto_complete_component_1 = require("./ng2-auto-complete.component");
+exports.Ng2AutoCompleteComponent = ng2_auto_complete_component_1.Ng2AutoCompleteComponent;
+var ng2_auto_complete_directive_1 = require("./ng2-auto-complete.directive");
+exports.Ng2AutoCompleteDirective = ng2_auto_complete_directive_1.Ng2AutoCompleteDirective;
 var Ng2AutoCompleteModule = (function () {
     function Ng2AutoCompleteModule() {
     }
     Ng2AutoCompleteModule = __decorate([
         core_1.NgModule({
             imports: [common_1.CommonModule, forms_1.FormsModule],
-            declarations: [auto_complete_component_1.AutoCompleteComponent, auto_complete_directive_1.AutoCompleteDirective],
-            exports: [auto_complete_component_1.AutoCompleteComponent, auto_complete_directive_1.AutoCompleteDirective],
-            entryComponents: [auto_complete_component_1.AutoCompleteComponent],
-            providers: [auto_complete_1.AutoComplete]
+            declarations: [ng2_auto_complete_component_1.Ng2AutoCompleteComponent, ng2_auto_complete_directive_1.Ng2AutoCompleteDirective],
+            exports: [ng2_auto_complete_component_1.Ng2AutoCompleteComponent, ng2_auto_complete_directive_1.Ng2AutoCompleteDirective],
+            entryComponents: [ng2_auto_complete_component_1.Ng2AutoCompleteComponent],
+            providers: [ng2_auto_complete_1.Ng2AutoComplete]
         }), 
         __metadata('design:paramtypes', [])
     ], Ng2AutoCompleteModule);

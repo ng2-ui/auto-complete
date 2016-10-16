@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewEncapsulation } from "@angular/core";
 import { Subject } from "rxjs/Subject";
-import { AutoComplete } from "./auto-complete";
+import { Ng2AutoComplete } from "./ng2-auto-complete";
 
 /**
  * show a selected date in monthly calendar
@@ -9,23 +9,23 @@ import { AutoComplete } from "./auto-complete";
  *   2. dataValue as any e.g. 
  */
 @Component({
-  selector: "auto-complete",
+  selector: "ng2-auto-complete",
   template: `
-  <div class="auto-complete">
+  <div class="ng2-auto-complete">
 
     <!-- keyword input -->
     <input class="keyword"
            placeholder="{{placeholder}}"
            (focus)="showDropdownList()"
-           (blur)="dropdownVisible=false"
+           (blur)="hideDropdownList()"
            (keydown)="inputElKeyHandler($event)"
            (input)="reloadListInDelay()"
            [(ngModel)]="keyword" />
 
     <!-- dropdown that user can select -->
     <ul *ngIf="dropdownVisible"
-      [style.bottom]="inputEl.style.height"
-      [style.position]="closeToBottom ? 'absolute': ''">
+        [style.bottom]="inputEl.style.height"
+        [style.position]="closeToBottom ? 'absolute': ''">
       <li *ngIf="isLoading" class="loading">Loading</li>
       <li *ngIf="blankOptionText"
           (mousedown)="selectOne('')"
@@ -39,7 +39,7 @@ import { AutoComplete } from "./auto-complete";
     </ul>
 
   </div>`,
-  providers: [AutoComplete],
+  providers: [Ng2AutoComplete],
   styles: [`
   @keyframes slideDown {
     0% {
@@ -49,16 +49,18 @@ import { AutoComplete } from "./auto-complete";
       transform: translateY(0px);
     }
   }
-  .auto-complete input {
+  .ng2-auto-complete ng2-auto-complete {
+    background-color: transparent;
+  }
+  .ng2-auto-complete ng2-auto-complete input {
     outline: none;
-    border: 2px solid transparent;
-    border-width: 3px 2px;
-    margin: 0;
+    border: 0px;
+    padding: 2px; 
     box-sizing: border-box;
     background-clip: content-box;
   }
 
-  .auto-complete ul {
+  .ng2-auto-complete ng2-auto-complete ul {
     background-color: #fff;
     margin: 0;
     width : 100%;
@@ -70,26 +72,26 @@ import { AutoComplete } from "./auto-complete";
     animation: slideDown 0.1s;
   }
 
-  .auto-complete ul li {
+  .ng2-auto-complete ng2-auto-complete ul li {
     padding: 2px 5px;
     border-bottom: 1px solid #eee;
   }
 
-  .auto-complete ul li.selected {
+  .ng2-auto-complete ng2-auto-complete ul li.selected {
     background-color: #ccc;
   }
 
-  .auto-complete ul li:last-child {
+  .ng2-auto-complete ng2-auto-complete ul li:last-child {
     border-bottom: none;
   }
 
-  .auto-complete ul li:hover {
+  .ng2-auto-complete ng2-auto-complete ul li:hover {
     background-color: #ccc;
   }`
   ],
   encapsulation: ViewEncapsulation.None
 })
-export class AutoCompleteComponent implements OnInit {
+export class Ng2AutoCompleteComponent implements OnInit {
 
   /**
    * public input properties
@@ -103,8 +105,10 @@ export class AutoCompleteComponent implements OnInit {
   @Input("placeholder") placeholder: string;
   @Input("blank-option-text") blankOptionText: string;
 
-  el: HTMLElement;
-  inputEl: HTMLInputElement;
+  el: HTMLElement;           // this component  element `<ng2-auto-complete>`
+  inputEl: HTMLInputElement; // `<input>` element in `<ng2-auto-complete>` for auto complete
+  userInputEl: Element;      // directive element that called this element `<input ng2-auto-complete>`
+  userInputElTabIndex: any;
 
   closeToBottom: boolean = false;
   dropdownVisible: boolean = false;
@@ -125,7 +129,7 @@ export class AutoCompleteComponent implements OnInit {
    */
   constructor(
     elementRef: ElementRef,
-    public autoComplete: AutoComplete
+    public autoComplete: Ng2AutoComplete
   ) {
     this.el = elementRef.nativeElement;
   }
@@ -135,6 +139,7 @@ export class AutoCompleteComponent implements OnInit {
    */
   ngOnInit(): void {
     this.inputEl = <HTMLInputElement>(this.el.querySelector("input"));
+    this.userInputEl = this.el.parentElement.querySelector("input");
     this.autoComplete.source = this.source;
     this.autoComplete.pathToData = this.pathToData;
   }
@@ -149,17 +154,21 @@ export class AutoCompleteComponent implements OnInit {
   showDropdownList(): void {
     this.keyword = "";
     this.inputEl.focus();
+
+    this.userInputElTabIndex = this.userInputEl['tabIndex'];
+    this.userInputEl['tabIndex'] = -100;  //disable tab focus for <shift-tab> pressed
+
     this.reloadList();
   }
 
   hideDropdownList(): void {
     this.dropdownVisible = false;
+    this.userInputEl['tabIndex'] = this.userInputElTabIndex; // enable tab focus
   }
 
   reloadList(): void {
     let keyword = this.inputEl.value;
 
-    this.hideDropdownList();
     this.dropdownVisible = true;
 
     if (this.isSrcArr()) {

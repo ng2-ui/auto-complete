@@ -1,6 +1,6 @@
 {
   "name": "ng2-auto-complete",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "Angular2 Input Autocomplete",
   "license": "MIT",
   "main": "dist/ng2-auto-complete.umd.js",
@@ -12,9 +12,9 @@
     "build": "npm-run-all --serial clean build:ts build:umd",
     "build:ts": "tsc --declaration",
     "build:umd": "webpack",
+    "test": "npm-run-all test:start test:webtest test:stop",
     "test:start": "forever start --silent node_modules/http-server/bin/http-server",
     "test:stop": "forever stop --silent node_modules/http-server/bin/http-server",
-    "test": "npm-run-all test:start test:webtest test:stop",
     "test:webtest": "webtest ng2-auto-complete.webtest.txt"
   },
   "dependencies": {},

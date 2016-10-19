@@ -14,13 +14,14 @@ import { AppSvc } from "./app.service";
       [source]="arrayOfStrings"
       (ngModelChange)="myCallback($event)"
       placeholder="enter text">
-      <input [ngModel]="model1" />
+      <input id="model1" [ngModel]="model1" />
     </div>
     <br/>selected model1: {{json(model1)}}<br/><br/>
     
     <h3>With Array of id/value</h3>
     <pre>source: {{json(arrayOfKeyValues)}}</pre>
     <input 
+      id="model2"
       ng2-auto-complete
       blank-option-text="Select One"
       [(ngModel)]="model2"
@@ -32,6 +33,7 @@ import { AppSvc } from "./app.service";
     <h3>With Array of Key/Name</h3>
     <pre>source: {{json(arrayOfKeyValues2)}}</pre>
     <input ng2-auto-complete [source]="arrayOfKeyValues2"
+      id="model3"
       [(ngModel)]="model3"
       placeholder="enter text"
       value-property-name="key"
@@ -41,6 +43,7 @@ import { AppSvc } from "./app.service";
     <h3>With Remote Source as HTTP URI String</h3>
     <pre> source: {{googleGeoCode}}</pre>
     <input  ng2-auto-complete
+      id="model4"
       [(ngModel)]="model4"
       placeholder="Enter Address(min. 2 chars)"
       [source]="googleGeoCode" 
@@ -51,6 +54,7 @@ import { AppSvc } from "./app.service";
  
     <h3>With Remote Source as Observable "Marvel API" </h3>
     <input  ng2-auto-complete
+      id="model5"
       placeholder="Start typing a hero name (min. 2 chars) ... for example: Hulk"     
       [(ngModel)]="model5" 
       [source]="appSvc.findHeroes"  
@@ -62,6 +66,7 @@ import { AppSvc } from "./app.service";
     
     <h3>With Material Design</h3>
     <md-input ng2-auto-complete 
+      id="model6"
       [(ngModel)]="myModel"
       [source]="arrayOfNumbers"
       [list-formatter]="rightAligned"

@@ -1,9 +1,12 @@
 # ng2-auto-complete
 Angular2 Auto Complete
 
+[![Build Status](https://travis-ci.org/ng2-ui/ng2-auto-complete.svg?branch=master)](https://travis-ci.org/ng2-ui/ng2-auto-complete)
+
 <a href="https://ng2-ui.github.io/#/auto-complete">
   <img src="http://i.imgur.com/dAmheg0.png" />
 </a>
+
 
 Plunker Example: http://plnkr.co/edit/3pB1Gx?p=preview
 

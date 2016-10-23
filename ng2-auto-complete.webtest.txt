@@ -42,9 +42,9 @@ Test With Remote Source as HTTP URI String
   verify text "DC 20500" present
 
 Test With Remote Source as Observable
-  click #model5
-  enter text "hulk/Bruce" into "#model5 ~ ng2-auto-complete input"
-  verify text "Hulk/Bruce Banner" present
-  press ENTER into "#model5 ~ ng2-auto-complete input"
+  --click #model5
+  --enter text "hulk/Bruce" into "#model5 ~ ng2-auto-complete input"
+  --verify text "Hulk/Bruce Banner" present
+  --press ENTER into "#model5 ~ ng2-auto-complete input"
 
 close browser

@@ -1,7 +1,9 @@
 # ng2-auto-complete
-Angular2 Auto Complete
 
 [![Build Status](https://travis-ci.org/ng2-ui/ng2-auto-complete.svg?branch=master)](https://travis-ci.org/ng2-ui/ng2-auto-complete)
+[![Join the chat at https://gitter.im/ng2-ui/ng2-auto-complete](https://badges.gitter.im/ng2-ui/ng2-auto-complete.svg)](https://gitter.im/ng2-ui/ng2-auto-complete?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+Angular2 Auto Complete
 
 <a href="https://ng2-ui.github.io/#/auto-complete">
   <img src="http://i.imgur.com/dAmheg0.png" />

@@ -1,9 +1,9 @@
-This is webtest commands running on 127.0.0.1:9001/app
+This is webtest commands running on 127.0.0.1:8080/app
 To run this file, please run `npm test` or `webtest ng2-auto-complete.webtest.txt`
 
 Test with Array of strings
   open browser
-  go to http://127.0.0.1:9001/app
+  go to http://127.0.0.1:8080/app
   verify text 'selected model1: "is"' present
   click #model1
   press "t" into "ng2-auto-complete input"

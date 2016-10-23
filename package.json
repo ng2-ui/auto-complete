@@ -8,13 +8,13 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "clean": "rimraf dist",
-    "start": "http-server -o -p 9001",
+    "start": "http-server",
     "build": "npm-run-all --serial clean build:ts build:umd",
     "build:ts": "tsc --declaration",
     "build:umd": "webpack",
     "test": "npm-run-all test:start test:webtest test:stop",
-    "test:start": "forever start --silent node_modules/http-server/bin/http-server -p 9001",
-    "test:stop": "forever stop --silent node_modules/http-server/bin/http-server -p 9001",
+    "test:start": "forever start --silent node_modules/http-server/bin/http-server",
+    "test:stop": "forever stop --silent node_modules/http-server/bin/http-server",
     "test:webtest": "webtest ng2-auto-complete.webtest.txt"
   },
   "dependencies": {},

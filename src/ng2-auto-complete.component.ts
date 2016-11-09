@@ -172,8 +172,10 @@ export class Ng2AutoCompleteComponent implements OnInit {
     this.dropdownVisible = true;
 
     if (this.isSrcArr()) {
-      // local source 
-      this.filteredList = this.autoComplete.filter(this.source, this.keyword);
+      // local source
+      if (keyword.length >= this.minChars) {
+        this.filteredList = this.autoComplete.filter(this.source, this.keyword);
+      }
     } else {
 
       this.isLoading = true;

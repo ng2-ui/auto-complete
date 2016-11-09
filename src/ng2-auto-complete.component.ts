@@ -1,4 +1,12 @@
-import { Component, ElementRef, Input, OnInit, ViewEncapsulation } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  Input,
+  Output,
+  OnInit,
+  ViewEncapsulation,
+  EventEmitter
+} from "@angular/core";
 import { Subject } from "rxjs/Subject";
 import { Ng2AutoComplete } from "./ng2-auto-complete";
 
@@ -104,6 +112,10 @@ export class Ng2AutoCompleteComponent implements OnInit {
   @Input("display-property-name") displayPropertyName: string = "value";
   @Input("placeholder") placeholder: string;
   @Input("blank-option-text") blankOptionText: string;
+  @Input("accept-user-input") acceptUserInput: boolean;
+
+  @Output() valueSelected = new EventEmitter();
+  @Output() inputChanged = new EventEmitter();
 
   el: HTMLElement;           // this component  element `<ng2-auto-complete>`
   inputEl: HTMLInputElement; // `<input>` element in `<ng2-auto-complete>` for auto complete
@@ -117,8 +129,6 @@ export class Ng2AutoCompleteComponent implements OnInit {
   filteredList: any[] = [];
   itemIndex: number = 0;
   keyword: string;
-
-  valueSelected: Subject<any> = new Subject();
 
   isSrcArr(): boolean {
     return (this.source.constructor.name === "Array");
@@ -149,6 +159,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
 
     // executing after user stopped typing
     this.delay(() => this.reloadList(), delayMs);
+    this.inputChanged.emit(this.inputEl.value);
   }
 
   showDropdownList(): void {
@@ -212,7 +223,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
 
   selectOne(data: any) {
     this.hideDropdownList();
-    this.valueSelected.next(data);
+    this.valueSelected.emit(data);
   };
 
   inputElKeyHandler(evt: any) {

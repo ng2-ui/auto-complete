@@ -33,6 +33,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
   @Input("value-property-name") valuePropertyName: string;
   @Input("display-property-name") displayPropertyName: string;
   @Input("blank-option-text") blankOptionText: string;
+  @Input("accept-user-input") acceptUserInput: boolean;
 
   @Input() ngModel: String;
   @Output() ngModelChange = new EventEmitter();
@@ -62,6 +63,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
     // apply toString() method for the object
     this.selectNewValue(this.ngModel);
 
+
     // when somewhere else clicked, hide this autocomplete
     document.addEventListener("click", this.hideAutoCompleteDropdown);
   }
@@ -69,6 +71,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
   ngOnDestroy(): void {
     if (this.componentRef) {
       this.componentRef.instance.valueSelected.unsubscribe();
+      this.componentRef.instance.inputChanged.unsubscribe();
     }
     document.removeEventListener("click", this.hideAutoCompleteDropdown);
   }
@@ -97,7 +100,10 @@ export class Ng2AutoCompleteDirective implements OnInit {
     component.source = this.source;
     component.placeholder = this.autoCompletePlaceholder;
     component.blankOptionText = this.blankOptionText;
+    component.acceptUserInput = this.acceptUserInput;
+
     component.valueSelected.subscribe(this.selectNewValue);
+    component.inputChanged.subscribe(this.componentInputChanged);
 
     this.acDropdownEl = this.componentRef.location.nativeElement;
     this.acDropdownEl.style.display = "none";
@@ -156,6 +162,12 @@ export class Ng2AutoCompleteDirective implements OnInit {
     return val;
   }
 
+  componentInputChanged = (val: string) => {
+    if (this.acceptUserInput !== false) {
+      this.inputEl.value = val;
+    }
+  };
+
   selectNewValue = (val: any) => {
     if (val !== '') {
       val = this.addToStringFunction(val);
@@ -169,7 +181,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
   private moveAutocompleteDropDownAfterInputEl(): void {
     this.inputEl = <HTMLInputElement>this.el;
     if (this.el.tagName !== "INPUT" && this.acDropdownEl) {
-      this.inputEl =  this.el.querySelector("input");
+      this.inputEl =  <HTMLInputElement>this.el.querySelector("input");
       this.inputEl.parentElement.insertBefore(this.acDropdownEl, this.inputEl.nextSibling);
     }
   }

@@ -165,6 +165,8 @@ export class Ng2AutoCompleteDirective implements OnInit {
   componentInputChanged = (val: string) => {
     if (this.acceptUserInput !== false) {
       this.inputEl.value = val;
+      (val !== this.ngModel) && this.ngModelChange.emit(val);
+      this.valueChanged.emit(val);
     }
   };
 

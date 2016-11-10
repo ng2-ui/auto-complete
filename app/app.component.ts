@@ -12,6 +12,7 @@ import { AppSvc } from "./app.service";
     <pre>source: {{json(arrayOfStrings)}}</pre>
     <div ng2-auto-complete 
       [source]="arrayOfStrings"
+      [accept-user-input]="false"
       (ngModelChange)="myCallback($event)"
       placeholder="enter text">
       <input id="model1" [ngModel]="model1" />

@@ -119,7 +119,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
 
   el: HTMLElement;           // this component  element `<ng2-auto-complete>`
   inputEl: HTMLInputElement; // `<input>` element in `<ng2-auto-complete>` for auto complete
-  userInputEl: Element;      // directive element that called this element `<input ng2-auto-complete>`
+  userInputEl: any;      // directive element that called this element `<input ng2-auto-complete>`
   userInputElTabIndex: any;
 
   closeToBottom: boolean = false;
@@ -163,7 +163,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
   }
 
   showDropdownList(): void {
-    this.keyword = "";
+    this.keyword = this.userInputEl.value;
     this.inputEl.focus();
 
     this.userInputElTabIndex = this.userInputEl['tabIndex'];

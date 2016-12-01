@@ -164,6 +164,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
 
   showDropdownList(): void {
     this.keyword = this.userInputEl.value;
+    this.inputEl.style.display = '';
     this.inputEl.focus();
 
     this.userInputElTabIndex = this.userInputEl['tabIndex'];
@@ -173,6 +174,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
   }
 
   hideDropdownList(): void {
+    this.inputEl.style.display = 'none';
     this.dropdownVisible = false;
     this.userInputEl['tabIndex'] = this.userInputElTabIndex; // enable tab focus
   }
@@ -184,14 +186,14 @@ export class Ng2AutoCompleteComponent implements OnInit {
 
     if (this.isSrcArr()) {
       // local source
-      if (keyword.length >= this.minChars) {
+      if (keyword.length >= (this.minChars || 0)) {
         this.filteredList = this.autoComplete.filter(this.source, this.keyword);
       }
     } else {
 
       this.isLoading = true;
 
-      if (keyword.length >= this.minChars) {
+      if (keyword.length >= (this.minChars || 0)) {
         if (typeof this.source === "function") {
           // custom function that returns observable 
           this.source(keyword).subscribe(

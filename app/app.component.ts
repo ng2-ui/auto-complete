@@ -97,7 +97,7 @@ export class AppComponent {
   arrayOfKeyValues2: any[] =
     [{key:1, name:"Key One"}, {key:2, name:"Key Two"}, {key:3, name:"Key Three"}, {key:4, name:"Key Four"}];
 
-  googleGeoCode: string = "https://maps.googleapis.com/maps/api/geocode/json?address=:keyword";
+  googleGeoCode: string = "https://maps.googleapis.com/maps/api/geocode/json?address=:my_own_keyword";
 
   model1 = "is";
   model2 = {id:1, value: "One"};

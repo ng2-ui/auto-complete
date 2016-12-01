@@ -7,7 +7,6 @@ import {
   ViewEncapsulation,
   EventEmitter
 } from "@angular/core";
-import { Subject } from "rxjs/Subject";
 import { Ng2AutoComplete } from "./ng2-auto-complete";
 
 /**
@@ -210,15 +209,15 @@ export class Ng2AutoCompleteComponent implements OnInit {
             () => this.isLoading = false // complete
           );
         } else {
-          // remote source  
-          let query = { keyword: keyword };
-          this.autoComplete.getRemoteData(query)
+          // remote source
+
+          this.autoComplete.getRemoteData(keyword)
             .subscribe(
-            resp => {
-              this.filteredList = (<any>resp);
-            },
-            error => null,
-            () => this.isLoading = false // complete
+              resp => {
+                this.filteredList = (<any>resp);
+              },
+              error => null,
+              () => this.isLoading = false // complete
             );
         }
       }

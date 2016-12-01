@@ -26,35 +26,15 @@ export class Ng2AutoComplete {
 
   /**
    * return remote data from the given source and options, and data path
-   * 
-   * @param {*} options is an object containing the query paramters for the GET call
-   * @returns {Observable<Response>}
-   * 
-   * @memberOf AutoComplete
    */
-  getRemoteData(options: any): Observable<Response> {
-
-    let keyValues: any[] = [];
-    let url = "";
-
-    for (var key in options) {
-      if (options.hasOwnProperty(key)) {
-        // replace all keyword to value
-        let regexp: RegExp = new RegExp(":" + key, "g");
-
-        url = this.source;
-        if (url.match(regexp)) {
-          url = url.replace(regexp, options[key]);
-        } else {
-          keyValues.push(key + "=" + options[key]);
-        }
-      }
+  getRemoteData(keyword: string): Observable<Response> {
+    if (typeof this.source !== 'string') {
+      throw "Invalid type of source, must be a string. e.g. http://www.google.com?q=:my_keyword";
     }
 
-    if (keyValues.length) {
-      var qs = keyValues.join("&");
-      url += url.match(/\?[a-z]/i) ? qs : ("?" + qs);
-    }
+    let matches = this.source.match(/:[a-zA-Z_]+/);
+    let replacementWord = matches[0];
+    let url = this.source.replace(replacementWord, keyword);
 
     return this.http.get(url)
       .map(resp => resp.json())

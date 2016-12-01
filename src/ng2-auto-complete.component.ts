@@ -33,7 +33,7 @@ import { Ng2AutoComplete } from "./ng2-auto-complete";
     <ul *ngIf="dropdownVisible"
         [style.bottom]="inputEl.style.height"
         [style.position]="closeToBottom ? 'absolute': ''">
-      <li *ngIf="isLoading" class="loading">Loading</li>
+      <li *ngIf="isLoading" class="loading">{{loadingText}}</li>
       <li *ngIf="blankOptionText"
           (mousedown)="selectOne('')"
           class="blank-item">{{blankOptionText}}</li>
@@ -112,6 +112,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
   @Input("placeholder") placeholder: string;
   @Input("blank-option-text") blankOptionText: string;
   @Input("accept-user-input") acceptUserInput: boolean;
+  @Input("loading-text") loadingText: string = "Loading";
 
   @Output() valueSelected = new EventEmitter();
   @Output() inputChanged = new EventEmitter();

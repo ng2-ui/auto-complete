@@ -50,6 +50,7 @@ import { AppSvc } from "./app.service";
       [source]="googleGeoCode" 
       display-property-name="formatted_address"
       path-to-data="results"
+      loading-text="Google Is Thinking..."
       min-chars="2" />
     <br/>selected model4: {{model4 | json}}<br/><br/>
  

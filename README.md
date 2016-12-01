@@ -79,6 +79,7 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   * **`blank-option-text`**, string, guide text to allow empty value to be selected as in empty value of `option` tag.
   * **`valueChanged`** / **`ngModelChange`**, callback function that is executed when a new dropdown is selected.
      e.g. `(valueChanged)="myCallback($event)"`
+  * **`loading-text`**, text to be displayed when loading. Default, "Loading"
      
 ## For Developers
 

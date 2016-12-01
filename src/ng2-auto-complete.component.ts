@@ -113,6 +113,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
   @Input("blank-option-text") blankOptionText: string;
   @Input("accept-user-input") acceptUserInput: boolean;
   @Input("loading-text") loadingText: string = "Loading";
+  @Input("max-num-list") maxNumList: number;
 
   @Output() valueSelected = new EventEmitter();
   @Output() inputChanged = new EventEmitter();
@@ -188,6 +189,9 @@ export class Ng2AutoCompleteComponent implements OnInit {
       // local source
       if (keyword.length >= (this.minChars || 0)) {
         this.filteredList = this.autoComplete.filter(this.source, this.keyword);
+        if (this.maxNumList) {
+          this.filteredList = this.filteredList.slice(0, this.maxNumList);
+        }
       }
     } else {
 
@@ -205,6 +209,9 @@ export class Ng2AutoCompleteComponent implements OnInit {
               }
 
               this.filteredList = resp;
+              if (this.maxNumList) {
+                this.filteredList = this.filteredList.slice(0, this.maxNumList);
+              }
             },
             error => null,
             () => this.isLoading = false // complete
@@ -216,6 +223,9 @@ export class Ng2AutoCompleteComponent implements OnInit {
             .subscribe(
               resp => {
                 this.filteredList = (<any>resp);
+                if (this.maxNumList) {
+                  this.filteredList = this.filteredList.slice(0, this.maxNumList);
+                }
               },
               error => null,
               () => this.isLoading = false // complete

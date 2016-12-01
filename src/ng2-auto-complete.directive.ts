@@ -35,6 +35,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
   @Input("blank-option-text") blankOptionText: string;
   @Input("accept-user-input") acceptUserInput: boolean;
   @Input("loading-text") loadingText: string = "Loading";
+  @Input("max-num-list") maxNumList: number;
 
   @Input() ngModel: String;
   @Output() ngModelChange = new EventEmitter();
@@ -103,6 +104,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
     component.blankOptionText = this.blankOptionText;
     component.acceptUserInput = this.acceptUserInput;
     component.loadingText = this.loadingText;
+    component.maxNumList = parseInt(<string>this.maxNumList, 10);
 
     component.valueSelected.subscribe(this.selectNewValue);
     component.inputChanged.subscribe(this.componentInputChanged);

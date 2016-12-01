@@ -54,6 +54,13 @@ var Ng2AutoCompleteDirective = (function () {
                     !!(thisInputElBCR.bottom + 100 > window.innerHeight);
             }
         };
+        this.componentInputChanged = function (val) {
+            if (_this.acceptUserInput !== false) {
+                _this.inputEl.value = val;
+                (val !== _this.ngModel) && _this.ngModelChange.emit(val);
+                _this.valueChanged.emit(val);
+            }
+        };
         this.selectNewValue = function (val) {
             if (val !== '') {
                 val = _this.addToStringFunction(val);
@@ -81,6 +88,7 @@ var Ng2AutoCompleteDirective = (function () {
     Ng2AutoCompleteDirective.prototype.ngOnDestroy = function () {
         if (this.componentRef) {
             this.componentRef.instance.valueSelected.unsubscribe();
+            this.componentRef.instance.inputChanged.unsubscribe();
         }
         document.removeEventListener("click", this.hideAutoCompleteDropdown);
     };
@@ -104,7 +112,9 @@ var Ng2AutoCompleteDirective = (function () {
         component.source = this.source;
         component.placeholder = this.autoCompletePlaceholder;
         component.blankOptionText = this.blankOptionText;
+        component.acceptUserInput = this.acceptUserInput;
         component.valueSelected.subscribe(this.selectNewValue);
+        component.inputChanged.subscribe(this.componentInputChanged);
         this.acDropdownEl = this.componentRef.location.nativeElement;
         this.acDropdownEl.style.display = "none";
         // if this element is not an input tag, move dropdown after input tag
@@ -167,6 +177,10 @@ var Ng2AutoCompleteDirective = (function () {
         core_1.Input("blank-option-text"), 
         __metadata('design:type', String)
     ], Ng2AutoCompleteDirective.prototype, "blankOptionText", void 0);
+    __decorate([
+        core_1.Input("accept-user-input"), 
+        __metadata('design:type', Boolean)
+    ], Ng2AutoCompleteDirective.prototype, "acceptUserInput", void 0);
     __decorate([
         core_1.Input(), 
         __metadata('design:type', String)

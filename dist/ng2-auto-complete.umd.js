@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@angular/core"), require("@angular/forms"), require("@angular/common"), require("@angular/http"), require("rxjs/Rx"), require("rxjs/Subject"));
+		module.exports = factory(require("@angular/core"), require("@angular/forms"), require("@angular/common"), require("@angular/http"), require("rxjs/Rx"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@angular/core", "@angular/forms", "@angular/common", "@angular/http", "rxjs/Rx", "rxjs/Subject"], factory);
+		define(["@angular/core", "@angular/forms", "@angular/common", "@angular/http", "rxjs/Rx"], factory);
 	else if(typeof exports === 'object')
-		exports["ng2-auto-complete"] = factory(require("@angular/core"), require("@angular/forms"), require("@angular/common"), require("@angular/http"), require("rxjs/Rx"), require("rxjs/Subject"));
+		exports["ng2-auto-complete"] = factory(require("@angular/core"), require("@angular/forms"), require("@angular/common"), require("@angular/http"), require("rxjs/Rx"));
 	else
-		root["ng2-auto-complete"] = factory(root["@angular/core"], root["@angular/forms"], root["@angular/common"], root["@angular/http"], root["rxjs/Rx"], root["rxjs/Subject"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_5__, __WEBPACK_EXTERNAL_MODULE_6__, __WEBPACK_EXTERNAL_MODULE_8__) {
+		root["ng2-auto-complete"] = factory(root["@angular/core"], root["@angular/forms"], root["@angular/common"], root["@angular/http"], root["rxjs/Rx"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_5__, __WEBPACK_EXTERNAL_MODULE_6__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -71,7 +71,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.Ng2AutoComplete = ng2_auto_complete_1.Ng2AutoComplete;
 	var ng2_auto_complete_component_1 = __webpack_require__(7);
 	exports.Ng2AutoCompleteComponent = ng2_auto_complete_component_1.Ng2AutoCompleteComponent;
-	var ng2_auto_complete_directive_1 = __webpack_require__(9);
+	var ng2_auto_complete_directive_1 = __webpack_require__(8);
 	exports.Ng2AutoCompleteDirective = ng2_auto_complete_directive_1.Ng2AutoCompleteDirective;
 	var Ng2AutoCompleteModule = (function () {
 	    function Ng2AutoCompleteModule() {
@@ -216,7 +216,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var Subject_1 = __webpack_require__(8);
 	var ng2_auto_complete_1 = __webpack_require__(4);
 	/**
 	 * show a selected date in monthly calendar
@@ -233,12 +232,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.minChars = 0;
 	        this.valuePropertyName = "id";
 	        this.displayPropertyName = "value";
+	        this.valueSelected = new core_1.EventEmitter();
+	        this.inputChanged = new core_1.EventEmitter();
 	        this.closeToBottom = false;
 	        this.dropdownVisible = false;
 	        this.isLoading = false;
 	        this.filteredList = [];
 	        this.itemIndex = 0;
-	        this.valueSelected = new Subject_1.Subject();
 	        this.delay = (function () {
 	            var timer = 0;
 	            return function (callback, ms) {
@@ -265,15 +265,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var delayMs = this.isSrcArr() ? 10 : 500;
 	        // executing after user stopped typing
 	        this.delay(function () { return _this.reloadList(); }, delayMs);
+	        this.inputChanged.emit(this.inputEl.value);
 	    };
 	    Ng2AutoCompleteComponent.prototype.showDropdownList = function () {
-	        this.keyword = "";
+	        this.keyword = this.userInputEl.value;
+	        this.inputEl.style.display = '';
 	        this.inputEl.focus();
 	        this.userInputElTabIndex = this.userInputEl['tabIndex'];
 	        this.userInputEl['tabIndex'] = -100; //disable tab focus for <shift-tab> pressed
 	        this.reloadList();
 	    };
 	    Ng2AutoCompleteComponent.prototype.hideDropdownList = function () {
+	        this.inputEl.style.display = 'none';
 	        this.dropdownVisible = false;
 	        this.userInputEl['tabIndex'] = this.userInputElTabIndex; // enable tab focus
 	    };
@@ -282,12 +285,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var keyword = this.inputEl.value;
 	        this.dropdownVisible = true;
 	        if (this.isSrcArr()) {
-	            // local source 
-	            this.filteredList = this.autoComplete.filter(this.source, this.keyword);
+	            // local source
+	            if (keyword.length >= (this.minChars || 0)) {
+	                this.filteredList = this.autoComplete.filter(this.source, this.keyword);
+	            }
 	        }
 	        else {
 	            this.isLoading = true;
-	            if (keyword.length >= this.minChars) {
+	            if (keyword.length >= (this.minChars || 0)) {
 	                if (typeof this.source === "function") {
 	                    // custom function that returns observable 
 	                    this.source(keyword).subscribe(function (resp) {
@@ -313,7 +318,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    Ng2AutoCompleteComponent.prototype.selectOne = function (data) {
 	        this.hideDropdownList();
-	        this.valueSelected.next(data);
+	        this.valueSelected.emit(data);
 	    };
 	    ;
 	    Ng2AutoCompleteComponent.prototype.inputElKeyHandler = function (evt) {
@@ -380,6 +385,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	        core_1.Input("blank-option-text"), 
 	        __metadata('design:type', String)
 	    ], Ng2AutoCompleteComponent.prototype, "blankOptionText", void 0);
+	    __decorate([
+	        core_1.Input("accept-user-input"), 
+	        __metadata('design:type', Boolean)
+	    ], Ng2AutoCompleteComponent.prototype, "acceptUserInput", void 0);
+	    __decorate([
+	        core_1.Output(), 
+	        __metadata('design:type', Object)
+	    ], Ng2AutoCompleteComponent.prototype, "valueSelected", void 0);
+	    __decorate([
+	        core_1.Output(), 
+	        __metadata('design:type', Object)
+	    ], Ng2AutoCompleteComponent.prototype, "inputChanged", void 0);
 	    Ng2AutoCompleteComponent = __decorate([
 	        core_1.Component({
 	            selector: "ng2-auto-complete",
@@ -398,12 +415,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 8 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_8__;
-
-/***/ },
-/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -462,6 +473,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    !!(thisInputElBCR.bottom + 100 > window.innerHeight);
 	            }
 	        };
+	        this.componentInputChanged = function (val) {
+	            if (_this.acceptUserInput !== false) {
+	                _this.inputEl.value = val;
+	                (val !== _this.ngModel) && _this.ngModelChange.emit(val);
+	                _this.valueChanged.emit(val);
+	            }
+	        };
 	        this.selectNewValue = function (val) {
 	            if (val !== '') {
 	                val = _this.addToStringFunction(val);
@@ -489,6 +507,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    Ng2AutoCompleteDirective.prototype.ngOnDestroy = function () {
 	        if (this.componentRef) {
 	            this.componentRef.instance.valueSelected.unsubscribe();
+	            this.componentRef.instance.inputChanged.unsubscribe();
 	        }
 	        document.removeEventListener("click", this.hideAutoCompleteDropdown);
 	    };
@@ -512,7 +531,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        component.source = this.source;
 	        component.placeholder = this.autoCompletePlaceholder;
 	        component.blankOptionText = this.blankOptionText;
+	        component.acceptUserInput = this.acceptUserInput;
 	        component.valueSelected.subscribe(this.selectNewValue);
+	        component.inputChanged.subscribe(this.componentInputChanged);
 	        this.acDropdownEl = this.componentRef.location.nativeElement;
 	        this.acDropdownEl.style.display = "none";
 	        // if this element is not an input tag, move dropdown after input tag
@@ -575,6 +596,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        core_1.Input("blank-option-text"), 
 	        __metadata('design:type', String)
 	    ], Ng2AutoCompleteDirective.prototype, "blankOptionText", void 0);
+	    __decorate([
+	        core_1.Input("accept-user-input"), 
+	        __metadata('design:type', Boolean)
+	    ], Ng2AutoCompleteDirective.prototype, "acceptUserInput", void 0);
 	    __decorate([
 	        core_1.Input(), 
 	        __metadata('design:type', String)

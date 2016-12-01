@@ -15,6 +15,7 @@ export declare class Ng2AutoCompleteDirective implements OnInit {
     valuePropertyName: string;
     displayPropertyName: string;
     blankOptionText: string;
+    acceptUserInput: boolean;
     ngModel: String;
     ngModelChange: EventEmitter<{}>;
     valueChanged: EventEmitter<{}>;
@@ -30,6 +31,7 @@ export declare class Ng2AutoCompleteDirective implements OnInit {
     hideAutoCompleteDropdown: (event?: any) => void;
     styleAutoCompleteDropdown: () => void;
     addToStringFunction(val: any): any;
+    componentInputChanged: (val: string) => void;
     selectNewValue: (val: any) => void;
     private moveAutocompleteDropDownAfterInputEl();
     private elementIn(el, containerEl);

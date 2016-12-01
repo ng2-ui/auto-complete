@@ -1,5 +1,4 @@
-import { ElementRef, OnInit } from "@angular/core";
-import { Subject } from "rxjs/Subject";
+import { ElementRef, OnInit, EventEmitter } from "@angular/core";
 import { Ng2AutoComplete } from "./ng2-auto-complete";
 /**
  * show a selected date in monthly calendar
@@ -20,9 +19,12 @@ export declare class Ng2AutoCompleteComponent implements OnInit {
     displayPropertyName: string;
     placeholder: string;
     blankOptionText: string;
+    acceptUserInput: boolean;
+    valueSelected: EventEmitter<{}>;
+    inputChanged: EventEmitter<{}>;
     el: HTMLElement;
     inputEl: HTMLInputElement;
-    userInputEl: Element;
+    userInputEl: any;
     userInputElTabIndex: any;
     closeToBottom: boolean;
     dropdownVisible: boolean;
@@ -30,7 +32,6 @@ export declare class Ng2AutoCompleteComponent implements OnInit {
     filteredList: any[];
     itemIndex: number;
     keyword: string;
-    valueSelected: Subject<any>;
     isSrcArr(): boolean;
     /**
      * constructor

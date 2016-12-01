@@ -89,7 +89,7 @@ export class AppComponent {
   arrayOfNumbers: number[] = [100, 200, 300, 400, 500];
 
   arrayOfStrings: string[] =
-    ["this", "is", "array", "of", "text"];
+    ["this", "is", "array", "of", "text", "with", "long", "and long", "and long", "list"];
 
   arrayOfKeyValues: any[] =
     [{id:1, value:"One"}, {id:2, value:"Two"}, {id:3, value:"Three"}, {id:4, value:"Four"}];

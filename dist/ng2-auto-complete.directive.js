@@ -19,6 +19,7 @@ var Ng2AutoCompleteDirective = (function () {
         var _this = this;
         this.resolver = resolver;
         this.viewContainerRef = viewContainerRef;
+        this.loadingText = "Loading";
         this.ngModelChange = new core_1.EventEmitter();
         this.valueChanged = new core_1.EventEmitter();
         this.hideAutoCompleteDropdown = function (event) {
@@ -113,6 +114,8 @@ var Ng2AutoCompleteDirective = (function () {
         component.placeholder = this.autoCompletePlaceholder;
         component.blankOptionText = this.blankOptionText;
         component.acceptUserInput = this.acceptUserInput;
+        component.loadingText = this.loadingText;
+        component.maxNumList = parseInt(this.maxNumList, 10);
         component.valueSelected.subscribe(this.selectNewValue);
         component.inputChanged.subscribe(this.componentInputChanged);
         this.acDropdownEl = this.componentRef.location.nativeElement;
@@ -181,6 +184,14 @@ var Ng2AutoCompleteDirective = (function () {
         core_1.Input("accept-user-input"), 
         __metadata('design:type', Boolean)
     ], Ng2AutoCompleteDirective.prototype, "acceptUserInput", void 0);
+    __decorate([
+        core_1.Input("loading-text"), 
+        __metadata('design:type', String)
+    ], Ng2AutoCompleteDirective.prototype, "loadingText", void 0);
+    __decorate([
+        core_1.Input("max-num-list"), 
+        __metadata('design:type', String)
+    ], Ng2AutoCompleteDirective.prototype, "maxNumList", void 0);
     __decorate([
         core_1.Input(), 
         __metadata('design:type', String)

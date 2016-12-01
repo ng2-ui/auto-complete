@@ -16,6 +16,8 @@ export declare class Ng2AutoCompleteDirective implements OnInit {
     displayPropertyName: string;
     blankOptionText: string;
     acceptUserInput: boolean;
+    loadingText: string;
+    maxNumList: string;
     ngModel: String;
     ngModelChange: EventEmitter<{}>;
     valueChanged: EventEmitter<{}>;

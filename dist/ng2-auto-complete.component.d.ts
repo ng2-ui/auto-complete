@@ -20,6 +20,8 @@ export declare class Ng2AutoCompleteComponent implements OnInit {
     placeholder: string;
     blankOptionText: string;
     acceptUserInput: boolean;
+    loadingText: string;
+    maxNumList: number;
     valueSelected: EventEmitter<{}>;
     inputChanged: EventEmitter<{}>;
     el: HTMLElement;

@@ -9,7 +9,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
-var Subject_1 = require("rxjs/Subject");
 var ng2_auto_complete_1 = require("./ng2-auto-complete");
 /**
  * show a selected date in monthly calendar
@@ -26,12 +25,13 @@ var Ng2AutoCompleteComponent = (function () {
         this.minChars = 0;
         this.valuePropertyName = "id";
         this.displayPropertyName = "value";
+        this.valueSelected = new core_1.EventEmitter();
+        this.inputChanged = new core_1.EventEmitter();
         this.closeToBottom = false;
         this.dropdownVisible = false;
         this.isLoading = false;
         this.filteredList = [];
         this.itemIndex = 0;
-        this.valueSelected = new Subject_1.Subject();
         this.delay = (function () {
             var timer = 0;
             return function (callback, ms) {
@@ -58,15 +58,18 @@ var Ng2AutoCompleteComponent = (function () {
         var delayMs = this.isSrcArr() ? 10 : 500;
         // executing after user stopped typing
         this.delay(function () { return _this.reloadList(); }, delayMs);
+        this.inputChanged.emit(this.inputEl.value);
     };
     Ng2AutoCompleteComponent.prototype.showDropdownList = function () {
-        this.keyword = "";
+        this.keyword = this.userInputEl.value;
+        this.inputEl.style.display = '';
         this.inputEl.focus();
         this.userInputElTabIndex = this.userInputEl['tabIndex'];
         this.userInputEl['tabIndex'] = -100; //disable tab focus for <shift-tab> pressed
         this.reloadList();
     };
     Ng2AutoCompleteComponent.prototype.hideDropdownList = function () {
+        this.inputEl.style.display = 'none';
         this.dropdownVisible = false;
         this.userInputEl['tabIndex'] = this.userInputElTabIndex; // enable tab focus
     };
@@ -75,12 +78,14 @@ var Ng2AutoCompleteComponent = (function () {
         var keyword = this.inputEl.value;
         this.dropdownVisible = true;
         if (this.isSrcArr()) {
-            // local source 
-            this.filteredList = this.autoComplete.filter(this.source, this.keyword);
+            // local source
+            if (keyword.length >= (this.minChars || 0)) {
+                this.filteredList = this.autoComplete.filter(this.source, this.keyword);
+            }
         }
         else {
             this.isLoading = true;
-            if (keyword.length >= this.minChars) {
+            if (keyword.length >= (this.minChars || 0)) {
                 if (typeof this.source === "function") {
                     // custom function that returns observable 
                     this.source(keyword).subscribe(function (resp) {
@@ -106,7 +111,7 @@ var Ng2AutoCompleteComponent = (function () {
     };
     Ng2AutoCompleteComponent.prototype.selectOne = function (data) {
         this.hideDropdownList();
-        this.valueSelected.next(data);
+        this.valueSelected.emit(data);
     };
     ;
     Ng2AutoCompleteComponent.prototype.inputElKeyHandler = function (evt) {
@@ -173,6 +178,18 @@ var Ng2AutoCompleteComponent = (function () {
         core_1.Input("blank-option-text"), 
         __metadata('design:type', String)
     ], Ng2AutoCompleteComponent.prototype, "blankOptionText", void 0);
+    __decorate([
+        core_1.Input("accept-user-input"), 
+        __metadata('design:type', Boolean)
+    ], Ng2AutoCompleteComponent.prototype, "acceptUserInput", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], Ng2AutoCompleteComponent.prototype, "valueSelected", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], Ng2AutoCompleteComponent.prototype, "inputChanged", void 0);
     Ng2AutoCompleteComponent = __decorate([
         core_1.Component({
             selector: "ng2-auto-complete",

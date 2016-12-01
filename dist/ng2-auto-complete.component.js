@@ -98,9 +98,8 @@ var Ng2AutoCompleteComponent = (function () {
                     );
                 }
                 else {
-                    // remote source  
-                    var query = { keyword: keyword };
-                    this.autoComplete.getRemoteData(query)
+                    // remote source
+                    this.autoComplete.getRemoteData(keyword)
                         .subscribe(function (resp) {
                         _this.filteredList = resp;
                     }, function (error) { return null; }, function () { return _this.isLoading = false; } // complete

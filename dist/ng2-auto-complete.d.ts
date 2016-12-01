@@ -12,11 +12,6 @@ export declare class Ng2AutoComplete {
     filter(list: any[], keyword: string): any[];
     /**
      * return remote data from the given source and options, and data path
-     *
-     * @param {*} options is an object containing the query paramters for the GET call
-     * @returns {Observable<Response>}
-     *
-     * @memberOf AutoComplete
      */
-    getRemoteData(options: any): Observable<Response>;
+    getRemoteData(keyword: string): Observable<Response>;
 }

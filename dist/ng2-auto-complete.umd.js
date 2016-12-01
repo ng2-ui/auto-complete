@@ -141,33 +141,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    /**
 	     * return remote data from the given source and options, and data path
-	     *
-	     * @param {*} options is an object containing the query paramters for the GET call
-	     * @returns {Observable<Response>}
-	     *
-	     * @memberOf AutoComplete
 	     */
-	    Ng2AutoComplete.prototype.getRemoteData = function (options) {
+	    Ng2AutoComplete.prototype.getRemoteData = function (keyword) {
 	        var _this = this;
-	        var keyValues = [];
-	        var url = "";
-	        for (var key in options) {
-	            if (options.hasOwnProperty(key)) {
-	                // replace all keyword to value
-	                var regexp = new RegExp(":" + key, "g");
-	                url = this.source;
-	                if (url.match(regexp)) {
-	                    url = url.replace(regexp, options[key]);
-	                }
-	                else {
-	                    keyValues.push(key + "=" + options[key]);
-	                }
-	            }
+	        if (typeof this.source !== 'string') {
+	            throw "Invalid type of source, must be a string. e.g. http://www.google.com?q=:my_keyword";
 	        }
-	        if (keyValues.length) {
-	            var qs = keyValues.join("&");
-	            url += url.match(/\?[a-z]/i) ? qs : ("?" + qs);
-	        }
+	        var matches = this.source.match(/:[a-zA-Z_]+/);
+	        var replacementWord = matches[0];
+	        var url = this.source.replace(replacementWord, keyword);
 	        return this.http.get(url)
 	            .map(function (resp) { return resp.json(); })
 	            .map(function (resp) {
@@ -305,9 +287,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    );
 	                }
 	                else {
-	                    // remote source  
-	                    var query = { keyword: keyword };
-	                    this.autoComplete.getRemoteData(query)
+	                    // remote source
+	                    this.autoComplete.getRemoteData(keyword)
 	                        .subscribe(function (resp) {
 	                        _this.filteredList = resp;
 	                    }, function (error) { return null; }, function () { return _this.isLoading = false; } // complete

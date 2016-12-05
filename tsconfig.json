@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "declaration": true,
     "target": "es5",
     "lib": ["es5", "es6", "dom"],
     "module": "commonjs",
@@ -28,5 +29,9 @@
     "node_modules"
   ],
   "compileOnSave": false,
-  "buildOnSave": false
+  "buildOnSave": false,
+  "angularCompilerOptions": {
+    "genDir": "./dist",
+    "debug": true
+  }
 }

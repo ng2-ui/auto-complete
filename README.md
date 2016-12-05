@@ -10,7 +10,10 @@ Angular2 Auto Complete
 </a>
 
 
-Plunker Example: http://plnkr.co/edit/3pB1Gx?p=preview
+Plunker example: http://plnkr.co/edit/3pB1Gx?p=preview
+  
+Plunker example used with FormGroup
+ http://plnkr.co/edit/CxeAHUgeNfH25Cp7RM43?p=preview [issue #49](https://github.com/ng2-ui/ng2-auto-complete/issues/49)
 
 
 ## Install
@@ -45,6 +48,7 @@ For full example, please check `test` directory to see the example of;
   - `systemjs.config.js`
   - `app.module.ts`
   -  and `app.component.ts`.
+
 
 ## Contributors are welcomed
 

@@ -48,6 +48,12 @@
     "webpack": "2.1.0-beta.25",
     "zone.js": "^0.6.21"
   },
+  "peerDependencies": {
+    "@angular/common": "^2.2.4",
+    "@angular/core": "^2.2.4",
+    "@angular/forms": "^2.2.4",
+    "@angular/http": "^2.2.4"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ng2-ui/ng2-auto-complete.git"

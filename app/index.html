@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script>document.write('<base href="' + document.location + '" />');</script>
-  <title>Angular2 DateTime Picker Test</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <script src="../node_modules/zone.js/dist/zone.min.js?main=browser"></script>
-  <script src="../node_modules/reflect-metadata/Reflect.js"></script>
-  <script src="../node_modules/systemjs/dist/system.js"></script>
-  <script src="../node_modules/typescript/lib/typescript.js"></script>
-
-  <script src="./systemjs.config.js"></script>
-  <script>
-    System.import('app');
-  </script>
+  <meta charset="UTF-8">
+  <title>Angular2 DateTime Picker</title>
+  <script src="moment-with-locales.min.js"></script>
 </head>
 
 <body>
-  <my-app>Loading...</my-app>
+<my-app>Loading...</my-app>
+<script>
+  document.write('<base href="' + document.location + '" />');
+
+  var script = document.createElement("script");
+  script.src = location.pathname.replace('index.html', '') + 'build/app.js';
+  (document.body).appendChild(script);
+</script>
 </body>
 </html>

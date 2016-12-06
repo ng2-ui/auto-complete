@@ -1,11 +1,12 @@
-This is webtest commands running on 127.0.0.1:8080/app
+This is webtest commands running on 127.0.0.1:9002/app
 To run this file, please run `npm test` or `webtest ng2-auto-complete.webtest.txt`
 
 Test with Array of strings
   open browser
-  go to http://localhost:8080/app
+  go to http://localhost:9002
   verify text 'selected model1: "is"' present
   click #model1
+  clear "ng2-auto-complete input"
   press "t" into "ng2-auto-complete input"
   verify element "ul li:nth-child(2)" text is "text"
   press "e" into "ng2-auto-complete input"
@@ -15,9 +16,10 @@ Test with Array of strings
 
 Test with array of id/value
   verify element #model2 value is "One"
-  click link "Change It"ver
+  click link "Change It"
   verify element #model2 value is "it"
   click #model2
+  clear #model2
   verify element "ul li:nth-child(1)" text is "Select One"
   verify element "ul li:nth-child(2)" text is "(1)One"
   see "Select One"
@@ -30,6 +32,7 @@ Test with array of id/value
 Test with array of key/name
   verify element #model3 value is "Key Three"
   click #model3
+  clear #model3
   press ARROW_DOWN into "#model3 ~ ng2-auto-complete input"
   press ARROW_DOWN into "#model3 ~ ng2-auto-complete input"
   press ARROW_DOWN into "#model3 ~ ng2-auto-complete input"

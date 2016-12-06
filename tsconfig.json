@@ -1,11 +1,9 @@
 {
   "compilerOptions": {
-    "declaration": true,
     "target": "es5",
     "lib": ["es5", "es6", "dom"],
     "module": "commonjs",
     "moduleResolution": "node",
-    "noEmitHelpers": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
@@ -15,12 +13,18 @@
     "noImplicitAny": false,
     "noImplicitReturns": false,
     "noImplicitUseStrict": false,
-    "noFallthroughCasesInSwitch": false,
     "allowSyntheticDefaultImports": true,
     "suppressExcessPropertyErrors": true,
     "suppressImplicitAnyIndexErrors": true,
+    "skipDefaultLibCheck": true,
+    "noEmitHelpers": false,
+    "isolatedModules": false,
+    "strictNullChecks": false,
     "outDir": "dist",
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "paths": {
+      "ng2-auto-complete": ["./index"]
+    }
   },
   "files": [
     "src/index.ts"
@@ -31,7 +35,7 @@
   "compileOnSave": false,
   "buildOnSave": false,
   "angularCompilerOptions": {
-    "genDir": "./dist",
-    "debug": true
+    "strictMetadataEmit": true,
+    "skipTemplateCodegen": true
   }
 }

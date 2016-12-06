@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@angular/core"), require("@angular/forms"), require("@angular/common"), require("@angular/http"), require("rxjs/Rx"));
+		module.exports = factory(require("@angular/core"), require("@angular/http"), require("rxjs/Rx"), require("@angular/common"), require("@angular/forms"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@angular/core", "@angular/forms", "@angular/common", "@angular/http", "rxjs/Rx"], factory);
+		define(["@angular/core", "@angular/http", "rxjs/Rx", "@angular/common", "@angular/forms"], factory);
 	else if(typeof exports === 'object')
-		exports["ng2-auto-complete"] = factory(require("@angular/core"), require("@angular/forms"), require("@angular/common"), require("@angular/http"), require("rxjs/Rx"));
+		exports["ng2-auto-complete"] = factory(require("@angular/core"), require("@angular/http"), require("rxjs/Rx"), require("@angular/common"), require("@angular/forms"));
 	else
-		root["ng2-auto-complete"] = factory(root["@angular/core"], root["@angular/forms"], root["@angular/common"], root["@angular/http"], root["rxjs/Rx"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_5__, __WEBPACK_EXTERNAL_MODULE_6__) {
+		root["ng2-auto-complete"] = factory(root["@angular/core"], root["@angular/http"], root["rxjs/Rx"], root["@angular/common"], root["@angular/forms"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_6__, __WEBPACK_EXTERNAL_MODULE_7__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -55,62 +55,18 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var forms_1 = __webpack_require__(2);
-	var common_1 = __webpack_require__(3);
-	var ng2_auto_complete_1 = __webpack_require__(4);
+	var ng2_auto_complete_1 = __webpack_require__(1);
 	exports.Ng2AutoComplete = ng2_auto_complete_1.Ng2AutoComplete;
-	var ng2_auto_complete_component_1 = __webpack_require__(7);
+	var ng2_auto_complete_module_1 = __webpack_require__(5);
+	exports.Ng2AutoCompleteModule = ng2_auto_complete_module_1.Ng2AutoCompleteModule;
+	var ng2_auto_complete_component_1 = __webpack_require__(8);
 	exports.Ng2AutoCompleteComponent = ng2_auto_complete_component_1.Ng2AutoCompleteComponent;
-	var ng2_auto_complete_directive_1 = __webpack_require__(8);
+	var ng2_auto_complete_directive_1 = __webpack_require__(9);
 	exports.Ng2AutoCompleteDirective = ng2_auto_complete_directive_1.Ng2AutoCompleteDirective;
-	var Ng2AutoCompleteModule = (function () {
-	    function Ng2AutoCompleteModule() {
-	    }
-	    Ng2AutoCompleteModule = __decorate([
-	        core_1.NgModule({
-	            imports: [common_1.CommonModule, forms_1.FormsModule],
-	            declarations: [ng2_auto_complete_component_1.Ng2AutoCompleteComponent, ng2_auto_complete_directive_1.Ng2AutoCompleteDirective],
-	            exports: [ng2_auto_complete_component_1.Ng2AutoCompleteComponent, ng2_auto_complete_directive_1.Ng2AutoCompleteDirective],
-	            entryComponents: [ng2_auto_complete_component_1.Ng2AutoCompleteComponent],
-	            providers: [ng2_auto_complete_1.Ng2AutoComplete]
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], Ng2AutoCompleteModule);
-	    return Ng2AutoCompleteModule;
-	}());
-	exports.Ng2AutoCompleteModule = Ng2AutoCompleteModule;
 
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
-
-/***/ },
-/* 2 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
-
-/***/ },
-/* 3 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
-
-/***/ },
-/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -123,9 +79,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(1);
-	var http_1 = __webpack_require__(5);
-	__webpack_require__(6);
+	var core_1 = __webpack_require__(2);
+	var http_1 = __webpack_require__(3);
+	__webpack_require__(4);
 	/**
 	 * provides auto-complete related utility functions
 	 */
@@ -172,19 +128,25 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 2 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
+
+/***/ },
 /* 5 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_5__;
-
-/***/ },
-/* 6 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_6__;
-
-/***/ },
-/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -197,8 +159,63 @@ return /******/ (function(modules) { // webpackBootstrap
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(1);
-	var ng2_auto_complete_1 = __webpack_require__(4);
+	var core_1 = __webpack_require__(2);
+	var common_1 = __webpack_require__(6);
+	var forms_1 = __webpack_require__(7);
+	var ng2_auto_complete_component_1 = __webpack_require__(8);
+	var ng2_auto_complete_directive_1 = __webpack_require__(9);
+	var ng2_auto_complete_1 = __webpack_require__(1);
+	var Ng2AutoCompleteModule = (function () {
+	    function Ng2AutoCompleteModule() {
+	    }
+	    Ng2AutoCompleteModule.forRoot = function () {
+	        return {
+	            ngModule: Ng2AutoCompleteModule,
+	            providers: [ng2_auto_complete_1.Ng2AutoComplete]
+	        };
+	    };
+	    Ng2AutoCompleteModule = __decorate([
+	        core_1.NgModule({
+	            imports: [common_1.CommonModule, forms_1.FormsModule],
+	            declarations: [ng2_auto_complete_component_1.Ng2AutoCompleteComponent, ng2_auto_complete_directive_1.Ng2AutoCompleteDirective],
+	            exports: [ng2_auto_complete_component_1.Ng2AutoCompleteComponent, ng2_auto_complete_directive_1.Ng2AutoCompleteDirective],
+	            entryComponents: [ng2_auto_complete_component_1.Ng2AutoCompleteComponent]
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], Ng2AutoCompleteModule);
+	    return Ng2AutoCompleteModule;
+	}());
+	exports.Ng2AutoCompleteModule = Ng2AutoCompleteModule;
+
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_6__;
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_7__;
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(2);
+	var ng2_auto_complete_1 = __webpack_require__(1);
 	/**
 	 * show a selected date in monthly calendar
 	 * Each filteredList item has the following property in addition to data itself
@@ -413,7 +430,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -426,9 +443,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(1);
-	__webpack_require__(6);
-	var ng2_auto_complete_component_1 = __webpack_require__(7);
+	var core_1 = __webpack_require__(2);
+	__webpack_require__(4);
+	var ng2_auto_complete_component_1 = __webpack_require__(8);
 	/**
 	 * display auto-complete section with input and dropdown list when it is clicked
 	 */

@@ -1,4 +1,9 @@
-// the browser platform with a compiler
+// polyfills, comment the following out for debugging purpose
+import 'hammerjs';
+import 'core-js/es6';
+import 'core-js/es7/reflect';
+import 'zone.js/dist/zone';// the browser platform with a compiler
+
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { NgModule } from '@angular/core';

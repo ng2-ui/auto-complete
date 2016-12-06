@@ -1,13 +1,4 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var core_1 = require("@angular/core");
 require("rxjs/Rx");
 var ng2_auto_complete_component_1 = require("./ng2-auto-complete.component");
@@ -148,72 +139,36 @@ var Ng2AutoCompleteDirective = (function () {
         }
         return false;
     };
-    __decorate([
-        core_1.Input("auto-complete-placeholder"), 
-        __metadata('design:type', String)
-    ], Ng2AutoCompleteDirective.prototype, "autoCompletePlaceholder", void 0);
-    __decorate([
-        core_1.Input("list-formatter"), 
-        __metadata('design:type', Function)
-    ], Ng2AutoCompleteDirective.prototype, "listFormatter", void 0);
-    __decorate([
-        core_1.Input("source"), 
-        __metadata('design:type', Object)
-    ], Ng2AutoCompleteDirective.prototype, "source", void 0);
-    __decorate([
-        core_1.Input("path-to-data"), 
-        __metadata('design:type', String)
-    ], Ng2AutoCompleteDirective.prototype, "pathToData", void 0);
-    __decorate([
-        core_1.Input("min-chars"), 
-        __metadata('design:type', Number)
-    ], Ng2AutoCompleteDirective.prototype, "minChars", void 0);
-    __decorate([
-        core_1.Input("value-property-name"), 
-        __metadata('design:type', String)
-    ], Ng2AutoCompleteDirective.prototype, "valuePropertyName", void 0);
-    __decorate([
-        core_1.Input("display-property-name"), 
-        __metadata('design:type', String)
-    ], Ng2AutoCompleteDirective.prototype, "displayPropertyName", void 0);
-    __decorate([
-        core_1.Input("blank-option-text"), 
-        __metadata('design:type', String)
-    ], Ng2AutoCompleteDirective.prototype, "blankOptionText", void 0);
-    __decorate([
-        core_1.Input("accept-user-input"), 
-        __metadata('design:type', Boolean)
-    ], Ng2AutoCompleteDirective.prototype, "acceptUserInput", void 0);
-    __decorate([
-        core_1.Input("loading-text"), 
-        __metadata('design:type', String)
-    ], Ng2AutoCompleteDirective.prototype, "loadingText", void 0);
-    __decorate([
-        core_1.Input("max-num-list"), 
-        __metadata('design:type', String)
-    ], Ng2AutoCompleteDirective.prototype, "maxNumList", void 0);
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', String)
-    ], Ng2AutoCompleteDirective.prototype, "ngModel", void 0);
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', Object)
-    ], Ng2AutoCompleteDirective.prototype, "ngModelChange", void 0);
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', Object)
-    ], Ng2AutoCompleteDirective.prototype, "valueChanged", void 0);
-    Ng2AutoCompleteDirective = __decorate([
-        core_1.Directive({
-            selector: "[auto-complete], [ng2-auto-complete]",
-            host: {
-                "(click)": "showAutoCompleteDropdown()",
-                "(focus)": "showAutoCompleteDropdown()"
-            }
-        }), 
-        __metadata('design:paramtypes', [core_1.ComponentFactoryResolver, core_1.ViewContainerRef])
-    ], Ng2AutoCompleteDirective);
+    Ng2AutoCompleteDirective.decorators = [
+        { type: core_1.Directive, args: [{
+                    selector: "[auto-complete], [ng2-auto-complete]",
+                    host: {
+                        "(click)": "showAutoCompleteDropdown()",
+                        "(focus)": "showAutoCompleteDropdown()"
+                    }
+                },] },
+    ];
+    /** @nocollapse */
+    Ng2AutoCompleteDirective.ctorParameters = [
+        { type: core_1.ComponentFactoryResolver, },
+        { type: core_1.ViewContainerRef, },
+    ];
+    Ng2AutoCompleteDirective.propDecorators = {
+        'autoCompletePlaceholder': [{ type: core_1.Input, args: ["auto-complete-placeholder",] },],
+        'listFormatter': [{ type: core_1.Input, args: ["list-formatter",] },],
+        'source': [{ type: core_1.Input, args: ["source",] },],
+        'pathToData': [{ type: core_1.Input, args: ["path-to-data",] },],
+        'minChars': [{ type: core_1.Input, args: ["min-chars",] },],
+        'valuePropertyName': [{ type: core_1.Input, args: ["value-property-name",] },],
+        'displayPropertyName': [{ type: core_1.Input, args: ["display-property-name",] },],
+        'blankOptionText': [{ type: core_1.Input, args: ["blank-option-text",] },],
+        'acceptUserInput': [{ type: core_1.Input, args: ["accept-user-input",] },],
+        'loadingText': [{ type: core_1.Input, args: ["loading-text",] },],
+        'maxNumList': [{ type: core_1.Input, args: ["max-num-list",] },],
+        'ngModel': [{ type: core_1.Input },],
+        'ngModelChange': [{ type: core_1.Output },],
+        'valueChanged': [{ type: core_1.Output },],
+    };
     return Ng2AutoCompleteDirective;
 }());
 exports.Ng2AutoCompleteDirective = Ng2AutoCompleteDirective;

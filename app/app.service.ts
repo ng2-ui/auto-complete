@@ -24,6 +24,5 @@ export class AppSvc {
     findHeroes = (startsWith: string): Observable<any[]> => {
         return this._http.get(`${this.marvelBase}characters?nameStartsWith=${startsWith}&apikey=${this.marvelPublicKey}`)
         .map(h => h.json())
-        .catch(e => console.error(e));
-    } 
+    }
 }

@@ -5,7 +5,8 @@
 
 Angular2 Auto Complete
 
-<a href="https://ng2-ui.github.io/#/auto-complete">
+
+<a href="https://rawgit.com/ng2-ui/ng2-auto-complete/master/app/index.html">
   <img src="http://i.imgur.com/dAmheg0.png" />
 </a>
 
@@ -91,8 +92,16 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
 
     $ git clone https://github.com/ng2-ui/ng2-auto-complete.git
     $ cd ng2-auto-complete
-    $ npm install 
-    $ npm run build # to build `dist` directory
+    $ npm install
     $ npm start
-    $ go to /app
+ 
+### List of available npm tasks
 
+  * `npm run` : List all available tasks
+  * `npm start`: Run `app` directory for development using `webpack-dev-server` with port 9001
+  * `npm run clean`: Remove dist folder
+  * `npm run lint`: Lint TypeScript code
+  * `npm run build:ngc`: build ES module
+  * `npm run build:umd`: Build UMD module `ng2-map.umd.js`
+  * `npm run build:app`: Build `app/build/app.js` for runnable examples
+  * `npm run build`: Build all(clean, build:ngc, build:umc, and build:app)

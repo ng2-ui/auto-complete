@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Http, Response } from "@angular/http";
 import { Observable } from "rxjs";
-import "rxjs/Rx";
+import "rxjs/add/operator/map";
 
 /**
  * provides auto-complete related utility functions
@@ -39,10 +39,10 @@ export class Ng2AutoComplete {
     return this.http.get(url)
       .map(resp => resp.json())
       .map(resp => {
-        var list = resp.data || resp;
+        let list = resp.data || resp;
 
         if (this.pathToData) {
-          var paths = this.pathToData.split(".");
+          let paths = this.pathToData.split(".");
           paths.forEach(prop => list = list[prop]);
         }
 

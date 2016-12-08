@@ -1,6 +1,6 @@
 import { Http, Response } from "@angular/http";
 import { Observable } from "rxjs";
-import "rxjs/Rx";
+import "rxjs/add/operator/map";
 /**
  * provides auto-complete related utility functions
  */

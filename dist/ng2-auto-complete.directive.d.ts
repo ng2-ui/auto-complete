@@ -1,5 +1,4 @@
 import { ComponentRef, ViewContainerRef, EventEmitter, OnInit, ComponentFactoryResolver, SimpleChanges } from "@angular/core";
-import "rxjs/Rx";
 import { Ng2AutoCompleteComponent } from "./ng2-auto-complete.component";
 /**
  * display auto-complete section with input and dropdown list when it is clicked

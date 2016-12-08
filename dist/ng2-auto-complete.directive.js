@@ -1,6 +1,5 @@
 "use strict";
 var core_1 = require("@angular/core");
-require("rxjs/Rx");
 var ng2_auto_complete_component_1 = require("./ng2-auto-complete.component");
 /**
  * display auto-complete section with input and dropdown list when it is clicked
@@ -16,8 +15,7 @@ var Ng2AutoCompleteDirective = (function () {
         this.hideAutoCompleteDropdown = function (event) {
             if (_this.componentRef) {
                 if (event && event.type === "click" &&
-                    event.target.tagName !== "INPUT" &&
-                    !_this.elementIn(event.target, _this.acDropdownEl)) {
+                    event.target.tagName !== "INPUT" && !_this.elementIn(event.target, _this.acDropdownEl)) {
                     _this.componentRef.destroy();
                     _this.componentRef = undefined;
                 }
@@ -29,7 +27,7 @@ var Ng2AutoCompleteDirective = (function () {
         };
         this.styleAutoCompleteDropdown = function () {
             if (_this.componentRef) {
-                var component = _this.componentRef.instance;
+                var component_1 = _this.componentRef.instance;
                 /* setting width/height auto complete */
                 var thisElBCR = _this.el.getBoundingClientRect();
                 _this.acDropdownEl.style.width = thisElBCR.width + "px";
@@ -38,12 +36,15 @@ var Ng2AutoCompleteDirective = (function () {
                 _this.acDropdownEl.style.top = "0";
                 _this.acDropdownEl.style.left = "0";
                 _this.acDropdownEl.style.display = "inline-block";
-                var thisInputElBCR = _this.inputEl.getBoundingClientRect();
-                component.inputEl.style.width = thisInputElBCR.width + "px";
-                component.inputEl.style.height = thisInputElBCR.height + "px";
-                component.inputEl.focus();
-                component.closeToBottom =
-                    !!(thisInputElBCR.bottom + 100 > window.innerHeight);
+                var thisInputElBCR_1 = _this.inputEl.getBoundingClientRect();
+                //Fix for Ng1/Ng2 both. on Ng1/Ng2 env. component.ngOnInit kicks in later than we think
+                //Not sure this is a good fix to add another setTimeout
+                setTimeout(function () {
+                    component_1.inputEl.style.width = thisInputElBCR_1.width + "px";
+                    component_1.inputEl.style.height = thisInputElBCR_1.height + "px";
+                    component_1.inputEl.focus();
+                    component_1.closeToBottom = !!(thisInputElBCR_1.bottom + 100 > window.innerHeight);
+                });
             }
         };
         this.componentInputChanged = function (val) {
@@ -119,7 +120,9 @@ var Ng2AutoCompleteDirective = (function () {
     Ng2AutoCompleteDirective.prototype.addToStringFunction = function (val) {
         if (val && typeof val === "object") {
             var displayVal_1 = val[this.displayPropertyName || "value"];
-            val.toString = function () { return displayVal_1; };
+            val.toString = function () {
+                return displayVal_1;
+            };
         }
         return val;
     };
@@ -135,7 +138,6 @@ var Ng2AutoCompleteDirective = (function () {
             if (el === containerEl) {
                 return true;
             }
-            ;
         }
         return false;
     };

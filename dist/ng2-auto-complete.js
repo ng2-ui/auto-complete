@@ -1,7 +1,7 @@
 "use strict";
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
-require("rxjs/Rx");
+require("rxjs/add/operator/map");
 /**
  * provides auto-complete related utility functions
  */

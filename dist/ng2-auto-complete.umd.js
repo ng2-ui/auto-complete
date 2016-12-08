@@ -1,12 +1,12 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@angular/core"), require("@angular/http"), require("rxjs/Rx"), require("@angular/common"), require("@angular/forms"));
+		module.exports = factory(require("@angular/core"), require("@angular/http"), require("rxjs/add/operator/map"), require("@angular/common"), require("@angular/forms"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@angular/core", "@angular/http", "rxjs/Rx", "@angular/common", "@angular/forms"], factory);
+		define(["@angular/core", "@angular/http", "rxjs/add/operator/map", "@angular/common", "@angular/forms"], factory);
 	else if(typeof exports === 'object')
-		exports["ng2-auto-complete"] = factory(require("@angular/core"), require("@angular/http"), require("rxjs/Rx"), require("@angular/common"), require("@angular/forms"));
+		exports["ng2-auto-complete"] = factory(require("@angular/core"), require("@angular/http"), require("rxjs/add/operator/map"), require("@angular/common"), require("@angular/forms"));
 	else
-		root["ng2-auto-complete"] = factory(root["@angular/core"], root["@angular/http"], root["rxjs/Rx"], root["@angular/common"], root["@angular/forms"]);
+		root["ng2-auto-complete"] = factory(root["@angular/core"], root["@angular/http"], root["rxjs/add/operator/map"], root["@angular/common"], root["@angular/forms"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_6__, __WEBPACK_EXTERNAL_MODULE_7__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -418,7 +418,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            selector: "ng2-auto-complete",
 	            template: "\n  <div class=\"ng2-auto-complete\">\n\n    <!-- keyword input -->\n    <input class=\"keyword\"\n           placeholder=\"{{placeholder}}\"\n           (focus)=\"showDropdownList()\"\n           (blur)=\"hideDropdownList()\"\n           (keydown)=\"inputElKeyHandler($event)\"\n           (input)=\"reloadListInDelay()\"\n           [(ngModel)]=\"keyword\" />\n\n    <!-- dropdown that user can select -->\n    <ul *ngIf=\"dropdownVisible\"\n        [style.bottom]=\"inputEl.style.height\"\n        [style.position]=\"closeToBottom ? 'absolute': ''\">\n      <li *ngIf=\"isLoading\" class=\"loading\">{{loadingText}}</li>\n      <li *ngIf=\"blankOptionText\"\n          (mousedown)=\"selectOne('')\"\n          class=\"blank-item\">{{blankOptionText}}</li>\n      <li class=\"item\"\n          *ngFor=\"let item of filteredList; let i=index\"\n          (mousedown)=\"selectOne(item)\"\n          [ngClass]=\"{selected: i === itemIndex}\"\n          [innerHtml]=\"getFormattedList(item)\">\n      </li>\n    </ul>\n\n  </div>",
 	            providers: [ng2_auto_complete_1.Ng2AutoComplete],
-	            styles: ["\n  @keyframes slideDown {\n    0% {\n      transform:  translateY(-10px);\n    }\n    100% {\n      transform: translateY(0px);\n    }\n  }\n  .ng2-auto-complete ng2-auto-complete {\n    background-color: transparent;\n  }\n  .ng2-auto-complete ng2-auto-complete input {\n    outline: none;\n    border: 0px;\n    padding: 2px; \n    box-sizing: border-box;\n    background-clip: content-box;\n  }\n\n  .ng2-auto-complete ng2-auto-complete ul {\n    background-color: #fff;\n    margin: 0;\n    width : 100%;\n    overflow-y: auto;\n    list-style-type: none;\n    padding: 0;\n    border: 1px solid #ccc;\n    box-sizing: border-box;\n    animation: slideDown 0.1s;\n  }\n\n  .ng2-auto-complete ng2-auto-complete ul li {\n    padding: 2px 5px;\n    border-bottom: 1px solid #eee;\n  }\n\n  .ng2-auto-complete ng2-auto-complete ul li.selected {\n    background-color: #ccc;\n  }\n\n  .ng2-auto-complete ng2-auto-complete ul li:last-child {\n    border-bottom: none;\n  }\n\n  .ng2-auto-complete ng2-auto-complete ul li:hover {\n    background-color: #ccc;\n  }"
+	            styles: ["\n  @keyframes slideDown {\n    0% {\n      transform:  translateY(-10px);\n    }\n    100% {\n      transform: translateY(0px);\n    }\n  }\n  .ng2-auto-complete ng2-auto-complete {\n    background-color: transparent;\n  }\n  .ng2-auto-complete ng2-auto-complete input {\n    outline: none;\n    border: 0;\n    padding: 2px; \n    box-sizing: border-box;\n    background-clip: content-box;\n  }\n\n  .ng2-auto-complete ng2-auto-complete ul {\n    background-color: #fff;\n    margin: 0;\n    width : 100%;\n    overflow-y: auto;\n    list-style-type: none;\n    padding: 0;\n    border: 1px solid #ccc;\n    box-sizing: border-box;\n    animation: slideDown 0.1s;\n  }\n\n  .ng2-auto-complete ng2-auto-complete ul li {\n    padding: 2px 5px;\n    border-bottom: 1px solid #eee;\n  }\n\n  .ng2-auto-complete ng2-auto-complete ul li.selected {\n    background-color: #ccc;\n  }\n\n  .ng2-auto-complete ng2-auto-complete ul li:last-child {\n    border-bottom: none;\n  }\n\n  .ng2-auto-complete ng2-auto-complete ul li:hover {\n    background-color: #ccc;\n  }"
 	            ],
 	            encapsulation: core_1.ViewEncapsulation.None
 	        }), 
@@ -444,7 +444,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(2);
-	__webpack_require__(4);
 	var ng2_auto_complete_component_1 = __webpack_require__(8);
 	/**
 	 * display auto-complete section with input and dropdown list when it is clicked
@@ -460,8 +459,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.hideAutoCompleteDropdown = function (event) {
 	            if (_this.componentRef) {
 	                if (event && event.type === "click" &&
-	                    event.target.tagName !== "INPUT" &&
-	                    !_this.elementIn(event.target, _this.acDropdownEl)) {
+	                    event.target.tagName !== "INPUT" && !_this.elementIn(event.target, _this.acDropdownEl)) {
 	                    _this.componentRef.destroy();
 	                    _this.componentRef = undefined;
 	                }
@@ -473,7 +471,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        };
 	        this.styleAutoCompleteDropdown = function () {
 	            if (_this.componentRef) {
-	                var component = _this.componentRef.instance;
+	                var component_1 = _this.componentRef.instance;
 	                /* setting width/height auto complete */
 	                var thisElBCR = _this.el.getBoundingClientRect();
 	                _this.acDropdownEl.style.width = thisElBCR.width + "px";
@@ -482,12 +480,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	                _this.acDropdownEl.style.top = "0";
 	                _this.acDropdownEl.style.left = "0";
 	                _this.acDropdownEl.style.display = "inline-block";
-	                var thisInputElBCR = _this.inputEl.getBoundingClientRect();
-	                component.inputEl.style.width = thisInputElBCR.width + "px";
-	                component.inputEl.style.height = thisInputElBCR.height + "px";
-	                component.inputEl.focus();
-	                component.closeToBottom =
-	                    !!(thisInputElBCR.bottom + 100 > window.innerHeight);
+	                var thisInputElBCR_1 = _this.inputEl.getBoundingClientRect();
+	                //Fix for Ng1/Ng2 both. on Ng1/Ng2 env. component.ngOnInit kicks in later than we think
+	                //Not sure this is a good fix to add another setTimeout
+	                setTimeout(function () {
+	                    component_1.inputEl.style.width = thisInputElBCR_1.width + "px";
+	                    component_1.inputEl.style.height = thisInputElBCR_1.height + "px";
+	                    component_1.inputEl.focus();
+	                    component_1.closeToBottom = !!(thisInputElBCR_1.bottom + 100 > window.innerHeight);
+	                });
 	            }
 	        };
 	        this.componentInputChanged = function (val) {
@@ -563,7 +564,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    Ng2AutoCompleteDirective.prototype.addToStringFunction = function (val) {
 	        if (val && typeof val === "object") {
 	            var displayVal_1 = val[this.displayPropertyName || "value"];
-	            val.toString = function () { return displayVal_1; };
+	            val.toString = function () {
+	                return displayVal_1;
+	            };
 	        }
 	        return val;
 	    };
@@ -579,7 +582,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (el === containerEl) {
 	                return true;
 	            }
-	            ;
 	        }
 	        return false;
 	    };

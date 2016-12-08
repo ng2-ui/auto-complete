@@ -145,11 +145,15 @@ export class Ng2AutoCompleteDirective implements OnInit {
       this.acDropdownEl.style.display = "inline-block";
 
       let thisInputElBCR = this.inputEl.getBoundingClientRect();
-      component.inputEl.style.width = thisInputElBCR.width + "px";
-      component.inputEl.style.height = thisInputElBCR.height + "px";
-      component.inputEl.focus();
+      //Fix for Ng1/Ng2 both. on Ng1/Ng2 env. component.ngOnInit kicks in later than we think
+      //Not sure this is a good fix to add another setTimeout
+      setTimeout(() => {
+        component.inputEl.style.width = thisInputElBCR.width + "px";
+        component.inputEl.style.height = thisInputElBCR.height + "px";
+        component.inputEl.focus();
 
-      component.closeToBottom = !!(thisInputElBCR.bottom + 100 > window.innerHeight);
+        component.closeToBottom = !!(thisInputElBCR.bottom + 100 > window.innerHeight);
+      });
     }
   };
 

@@ -61,7 +61,7 @@ import { Ng2AutoComplete } from "./ng2-auto-complete";
   }
   .ng2-auto-complete ng2-auto-complete input {
     outline: none;
-    border: 0px;
+    border: 0;
     padding: 2px; 
     box-sizing: border-box;
     background-clip: content-box;
@@ -204,7 +204,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
             resp => {
 
               if (this.pathToData) {
-                var paths = this.pathToData.split(".");
+                let paths = this.pathToData.split(".");
                 paths.forEach(prop => resp = resp[prop]);
               }
 
@@ -279,7 +279,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
   }
 
   private delay = (function () {
-    var timer = 0;
+    let timer = 0;
     return function (callback: any, ms: number) {
       clearTimeout(timer);
       timer = setTimeout(callback, ms);

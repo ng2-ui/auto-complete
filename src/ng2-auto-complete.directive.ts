@@ -9,7 +9,6 @@ import {
   ComponentFactoryResolver,
   SimpleChanges
 } from "@angular/core";
-import "rxjs/Rx";
 
 import {Ng2AutoCompleteComponent} from "./ng2-auto-complete.component";
 
@@ -46,10 +45,8 @@ export class Ng2AutoCompleteDirective implements OnInit {
   acDropdownEl: HTMLElement; // auto complete element
   inputEl: HTMLInputElement;  // input tag
 
-  constructor(
-    private resolver: ComponentFactoryResolver,
-    public  viewContainerRef: ViewContainerRef
-  ) {
+  constructor(private resolver: ComponentFactoryResolver,
+              public  viewContainerRef: ViewContainerRef) {
     this.el = this.viewContainerRef.element.nativeElement;
   }
 
@@ -90,7 +87,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
 
     let factory = this.resolver.resolveComponentFactory(Ng2AutoCompleteComponent);
 
-    this.componentRef = this.viewContainerRef.createComponent(factory); 
+    this.componentRef = this.viewContainerRef.createComponent(factory);
 
     let component = this.componentRef.instance;
     component.listFormatter = this.listFormatter;
@@ -119,12 +116,11 @@ export class Ng2AutoCompleteDirective implements OnInit {
     setTimeout(this.styleAutoCompleteDropdown);
   }
 
-  hideAutoCompleteDropdown = (event?: any): void =>  {
+  hideAutoCompleteDropdown = (event?: any): void => {
     if (this.componentRef) {
       if (
         event && event.type === "click" &&
-        event.target.tagName !== "INPUT" &&
-        !this.elementIn(event.target, this.acDropdownEl)
+        event.target.tagName !== "INPUT" && !this.elementIn(event.target, this.acDropdownEl)
       ) {
         this.componentRef.destroy();
         this.componentRef = undefined;
@@ -149,19 +145,24 @@ export class Ng2AutoCompleteDirective implements OnInit {
       this.acDropdownEl.style.display = "inline-block";
 
       let thisInputElBCR = this.inputEl.getBoundingClientRect();
-      component.inputEl.style.width = thisInputElBCR.width + "px";
-      component.inputEl.style.height = thisInputElBCR.height + "px";
-      component.inputEl.focus();
+      //Fix for Ng1/Ng2 both. on Ng1/Ng2 env. component.ngOnInit kicks in later than we think
+      //Not sure this is a good fix to add another setTimeout
+      setTimeout(() => {
+        component.inputEl.style.width = thisInputElBCR.width + "px";
+        component.inputEl.style.height = thisInputElBCR.height + "px";
+        component.inputEl.focus();
 
-      component.closeToBottom =
-        !!(thisInputElBCR.bottom + 100 > window.innerHeight);
+        component.closeToBottom = !!(thisInputElBCR.bottom + 100 > window.innerHeight);
+      });
     }
   };
 
   addToStringFunction(val: any): any {
     if (val && typeof val === "object") {
       let displayVal = val[this.displayPropertyName || "value"];
-      val.toString = function() {return displayVal;}
+      val.toString = function () {
+        return displayVal;
+      }
     }
     return val;
   }
@@ -180,21 +181,23 @@ export class Ng2AutoCompleteDirective implements OnInit {
     }
     (val !== this.ngModel) && this.ngModelChange.emit(val);
     this.valueChanged.emit(val);
-    this.inputEl && (this.inputEl.value = ''+ val);
+    this.inputEl && (this.inputEl.value = '' + val);
     this.hideAutoCompleteDropdown();
   };
 
   private moveAutocompleteDropDownAfterInputEl(): void {
     this.inputEl = <HTMLInputElement>this.el;
     if (this.el.tagName !== "INPUT" && this.acDropdownEl) {
-      this.inputEl =  <HTMLInputElement>this.el.querySelector("input");
+      this.inputEl = <HTMLInputElement>this.el.querySelector("input");
       this.inputEl.parentElement.insertBefore(this.acDropdownEl, this.inputEl.nextSibling);
     }
   }
 
   private elementIn(el: Node, containerEl: Node): boolean {
-    while ( el = el.parentNode ) {
-      if ( el === containerEl ) { return true; };
+    while (el = el.parentNode) {
+      if (el === containerEl) {
+        return true;
+      }
     }
     return false;
   }

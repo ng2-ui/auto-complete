@@ -7,6 +7,7 @@ import {
   EventEmitter,
   OnInit,
   ComponentFactoryResolver,
+  Renderer,
   SimpleChanges
 } from "@angular/core";
 
@@ -46,6 +47,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
   inputEl: HTMLInputElement;  // input tag
 
   constructor(private resolver: ComponentFactoryResolver,
+              private renderer: Renderer,
               public  viewContainerRef: ViewContainerRef) {
     this.el = this.viewContainerRef.element.nativeElement;
   }
@@ -145,15 +147,13 @@ export class Ng2AutoCompleteDirective implements OnInit {
       this.acDropdownEl.style.display = "inline-block";
 
       let thisInputElBCR = this.inputEl.getBoundingClientRect();
-      //Fix for Ng1/Ng2 both. on Ng1/Ng2 env. component.ngOnInit kicks in later than we think
-      //Not sure this is a good fix to add another setTimeout
-      setTimeout(() => {
-        component.inputEl.style.width = thisInputElBCR.width + "px";
-        component.inputEl.style.height = thisInputElBCR.height + "px";
-        component.inputEl.focus();
 
-        component.closeToBottom = !!(thisInputElBCR.bottom + 100 > window.innerHeight);
-      });
+      // Not a good method of access the dom API directly.
+      // Best to use Angular to access it for you and pass the values / methods you wish to get updated
+      this.renderer.setElementStyle(component.autoCompleteInput.nativeElement, 'width', `${thisInputElBCR.width}px`);
+      this.renderer.setElementStyle(component.autoCompleteInput.nativeElement, 'height', `${thisInputElBCR.height}px`);
+      this.renderer.invokeElementMethod(component.autoCompleteInput.nativeElement, 'focus');
+      component.closeToBottom = (thisInputElBCR.bottom + 100 > window.innerHeight);
     }
   };
 

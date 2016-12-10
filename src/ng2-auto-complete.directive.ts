@@ -11,7 +11,7 @@ import {
   SimpleChanges
 } from "@angular/core";
 
-import {Ng2AutoCompleteComponent} from "./ng2-auto-complete.component";
+import { Ng2AutoCompleteComponent } from "./ng2-auto-complete.component";
 
 /**
  * display auto-complete section with input and dropdown list when it is clicked
@@ -46,9 +46,10 @@ export class Ng2AutoCompleteDirective implements OnInit {
   acDropdownEl: HTMLElement; // auto complete element
   inputEl: HTMLInputElement;  // input tag
 
-  constructor(private resolver: ComponentFactoryResolver,
-              private renderer: Renderer,
-              public  viewContainerRef: ViewContainerRef) {
+  constructor(
+    private resolver: ComponentFactoryResolver,
+    private renderer: Renderer,
+    public  viewContainerRef: ViewContainerRef) {
     this.el = this.viewContainerRef.element.nativeElement;
   }
 

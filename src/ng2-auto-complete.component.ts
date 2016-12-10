@@ -8,7 +8,7 @@ import {
   EventEmitter,
   ViewChild
 } from "@angular/core";
-import {Ng2AutoComplete} from "./ng2-auto-complete";
+import { Ng2AutoComplete } from "./ng2-auto-complete";
 
 /**
  * show a selected date in monthly calendar
@@ -140,8 +140,9 @@ export class Ng2AutoCompleteComponent implements OnInit {
   /**
    * constructor
    */
-  constructor(elementRef: ElementRef,
-              public autoComplete: Ng2AutoComplete) {
+  constructor(
+    elementRef: ElementRef,
+    public autoComplete: Ng2AutoComplete) {
     this.el = elementRef.nativeElement;
   }
 

@@ -49,7 +49,8 @@ export class Ng2AutoCompleteDirective implements OnInit {
   constructor(
     private resolver: ComponentFactoryResolver,
     private renderer: Renderer,
-    public  viewContainerRef: ViewContainerRef) {
+    public  viewContainerRef: ViewContainerRef
+  ) {
     this.el = this.viewContainerRef.element.nativeElement;
   }
 

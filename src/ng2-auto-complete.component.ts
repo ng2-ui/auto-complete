@@ -142,7 +142,8 @@ export class Ng2AutoCompleteComponent implements OnInit {
    */
   constructor(
     elementRef: ElementRef,
-    public autoComplete: Ng2AutoComplete) {
+    public autoComplete: Ng2AutoComplete
+  ) {
     this.el = elementRef.nativeElement;
   }
 

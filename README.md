@@ -85,6 +85,7 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   * **`valueChanged`** / **`ngModelChange`**, callback function that is executed when a new dropdown is selected.
      e.g. `(valueChanged)="myCallback($event)"`
   * **`loading-text`**, text to be displayed when loading. Default, "Loading"
+  * **`accept-user-input`** boolean, if `false` and does not match to source given, it goes back to the original value selected.
      
 ## For Developers
 

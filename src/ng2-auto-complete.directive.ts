@@ -54,7 +54,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
     // wrap this element with <div class="ng2-auto-complete">
     let divEl = document.createElement("div");
     divEl.className = "ng2-auto-complete";
-    divEl.style.display = "inline-block";
+    //divEl.style.display = "inline-block";
     divEl.style.position = "relative";
     this.el.parentElement.insertBefore(divEl, this.el.nextSibling);
     divEl.appendChild(this.el);

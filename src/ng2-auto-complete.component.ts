@@ -5,7 +5,8 @@ import {
   Output,
   OnInit,
   ViewEncapsulation,
-  EventEmitter
+  EventEmitter,
+  ViewChild
 } from "@angular/core";
 import { Ng2AutoComplete } from "./ng2-auto-complete";
 
@@ -13,7 +14,7 @@ import { Ng2AutoComplete } from "./ng2-auto-complete";
  * show a selected date in monthly calendar
  * Each filteredList item has the following property in addition to data itself
  *   1. displayValue as string e.g. Allen Kim
- *   2. dataValue as any e.g. 
+ *   2. dataValue as any e.g.
  */
 @Component({
   selector: "ng2-auto-complete",
@@ -21,7 +22,7 @@ import { Ng2AutoComplete } from "./ng2-auto-complete";
   <div class="ng2-auto-complete">
 
     <!-- keyword input -->
-    <input class="keyword"
+    <input #autoCompleteInput class="keyword"
            placeholder="{{placeholder}}"
            (focus)="showDropdownList()"
            (blur)="hideDropdownList()"
@@ -117,6 +118,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
 
   @Output() valueSelected = new EventEmitter();
   @Output() inputChanged = new EventEmitter();
+  @ViewChild('autoCompleteInput') autoCompleteInput: ElementRef;
 
   el: HTMLElement;           // this component  element `<ng2-auto-complete>`
   inputEl: HTMLInputElement; // `<input>` element in `<ng2-auto-complete>` for auto complete

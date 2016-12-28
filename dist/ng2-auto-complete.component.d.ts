@@ -24,6 +24,7 @@ export declare class Ng2AutoCompleteComponent implements OnInit {
     maxNumList: number;
     valueSelected: EventEmitter<{}>;
     inputChanged: EventEmitter<{}>;
+    autoCompleteInput: ElementRef;
     el: HTMLElement;
     inputEl: HTMLInputElement;
     userInputEl: any;

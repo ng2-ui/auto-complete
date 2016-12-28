@@ -35,7 +35,8 @@ import { Ng2AutoComplete } from "./ng2-auto-complete";
         [style.bottom]="inputEl.style.height"
         [style.position]="closeToBottom ? 'absolute': ''">
       <li *ngIf="isLoading" class="loading">{{loadingText}}</li>
-      <li *ngIf="blankOptionText"
+      <li *ngIf="!filteredList.length">No Match Found</li>
+      <li *ngIf="blankOptionText && filteredList.length"
           (mousedown)="selectOne('')"
           class="blank-item">{{blankOptionText}}</li>
       <li class="item"
@@ -187,19 +188,17 @@ export class Ng2AutoCompleteComponent implements OnInit {
 
     this.dropdownVisible = true;
 
-    if (this.isSrcArr()) {
-      // local source
+    if (this.isSrcArr()) {    // local source
       if (keyword.length >= (this.minChars || 0)) {
         this.filteredList = this.autoComplete.filter(this.source, this.keyword);
         if (this.maxNumList) {
           this.filteredList = this.filteredList.slice(0, this.maxNumList);
         }
       }
-    } else {
-
-      this.isLoading = true;
-
+    } else {                 // remote source
       if (keyword.length >= (this.minChars || 0)) {
+        this.isLoading = true;
+
         if (typeof this.source === "function") {
           // custom function that returns observable 
           this.source(keyword).subscribe(

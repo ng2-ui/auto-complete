@@ -8,7 +8,7 @@ import "rxjs/add/operator/catch";
 export class AppSvc {
 
     marvelBase: string = "http://gateway.marvel.com:80/v1/public/";
-    marvelPublicKey: string = "5c579505fa7a2edf1012092308ad2d27";
+    marvelPublicKey: string = "b9ced31de3874eb2c065a5bce26f8c59";
 
     constructor(private _http: Http) {
         console.info("AppSvc created");

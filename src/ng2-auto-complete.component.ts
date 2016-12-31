@@ -35,7 +35,7 @@ import { Ng2AutoComplete } from "./ng2-auto-complete";
         [style.bottom]="inputEl.style.height"
         [style.position]="closeToBottom ? 'absolute': ''">
       <li *ngIf="isLoading" class="loading">{{loadingText}}</li>
-      <li *ngIf="!filteredList.length">No Match Found</li>
+      <li *ngIf="!isLoading && !filteredList.length">No Match Found</li>
       <li *ngIf="blankOptionText && filteredList.length"
           (mousedown)="selectOne('')"
           class="blank-item">{{blankOptionText}}</li>
@@ -160,10 +160,11 @@ export class Ng2AutoCompleteComponent implements OnInit {
 
   reloadListInDelay(): void {
     let delayMs = this.isSrcArr() ? 10 : 500;
+    let keyword = this.inputEl.value;
 
     // executing after user stopped typing
-    this.delay(() => this.reloadList(), delayMs);
-    this.inputChanged.emit(this.inputEl.value);
+    this.delay(() => this.reloadList(keyword), delayMs);
+    this.inputChanged.emit(keyword);
   }
 
   showDropdownList(): void {
@@ -174,7 +175,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
     this.userInputElTabIndex = this.userInputEl['tabIndex'];
     this.userInputEl['tabIndex'] = -100;  //disable tab focus for <shift-tab> pressed
 
-    this.reloadList();
+    this.reloadList(this.keyword);
   }
 
   hideDropdownList(): void {
@@ -183,55 +184,53 @@ export class Ng2AutoCompleteComponent implements OnInit {
     this.userInputEl['tabIndex'] = this.userInputElTabIndex; // enable tab focus
   }
 
-  reloadList(): void {
-    let keyword = this.inputEl.value;
+  reloadList(keyword: string): void {
+
+    if (keyword.length < (this.minChars || 0)) {
+      return;
+    }
 
     this.dropdownVisible = true;
 
     if (this.isSrcArr()) {    // local source
-      if (keyword.length >= (this.minChars || 0)) {
-        this.filteredList = this.autoComplete.filter(this.source, this.keyword);
-        if (this.maxNumList) {
-          this.filteredList = this.filteredList.slice(0, this.maxNumList);
-        }
+      this.isLoading = false;
+      this.filteredList = this.autoComplete.filter(this.source, this.keyword);
+      if (this.maxNumList) {
+        this.filteredList = this.filteredList.slice(0, this.maxNumList);
       }
     } else {                 // remote source
-      if (keyword.length >= (this.minChars || 0)) {
-        this.isLoading = true;
+      this.isLoading = true;
 
-        if (typeof this.source === "function") {
-          // custom function that returns observable 
-          this.source(keyword).subscribe(
-            resp => {
+      if (typeof this.source === "function") {
+        // custom function that returns observable
+        this.source(keyword).subscribe(
+          resp => {
 
-              if (this.pathToData) {
-                let paths = this.pathToData.split(".");
-                paths.forEach(prop => resp = resp[prop]);
-              }
+            if (this.pathToData) {
+              let paths = this.pathToData.split(".");
+              paths.forEach(prop => resp = resp[prop]);
+            }
 
-              this.filteredList = resp;
-              if (this.maxNumList) {
-                this.filteredList = this.filteredList.slice(0, this.maxNumList);
-              }
-            },
-            error => null,
-            () => this.isLoading = false // complete
-          );
-        } else {
-          // remote source
+            this.filteredList = resp;
+            if (this.maxNumList) {
+              this.filteredList = this.filteredList.slice(0, this.maxNumList);
+            }
+          },
+          error => null,
+          () => this.isLoading = false // complete
+        );
+      } else {
+        // remote source
 
-          this.autoComplete.getRemoteData(keyword)
-            .subscribe(
-              resp => {
-                this.filteredList = (<any>resp);
-                if (this.maxNumList) {
-                  this.filteredList = this.filteredList.slice(0, this.maxNumList);
-                }
-              },
-              error => null,
-              () => this.isLoading = false // complete
-            );
-        }
+        this.autoComplete.getRemoteData(keyword).subscribe(resp => {
+            this.filteredList = (<any>resp);
+            if (this.maxNumList) {
+              this.filteredList = this.filteredList.slice(0, this.maxNumList);
+            }
+          },
+          error => null,
+          () => this.isLoading = false // complete
+        );
       }
     }
   }

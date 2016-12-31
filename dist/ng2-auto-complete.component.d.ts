@@ -47,7 +47,7 @@ export declare class Ng2AutoCompleteComponent implements OnInit {
     reloadListInDelay(): void;
     showDropdownList(): void;
     hideDropdownList(): void;
-    reloadList(): void;
+    reloadList(keyword: string): void;
     selectOne(data: any): void;
     inputElKeyHandler(evt: any): void;
     getFormattedList(data: any): string;

@@ -96,7 +96,8 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
      e.g. `(valueChanged)="myCallback($event)"`
   * **`loading-text`**, text to be displayed when loading. Default, "Loading"
   * **`accept-user-input`** boolean, if `false` and does not match to source given, it goes back to the original value selected.
-     
+  * **`max-num-list`** number, maximun number of drop down list items. Default, unlimited
+  
 ## For Developers
 
 ### To start

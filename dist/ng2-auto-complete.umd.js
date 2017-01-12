@@ -445,13 +445,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
+	var __param = (this && this.__param) || function (paramIndex, decorator) {
+	    return function (target, key) { decorator(target, key, paramIndex); }
+	};
 	var core_1 = __webpack_require__(2);
 	var ng2_auto_complete_component_1 = __webpack_require__(8);
+	var forms_1 = __webpack_require__(7);
 	/**
 	 * display auto-complete section with input and dropdown list when it is clicked
 	 */
 	var Ng2AutoCompleteDirective = (function () {
-	    function Ng2AutoCompleteDirective(resolver, renderer, viewContainerRef) {
+	    function Ng2AutoCompleteDirective(resolver, renderer, viewContainerRef, parent) {
 	        var _this = this;
 	        this.resolver = resolver;
 	        this.renderer = renderer;
@@ -495,6 +499,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.componentInputChanged = function (val) {
 	            if (_this.acceptUserInput !== false) {
 	                _this.inputEl.value = val;
+	                (_this._parent && _this._parent.form.get(_this.formControlName).setValue(val));
 	                (val !== _this.ngModel) && _this.ngModelChange.emit(val);
 	                _this.valueChanged.emit(val);
 	            }
@@ -503,12 +508,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (val !== '') {
 	                val = _this.addToStringFunction(val);
 	            }
+	            (_this._parent && !!val && _this._parent.form.get(_this.formControlName).setValue(val));
 	            (val !== _this.ngModel) && _this.ngModelChange.emit(val);
 	            _this.valueChanged.emit(val);
 	            _this.inputEl && (_this.inputEl.value = '' + val);
 	            _this.hideAutoCompleteDropdown();
 	        };
 	        this.el = this.viewContainerRef.element.nativeElement;
+	        this._parent = parent;
 	    }
 	    Ng2AutoCompleteDirective.prototype.ngOnInit = function () {
 	        // wrap this element with <div class="ng2-auto-complete">
@@ -642,6 +649,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        core_1.Output(), 
 	        __metadata('design:type', Object)
 	    ], Ng2AutoCompleteDirective.prototype, "valueChanged", void 0);
+	    __decorate([
+	        core_1.Input('formControlName'), 
+	        __metadata('design:type', String)
+	    ], Ng2AutoCompleteDirective.prototype, "formControlName", void 0);
 	    Ng2AutoCompleteDirective = __decorate([
 	        core_1.Directive({
 	            selector: "[auto-complete], [ng2-auto-complete]",
@@ -649,8 +660,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	                "(click)": "showAutoCompleteDropdown()",
 	                "(focus)": "showAutoCompleteDropdown()"
 	            }
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ComponentFactoryResolver, core_1.Renderer, core_1.ViewContainerRef])
+	        }),
+	        __param(3, core_1.Optional()),
+	        __param(3, core_1.Host()),
+	        __param(3, core_1.SkipSelf()), 
+	        __metadata('design:paramtypes', [core_1.ComponentFactoryResolver, core_1.Renderer, core_1.ViewContainerRef, forms_1.ControlContainer])
 	    ], Ng2AutoCompleteDirective);
 	    return Ng2AutoCompleteDirective;
 	}());

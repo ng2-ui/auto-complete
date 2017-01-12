@@ -1,11 +1,12 @@
 "use strict";
 var core_1 = require("@angular/core");
 var ng2_auto_complete_component_1 = require("./ng2-auto-complete.component");
+var forms_1 = require("@angular/forms");
 /**
  * display auto-complete section with input and dropdown list when it is clicked
  */
 var Ng2AutoCompleteDirective = (function () {
-    function Ng2AutoCompleteDirective(resolver, renderer, viewContainerRef) {
+    function Ng2AutoCompleteDirective(resolver, renderer, viewContainerRef, parent) {
         var _this = this;
         this.resolver = resolver;
         this.renderer = renderer;
@@ -49,6 +50,7 @@ var Ng2AutoCompleteDirective = (function () {
         this.componentInputChanged = function (val) {
             if (_this.acceptUserInput !== false) {
                 _this.inputEl.value = val;
+                (_this._parent && _this._parent.form.get(_this.formControlName).setValue(val));
                 (val !== _this.ngModel) && _this.ngModelChange.emit(val);
                 _this.valueChanged.emit(val);
             }
@@ -57,12 +59,14 @@ var Ng2AutoCompleteDirective = (function () {
             if (val !== '') {
                 val = _this.addToStringFunction(val);
             }
+            (_this._parent && !!val && _this._parent.form.get(_this.formControlName).setValue(val));
             (val !== _this.ngModel) && _this.ngModelChange.emit(val);
             _this.valueChanged.emit(val);
             _this.inputEl && (_this.inputEl.value = '' + val);
             _this.hideAutoCompleteDropdown();
         };
         this.el = this.viewContainerRef.element.nativeElement;
+        this._parent = parent;
     }
     Ng2AutoCompleteDirective.prototype.ngOnInit = function () {
         // wrap this element with <div class="ng2-auto-complete">
@@ -154,6 +158,7 @@ var Ng2AutoCompleteDirective = (function () {
         { type: core_1.ComponentFactoryResolver, },
         { type: core_1.Renderer, },
         { type: core_1.ViewContainerRef, },
+        { type: forms_1.ControlContainer, decorators: [{ type: core_1.Optional }, { type: core_1.Host }, { type: core_1.SkipSelf },] },
     ];
     Ng2AutoCompleteDirective.propDecorators = {
         'autoCompletePlaceholder': [{ type: core_1.Input, args: ["auto-complete-placeholder",] },],
@@ -170,6 +175,7 @@ var Ng2AutoCompleteDirective = (function () {
         'ngModel': [{ type: core_1.Input },],
         'ngModelChange': [{ type: core_1.Output },],
         'valueChanged': [{ type: core_1.Output },],
+        'formControlName': [{ type: core_1.Input, args: ['formControlName',] },],
     };
     return Ng2AutoCompleteDirective;
 }());

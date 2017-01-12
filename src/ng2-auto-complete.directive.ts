@@ -8,10 +8,13 @@ import {
   OnInit,
   ComponentFactoryResolver,
   Renderer,
-  SimpleChanges
+  SimpleChanges,
+  SkipSelf,
+  Host,
+  Optional
 } from "@angular/core";
-
 import { Ng2AutoCompleteComponent } from "./ng2-auto-complete.component";
+import { ControlContainer } from "@angular/forms";
 
 /**
  * display auto-complete section with input and dropdown list when it is clicked
@@ -40,18 +43,23 @@ export class Ng2AutoCompleteDirective implements OnInit {
   @Input() ngModel: String;
   @Output() ngModelChange = new EventEmitter();
   @Output() valueChanged = new EventEmitter();
+  @Input('formControlName') formControlName: string;
 
   componentRef: ComponentRef<Ng2AutoCompleteComponent>;
   el: HTMLElement;   // input element
   acDropdownEl: HTMLElement; // auto complete element
   inputEl: HTMLInputElement;  // input tag
+  /** @internal */
+  _parent:any;      // parent Form for Reactive Forms Module
 
   constructor(
     private resolver: ComponentFactoryResolver,
     private renderer: Renderer,
-    public  viewContainerRef: ViewContainerRef
+    public  viewContainerRef: ViewContainerRef,
+    @Optional() @Host() @SkipSelf() parent: ControlContainer
   ) {
     this.el = this.viewContainerRef.element.nativeElement;
+    this._parent = parent;
   }
 
   ngOnInit(): void {
@@ -172,6 +180,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
   componentInputChanged = (val: string) => {
     if (this.acceptUserInput !== false) {
       this.inputEl.value = val;
+      (this._parent && this._parent.form.get(this.formControlName).setValue(val));
       (val !== this.ngModel) && this.ngModelChange.emit(val);
       this.valueChanged.emit(val);
     }
@@ -181,6 +190,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
     if (val !== '') {
       val = this.addToStringFunction(val);
     }
+    (this._parent && !!val && this._parent.form.get(this.formControlName).setValue(val));
     (val !== this.ngModel) && this.ngModelChange.emit(val);
     this.valueChanged.emit(val);
     this.inputEl && (this.inputEl.value = '' + val);

@@ -263,9 +263,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    Ng2AutoCompleteComponent.prototype.reloadListInDelay = function () {
 	        var _this = this;
 	        var delayMs = this.isSrcArr() ? 10 : 500;
+	        var keyword = this.inputEl.value;
 	        // executing after user stopped typing
-	        this.delay(function () { return _this.reloadList(); }, delayMs);
-	        this.inputChanged.emit(this.inputEl.value);
+	        this.delay(function () { return _this.reloadList(keyword); }, delayMs);
+	        this.inputChanged.emit(keyword);
 	    };
 	    Ng2AutoCompleteComponent.prototype.showDropdownList = function () {
 	        this.keyword = this.userInputEl.value;
@@ -273,54 +274,51 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.inputEl.focus();
 	        this.userInputElTabIndex = this.userInputEl['tabIndex'];
 	        this.userInputEl['tabIndex'] = -100; //disable tab focus for <shift-tab> pressed
-	        this.reloadList();
+	        this.reloadList(this.keyword);
 	    };
 	    Ng2AutoCompleteComponent.prototype.hideDropdownList = function () {
 	        this.inputEl.style.display = 'none';
 	        this.dropdownVisible = false;
 	        this.userInputEl['tabIndex'] = this.userInputElTabIndex; // enable tab focus
 	    };
-	    Ng2AutoCompleteComponent.prototype.reloadList = function () {
+	    Ng2AutoCompleteComponent.prototype.reloadList = function (keyword) {
 	        var _this = this;
-	        var keyword = this.inputEl.value;
+	        if (keyword.length < (this.minChars || 0)) {
+	            return;
+	        }
 	        this.dropdownVisible = true;
 	        if (this.isSrcArr()) {
-	            // local source
-	            if (keyword.length >= (this.minChars || 0)) {
-	                this.filteredList = this.autoComplete.filter(this.source, this.keyword);
-	                if (this.maxNumList) {
-	                    this.filteredList = this.filteredList.slice(0, this.maxNumList);
-	                }
+	            this.isLoading = false;
+	            this.filteredList = this.autoComplete.filter(this.source, this.keyword);
+	            if (this.maxNumList) {
+	                this.filteredList = this.filteredList.slice(0, this.maxNumList);
 	            }
 	        }
 	        else {
 	            this.isLoading = true;
-	            if (keyword.length >= (this.minChars || 0)) {
-	                if (typeof this.source === "function") {
-	                    // custom function that returns observable 
-	                    this.source(keyword).subscribe(function (resp) {
-	                        if (_this.pathToData) {
-	                            var paths = _this.pathToData.split(".");
-	                            paths.forEach(function (prop) { return resp = resp[prop]; });
-	                        }
-	                        _this.filteredList = resp;
-	                        if (_this.maxNumList) {
-	                            _this.filteredList = _this.filteredList.slice(0, _this.maxNumList);
-	                        }
-	                    }, function (error) { return null; }, function () { return _this.isLoading = false; } // complete
-	                    );
-	                }
-	                else {
-	                    // remote source
-	                    this.autoComplete.getRemoteData(keyword)
-	                        .subscribe(function (resp) {
-	                        _this.filteredList = resp;
-	                        if (_this.maxNumList) {
-	                            _this.filteredList = _this.filteredList.slice(0, _this.maxNumList);
-	                        }
-	                    }, function (error) { return null; }, function () { return _this.isLoading = false; } // complete
-	                    );
-	                }
+	            if (typeof this.source === "function") {
+	                // custom function that returns observable
+	                this.source(keyword).subscribe(function (resp) {
+	                    if (_this.pathToData) {
+	                        var paths = _this.pathToData.split(".");
+	                        paths.forEach(function (prop) { return resp = resp[prop]; });
+	                    }
+	                    _this.filteredList = resp;
+	                    if (_this.maxNumList) {
+	                        _this.filteredList = _this.filteredList.slice(0, _this.maxNumList);
+	                    }
+	                }, function (error) { return null; }, function () { return _this.isLoading = false; } // complete
+	                );
+	            }
+	            else {
+	                // remote source
+	                this.autoComplete.getRemoteData(keyword).subscribe(function (resp) {
+	                    _this.filteredList = resp;
+	                    if (_this.maxNumList) {
+	                        _this.filteredList = _this.filteredList.slice(0, _this.maxNumList);
+	                    }
+	                }, function (error) { return null; }, function () { return _this.isLoading = false; } // complete
+	                );
 	            }
 	        }
 	    };
@@ -413,10 +411,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        core_1.Output(), 
 	        __metadata('design:type', Object)
 	    ], Ng2AutoCompleteComponent.prototype, "inputChanged", void 0);
+	    __decorate([
+	        core_1.ViewChild('autoCompleteInput'), 
+	        __metadata('design:type', core_1.ElementRef)
+	    ], Ng2AutoCompleteComponent.prototype, "autoCompleteInput", void 0);
 	    Ng2AutoCompleteComponent = __decorate([
 	        core_1.Component({
 	            selector: "ng2-auto-complete",
-	            template: "\n  <div class=\"ng2-auto-complete\">\n\n    <!-- keyword input -->\n    <input class=\"keyword\"\n           placeholder=\"{{placeholder}}\"\n           (focus)=\"showDropdownList()\"\n           (blur)=\"hideDropdownList()\"\n           (keydown)=\"inputElKeyHandler($event)\"\n           (input)=\"reloadListInDelay()\"\n           [(ngModel)]=\"keyword\" />\n\n    <!-- dropdown that user can select -->\n    <ul *ngIf=\"dropdownVisible\"\n        [style.bottom]=\"inputEl.style.height\"\n        [style.position]=\"closeToBottom ? 'absolute': ''\">\n      <li *ngIf=\"isLoading\" class=\"loading\">{{loadingText}}</li>\n      <li *ngIf=\"blankOptionText\"\n          (mousedown)=\"selectOne('')\"\n          class=\"blank-item\">{{blankOptionText}}</li>\n      <li class=\"item\"\n          *ngFor=\"let item of filteredList; let i=index\"\n          (mousedown)=\"selectOne(item)\"\n          [ngClass]=\"{selected: i === itemIndex}\"\n          [innerHtml]=\"getFormattedList(item)\">\n      </li>\n    </ul>\n\n  </div>",
+	            template: "\n  <div class=\"ng2-auto-complete\">\n\n    <!-- keyword input -->\n    <input #autoCompleteInput class=\"keyword\"\n           placeholder=\"{{placeholder}}\"\n           (focus)=\"showDropdownList()\"\n           (blur)=\"hideDropdownList()\"\n           (keydown)=\"inputElKeyHandler($event)\"\n           (input)=\"reloadListInDelay()\"\n           [(ngModel)]=\"keyword\" />\n\n    <!-- dropdown that user can select -->\n    <ul *ngIf=\"dropdownVisible\"\n        [style.bottom]=\"inputEl.style.height\"\n        [style.position]=\"closeToBottom ? 'absolute': ''\">\n      <li *ngIf=\"isLoading\" class=\"loading\">{{loadingText}}</li>\n      <li *ngIf=\"!isLoading && !filteredList.length\">No Match Found</li>\n      <li *ngIf=\"blankOptionText && filteredList.length\"\n          (mousedown)=\"selectOne('')\"\n          class=\"blank-item\">{{blankOptionText}}</li>\n      <li class=\"item\"\n          *ngFor=\"let item of filteredList; let i=index\"\n          (mousedown)=\"selectOne(item)\"\n          [ngClass]=\"{selected: i === itemIndex}\"\n          [innerHtml]=\"getFormattedList(item)\">\n      </li>\n    </ul>\n\n  </div>",
 	            providers: [ng2_auto_complete_1.Ng2AutoComplete],
 	            styles: ["\n  @keyframes slideDown {\n    0% {\n      transform:  translateY(-10px);\n    }\n    100% {\n      transform: translateY(0px);\n    }\n  }\n  .ng2-auto-complete ng2-auto-complete {\n    background-color: transparent;\n  }\n  .ng2-auto-complete ng2-auto-complete input {\n    outline: none;\n    border: 0;\n    padding: 2px; \n    box-sizing: border-box;\n    background-clip: content-box;\n  }\n\n  .ng2-auto-complete ng2-auto-complete ul {\n    background-color: #fff;\n    margin: 0;\n    width : 100%;\n    overflow-y: auto;\n    list-style-type: none;\n    padding: 0;\n    border: 1px solid #ccc;\n    box-sizing: border-box;\n    animation: slideDown 0.1s;\n  }\n\n  .ng2-auto-complete ng2-auto-complete ul li {\n    padding: 2px 5px;\n    border-bottom: 1px solid #eee;\n  }\n\n  .ng2-auto-complete ng2-auto-complete ul li.selected {\n    background-color: #ccc;\n  }\n\n  .ng2-auto-complete ng2-auto-complete ul li:last-child {\n    border-bottom: none;\n  }\n\n  .ng2-auto-complete ng2-auto-complete ul li:hover {\n    background-color: #ccc;\n  }"
 	            ],
@@ -449,9 +451,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * display auto-complete section with input and dropdown list when it is clicked
 	 */
 	var Ng2AutoCompleteDirective = (function () {
-	    function Ng2AutoCompleteDirective(resolver, viewContainerRef) {
+	    function Ng2AutoCompleteDirective(resolver, renderer, viewContainerRef) {
 	        var _this = this;
 	        this.resolver = resolver;
+	        this.renderer = renderer;
 	        this.viewContainerRef = viewContainerRef;
 	        this.loadingText = "Loading";
 	        this.ngModelChange = new core_1.EventEmitter();
@@ -471,7 +474,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        };
 	        this.styleAutoCompleteDropdown = function () {
 	            if (_this.componentRef) {
-	                var component_1 = _this.componentRef.instance;
+	                var component = _this.componentRef.instance;
 	                /* setting width/height auto complete */
 	                var thisElBCR = _this.el.getBoundingClientRect();
 	                _this.acDropdownEl.style.width = thisElBCR.width + "px";
@@ -480,15 +483,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	                _this.acDropdownEl.style.top = "0";
 	                _this.acDropdownEl.style.left = "0";
 	                _this.acDropdownEl.style.display = "inline-block";
-	                var thisInputElBCR_1 = _this.inputEl.getBoundingClientRect();
-	                //Fix for Ng1/Ng2 both. on Ng1/Ng2 env. component.ngOnInit kicks in later than we think
-	                //Not sure this is a good fix to add another setTimeout
-	                setTimeout(function () {
-	                    component_1.inputEl.style.width = thisInputElBCR_1.width + "px";
-	                    component_1.inputEl.style.height = thisInputElBCR_1.height + "px";
-	                    component_1.inputEl.focus();
-	                    component_1.closeToBottom = !!(thisInputElBCR_1.bottom + 100 > window.innerHeight);
-	                });
+	                var thisInputElBCR = _this.inputEl.getBoundingClientRect();
+	                // Not a good method of access the dom API directly.
+	                // Best to use Angular to access it for you and pass the values / methods you wish to get updated
+	                _this.renderer.setElementStyle(component.autoCompleteInput.nativeElement, 'width', thisInputElBCR.width + "px");
+	                _this.renderer.setElementStyle(component.autoCompleteInput.nativeElement, 'height', thisInputElBCR.height + "px");
+	                _this.renderer.invokeElementMethod(component.autoCompleteInput.nativeElement, 'focus');
+	                component.closeToBottom = (thisInputElBCR.bottom + 100 > window.innerHeight);
 	            }
 	        };
 	        this.componentInputChanged = function (val) {
@@ -513,7 +514,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // wrap this element with <div class="ng2-auto-complete">
 	        var divEl = document.createElement("div");
 	        divEl.className = "ng2-auto-complete";
-	        divEl.style.display = "inline-block";
+	        //divEl.style.display = "inline-block"; //this makes material design not compatible
 	        divEl.style.position = "relative";
 	        this.el.parentElement.insertBefore(divEl, this.el.nextSibling);
 	        divEl.appendChild(this.el);
@@ -649,7 +650,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                "(focus)": "showAutoCompleteDropdown()"
 	            }
 	        }), 
-	        __metadata('design:paramtypes', [core_1.ComponentFactoryResolver, core_1.ViewContainerRef])
+	        __metadata('design:paramtypes', [core_1.ComponentFactoryResolver, core_1.Renderer, core_1.ViewContainerRef])
 	    ], Ng2AutoCompleteDirective);
 	    return Ng2AutoCompleteDirective;
 	}());

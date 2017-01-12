@@ -7,10 +7,11 @@ import {
   EventEmitter,
   OnInit,
   ComponentFactoryResolver,
+  Renderer,
   SimpleChanges
 } from "@angular/core";
 
-import {Ng2AutoCompleteComponent} from "./ng2-auto-complete.component";
+import { Ng2AutoCompleteComponent } from "./ng2-auto-complete.component";
 
 /**
  * display auto-complete section with input and dropdown list when it is clicked
@@ -45,8 +46,11 @@ export class Ng2AutoCompleteDirective implements OnInit {
   acDropdownEl: HTMLElement; // auto complete element
   inputEl: HTMLInputElement;  // input tag
 
-  constructor(private resolver: ComponentFactoryResolver,
-              public  viewContainerRef: ViewContainerRef) {
+  constructor(
+    private resolver: ComponentFactoryResolver,
+    private renderer: Renderer,
+    public  viewContainerRef: ViewContainerRef
+  ) {
     this.el = this.viewContainerRef.element.nativeElement;
   }
 
@@ -54,7 +58,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
     // wrap this element with <div class="ng2-auto-complete">
     let divEl = document.createElement("div");
     divEl.className = "ng2-auto-complete";
-    divEl.style.display = "inline-block";
+    //divEl.style.display = "inline-block"; //this makes material design not compatible
     divEl.style.position = "relative";
     this.el.parentElement.insertBefore(divEl, this.el.nextSibling);
     divEl.appendChild(this.el);
@@ -145,15 +149,13 @@ export class Ng2AutoCompleteDirective implements OnInit {
       this.acDropdownEl.style.display = "inline-block";
 
       let thisInputElBCR = this.inputEl.getBoundingClientRect();
-      //Fix for Ng1/Ng2 both. on Ng1/Ng2 env. component.ngOnInit kicks in later than we think
-      //Not sure this is a good fix to add another setTimeout
-      setTimeout(() => {
-        component.inputEl.style.width = thisInputElBCR.width + "px";
-        component.inputEl.style.height = thisInputElBCR.height + "px";
-        component.inputEl.focus();
 
-        component.closeToBottom = !!(thisInputElBCR.bottom + 100 > window.innerHeight);
-      });
+      // Not a good method of access the dom API directly.
+      // Best to use Angular to access it for you and pass the values / methods you wish to get updated
+      this.renderer.setElementStyle(component.autoCompleteInput.nativeElement, 'width', `${thisInputElBCR.width}px`);
+      this.renderer.setElementStyle(component.autoCompleteInput.nativeElement, 'height', `${thisInputElBCR.height}px`);
+      this.renderer.invokeElementMethod(component.autoCompleteInput.nativeElement, 'focus');
+      component.closeToBottom = (thisInputElBCR.bottom + 100 > window.innerHeight);
     }
   };
 

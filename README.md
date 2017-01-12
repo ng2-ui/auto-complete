@@ -14,8 +14,10 @@ Angular2 Auto Complete
 Plunker example: http://plnkr.co/edit/3pB1Gx?p=preview
   
 Plunker example used with FormGroup
- http://plnkr.co/edit/CxeAHUgeNfH25Cp7RM43?p=preview [issue #49](https://github.com/ng2-ui/ng2-auto-complete/issues/49)
+  http://plnkr.co/edit/CxeAHUgeNfH25Cp7RM43?p=preview [issue #49](https://github.com/ng2-ui/ng2-auto-complete/issues/49)
 
+Plunker example with material design
+  http://plnkr.co/edit/2YLDjX?p=preview&open=app/app.component.ts
 
 ## Install
 
@@ -76,7 +78,15 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   * **`ngModel`**, any, variable that autocomplete result is assigned to
   * **`source`**, array or string, required. data source for dropdown list
   * **`auto-complete-placeholder`**,  string, autocomplete input guide text
-  * **`list-formatter`**, function variable name, custom list formatting function.e.g. 'myListFormatter', not 'myListFormatter()'
+  * **`list-formatter`**, function variable name, custom list formatting function. e.g. 'myListFormatter', not 'myListFormatter()'. 
+  
+           myListFormatter(data: any): string {
+              let html: string = "";
+              html += data[this.valuePropertyName] ? `<b>(${data[this.valuePropertyName]})</b>` : "";
+              html += data[this.displayPropertyName] ? `<span>${data[this.displayPropertyName]}</span>` : data;
+              return html;
+            }
+  
   * **`path-to-data`**, string, e.g., `data.myList`, path to array data in http response
   * **`min-chars, number`**, when source is remote data, the number of character to see dropdown list
   * **`value-property-name`**, string, key name of value. default is `id`
@@ -85,7 +95,9 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   * **`valueChanged`** / **`ngModelChange`**, callback function that is executed when a new dropdown is selected.
      e.g. `(valueChanged)="myCallback($event)"`
   * **`loading-text`**, text to be displayed when loading. Default, "Loading"
-     
+  * **`accept-user-input`** boolean, if `false` and does not match to source given, it goes back to the original value selected.
+  * **`max-num-list`** number, maximun number of drop down list items. Default, unlimited
+  
 ## For Developers
 
 ### To start

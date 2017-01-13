@@ -36,6 +36,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
   @Input("value-property-name") valuePropertyName: string;
   @Input("display-property-name") displayPropertyName: string;
   @Input("blank-option-text") blankOptionText: string;
+  @Input("no-match-found-text") noMatchFoundText: string;
   @Input("accept-user-input") acceptUserInput: boolean;
   @Input("loading-text") loadingText: string = "Loading";
   @Input("max-num-list") maxNumList: string;
@@ -111,6 +112,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
     component.source = this.source;
     component.placeholder = this.autoCompletePlaceholder;
     component.blankOptionText = this.blankOptionText;
+    component.noMatchFoundText = this.noMatchFoundText;
     component.acceptUserInput = this.acceptUserInput;
     component.loadingText = this.loadingText;
     component.maxNumList = parseInt(this.maxNumList, 10);

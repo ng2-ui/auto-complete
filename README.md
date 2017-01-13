@@ -93,6 +93,7 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   * **`value-property-name`**, string, key name of value. default is `id`
   * **`display-property-name`**, string, key name of text to show. default is `value`
   * **`blank-option-text`**, string, guide text to allow empty value to be selected as in empty value of `option` tag.
+  * **`no-match-found-text`**, string, guide text to show no result found.
   * **`valueChanged`** / **`ngModelChange`**, callback function that is executed when a new dropdown is selected.
      e.g. `(valueChanged)="myCallback($event)"`
   * **`loading-text`**, text to be displayed when loading. Default, "Loading"

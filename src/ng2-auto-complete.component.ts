@@ -35,7 +35,9 @@ import { Ng2AutoComplete } from "./ng2-auto-complete";
         [style.bottom]="inputEl.style.height"
         [style.position]="closeToBottom ? 'absolute': ''">
       <li *ngIf="isLoading" class="loading">{{loadingText}}</li>
-      <li *ngIf="!isLoading && !filteredList.length">No Match Found</li>
+      <li *ngIf="minCharsEntered && !isLoading && !filteredList.length"
+           (mousedown)="selectOne('')"
+           class="blank-item">{{noMatchFoundText || 'No Result Found'}}</li>
       <li *ngIf="blankOptionText && filteredList.length"
           (mousedown)="selectOne('')"
           class="blank-item">{{blankOptionText}}</li>
@@ -113,6 +115,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
   @Input("display-property-name") displayPropertyName: string = "value";
   @Input("placeholder") placeholder: string;
   @Input("blank-option-text") blankOptionText: string;
+  @Input("no-match-found-text") noMatchFoundText: string;
   @Input("accept-user-input") acceptUserInput: boolean;
   @Input("loading-text") loadingText: string = "Loading";
   @Input("max-num-list") maxNumList: number;
@@ -131,6 +134,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
   isLoading: boolean = false;
 
   filteredList: any[] = [];
+  minCharsEntered: boolean = false;
   itemIndex: number = 0;
   keyword: string;
 
@@ -186,8 +190,12 @@ export class Ng2AutoCompleteComponent implements OnInit {
 
   reloadList(keyword: string): void {
 
+    this.filteredList = [];
     if (keyword.length < (this.minChars || 0)) {
+      this.minCharsEntered = false;
       return;
+    } else {
+      this.minCharsEntered = true;
     }
 
     this.dropdownVisible = true;

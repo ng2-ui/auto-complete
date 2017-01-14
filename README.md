@@ -13,15 +13,14 @@ Angular2 Auto Complete
 
 Plunker example: http://plnkr.co/edit/3pB1Gx?p=preview
   
-Plunker example used with FormGroup
+Plunker example used with FormGroup  
   http://plnkr.co/edit/CxeAHUgeNfH25Cp7RM43?p=preview 
-  [issue #49](https://github.com/ng2-ui/ng2-auto-complete/issues/49)
 
-Plunker example with material design
+Plunker example with material design  
   http://plnkr.co/edit/2YLDjX?p=preview&open=app/app.component.ts
   
-Plunker example with Observable(e.g. http)
- http://plnkr.co/edit/j5rU6c?p=preview&open=app/app.component.ts
+Plunker example with Observable(e.g. http)  
+  http://plnkr.co/edit/j5rU6c?p=preview&open=app/app.component.ts
 
 ## Install
 

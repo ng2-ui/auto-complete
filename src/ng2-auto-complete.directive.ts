@@ -14,7 +14,7 @@ import {
   Optional
 } from "@angular/core";
 import { Ng2AutoCompleteComponent } from "./ng2-auto-complete.component";
-import { ControlContainer } from "@angular/forms";
+import { ControlContainer, AbstractControl, FormGroup } from "@angular/forms";
 
 /**
  * display auto-complete section with input and dropdown list when it is clicked
@@ -50,17 +50,15 @@ export class Ng2AutoCompleteDirective implements OnInit {
   el: HTMLElement;   // input element
   acDropdownEl: HTMLElement; // auto complete element
   inputEl: HTMLInputElement;  // input tag
-  /** @internal */
-  _parent:any;      // parent Form for Reactive Forms Module
+  formControl: AbstractControl;
 
   constructor(
     private resolver: ComponentFactoryResolver,
     private renderer: Renderer,
     public  viewContainerRef: ViewContainerRef,
-    @Optional() @Host() @SkipSelf() parent: ControlContainer
+    @Optional() @Host() @SkipSelf() private parentForm: ControlContainer
   ) {
     this.el = this.viewContainerRef.element.nativeElement;
-    this._parent = parent;
   }
 
   ngOnInit(): void {
@@ -74,6 +72,10 @@ export class Ng2AutoCompleteDirective implements OnInit {
 
     // apply toString() method for the object
     this.selectNewValue(this.ngModel);
+    if(this.parentForm && this.formControlName){
+      if(this.parentForm['form'])
+      this.formControl = (<FormGroup>this.parentForm['form']).get(this.formControlName);
+    }
 
 
     // when somewhere else clicked, hide this autocomplete
@@ -182,7 +184,9 @@ export class Ng2AutoCompleteDirective implements OnInit {
   componentInputChanged = (val: string) => {
     if (this.acceptUserInput !== false) {
       this.inputEl.value = val;
-      (this._parent && this._parent.form.get(this.formControlName).setValue(val));
+      if(this.parentForm && this.formControlName) {
+        this.formControl.patchValue(val);
+      }
       (val !== this.ngModel) && this.ngModelChange.emit(val);
       this.valueChanged.emit(val);
     }
@@ -192,7 +196,9 @@ export class Ng2AutoCompleteDirective implements OnInit {
     if (val !== '') {
       val = this.addToStringFunction(val);
     }
-    (this._parent && !!val && this._parent.form.get(this.formControlName).setValue(val));
+    if(this.parentForm && !!val && this.formControlName) {
+      this.formControl.patchValue(val);
+    }
     (val !== this.ngModel) && this.ngModelChange.emit(val);
     this.valueChanged.emit(val);
     this.inputEl && (this.inputEl.value = '' + val);

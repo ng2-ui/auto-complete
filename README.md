@@ -19,6 +19,9 @@ Plunker example used with FormGroup
 
 Plunker example with material design
   http://plnkr.co/edit/2YLDjX?p=preview&open=app/app.component.ts
+  
+Plunker example with Observable(e.g. http)
+ http://plnkr.co/edit/j5rU6c?p=preview&open=app/app.component.ts
 
 ## Install
 

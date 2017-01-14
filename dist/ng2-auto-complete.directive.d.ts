@@ -1,5 +1,6 @@
 import { ComponentRef, ViewContainerRef, EventEmitter, OnInit, ComponentFactoryResolver, Renderer, SimpleChanges } from "@angular/core";
 import { Ng2AutoCompleteComponent } from "./ng2-auto-complete.component";
+import { ControlContainer } from "@angular/forms";
 /**
  * display auto-complete section with input and dropdown list when it is clicked
  */
@@ -15,17 +16,21 @@ export declare class Ng2AutoCompleteDirective implements OnInit {
     valuePropertyName: string;
     displayPropertyName: string;
     blankOptionText: string;
+    noMatchFoundText: string;
     acceptUserInput: boolean;
     loadingText: string;
     maxNumList: string;
     ngModel: String;
     ngModelChange: EventEmitter<{}>;
     valueChanged: EventEmitter<{}>;
+    formControlName: string;
     componentRef: ComponentRef<Ng2AutoCompleteComponent>;
     el: HTMLElement;
     acDropdownEl: HTMLElement;
     inputEl: HTMLInputElement;
-    constructor(resolver: ComponentFactoryResolver, renderer: Renderer, viewContainerRef: ViewContainerRef);
+    /** @internal */
+    _parent: any;
+    constructor(resolver: ComponentFactoryResolver, renderer: Renderer, viewContainerRef: ViewContainerRef, parent: ControlContainer);
     ngOnInit(): void;
     ngOnDestroy(): void;
     ngOnChanges(changes: SimpleChanges): void;

@@ -14,7 +14,8 @@ Angular2 Auto Complete
 Plunker example: http://plnkr.co/edit/3pB1Gx?p=preview
   
 Plunker example used with FormGroup
-  http://plnkr.co/edit/CxeAHUgeNfH25Cp7RM43?p=preview [issue #49](https://github.com/ng2-ui/ng2-auto-complete/issues/49)
+  http://plnkr.co/edit/CxeAHUgeNfH25Cp7RM43?p=preview 
+  [issue #49](https://github.com/ng2-ui/ng2-auto-complete/issues/49)
 
 Plunker example with material design
   http://plnkr.co/edit/2YLDjX?p=preview&open=app/app.component.ts
@@ -92,6 +93,7 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   * **`value-property-name`**, string, key name of value. default is `id`
   * **`display-property-name`**, string, key name of text to show. default is `value`
   * **`blank-option-text`**, string, guide text to allow empty value to be selected as in empty value of `option` tag.
+  * **`no-match-found-text`**, string, guide text to show no result found.
   * **`valueChanged`** / **`ngModelChange`**, callback function that is executed when a new dropdown is selected.
      e.g. `(valueChanged)="myCallback($event)"`
   * **`loading-text`**, text to be displayed when loading. Default, "Loading"

@@ -11,6 +11,7 @@ import { AppSvc } from "./app.service";
     <h3>With Array of Strings</h3>
     <pre>source: {{json(arrayOfStrings)}}</pre>
     <div ng2-auto-complete 
+      [min-chars]="1"
       [source]="arrayOfStrings"
       [accept-user-input]="false"
       (ngModelChange)="myCallback($event)"
@@ -48,6 +49,7 @@ import { AppSvc } from "./app.service";
       [(ngModel)]="model4"
       placeholder="Enter Address(min. 2 chars)"
       [source]="googleGeoCode" 
+      no-match-found-text="No Match Found"
       display-property-name="formatted_address"
       path-to-data="results"
       loading-text="Google Is Thinking..."

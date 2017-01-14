@@ -23,7 +23,7 @@ var Ng2AutoCompleteModule = (function () {
                 },] },
     ];
     /** @nocollapse */
-    Ng2AutoCompleteModule.ctorParameters = [];
+    Ng2AutoCompleteModule.ctorParameters = function () { return []; };
     return Ng2AutoCompleteModule;
 }());
 exports.Ng2AutoCompleteModule = Ng2AutoCompleteModule;

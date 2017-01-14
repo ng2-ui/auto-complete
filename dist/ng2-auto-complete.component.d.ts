@@ -19,6 +19,7 @@ export declare class Ng2AutoCompleteComponent implements OnInit {
     displayPropertyName: string;
     placeholder: string;
     blankOptionText: string;
+    noMatchFoundText: string;
     acceptUserInput: boolean;
     loadingText: string;
     maxNumList: number;
@@ -33,6 +34,7 @@ export declare class Ng2AutoCompleteComponent implements OnInit {
     dropdownVisible: boolean;
     isLoading: boolean;
     filteredList: any[];
+    minCharsEntered: boolean;
     itemIndex: number;
     keyword: string;
     isSrcArr(): boolean;

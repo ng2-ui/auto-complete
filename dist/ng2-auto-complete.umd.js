@@ -465,11 +465,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * display auto-complete section with input and dropdown list when it is clicked
 	 */
 	var Ng2AutoCompleteDirective = (function () {
-	    function Ng2AutoCompleteDirective(resolver, renderer, viewContainerRef, parent) {
+	    function Ng2AutoCompleteDirective(resolver, renderer, viewContainerRef, parentForm) {
 	        var _this = this;
 	        this.resolver = resolver;
 	        this.renderer = renderer;
 	        this.viewContainerRef = viewContainerRef;
+	        this.parentForm = parentForm;
 	        this.loadingText = "Loading";
 	        this.ngModelChange = new core_1.EventEmitter();
 	        this.valueChanged = new core_1.EventEmitter();
@@ -509,7 +510,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.componentInputChanged = function (val) {
 	            if (_this.acceptUserInput !== false) {
 	                _this.inputEl.value = val;
-	                (_this._parent && _this._parent.form.get(_this.formControlName).setValue(val));
+	                if (_this.parentForm && _this.formControlName) {
+	                    _this.formControl.patchValue(val);
+	                }
 	                (val !== _this.ngModel) && _this.ngModelChange.emit(val);
 	                _this.valueChanged.emit(val);
 	            }
@@ -518,14 +521,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (val !== '') {
 	                val = _this.addToStringFunction(val);
 	            }
-	            (_this._parent && !!val && _this._parent.form.get(_this.formControlName).setValue(val));
+	            if (_this.parentForm && !!val && _this.formControlName) {
+	                _this.formControl.patchValue(val);
+	            }
 	            (val !== _this.ngModel) && _this.ngModelChange.emit(val);
 	            _this.valueChanged.emit(val);
 	            _this.inputEl && (_this.inputEl.value = '' + val);
 	            _this.hideAutoCompleteDropdown();
 	        };
 	        this.el = this.viewContainerRef.element.nativeElement;
-	        this._parent = parent;
 	    }
 	    Ng2AutoCompleteDirective.prototype.ngOnInit = function () {
 	        // wrap this element with <div class="ng2-auto-complete">
@@ -537,6 +541,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        divEl.appendChild(this.el);
 	        // apply toString() method for the object
 	        this.selectNewValue(this.ngModel);
+	        if (this.parentForm && this.formControlName) {
+	            if (this.parentForm['form'])
+	                this.formControl = this.parentForm['form'].get(this.formControlName);
+	        }
 	        // when somewhere else clicked, hide this autocomplete
 	        document.addEventListener("click", this.hideAutoCompleteDropdown);
 	    };

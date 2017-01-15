@@ -38,7 +38,7 @@ http://plnkr.co/edit/j5rU6c?p=preview&open=app/app.component.ts
 
         $ npm install ng2-auto-complete --save
 
-2. add `map` and `packages` to your `systemjs.config.js`
+2. add `map` and `packages` to your `systemjs.config.js` unless you are using `webpack`
 
         map['ng2-auto-complete'] = 'node_modules/ng2-auto-complete/dist';
         packages['ng2-auto-complete'] = { main: 'ng2-auto-complete.umd.js', defaultExtension: 'js' }

@@ -15,7 +15,6 @@ Below are plunks for different scenarios:
 **`Template Driven Forms`**
 
 _ngModel_ http://plnkr.co/edit/3pB1Gx?p=preview
-
   
 **`Reactive Forms`**
 
@@ -26,13 +25,13 @@ _FormControl_ http://plnkr.co/edit/yCNNqBffko1VZFGpI2KU?p=preview
   [issue #100](https://github.com/ng2-ui/ng2-auto-complete/issues/100)
 
 
-Plunker example with material design  
+**`Material Design`**
 
-  http://plnkr.co/edit/2YLDjX?p=preview&open=app/app.component.ts
-  
-Plunker example with Observable(e.g. http)  
-  http://plnkr.co/edit/j5rU6c?p=preview&open=app/app.component.ts
+   http://plnkr.co/edit/2YLDjX?p=preview&open=app/app.component.ts
 
+**`Obervable Source`**
+
+http://plnkr.co/edit/j5rU6c?p=preview&open=app/app.component.ts
 ## Install
 
 1. install ng2-auto-complete

@@ -14,7 +14,7 @@ import {
   Optional
 } from "@angular/core";
 import { Ng2AutoCompleteComponent } from "./ng2-auto-complete.component";
-import { ControlContainer, AbstractControl, FormGroup } from "@angular/forms";
+import { ControlContainer, AbstractControl, FormGroup, FormControl } from "@angular/forms";
 
 /**
  * display auto-complete section with input and dropdown list when it is clicked
@@ -42,9 +42,14 @@ export class Ng2AutoCompleteDirective implements OnInit {
   @Input("max-num-list") maxNumList: string;
 
   @Input() ngModel: String;
+  @Input('formControlName') formControlName: string;
+  //if [formControl] is used on the anchor where our directive is sitting
+  //a form is not necessary to use a formControl we should also support this
+  @Input('formControl') extFormControl: FormControl;
+
   @Output() ngModelChange = new EventEmitter();
   @Output() valueChanged = new EventEmitter();
-  @Input('formControlName') formControlName: string;
+
 
   componentRef: ComponentRef<Ng2AutoCompleteComponent>;
   el: HTMLElement;   // input element
@@ -72,9 +77,15 @@ export class Ng2AutoCompleteDirective implements OnInit {
 
     // apply toString() method for the object
     this.selectNewValue(this.ngModel);
-    if(this.parentForm && this.formControlName){
-      if(this.parentForm['form'])
-      this.formControl = (<FormGroup>this.parentForm['form']).get(this.formControlName);
+
+    //Check if we were supplied with a [formControlName] and it is inside a [form]
+    //else check if we are supplied with a [FormControl] regardless if it is inside a [form] tag
+    if (this.parentForm && this.formControlName) {
+      if (this.parentForm['form']) {
+        this.formControl = (<FormGroup>this.parentForm['form']).get(this.formControlName);
+      }
+    } else if (this.extFormControl) {
+      this.formControl = this.extFormControl;
     }
 
 
@@ -184,7 +195,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
   componentInputChanged = (val: string) => {
     if (this.acceptUserInput !== false) {
       this.inputEl.value = val;
-      if(this.parentForm && this.formControlName) {
+      if ((this.parentForm && this.formControlName) || this.extFormControl) {
         this.formControl.patchValue(val);
       }
       (val !== this.ngModel) && this.ngModelChange.emit(val);
@@ -196,8 +207,10 @@ export class Ng2AutoCompleteDirective implements OnInit {
     if (val !== '') {
       val = this.addToStringFunction(val);
     }
-    if(this.parentForm && !!val && this.formControlName) {
-      this.formControl.patchValue(val);
+    if ((this.parentForm && this.formControlName) || this.extFormControl) {
+      if (!!val) {
+        this.formControl.patchValue(val);
+      }
     }
     (val !== this.ngModel) && this.ngModelChange.emit(val);
     this.valueChanged.emit(val);

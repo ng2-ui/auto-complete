@@ -51,7 +51,7 @@ var Ng2AutoCompleteDirective = (function () {
         this.componentInputChanged = function (val) {
             if (_this.acceptUserInput !== false) {
                 _this.inputEl.value = val;
-                if (_this.parentForm && _this.formControlName) {
+                if ((_this.parentForm && _this.formControlName) || _this.extFormControl) {
                     _this.formControl.patchValue(val);
                 }
                 (val !== _this.ngModel) && _this.ngModelChange.emit(val);
@@ -62,8 +62,10 @@ var Ng2AutoCompleteDirective = (function () {
             if (val !== '') {
                 val = _this.addToStringFunction(val);
             }
-            if (_this.parentForm && !!val && _this.formControlName) {
-                _this.formControl.patchValue(val);
+            if ((_this.parentForm && _this.formControlName) || _this.extFormControl) {
+                if (!!val) {
+                    _this.formControl.patchValue(val);
+                }
             }
             (val !== _this.ngModel) && _this.ngModelChange.emit(val);
             _this.valueChanged.emit(val);
@@ -82,9 +84,15 @@ var Ng2AutoCompleteDirective = (function () {
         divEl.appendChild(this.el);
         // apply toString() method for the object
         this.selectNewValue(this.ngModel);
+        //Check if we were supplied with a [formControlName] and it is inside a [form]
+        //else check if we are supplied with a [FormControl] regardless if it is inside a [form] tag
         if (this.parentForm && this.formControlName) {
-            if (this.parentForm['form'])
+            if (this.parentForm['form']) {
                 this.formControl = this.parentForm['form'].get(this.formControlName);
+            }
+        }
+        else if (this.extFormControl) {
+            this.formControl = this.extFormControl;
         }
         // when somewhere else clicked, hide this autocomplete
         document.addEventListener("click", this.hideAutoCompleteDropdown);
@@ -183,9 +191,10 @@ var Ng2AutoCompleteDirective = (function () {
         'loadingText': [{ type: core_1.Input, args: ["loading-text",] },],
         'maxNumList': [{ type: core_1.Input, args: ["max-num-list",] },],
         'ngModel': [{ type: core_1.Input },],
+        'formControlName': [{ type: core_1.Input, args: ['formControlName',] },],
+        'extFormControl': [{ type: core_1.Input, args: ['formControl',] },],
         'ngModelChange': [{ type: core_1.Output },],
         'valueChanged': [{ type: core_1.Output },],
-        'formControlName': [{ type: core_1.Input, args: ['formControlName',] },],
     };
     return Ng2AutoCompleteDirective;
 }());

@@ -510,7 +510,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.componentInputChanged = function (val) {
 	            if (_this.acceptUserInput !== false) {
 	                _this.inputEl.value = val;
-	                if (_this.parentForm && _this.formControlName) {
+	                if ((_this.parentForm && _this.formControlName) || _this.extFormControl) {
 	                    _this.formControl.patchValue(val);
 	                }
 	                (val !== _this.ngModel) && _this.ngModelChange.emit(val);
@@ -521,8 +521,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (val !== '') {
 	                val = _this.addToStringFunction(val);
 	            }
-	            if (_this.parentForm && !!val && _this.formControlName) {
-	                _this.formControl.patchValue(val);
+	            if ((_this.parentForm && _this.formControlName) || _this.extFormControl) {
+	                if (!!val) {
+	                    _this.formControl.patchValue(val);
+	                }
 	            }
 	            (val !== _this.ngModel) && _this.ngModelChange.emit(val);
 	            _this.valueChanged.emit(val);
@@ -541,9 +543,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        divEl.appendChild(this.el);
 	        // apply toString() method for the object
 	        this.selectNewValue(this.ngModel);
+	        //Check if we were supplied with a [formControlName] and it is inside a [form]
+	        //else check if we are supplied with a [FormControl] regardless if it is inside a [form] tag
 	        if (this.parentForm && this.formControlName) {
-	            if (this.parentForm['form'])
+	            if (this.parentForm['form']) {
 	                this.formControl = this.parentForm['form'].get(this.formControlName);
+	            }
+	        }
+	        else if (this.extFormControl) {
+	            this.formControl = this.extFormControl;
 	        }
 	        // when somewhere else clicked, hide this autocomplete
 	        document.addEventListener("click", this.hideAutoCompleteDropdown);
@@ -665,6 +673,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        __metadata('design:type', String)
 	    ], Ng2AutoCompleteDirective.prototype, "ngModel", void 0);
 	    __decorate([
+	        core_1.Input('formControlName'), 
+	        __metadata('design:type', String)
+	    ], Ng2AutoCompleteDirective.prototype, "formControlName", void 0);
+	    __decorate([
+	        core_1.Input('formControl'), 
+	        __metadata('design:type', forms_1.FormControl)
+	    ], Ng2AutoCompleteDirective.prototype, "extFormControl", void 0);
+	    __decorate([
 	        core_1.Output(), 
 	        __metadata('design:type', Object)
 	    ], Ng2AutoCompleteDirective.prototype, "ngModelChange", void 0);
@@ -672,10 +688,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        core_1.Output(), 
 	        __metadata('design:type', Object)
 	    ], Ng2AutoCompleteDirective.prototype, "valueChanged", void 0);
-	    __decorate([
-	        core_1.Input('formControlName'), 
-	        __metadata('design:type', String)
-	    ], Ng2AutoCompleteDirective.prototype, "formControlName", void 0);
 	    Ng2AutoCompleteDirective = __decorate([
 	        core_1.Directive({
 	            selector: "[auto-complete], [ng2-auto-complete]",

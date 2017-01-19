@@ -10,23 +10,35 @@ Angular2 Auto Complete
   <img src="http://i.imgur.com/dAmheg0.png" />
 </a>
 
+Below are plunks for different scenarios:
 
-Plunker example: http://plnkr.co/edit/3pB1Gx?p=preview
+**`Template Driven Forms`**
+
+_ngModel_ http://plnkr.co/edit/3pB1Gx?p=preview
   
-Plunker example used with FormGroup
-  http://plnkr.co/edit/CxeAHUgeNfH25Cp7RM43?p=preview 
+**`Reactive Forms`**
+
+ _FormGroup_  http://plnkr.co/edit/2XRrck2cWVWcvbJnj6z5?p=preview
   [issue #49](https://github.com/ng2-ui/ng2-auto-complete/issues/49)
 
-Plunker example with material design
-  http://plnkr.co/edit/2YLDjX?p=preview&open=app/app.component.ts
+_FormControl_ http://plnkr.co/edit/yCNNqBffko1VZFGpI2KU?p=preview 
+  [issue #100](https://github.com/ng2-ui/ng2-auto-complete/issues/100)
 
+
+**`Material Design`**
+
+   http://plnkr.co/edit/2YLDjX?p=preview&open=app/app.component.ts
+
+**`Obervable Source`**
+
+http://plnkr.co/edit/j5rU6c?p=preview&open=app/app.component.ts
 ## Install
 
 1. install ng2-auto-complete
 
         $ npm install ng2-auto-complete --save
 
-2. add `map` and `packages` to your `systemjs.config.js`
+2. add `map` and `packages` to your `systemjs.config.js` unless you are using `webpack`
 
         map['ng2-auto-complete'] = 'node_modules/ng2-auto-complete/dist';
         packages['ng2-auto-complete'] = { main: 'ng2-auto-complete.umd.js', defaultExtension: 'js' }

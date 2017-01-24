@@ -77,7 +77,7 @@ var Ng2AutoCompleteDirective = (function () {
     Ng2AutoCompleteDirective.prototype.ngOnInit = function () {
         // wrap this element with <div class="ng2-auto-complete">
         var divEl = document.createElement("div");
-        divEl.className = "ng2-auto-complete";
+        divEl.className = "ng2-auto-complete-wrapper";
         //divEl.style.display = "inline-block"; //this makes material design not compatible
         divEl.style.position = "relative";
         this.el.parentElement.insertBefore(divEl, this.el.nextSibling);

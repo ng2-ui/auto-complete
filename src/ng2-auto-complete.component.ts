@@ -60,10 +60,10 @@ import { Ng2AutoComplete } from "./ng2-auto-complete";
       transform: translateY(0px);
     }
   }
-  .ng2-auto-complete ng2-auto-complete {
+  .ng2-auto-complete {
     background-color: transparent;
   }
-  .ng2-auto-complete ng2-auto-complete input {
+  .ng2-auto-complete > input {
     outline: none;
     border: 0;
     padding: 2px; 
@@ -71,7 +71,7 @@ import { Ng2AutoComplete } from "./ng2-auto-complete";
     background-clip: content-box;
   }
 
-  .ng2-auto-complete ng2-auto-complete ul {
+  .ng2-auto-complete > ul {
     background-color: #fff;
     margin: 0;
     width : 100%;
@@ -83,20 +83,20 @@ import { Ng2AutoComplete } from "./ng2-auto-complete";
     animation: slideDown 0.1s;
   }
 
-  .ng2-auto-complete ng2-auto-complete ul li {
+  .ng2-auto-complete > ul li {
     padding: 2px 5px;
     border-bottom: 1px solid #eee;
   }
 
-  .ng2-auto-complete ng2-auto-complete ul li.selected {
+  .ng2-auto-complete > ul li.selected {
     background-color: #ccc;
   }
 
-  .ng2-auto-complete ng2-auto-complete ul li:last-child {
+  .ng2-auto-complete > ul li:last-child {
     border-bottom: none;
   }
 
-  .ng2-auto-complete ng2-auto-complete ul li:hover {
+  .ng2-auto-complete > ul li:hover {
     background-color: #ccc;
   }`
   ],
@@ -183,7 +183,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
   }
 
   hideDropdownList(): void {
-    this.inputEl.style.display = 'none';
+    //this.inputEl.style.display = 'none';
     this.dropdownVisible = false;
     this.userInputEl['tabIndex'] = this.userInputElTabIndex; // enable tab focus
   }

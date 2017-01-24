@@ -69,7 +69,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
   ngOnInit(): void {
     // wrap this element with <div class="ng2-auto-complete">
     let divEl = document.createElement("div");
-    divEl.className = "ng2-auto-complete";
+    divEl.className = "ng2-auto-complete-wrapper";
     //divEl.style.display = "inline-block"; //this makes material design not compatible
     divEl.style.position = "relative";
     this.el.parentElement.insertBefore(divEl, this.el.nextSibling);

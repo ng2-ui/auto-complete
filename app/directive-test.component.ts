@@ -6,7 +6,7 @@ import { AppSvc } from "./app.service";
 let templateStr: string = `
   <h1> Autocomplete Directive Test - Local Source </h1>
     
-  <fieldset><legend><h2>With Array of Strings</h2></legend>
+  <fieldset><legend><h2>Source as Array of Strings</h2></legend>
     <ng2-utils-1>
       <div ng2-auto-complete 
         [min-chars]="1"
@@ -22,7 +22,7 @@ let templateStr: string = `
     <pre> arrayOfStrings: {{json(arrayOfStrings)}}</pre>
   </fieldset>
     
-  <fieldset><legend><h2>With Array of id/value</h2></legend>
+  <fieldset><legend><h2>Source as Array of id/value</h2></legend>
     <ng2-utils-2>
       <input 
         id="model2"
@@ -38,7 +38,7 @@ let templateStr: string = `
     <pre>arrayOfKeyValues: {{json(arrayOfKeyValues)}}</pre>
   </fieldset>
     
-  <fieldset><legend><h2>With Array of Key/Name</h2></legend>
+  <fieldset><legend><h2>Source as Array of Key/Name</h2></legend>
     <ng2-utils-3>
       <input ng2-auto-complete [source]="arrayOfKeyValues2"
         id="model3"
@@ -53,7 +53,7 @@ let templateStr: string = `
   </fieldset>
   
       
-  <fieldset><legend><h2>With Remote Source as HTTP URI String</h2></legend>
+  <fieldset><legend><h2>Source as HTTP URI String</h2></legend>
     <ng2-utils-4>
       <input  ng2-auto-complete
         id="model4"

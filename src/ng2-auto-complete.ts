@@ -33,6 +33,10 @@ export class Ng2AutoComplete {
     }
 
     let matches = this.source.match(/:[a-zA-Z_]+/);
+    if (matches === null) {
+      throw "Replacement word is missing.";
+    }
+
     let replacementWord = matches[0];
     let url = this.source.replace(replacementWord, keyword);
 

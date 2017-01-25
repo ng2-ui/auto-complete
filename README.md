@@ -21,7 +21,7 @@ _ngModel_ http://plnkr.co/edit/3pB1Gx?p=preview
  _FormGroup_  http://plnkr.co/edit/2XRrck2cWVWcvbJnj6z5?p=preview
   [issue #49](https://github.com/ng2-ui/ng2-auto-complete/issues/49)
 
-_FormControl_ http://plnkr.co/edit/yCNNqBffko1VZFGpI2KU?p=preview 
+_FormControl_ http://plnkr.co/edit/WfgdcHLc8KDvsI2G2tHw?p=preview
   [issue #100](https://github.com/ng2-ui/ng2-auto-complete/issues/100)
 
 

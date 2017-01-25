@@ -22,18 +22,18 @@ import { Ng2AutoComplete } from "./ng2-auto-complete";
   <div class="ng2-auto-complete">
 
     <!-- keyword input -->
-    <input #autoCompleteInput class="keyword"
+    <input *ngIf="showInputTag"
+           #autoCompleteInput class="keyword"
            placeholder="{{placeholder}}"
            (focus)="showDropdownList()"
            (blur)="hideDropdownList()"
            (keydown)="inputElKeyHandler($event)"
-           (input)="reloadListInDelay()"
+           (input)="reloadListInDelay($event)"
            [(ngModel)]="keyword" />
 
     <!-- dropdown that user can select -->
-    <ul *ngIf="dropdownVisible"
-        [style.bottom]="inputEl.style.height"
-        [style.position]="closeToBottom ? 'absolute': ''">
+    dropdownVisible: {{dropdownVisible}}
+    <ul *ngIf="dropdownVisible">
       <li *ngIf="isLoading" class="loading">{{loadingText}}</li>
       <li *ngIf="minCharsEntered && !isLoading && !filteredList.length"
            (mousedown)="selectOne('')"
@@ -119,6 +119,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
   @Input("accept-user-input") acceptUserInput: boolean;
   @Input("loading-text") loadingText: string = "Loading";
   @Input("max-num-list") maxNumList: number;
+  @Input("show-input-tag") showInputTag: boolean = true;
 
   @Output() valueSelected = new EventEmitter();
   @Output() inputChanged = new EventEmitter();
@@ -127,9 +128,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
   el: HTMLElement;           // this component  element `<ng2-auto-complete>`
   inputEl: HTMLInputElement; // `<input>` element in `<ng2-auto-complete>` for auto complete
   userInputEl: any;      // directive element that called this element `<input ng2-auto-complete>`
-  userInputElTabIndex: any;
 
-  closeToBottom: boolean = false;
   dropdownVisible: boolean = false;
   isLoading: boolean = false;
 
@@ -162,30 +161,29 @@ export class Ng2AutoCompleteComponent implements OnInit {
     this.autoComplete.pathToData = this.pathToData;
   }
 
-  reloadListInDelay(): void {
+  reloadListInDelay = (evt: any): void  => {
     let delayMs = this.isSrcArr() ? 10 : 500;
-    let keyword = this.inputEl.value;
+    let keyword = evt.target.value;
+    console.log('keyword...............', keyword);
 
     // executing after user stopped typing
     this.delay(() => this.reloadList(keyword), delayMs);
     this.inputChanged.emit(keyword);
-  }
+  };
 
-  showDropdownList(): void {
-    this.keyword = this.userInputEl.value;
-    this.inputEl.style.display = '';
-    this.inputEl.focus();
+  showDropdownList(keyword): void {
+    if (this.inputEl) {
+      this.inputEl.style.display = '';
+      this.inputEl.focus();
+    }
 
-    this.userInputElTabIndex = this.userInputEl['tabIndex'];
-    this.userInputEl['tabIndex'] = -100;  //disable tab focus for <shift-tab> pressed
-
-    this.reloadList(this.keyword);
+    this.dropdownVisible = true;
+    this.reloadList(keyword);
   }
 
   hideDropdownList(): void {
     //this.inputEl.style.display = 'none';
     this.dropdownVisible = false;
-    this.userInputEl['tabIndex'] = this.userInputElTabIndex; // enable tab focus
   }
 
   reloadList(keyword: string): void {
@@ -198,14 +196,14 @@ export class Ng2AutoCompleteComponent implements OnInit {
       this.minCharsEntered = true;
     }
 
-    this.dropdownVisible = true;
-
     if (this.isSrcArr()) {    // local source
       this.isLoading = false;
-      this.filteredList = this.autoComplete.filter(this.source, this.keyword);
+      this.filteredList = this.autoComplete.filter(this.source, keyword);
       if (this.maxNumList) {
         this.filteredList = this.filteredList.slice(0, this.maxNumList);
       }
+      console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', keyword, this.filteredList)
+
     } else {                 // remote source
       this.isLoading = true;
 
@@ -244,11 +242,10 @@ export class Ng2AutoCompleteComponent implements OnInit {
   }
 
   selectOne(data: any) {
-    this.hideDropdownList();
     this.valueSelected.emit(data);
   };
 
-  inputElKeyHandler(evt: any) {
+  inputElKeyHandler = (evt: any) => {
     let totalNumItem = this.filteredList.length;
 
     switch (evt.keyCode) {

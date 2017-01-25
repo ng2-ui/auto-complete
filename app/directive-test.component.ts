@@ -8,103 +8,18 @@ let templateStr: string = `
     
   <fieldset><legend><h2>Source as Array of Strings</h2></legend>
     <ng2-utils-1>
-      <div ng2-auto-complete 
-        [min-chars]="1"
+      <input ng2-auto-complete 
         [source]="arrayOfStrings"
         [accept-user-input]="false"
         (ngModelChange)="myCallback($event)"
-        placeholder="enter text">
-        <input id="model1" [ngModel]="model1" />
-      </div>
+        placeholder="enter text"
+        id="model1" [ngModel]="model1" />
       <br/>selected model1: {{json(model1)}}<br/><br/>
     </ng2-utils-1>
     <pre>{{templateStr | htmlCode:'ng2-utils-1'}}</pre>
     <pre> arrayOfStrings: {{json(arrayOfStrings)}}</pre>
   </fieldset>
     
-  <fieldset><legend><h2>Source as Array of id/value</h2></legend>
-    <ng2-utils-2>
-      <input 
-        id="model2"
-        ng2-auto-complete
-        blank-option-text="Select One"
-        [(ngModel)]="model2"
-        [source]="arrayOfKeyValues" 
-        placeholder="enter text"/> 
-      <a href="javascript:void(0)" (click)="model2={id:'change', value: 'it'}">Change It</a>
-      <br/>selected model2: {{model2 | json}}<br/><br/>
-    </ng2-utils-2>
-    <pre>{{templateStr | htmlCode:'ng2-utils-2'}}</pre>
-    <pre>arrayOfKeyValues: {{json(arrayOfKeyValues)}}</pre>
-  </fieldset>
-    
-  <fieldset><legend><h2>Source as Array of Key/Name</h2></legend>
-    <ng2-utils-3>
-      <input ng2-auto-complete [source]="arrayOfKeyValues2"
-        id="model3"
-        [(ngModel)]="model3"
-        placeholder="enter text"
-        value-property-name="key"
-        display-property-name="name"/>
-      <br/>selected model3: {{model3 | json}}<br/><br/>
-    </ng2-utils-3>
-    <pre>{{templateStr | htmlCode:'ng2-utils-3'}}</pre>
-    <pre>arrayOfKeyValues2: {{json(arrayOfKeyValues2)}}</pre>
-  </fieldset>
-  
-      
-  <fieldset><legend><h2>Source as HTTP URI String</h2></legend>
-    <ng2-utils-4>
-      <input  ng2-auto-complete
-        id="model4"
-        [(ngModel)]="model4"
-        placeholder="Enter Address(min. 2 chars)"
-        [source]="googleGeoCode" 
-        no-match-found-text="No Match Found"
-        display-property-name="formatted_address"
-        path-to-data="results"
-        loading-text="Google Is Thinking..."
-        max-num-list="5"
-        min-chars="2" />
-      <br/>selected model4: {{model4 | json}}<br/><br/>
-    </ng2-utils-4>
-    <pre>{{templateStr | htmlCode:'ng2-utils-4'}}</pre>
-    <pre> source: {{googleGeoCode}}</pre>
-  </fieldset>
- 
-  <fieldset><legend><h2>Source as Observable "Marvel API"</h2></legend>
-    <ng2-utils-5>
-      <input  ng2-auto-complete
-        id="model5"
-        placeholder="Start typing a hero name (min. 2 chars) ... for example: Hulk"     
-        [(ngModel)]="model5" 
-        [source]="appSvc.findHeroes"  
-        [list-formatter]="renderHero"
-        path-to-data="data.results"
-        min-chars="2" 
-      />
-      <br/>selected model5: {{model5 | json}}<br/><br/>
-    </ng2-utils-5>
-    <pre>{{templateStr | htmlCode:'ng2-utils-5'}}</pre>
-    <b>appSvc.findHeroes functoin</b>
-    <pre>{{appSvc.findHeroes | jsCode}}</pre>
-  </fieldset>
-    
-  <fieldset><legend><h2>With Material Design</h2></legend>
-    <ng2-utils-6>
-      <md-input ng2-auto-complete 
-        id="model6"
-        [(ngModel)]="myModel"
-        [source]="arrayOfNumbers"
-        [list-formatter]="rightAligned"
-        placeholder="amount" align="end">
-        <span md-prefix>$&nbsp;</span>
-        <span md-suffix>.00</span>
-      </md-input>
-    </ng2-utils-6>
-    <pre>{{templateStr | htmlCode:'ng2-utils-6'}}</pre>
-    <pre>arrayOfNumbers: {{json(arrayOfNumbers)}}</pre>
-  </fieldset>
  `;
 @Component({
   selector: "my-app",

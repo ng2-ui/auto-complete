@@ -23,7 +23,13 @@ var Ng2AutoComplete = (function () {
         if (typeof this.source !== 'string') {
             throw "Invalid type of source, must be a string. e.g. http://www.google.com?q=:my_keyword";
         }
+        else if (!this.http) {
+            throw "Http is required.";
+        }
         var matches = this.source.match(/:[a-zA-Z_]+/);
+        if (matches === null) {
+            throw "Replacement word is missing.";
+        }
         var replacementWord = matches[0];
         var url = this.source.replace(replacementWord, keyword);
         return this.http.get(url)
@@ -43,7 +49,7 @@ var Ng2AutoComplete = (function () {
     ];
     /** @nocollapse */
     Ng2AutoComplete.ctorParameters = [
-        { type: http_1.Http, },
+        { type: http_1.Http, decorators: [{ type: core_1.Optional },] },
     ];
     return Ng2AutoComplete;
 }());

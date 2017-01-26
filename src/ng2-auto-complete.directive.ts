@@ -23,7 +23,7 @@ import { ControlContainer, AbstractControl, FormGroup, FormControl } from "@angu
   selector: "[auto-complete], [ng2-auto-complete]",
   host: {
     "(focus)": "showAutoCompleteDropdown()",
-    // "(blur)":  "hideAutoCompleteDropdown()",
+    "(blur)":  "hideAutoCompleteDropdown()",
     "(keydown)": "keydownEventHandler($event)",
     "(input)": "inputEventHandler($event)"
   }
@@ -70,7 +70,6 @@ export class Ng2AutoCompleteDirective implements OnInit {
     // wrap this element with <div class="ng2-auto-complete">
     let divEl = document.createElement("div");
     divEl.className = "ng2-auto-complete-wrapper";
-    //divEl.style.display = "inline-block"; //this makes material design not compatible
     divEl.style.position = "relative";
     this.el.parentElement.insertBefore(divEl, this.el.nextSibling);
     divEl.appendChild(this.el);
@@ -108,8 +107,6 @@ export class Ng2AutoCompleteDirective implements OnInit {
 
   //show auto-complete list below the current element
   showAutoCompleteDropdown() {
-    // this.hideAutoCompleteDropdown();
-    console.log('>>>>>>>>>>>> showAutoCompleteDropdown')
 
     let factory = this.resolver.resolveComponentFactory(Ng2AutoCompleteComponent);
 
@@ -141,7 +138,11 @@ export class Ng2AutoCompleteDirective implements OnInit {
     // so that it displays correctly
     this.moveAutocompleteDropDownAfterInputEl();
 
-    setTimeout(this.styleAutoCompleteDropdown);
+    setTimeout(() => {
+      component.reloadList(this.inputEl.value);
+      this.styleAutoCompleteDropdown();
+      component.dropdownVisible = true;
+    });
   }
 
   hideAutoCompleteDropdown = (event?: any): void => {
@@ -150,11 +151,9 @@ export class Ng2AutoCompleteDirective implements OnInit {
         event && event.type === "click" &&
         event.target.tagName !== "INPUT" && !this.elementIn(event.target, this.acDropdownEl)
       ) {
-        console.log('>>>>>>>>>>>>>>>> hideAutoCompleteDropdown 1');
         this.componentRef.destroy();
         this.componentRef = undefined;
       } else if (!event) {
-        console.log('>>>>>>>>>>>>>>>> hideAutoCompleteDropdown... called by blur');
         this.componentRef.destroy();
         this.componentRef = undefined;
       }
@@ -238,7 +237,6 @@ export class Ng2AutoCompleteDirective implements OnInit {
   }
 
   private keydownEventHandler = (evt: any) => {
-    console.log('keydownEventHandler...........');
     if (this.componentRef) {
       let component = <Ng2AutoCompleteComponent>this.componentRef.instance;
       component.inputElKeyHandler(evt);
@@ -246,11 +244,12 @@ export class Ng2AutoCompleteDirective implements OnInit {
   };
 
   private inputEventHandler = (evt: any) => {
-    console.log('inputEventHandler ..............');
     if (this.componentRef) {
       let component = <Ng2AutoCompleteComponent>this.componentRef.instance;
       component.dropdownVisible = true;
       component.reloadListInDelay(evt);
+    } else {
+      this.showAutoCompleteDropdown()
     }
   };
 

@@ -32,7 +32,6 @@ import { Ng2AutoComplete } from "./ng2-auto-complete";
            [(ngModel)]="keyword" />
 
     <!-- dropdown that user can select -->
-    dropdownVisible: {{dropdownVisible}}
     <ul *ngIf="dropdownVisible">
       <li *ngIf="isLoading" class="loading">{{loadingText}}</li>
       <li *ngIf="minCharsEntered && !isLoading && !filteredList.length"
@@ -250,7 +249,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
 
     switch (evt.keyCode) {
       case 27: // ESC, hide auto complete
-        this.hideDropdownList();
+        //this.hideDropdownList();
         break;
 
       case 38: // UP, select the previous li el

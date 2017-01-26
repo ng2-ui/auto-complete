@@ -6,12 +6,12 @@ Test with Array of strings
   go to http://localhost:9002
   verify text 'selected model1: "is"' present
   click #model1
-  clear "ng2-auto-complete input"
-  press "t" into "ng2-auto-complete input"
-  verify element "ul li:nth-child(2)" text is "text"
-  press "e" into "ng2-auto-complete input"
+  clear "#model1"
+  press "t" into "#model1"
+  verify element "ul li:nth-child(1)" text is "this"
+  press "e" into "#model1"
   verify element "ul li:nth-child(1)" text is "text"
-  press ENTER into "ng2-auto-complete input"
+  press ENTER into "#model1"
   verify element #model1 value is "text"
 
 Test with array of id/value
@@ -20,6 +20,8 @@ Test with array of id/value
   verify element #model2 value is "it"
   click #model2
   clear #model2
+  click body
+  click #model2
   verify element "ul li:nth-child(1)" text is "Select One"
   verify element "ul li:nth-child(2)" text is "(1)One"
   see "Select One"
@@ -33,20 +35,22 @@ Test with array of key/name
   verify element #model3 value is "Key Three"
   click #model3
   clear #model3
-  press ARROW_DOWN into "#model3 ~ ng2-auto-complete input"
-  press ARROW_DOWN into "#model3 ~ ng2-auto-complete input"
-  press ARROW_DOWN into "#model3 ~ ng2-auto-complete input"
-  press ENTER into "#model3 ~ ng2-auto-complete input"
+  click body
+  click #model3
+  press ARROW_DOWN into "#model3"
+  press ARROW_DOWN into "#model3"
+  press ARROW_DOWN into "#model3"
+  press ENTER into "#model3"
   verify element #model3 value is "Key Four"
 
 Test With Remote Source as HTTP URI String
   click #model4
-  enter text "the white house" into "#model4 ~ ng2-auto-complete input"
+  enter text "the white house" into "#model4"
   verify text "DC 20500" present
 
 Test With Remote Source as Observable
   --click #model5
-  --enter text "hulk/Bruce" into "#model5 ~ ng2-auto-complete input"
+  --enter text "hulk/Bruce" into "#model5"
   --verify text "Hulk/Bruce Banner" present
   --press ENTER into "#model5 ~ ng2-auto-complete input"
 

@@ -106,6 +106,7 @@ let templateStr: string = `
     <pre>arrayOfNumbers: {{json(arrayOfNumbers)}}</pre>
   </fieldset>
  `;
+
 @Component({
   selector: "my-app",
   template: templateStr,

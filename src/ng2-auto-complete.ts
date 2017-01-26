@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, Optional } from "@angular/core";
 import { Http, Response } from "@angular/http";
 import { Observable } from "rxjs";
 import "rxjs/add/operator/map";
@@ -12,7 +12,7 @@ export class Ng2AutoComplete {
   public source: string;
   public pathToData: string;
 
-  constructor(private http: Http) {
+  constructor(@Optional() private http: Http) {
     // ...
   }
 
@@ -30,6 +30,8 @@ export class Ng2AutoComplete {
   getRemoteData(keyword: string): Observable<Response> {
     if (typeof this.source !== 'string') {
       throw "Invalid type of source, must be a string. e.g. http://www.google.com?q=:my_keyword";
+    } else if (!this.http) {
+      throw "Http is required.";
     }
 
     let matches = this.source.match(/:[a-zA-Z_]+/);

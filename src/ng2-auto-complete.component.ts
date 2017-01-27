@@ -128,8 +128,6 @@ export class Ng2AutoCompleteComponent implements OnInit {
   @ViewChild('autoCompleteInput') autoCompleteInput: ElementRef;
 
   el: HTMLElement;           // this component  element `<ng2-auto-complete>`
-  inputEl: HTMLInputElement; // `<input>` element in `<ng2-auto-complete>` for auto complete
-  userInputEl: any;      // directive element that called this element `<input ng2-auto-complete>`
 
   dropdownVisible: boolean = false;
   isLoading: boolean = false;
@@ -157,10 +155,13 @@ export class Ng2AutoCompleteComponent implements OnInit {
    * user enters into input el, shows list to select, then select one
    */
   ngOnInit(): void {
-    this.inputEl = <HTMLInputElement>(this.el.querySelector("input"));
-    this.userInputEl = this.el.parentElement.querySelector("input");
     this.autoComplete.source = this.source;
     this.autoComplete.pathToData = this.pathToData;
+    setTimeout(() => {
+      if (this.autoCompleteInput) {
+        this.autoCompleteInput.nativeElement.focus()
+      }
+    });
   }
 
   reloadListInDelay = (evt: any): void  => {
@@ -173,17 +174,11 @@ export class Ng2AutoCompleteComponent implements OnInit {
   };
 
   showDropdownList(event: any): void {
-    if (this.inputEl) {
-      this.inputEl.style.display = '';
-      this.inputEl.focus();
-    }
-
     this.dropdownVisible = true;
     this.reloadList(event.target.value);
   }
 
   hideDropdownList(): void {
-    //this.inputEl.style.display = 'none';
     this.dropdownVisible = false;
   }
 

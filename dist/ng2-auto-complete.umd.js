@@ -295,21 +295,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * user enters into input el, shows list to select, then select one
 	     */
 	    Ng2AutoCompleteComponent.prototype.ngOnInit = function () {
-	        this.inputEl = (this.el.querySelector("input"));
-	        this.userInputEl = this.el.parentElement.querySelector("input");
+	        var _this = this;
 	        this.autoComplete.source = this.source;
 	        this.autoComplete.pathToData = this.pathToData;
+	        setTimeout(function () {
+	            if (_this.autoCompleteInput) {
+	                _this.autoCompleteInput.nativeElement.focus();
+	            }
+	        });
 	    };
 	    Ng2AutoCompleteComponent.prototype.showDropdownList = function (event) {
-	        if (this.inputEl) {
-	            this.inputEl.style.display = '';
-	            this.inputEl.focus();
-	        }
 	        this.dropdownVisible = true;
 	        this.reloadList(event.target.value);
 	    };
 	    Ng2AutoCompleteComponent.prototype.hideDropdownList = function () {
-	        //this.inputEl.style.display = 'none';
 	        this.dropdownVisible = false;
 	    };
 	    Ng2AutoCompleteComponent.prototype.reloadList = function (keyword) {

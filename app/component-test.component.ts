@@ -2,7 +2,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 
 var templateStr = `
   <br/>
-  <fieldset><legend><h2>Attributes and Events</h2></legend>
+  <fieldset><legend><h2>Component test - multi autocomplete</h2></legend>
     <ng2-utils-1>
       <div class="wrapper" (click)="showAutocomplete=true">
       

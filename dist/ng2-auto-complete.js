@@ -12,7 +12,10 @@ var Ng2AutoComplete = (function () {
     }
     Ng2AutoComplete.prototype.filter = function (list, keyword) {
         return list.filter(function (el) {
-            return !!JSON.stringify(el).match(new RegExp(keyword, "i"));
+            var objStr = JSON.stringify(el).toLowerCase();
+            keyword = keyword.toLowerCase();
+            console.log(objStr, keyword, objStr.indexOf(keyword) !== -1);
+            return objStr.indexOf(keyword) !== -1;
         });
     };
     /**

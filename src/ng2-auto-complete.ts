@@ -19,7 +19,10 @@ export class Ng2AutoComplete {
   filter(list: any[], keyword: string) {
     return list.filter(
       el => {
-        return !!JSON.stringify(el).match(new RegExp(keyword, "i"));
+        let objStr = JSON.stringify(el).toLowerCase();
+        keyword = keyword.toLowerCase();
+        console.log(objStr, keyword, objStr.indexOf(keyword) !== -1);
+        return objStr.indexOf(keyword) !== -1;
       }
     );
   }

@@ -97,7 +97,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return list.filter(function (el) {
 	            var objStr = JSON.stringify(el).toLowerCase();
 	            keyword = keyword.toLowerCase();
-	            console.log(objStr, keyword, objStr.indexOf(keyword) !== -1);
+	            //console.log(objStr, keyword, objStr.indexOf(keyword) !== -1);
 	            return objStr.indexOf(keyword) !== -1;
 	        });
 	    };
@@ -584,6 +584,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (this.parentForm && this.formControlName) {
 	            if (this.parentForm['form']) {
 	                this.formControl = this.parentForm['form'].get(this.formControlName);
+	            }
+	            else if (this.parentForm instanceof forms_1.FormGroupName) {
+	                this.formControl = this.parentForm.control.controls[this.formControlName];
 	            }
 	        }
 	        else if (this.extFormControl) {

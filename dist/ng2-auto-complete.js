@@ -14,7 +14,7 @@ var Ng2AutoComplete = (function () {
         return list.filter(function (el) {
             var objStr = JSON.stringify(el).toLowerCase();
             keyword = keyword.toLowerCase();
-            console.log(objStr, keyword, objStr.indexOf(keyword) !== -1);
+            //console.log(objStr, keyword, objStr.indexOf(keyword) !== -1);
             return objStr.indexOf(keyword) !== -1;
         });
     };
@@ -51,9 +51,9 @@ var Ng2AutoComplete = (function () {
         { type: core_1.Injectable },
     ];
     /** @nocollapse */
-    Ng2AutoComplete.ctorParameters = function () { return [
+    Ng2AutoComplete.ctorParameters = [
         { type: http_1.Http, decorators: [{ type: core_1.Optional },] },
-    ]; };
+    ];
     return Ng2AutoComplete;
 }());
 exports.Ng2AutoComplete = Ng2AutoComplete;

@@ -105,6 +105,9 @@ var Ng2AutoCompleteDirective = (function () {
             if (this.parentForm['form']) {
                 this.formControl = this.parentForm['form'].get(this.formControlName);
             }
+            else if (this.parentForm instanceof forms_1.FormGroupName) {
+                this.formControl = this.parentForm.control.controls[this.formControlName];
+            }
         }
         else if (this.extFormControl) {
             this.formControl = this.extFormControl;
@@ -192,12 +195,12 @@ var Ng2AutoCompleteDirective = (function () {
                 },] },
     ];
     /** @nocollapse */
-    Ng2AutoCompleteDirective.ctorParameters = function () { return [
+    Ng2AutoCompleteDirective.ctorParameters = [
         { type: core_1.ComponentFactoryResolver, },
         { type: core_1.Renderer, },
         { type: core_1.ViewContainerRef, },
         { type: forms_1.ControlContainer, decorators: [{ type: core_1.Optional }, { type: core_1.Host }, { type: core_1.SkipSelf },] },
-    ]; };
+    ];
     Ng2AutoCompleteDirective.propDecorators = {
         'autoCompletePlaceholder': [{ type: core_1.Input, args: ["auto-complete-placeholder",] },],
         'listFormatter': [{ type: core_1.Input, args: ["list-formatter",] },],

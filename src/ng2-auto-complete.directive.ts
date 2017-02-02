@@ -14,7 +14,7 @@ import {
   Optional
 } from "@angular/core";
 import { Ng2AutoCompleteComponent } from "./ng2-auto-complete.component";
-import { ControlContainer, AbstractControl, FormGroup, FormControl } from "@angular/forms";
+import { ControlContainer, AbstractControl, FormGroup, FormControl, FormGroupName } from "@angular/forms";
 
 /**
  * display auto-complete section with input and dropdown list when it is clicked
@@ -23,7 +23,7 @@ import { ControlContainer, AbstractControl, FormGroup, FormControl } from "@angu
   selector: "[auto-complete], [ng2-auto-complete]",
   host: {
     "(focus)": "showAutoCompleteDropdown()",
-    "(blur)":  "hideAutoCompleteDropdown()",
+    "(blur)": "hideAutoCompleteDropdown()",
     "(keydown)": "keydownEventHandler($event)",
     "(input)": "inputEventHandler($event)"
   }
@@ -82,6 +82,8 @@ export class Ng2AutoCompleteDirective implements OnInit {
     if (this.parentForm && this.formControlName) {
       if (this.parentForm['form']) {
         this.formControl = (<FormGroup>this.parentForm['form']).get(this.formControlName);
+      } else if (this.parentForm instanceof FormGroupName) {
+        this.formControl = (<FormGroupName>this.parentForm).control.controls[this.formControlName];
       }
     } else if (this.extFormControl) {
       this.formControl = this.extFormControl;

@@ -1,6 +1,6 @@
 {
   "name": "ng2-auto-complete",
-  "version": "0.8.9",
+  "version": "0.10.3",
   "description": "Angular2 Input Autocomplete",
   "license": "MIT",
   "main": "dist/ng2-auto-complete.umd.js",
@@ -40,6 +40,7 @@
     "forever": "^0.15.3",
     "hammerjs": "^2.0.8",
     "http-server": "^0.9.0",
+    "ng2-utils": "^0.6.1",
     "npm-run-all": "^3.1.1",
     "raw-loader": "^0.5.1",
     "reflect-metadata": "^0.1.3",

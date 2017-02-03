@@ -33,19 +33,19 @@ var Ng2AutoCompleteDirective = (function () {
                 var component = _this.componentRef.instance;
                 /* setting width/height auto complete */
                 var thisElBCR = _this.el.getBoundingClientRect();
+                var thisInputElBCR = _this.inputEl.getBoundingClientRect();
+                var closeToBottom = thisInputElBCR.bottom + 100 > window.innerHeight;
                 _this.acDropdownEl.style.width = thisElBCR.width + "px";
                 _this.acDropdownEl.style.position = "absolute";
                 _this.acDropdownEl.style.zIndex = "1";
-                _this.acDropdownEl.style.top = "0";
                 _this.acDropdownEl.style.left = "0";
                 _this.acDropdownEl.style.display = "inline-block";
-                var thisInputElBCR = _this.inputEl.getBoundingClientRect();
-                // Not a good method of access the dom API directly.
-                // Best to use Angular to access it for you and pass the values / methods you wish to get updated
-                _this.renderer.setElementStyle(component.autoCompleteInput.nativeElement, 'width', thisInputElBCR.width + "px");
-                _this.renderer.setElementStyle(component.autoCompleteInput.nativeElement, 'height', thisInputElBCR.height + "px");
-                _this.renderer.invokeElementMethod(component.autoCompleteInput.nativeElement, 'focus');
-                component.closeToBottom = (thisInputElBCR.bottom + 100 > window.innerHeight);
+                if (closeToBottom) {
+                    _this.acDropdownEl.style.bottom = thisInputElBCR.height + "px";
+                }
+                else {
+                    _this.acDropdownEl.style.top = thisInputElBCR.height + "px";
+                }
             }
         };
         this.componentInputChanged = function (val) {
@@ -72,13 +72,28 @@ var Ng2AutoCompleteDirective = (function () {
             _this.inputEl && (_this.inputEl.value = '' + val);
             _this.hideAutoCompleteDropdown();
         };
+        this.keydownEventHandler = function (evt) {
+            if (_this.componentRef) {
+                var component = _this.componentRef.instance;
+                component.inputElKeyHandler(evt);
+            }
+        };
+        this.inputEventHandler = function (evt) {
+            if (_this.componentRef) {
+                var component = _this.componentRef.instance;
+                component.dropdownVisible = true;
+                component.reloadListInDelay(evt);
+            }
+            else {
+                _this.showAutoCompleteDropdown();
+            }
+        };
         this.el = this.viewContainerRef.element.nativeElement;
     }
     Ng2AutoCompleteDirective.prototype.ngOnInit = function () {
         // wrap this element with <div class="ng2-auto-complete">
         var divEl = document.createElement("div");
-        divEl.className = "ng2-auto-complete";
-        //divEl.style.display = "inline-block"; //this makes material design not compatible
+        divEl.className = "ng2-auto-complete-wrapper";
         divEl.style.position = "relative";
         this.el.parentElement.insertBefore(divEl, this.el.nextSibling);
         divEl.appendChild(this.el);
@@ -89,6 +104,9 @@ var Ng2AutoCompleteDirective = (function () {
         if (this.parentForm && this.formControlName) {
             if (this.parentForm['form']) {
                 this.formControl = this.parentForm['form'].get(this.formControlName);
+            }
+            else if (this.parentForm instanceof forms_1.FormGroupName) {
+                this.formControl = this.parentForm.control.controls[this.formControlName];
             }
         }
         else if (this.extFormControl) {
@@ -111,12 +129,12 @@ var Ng2AutoCompleteDirective = (function () {
     };
     //show auto-complete list below the current element
     Ng2AutoCompleteDirective.prototype.showAutoCompleteDropdown = function () {
-        this.hideAutoCompleteDropdown();
+        var _this = this;
         var factory = this.resolver.resolveComponentFactory(ng2_auto_complete_component_1.Ng2AutoCompleteComponent);
         this.componentRef = this.viewContainerRef.createComponent(factory);
         var component = this.componentRef.instance;
+        component.showInputTag = false; //Do NOT display autocomplete input tag separately
         component.listFormatter = this.listFormatter;
-        //component.prefillFunc = this.prefillFunc;
         component.pathToData = this.pathToData;
         component.minChars = this.minChars;
         component.valuePropertyName = this.valuePropertyName || "id";
@@ -135,7 +153,11 @@ var Ng2AutoCompleteDirective = (function () {
         // if this element is not an input tag, move dropdown after input tag
         // so that it displays correctly
         this.moveAutocompleteDropDownAfterInputEl();
-        setTimeout(this.styleAutoCompleteDropdown);
+        setTimeout(function () {
+            component.reloadList(_this.inputEl.value);
+            _this.styleAutoCompleteDropdown();
+            component.dropdownVisible = true;
+        });
     };
     Ng2AutoCompleteDirective.prototype.addToStringFunction = function (val) {
         if (val && typeof val === "object") {
@@ -165,18 +187,20 @@ var Ng2AutoCompleteDirective = (function () {
         { type: core_1.Directive, args: [{
                     selector: "[auto-complete], [ng2-auto-complete]",
                     host: {
-                        "(click)": "showAutoCompleteDropdown()",
-                        "(focus)": "showAutoCompleteDropdown()"
+                        "(focus)": "showAutoCompleteDropdown()",
+                        "(blur)": "hideAutoCompleteDropdown()",
+                        "(keydown)": "keydownEventHandler($event)",
+                        "(input)": "inputEventHandler($event)"
                     }
                 },] },
     ];
     /** @nocollapse */
-    Ng2AutoCompleteDirective.ctorParameters = function () { return [
+    Ng2AutoCompleteDirective.ctorParameters = [
         { type: core_1.ComponentFactoryResolver, },
         { type: core_1.Renderer, },
         { type: core_1.ViewContainerRef, },
         { type: forms_1.ControlContainer, decorators: [{ type: core_1.Optional }, { type: core_1.Host }, { type: core_1.SkipSelf },] },
-    ]; };
+    ];
     Ng2AutoCompleteDirective.propDecorators = {
         'autoCompletePlaceholder': [{ type: core_1.Input, args: ["auto-complete-placeholder",] },],
         'listFormatter': [{ type: core_1.Input, args: ["list-formatter",] },],

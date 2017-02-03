@@ -21,7 +21,7 @@ _ngModel_ http://plnkr.co/edit/3pB1Gx?p=preview
  _FormGroup_  http://plnkr.co/edit/2XRrck2cWVWcvbJnj6z5?p=preview
   [issue #49](https://github.com/ng2-ui/ng2-auto-complete/issues/49)
 
-_FormControl_ http://plnkr.co/edit/yCNNqBffko1VZFGpI2KU?p=preview 
+_FormControl_ http://plnkr.co/edit/WfgdcHLc8KDvsI2G2tHw?p=preview
   [issue #100](https://github.com/ng2-ui/ng2-auto-complete/issues/100)
 
 
@@ -31,7 +31,12 @@ _FormControl_ http://plnkr.co/edit/yCNNqBffko1VZFGpI2KU?p=preview
 
 **`Obervable Source`**
 
-http://plnkr.co/edit/j5rU6c?p=preview&open=app/app.component.ts
+  http://plnkr.co/edit/uY3rsBg9F8aaoemP4Mjp?p=preview&open=app%2Fapp.component.ts
+
+**`List Formatter Example`**
+
+  http://plnkr.co/edit/T5K1faYzb0LeSD9IttxE&open=app/app.component.ts
+
 ## Install
 
 1. install ng2-auto-complete

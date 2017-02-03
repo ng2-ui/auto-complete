@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, Optional } from "@angular/core";
 import { Http, Response } from "@angular/http";
 import { Observable } from "rxjs";
 import "rxjs/add/operator/map";
@@ -12,14 +12,17 @@ export class Ng2AutoComplete {
   public source: string;
   public pathToData: string;
 
-  constructor(private http: Http) {
+  constructor(@Optional() private http: Http) {
     // ...
   }
 
   filter(list: any[], keyword: string) {
     return list.filter(
       el => {
-        return !!JSON.stringify(el).match(new RegExp(keyword, "i"));
+        let objStr = JSON.stringify(el).toLowerCase();
+        keyword = keyword.toLowerCase();
+        //console.log(objStr, keyword, objStr.indexOf(keyword) !== -1);
+        return objStr.indexOf(keyword) !== -1;
       }
     );
   }
@@ -30,9 +33,15 @@ export class Ng2AutoComplete {
   getRemoteData(keyword: string): Observable<Response> {
     if (typeof this.source !== 'string') {
       throw "Invalid type of source, must be a string. e.g. http://www.google.com?q=:my_keyword";
+    } else if (!this.http) {
+      throw "Http is required.";
     }
 
     let matches = this.source.match(/:[a-zA-Z_]+/);
+    if (matches === null) {
+      throw "Replacement word is missing.";
+    }
+
     let replacementWord = matches[0];
     let url = this.source.replace(replacementWord, keyword);
 

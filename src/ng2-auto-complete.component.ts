@@ -22,18 +22,17 @@ import { Ng2AutoComplete } from "./ng2-auto-complete";
   <div class="ng2-auto-complete">
 
     <!-- keyword input -->
-    <input #autoCompleteInput class="keyword"
+    <input *ngIf="showInputTag"
+           #autoCompleteInput class="keyword"
            placeholder="{{placeholder}}"
-           (focus)="showDropdownList()"
+           (focus)="showDropdownList($event)"
            (blur)="hideDropdownList()"
            (keydown)="inputElKeyHandler($event)"
-           (input)="reloadListInDelay()"
+           (input)="reloadListInDelay($event)"
            [(ngModel)]="keyword" />
 
     <!-- dropdown that user can select -->
-    <ul *ngIf="dropdownVisible"
-        [style.bottom]="inputEl.style.height"
-        [style.position]="closeToBottom ? 'absolute': ''">
+    <ul *ngIf="dropdownVisible" [class.empty]="emptyList">
       <li *ngIf="isLoading" class="loading">{{loadingText}}</li>
       <li *ngIf="minCharsEntered && !isLoading && !filteredList.length"
            (mousedown)="selectOne('')"
@@ -60,10 +59,10 @@ import { Ng2AutoComplete } from "./ng2-auto-complete";
       transform: translateY(0px);
     }
   }
-  .ng2-auto-complete ng2-auto-complete {
+  .ng2-auto-complete {
     background-color: transparent;
   }
-  .ng2-auto-complete ng2-auto-complete input {
+  .ng2-auto-complete > input {
     outline: none;
     border: 0;
     padding: 2px; 
@@ -71,7 +70,7 @@ import { Ng2AutoComplete } from "./ng2-auto-complete";
     background-clip: content-box;
   }
 
-  .ng2-auto-complete ng2-auto-complete ul {
+  .ng2-auto-complete > ul {
     background-color: #fff;
     margin: 0;
     width : 100%;
@@ -82,21 +81,24 @@ import { Ng2AutoComplete } from "./ng2-auto-complete";
     box-sizing: border-box;
     animation: slideDown 0.1s;
   }
+  .ng2-auto-complete > ul.empty {
+    display: none;
+  }
 
-  .ng2-auto-complete ng2-auto-complete ul li {
+  .ng2-auto-complete > ul li {
     padding: 2px 5px;
     border-bottom: 1px solid #eee;
   }
 
-  .ng2-auto-complete ng2-auto-complete ul li.selected {
+  .ng2-auto-complete > ul li.selected {
     background-color: #ccc;
   }
 
-  .ng2-auto-complete ng2-auto-complete ul li:last-child {
+  .ng2-auto-complete > ul li:last-child {
     border-bottom: none;
   }
 
-  .ng2-auto-complete ng2-auto-complete ul li:hover {
+  .ng2-auto-complete > ul li:hover {
     background-color: #ccc;
   }`
   ],
@@ -119,17 +121,14 @@ export class Ng2AutoCompleteComponent implements OnInit {
   @Input("accept-user-input") acceptUserInput: boolean;
   @Input("loading-text") loadingText: string = "Loading";
   @Input("max-num-list") maxNumList: number;
+  @Input("show-input-tag") showInputTag: boolean = true;
 
   @Output() valueSelected = new EventEmitter();
   @Output() inputChanged = new EventEmitter();
   @ViewChild('autoCompleteInput') autoCompleteInput: ElementRef;
 
   el: HTMLElement;           // this component  element `<ng2-auto-complete>`
-  inputEl: HTMLInputElement; // `<input>` element in `<ng2-auto-complete>` for auto complete
-  userInputEl: any;      // directive element that called this element `<input ng2-auto-complete>`
-  userInputElTabIndex: any;
 
-  closeToBottom: boolean = false;
   dropdownVisible: boolean = false;
   isLoading: boolean = false;
 
@@ -156,36 +155,31 @@ export class Ng2AutoCompleteComponent implements OnInit {
    * user enters into input el, shows list to select, then select one
    */
   ngOnInit(): void {
-    this.inputEl = <HTMLInputElement>(this.el.querySelector("input"));
-    this.userInputEl = this.el.parentElement.querySelector("input");
     this.autoComplete.source = this.source;
     this.autoComplete.pathToData = this.pathToData;
+    setTimeout(() => {
+      if (this.autoCompleteInput) {
+        this.autoCompleteInput.nativeElement.focus()
+      }
+    });
   }
 
-  reloadListInDelay(): void {
+  reloadListInDelay = (evt: any): void  => {
     let delayMs = this.isSrcArr() ? 10 : 500;
-    let keyword = this.inputEl.value;
+    let keyword = evt.target.value;
 
     // executing after user stopped typing
     this.delay(() => this.reloadList(keyword), delayMs);
     this.inputChanged.emit(keyword);
-  }
+  };
 
-  showDropdownList(): void {
-    this.keyword = this.userInputEl.value;
-    this.inputEl.style.display = '';
-    this.inputEl.focus();
-
-    this.userInputElTabIndex = this.userInputEl['tabIndex'];
-    this.userInputEl['tabIndex'] = -100;  //disable tab focus for <shift-tab> pressed
-
-    this.reloadList(this.keyword);
+  showDropdownList(event: any): void {
+    this.dropdownVisible = true;
+    this.reloadList(event.target.value);
   }
 
   hideDropdownList(): void {
-    this.inputEl.style.display = 'none';
     this.dropdownVisible = false;
-    this.userInputEl['tabIndex'] = this.userInputElTabIndex; // enable tab focus
   }
 
   reloadList(keyword: string): void {
@@ -198,14 +192,13 @@ export class Ng2AutoCompleteComponent implements OnInit {
       this.minCharsEntered = true;
     }
 
-    this.dropdownVisible = true;
-
     if (this.isSrcArr()) {    // local source
       this.isLoading = false;
-      this.filteredList = this.autoComplete.filter(this.source, this.keyword);
+      this.filteredList = this.autoComplete.filter(this.source, keyword);
       if (this.maxNumList) {
         this.filteredList = this.filteredList.slice(0, this.maxNumList);
       }
+
     } else {                 // remote source
       this.isLoading = true;
 
@@ -244,16 +237,15 @@ export class Ng2AutoCompleteComponent implements OnInit {
   }
 
   selectOne(data: any) {
-    this.hideDropdownList();
     this.valueSelected.emit(data);
   };
 
-  inputElKeyHandler(evt: any) {
+  inputElKeyHandler = (evt: any) => {
     let totalNumItem = this.filteredList.length;
 
     switch (evt.keyCode) {
       case 27: // ESC, hide auto complete
-        this.hideDropdownList();
+        //this.hideDropdownList();
         break;
 
       case 38: // UP, select the previous li el
@@ -277,6 +269,14 @@ export class Ng2AutoCompleteComponent implements OnInit {
   getFormattedList(data: any): string {
     let formatter = this.listFormatter || this.defaultListFormatter;
     return formatter.apply(this, [data]);
+  }
+
+  get emptyList(): boolean {
+    return !(
+      this.isLoading ||
+      (this.minCharsEntered && !this.isLoading && !this.filteredList.length) ||
+      (this.filteredList.length)
+    );
   }
 
   private defaultListFormatter(data: any): string {

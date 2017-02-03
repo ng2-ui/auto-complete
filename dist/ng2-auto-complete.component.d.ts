@@ -23,14 +23,11 @@ export declare class Ng2AutoCompleteComponent implements OnInit {
     acceptUserInput: boolean;
     loadingText: string;
     maxNumList: number;
+    showInputTag: boolean;
     valueSelected: EventEmitter<{}>;
     inputChanged: EventEmitter<{}>;
     autoCompleteInput: ElementRef;
     el: HTMLElement;
-    inputEl: HTMLInputElement;
-    userInputEl: any;
-    userInputElTabIndex: any;
-    closeToBottom: boolean;
     dropdownVisible: boolean;
     isLoading: boolean;
     filteredList: any[];
@@ -46,13 +43,14 @@ export declare class Ng2AutoCompleteComponent implements OnInit {
      * user enters into input el, shows list to select, then select one
      */
     ngOnInit(): void;
-    reloadListInDelay(): void;
-    showDropdownList(): void;
+    reloadListInDelay: (evt: any) => void;
+    showDropdownList(event: any): void;
     hideDropdownList(): void;
     reloadList(keyword: string): void;
     selectOne(data: any): void;
-    inputElKeyHandler(evt: any): void;
+    inputElKeyHandler: (evt: any) => void;
     getFormattedList(data: any): string;
+    readonly emptyList: boolean;
     private defaultListFormatter(data);
     private delay;
 }

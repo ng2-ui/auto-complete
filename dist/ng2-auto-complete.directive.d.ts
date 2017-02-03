@@ -43,4 +43,6 @@ export declare class Ng2AutoCompleteDirective implements OnInit {
     selectNewValue: (val: any) => void;
     private moveAutocompleteDropDownAfterInputEl();
     private elementIn(el, containerEl);
+    private keydownEventHandler;
+    private inputEventHandler;
 }

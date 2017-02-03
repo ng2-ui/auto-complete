@@ -79,8 +79,8 @@ let templateStr: string = `
         placeholder="Start typing a hero name (min. 2 chars) ... for example: Hulk"     
         [(ngModel)]="model5" 
         [source]="appSvc.findHeroes"  
-        [list-formatter]="renderHero"
         path-to-data="data.results"
+        [list-formatter]="renderHero"
         min-chars="2" 
       />
       <br/>selected model5: {{model5 | json}}<br/><br/>
@@ -154,14 +154,15 @@ export class DirectiveTestComponent {
                 <span>${data.description}</span>`;
 
     return this._sanitizer.bypassSecurityTrustHtml(html);
-  }
+  };
 
   rightAligned = (data: any) : SafeHtml => {
     let html = `<div style="text-align:right">${data}.00</div>`;
     return this._sanitizer.bypassSecurityTrustHtml(html);
-  }
+  };
 
   json(obj) {
     return JSON.stringify(obj, null, '  ');
   }
+
 }

@@ -74,8 +74,6 @@ export class Ng2AutoCompleteDirective implements OnInit {
     this.el.parentElement.insertBefore(divEl, this.el.nextSibling);
     divEl.appendChild(this.el);
 
-    // apply toString() method for the object
-    this.selectNewValue(this.ngModel);
 
     //Check if we were supplied with a [formControlName] and it is inside a [form]
     //else check if we are supplied with a [FormControl] regardless if it is inside a [form] tag
@@ -88,6 +86,9 @@ export class Ng2AutoCompleteDirective implements OnInit {
     } else if (this.extFormControl) {
       this.formControl = this.extFormControl;
     }
+
+    // apply toString() method for the object
+    !!this.ngModel ? this.selectNewValue(this.ngModel): this.selectNewValue(this.formControl.value[this.displayPropertyName]);
 
     // when somewhere else clicked, hide this autocomplete
     document.addEventListener("click", this.hideAutoCompleteDropdown);

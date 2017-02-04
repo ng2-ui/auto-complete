@@ -86,7 +86,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
     // apply toString() method for the object
     if (!!this.ngModel) {
       this.selectNewValue(this.ngModel);
-    } else if (!!this.formControl) {
+    } else if (!!this.formControl && this.formControl.value) {
       this.selectNewValue(this.formControl.value[this.displayPropertyName]);
     }
 

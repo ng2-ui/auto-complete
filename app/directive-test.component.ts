@@ -14,7 +14,7 @@ let templateStr: string = `
         [accept-user-input]="false"
         (ngModelChange)="myCallback($event)"
         placeholder="enter text">
-        <input id="model1" [ngModel]="model1" />
+        <input id="model1" [ngModel]="model1" autofocus />
       </div>
       <br/>selected model1: {{json(model1)}}<br/><br/>
     </ng2-utils-1>

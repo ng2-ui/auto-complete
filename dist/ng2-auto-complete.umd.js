@@ -247,6 +247,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.displayPropertyName = "value";
 	        this.loadingText = "Loading";
 	        this.showInputTag = true;
+	        this.showDropdownOnInit = false;
 	        this.valueSelected = new core_1.EventEmitter();
 	        this.inputChanged = new core_1.EventEmitter();
 	        this.dropdownVisible = false;
@@ -304,6 +305,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        setTimeout(function () {
 	            if (_this.autoCompleteInput) {
 	                _this.autoCompleteInput.nativeElement.focus();
+	            }
+	            if (_this.showDropdownOnInit) {
+	                _this.showDropdownList({ target: { value: '' } });
 	            }
 	        });
 	    };
@@ -434,6 +438,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        core_1.Input("show-input-tag"), 
 	        __metadata('design:type', Boolean)
 	    ], Ng2AutoCompleteComponent.prototype, "showInputTag", void 0);
+	    __decorate([
+	        core_1.Input("show-dropdown-on-init"), 
+	        __metadata('design:type', Boolean)
+	    ], Ng2AutoCompleteComponent.prototype, "showDropdownOnInit", void 0);
 	    __decorate([
 	        core_1.Output(), 
 	        __metadata('design:type', Object)

@@ -19,6 +19,7 @@ var Ng2AutoCompleteComponent = (function () {
         this.displayPropertyName = "value";
         this.loadingText = "Loading";
         this.showInputTag = true;
+        this.showDropdownOnInit = false;
         this.valueSelected = new core_1.EventEmitter();
         this.inputChanged = new core_1.EventEmitter();
         this.dropdownVisible = false;
@@ -76,6 +77,9 @@ var Ng2AutoCompleteComponent = (function () {
         setTimeout(function () {
             if (_this.autoCompleteInput) {
                 _this.autoCompleteInput.nativeElement.focus();
+            }
+            if (_this.showDropdownOnInit) {
+                _this.showDropdownList({ target: { value: '' } });
             }
         });
     };
@@ -165,10 +169,10 @@ var Ng2AutoCompleteComponent = (function () {
                 },] },
     ];
     /** @nocollapse */
-    Ng2AutoCompleteComponent.ctorParameters = function () { return [
+    Ng2AutoCompleteComponent.ctorParameters = [
         { type: core_1.ElementRef, },
         { type: ng2_auto_complete_1.Ng2AutoComplete, },
-    ]; };
+    ];
     Ng2AutoCompleteComponent.propDecorators = {
         'listFormatter': [{ type: core_1.Input, args: ["list-formatter",] },],
         'source': [{ type: core_1.Input, args: ["source",] },],
@@ -183,6 +187,7 @@ var Ng2AutoCompleteComponent = (function () {
         'loadingText': [{ type: core_1.Input, args: ["loading-text",] },],
         'maxNumList': [{ type: core_1.Input, args: ["max-num-list",] },],
         'showInputTag': [{ type: core_1.Input, args: ["show-input-tag",] },],
+        'showDropdownOnInit': [{ type: core_1.Input, args: ["show-dropdown-on-init",] },],
         'valueSelected': [{ type: core_1.Output },],
         'inputChanged': [{ type: core_1.Output },],
         'autoCompleteInput': [{ type: core_1.ViewChild, args: ['autoCompleteInput',] },],

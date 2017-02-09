@@ -51,9 +51,9 @@ var Ng2AutoComplete = (function () {
         { type: core_1.Injectable },
     ];
     /** @nocollapse */
-    Ng2AutoComplete.ctorParameters = function () { return [
+    Ng2AutoComplete.ctorParameters = [
         { type: http_1.Http, decorators: [{ type: core_1.Optional },] },
-    ]; };
+    ];
     return Ng2AutoComplete;
 }());
 exports.Ng2AutoComplete = Ng2AutoComplete;

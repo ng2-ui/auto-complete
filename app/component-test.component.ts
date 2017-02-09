@@ -27,7 +27,25 @@ var templateStr = `
       </div>
     </ng2-utils-1>
     <pre>{{templateStr | htmlCode:'ng2-utils-1'}}</pre>
-  </fieldset>`;
+  </fieldset>
+  
+  <fieldset>
+    <ng2-utils-2>
+      <input [(ngModel)]="myModel"
+          (focus)="showMe=true"
+          (blur)="showMe=false" />
+      <ng2-auto-complete 
+         *ngIf="showMe"
+         [show-dropdown-on-init]="true"
+         (valueSelected)="myModel = $event"
+         [show-input-tag]="false"
+         [source]="[1,2,3,4,5]">
+      </ng2-auto-complete>
+     </ng2-utils-2>
+     <pre>{{templateStr | htmlCode:'ng2-utils-2'}}</pre>
+  </fieldset>
+`;
+
 
 @Component({
   selector: 'my-app',
@@ -40,6 +58,8 @@ var templateStr = `
     li.addr {margin: 5px; padding: 5px; list-style: none; border: 1px solid #ccc; display: inline-block;}
     .wrapper { padding: 10px; border: 1px solid #ccc}
     span.remove {color: red}
+    ng2-utils-2 ng2-auto-complete {display: block; width: 300px}
+    ng2-utils-2 .ng2-auto-complete > ul {width: 300px}
   `]
 })
 export class ComponentTestComponent {

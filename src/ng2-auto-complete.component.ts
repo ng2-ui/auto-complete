@@ -122,6 +122,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
   @Input("loading-text") loadingText: string = "Loading";
   @Input("max-num-list") maxNumList: number;
   @Input("show-input-tag") showInputTag: boolean = true;
+  @Input("show-dropdown-on-init") showDropdownOnInit: boolean = false;
 
   @Output() valueSelected = new EventEmitter();
   @Output() inputChanged = new EventEmitter();
@@ -160,6 +161,9 @@ export class Ng2AutoCompleteComponent implements OnInit {
     setTimeout(() => {
       if (this.autoCompleteInput) {
         this.autoCompleteInput.nativeElement.focus()
+      }
+      if (this.showDropdownOnInit) {
+        this.showDropdownList({target: {value: ''}});
       }
     });
   }

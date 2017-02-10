@@ -13,11 +13,11 @@ export declare class Ng2AutoCompleteDirective implements OnInit {
     source: any;
     pathToData: string;
     minChars: number;
-    valuePropertyName: string;
     displayPropertyName: string;
     acceptUserInput: boolean;
     maxNumList: string;
-    listFormatter: (arg: any) => string;
+    selectValueOf: string;
+    listFormatter: any;
     loadingText: string;
     blankOptionText: string;
     noMatchFoundText: string;
@@ -42,7 +42,7 @@ export declare class Ng2AutoCompleteDirective implements OnInit {
     styleAutoCompleteDropdown: () => void;
     addToStringFunction(val: any): any;
     componentInputChanged: (val: string) => void;
-    selectNewValue: (val: any) => void;
+    selectNewValue: (item: any) => void;
     private keydownEventHandler;
     private inputEventHandler;
 }

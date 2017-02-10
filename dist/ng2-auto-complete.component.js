@@ -15,8 +15,6 @@ var Ng2AutoCompleteComponent = (function () {
         var _this = this;
         this.autoComplete = autoComplete;
         this.minChars = 0;
-        this.valuePropertyName = "id";
-        this.displayPropertyName = "value";
         this.loadingText = "Loading";
         this.showInputTag = true;
         this.showDropdownOnInit = false;
@@ -140,8 +138,24 @@ var Ng2AutoCompleteComponent = (function () {
     };
     ;
     Ng2AutoCompleteComponent.prototype.getFormattedList = function (data) {
-        var formatter = this.listFormatter || this.defaultListFormatter;
-        return formatter.apply(this, [data]);
+        var formatted;
+        var formatter = this.listFormatter || '(id) value';
+        if (typeof data === 'string') {
+            formatted = data;
+        }
+        else if (typeof formatter === 'string') {
+            formatted = formatter;
+            var matches = formatter.match(/[a-zA-Z0-9_\$]+/g);
+            if (matches && typeof data !== 'string') {
+                matches.forEach(function (key) {
+                    formatted = formatted.replace(key, data[key]);
+                });
+            }
+        }
+        else {
+            formatted = this.listFormatter.apply(this, [data]);
+        }
+        return formatted;
     };
     Object.defineProperty(Ng2AutoCompleteComponent.prototype, "emptyList", {
         get: function () {
@@ -152,12 +166,6 @@ var Ng2AutoCompleteComponent = (function () {
         enumerable: true,
         configurable: true
     });
-    Ng2AutoCompleteComponent.prototype.defaultListFormatter = function (data) {
-        var html = "";
-        html += data[this.valuePropertyName] ? "<b>(" + data[this.valuePropertyName] + ")</b>" : "";
-        html += data[this.displayPropertyName] ? "<span>" + data[this.displayPropertyName] + "</span>" : data;
-        return html;
-    };
     Ng2AutoCompleteComponent.decorators = [
         { type: core_1.Component, args: [{
                     selector: "ng2-auto-complete",
@@ -178,8 +186,6 @@ var Ng2AutoCompleteComponent = (function () {
         'source': [{ type: core_1.Input, args: ["source",] },],
         'pathToData': [{ type: core_1.Input, args: ["path-to-data",] },],
         'minChars': [{ type: core_1.Input, args: ["min-chars",] },],
-        'valuePropertyName': [{ type: core_1.Input, args: ["value-property-name",] },],
-        'displayPropertyName': [{ type: core_1.Input, args: ["display-property-name",] },],
         'placeholder': [{ type: core_1.Input, args: ["placeholder",] },],
         'blankOptionText': [{ type: core_1.Input, args: ["blank-option-text",] },],
         'noMatchFoundText': [{ type: core_1.Input, args: ["no-match-found-text",] },],

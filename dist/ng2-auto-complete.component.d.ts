@@ -15,8 +15,6 @@ export declare class Ng2AutoCompleteComponent implements OnInit {
     source: any;
     pathToData: string;
     minChars: number;
-    valuePropertyName: string;
-    displayPropertyName: string;
     placeholder: string;
     blankOptionText: string;
     noMatchFoundText: string;
@@ -52,6 +50,5 @@ export declare class Ng2AutoCompleteComponent implements OnInit {
     inputElKeyHandler: (evt: any) => void;
     getFormattedList(data: any): string;
     readonly emptyList: boolean;
-    private defaultListFormatter(data);
     private delay;
 }

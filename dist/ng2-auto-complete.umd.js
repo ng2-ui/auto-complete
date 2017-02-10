@@ -243,8 +243,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var _this = this;
 	        this.autoComplete = autoComplete;
 	        this.minChars = 0;
-	        this.valuePropertyName = "id";
-	        this.displayPropertyName = "value";
 	        this.loadingText = "Loading";
 	        this.showInputTag = true;
 	        this.showDropdownOnInit = false;
@@ -368,8 +366,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    ;
 	    Ng2AutoCompleteComponent.prototype.getFormattedList = function (data) {
-	        var formatter = this.listFormatter || this.defaultListFormatter;
-	        return formatter.apply(this, [data]);
+	        var formatted;
+	        var formatter = this.listFormatter || '(id) value';
+	        if (typeof data === 'string') {
+	            formatted = data;
+	        }
+	        else if (typeof formatter === 'string') {
+	            formatted = formatter;
+	            var matches = formatter.match(/[a-zA-Z0-9_\$]+/g);
+	            if (matches && typeof data !== 'string') {
+	                matches.forEach(function (key) {
+	                    formatted = formatted.replace(key, data[key]);
+	                });
+	            }
+	        }
+	        else {
+	            formatted = this.listFormatter.apply(this, [data]);
+	        }
+	        return formatted;
 	    };
 	    Object.defineProperty(Ng2AutoCompleteComponent.prototype, "emptyList", {
 	        get: function () {
@@ -380,12 +394,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        enumerable: true,
 	        configurable: true
 	    });
-	    Ng2AutoCompleteComponent.prototype.defaultListFormatter = function (data) {
-	        var html = "";
-	        html += data[this.valuePropertyName] ? "<b>(" + data[this.valuePropertyName] + ")</b>" : "";
-	        html += data[this.displayPropertyName] ? "<span>" + data[this.displayPropertyName] + "</span>" : data;
-	        return html;
-	    };
 	    __decorate([
 	        core_1.Input("list-formatter"), 
 	        __metadata('design:type', Function)
@@ -402,14 +410,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        core_1.Input("min-chars"), 
 	        __metadata('design:type', Number)
 	    ], Ng2AutoCompleteComponent.prototype, "minChars", void 0);
-	    __decorate([
-	        core_1.Input("value-property-name"), 
-	        __metadata('design:type', String)
-	    ], Ng2AutoCompleteComponent.prototype, "valuePropertyName", void 0);
-	    __decorate([
-	        core_1.Input("display-property-name"), 
-	        __metadata('design:type', String)
-	    ], Ng2AutoCompleteComponent.prototype, "displayPropertyName", void 0);
 	    __decorate([
 	        core_1.Input("placeholder"), 
 	        __metadata('design:type', String)
@@ -511,8 +511,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            component.showInputTag = false; //Do NOT display autocomplete input tag separately
 	            component.pathToData = _this.pathToData;
 	            component.minChars = _this.minChars;
-	            component.valuePropertyName = _this.valuePropertyName || "id";
-	            component.displayPropertyName = _this.displayPropertyName || "value";
 	            component.source = _this.source;
 	            component.placeholder = _this.autoCompletePlaceholder;
 	            component.acceptUserInput = _this.acceptUserInput;
@@ -572,9 +570,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	                _this.valueChanged.emit(val);
 	            }
 	        };
-	        this.selectNewValue = function (val) {
-	            if (val !== '') {
-	                val = _this.addToStringFunction(val);
+	        this.selectNewValue = function (item) {
+	            // make displayable value
+	            if (item && typeof item === "object") {
+	                item = _this.addToStringFunction(item);
+	            }
+	            _this.inputEl && (_this.inputEl.value = '' + item);
+	            // make return value
+	            var val = item;
+	            if (_this.selectValueOf && item[_this.selectValueOf]) {
+	                val = item[_this.selectValueOf];
 	            }
 	            if ((_this.parentForm && _this.formControlName) || _this.extFormControl) {
 	                if (!!val) {
@@ -583,7 +588,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            (val !== _this.ngModel) && _this.ngModelChange.emit(val);
 	            _this.valueChanged.emit(val);
-	            _this.inputEl && (_this.inputEl.value = '' + val);
 	            _this.hideAutoCompleteDropdown();
 	        };
 	        // private elementIn(el: Node, containerEl: Node): boolean {
@@ -666,7 +670,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    Ng2AutoCompleteDirective.prototype.addToStringFunction = function (val) {
 	        if (val && typeof val === "object") {
-	            var displayVal_1 = val[this.displayPropertyName || "value"];
+	            var displayVal_1;
+	            if (this.displayPropertyName) {
+	                displayVal_1 = val[this.displayPropertyName];
+	            }
+	            else if (this.listFormatter) {
+	                displayVal_1 = val[this.listFormatter];
+	            }
+	            else {
+	                displayVal_1 = val.value;
+	            }
 	            val.toString = function () {
 	                return displayVal_1;
 	            };
@@ -690,10 +703,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        __metadata('design:type', Number)
 	    ], Ng2AutoCompleteDirective.prototype, "minChars", void 0);
 	    __decorate([
-	        core_1.Input("value-property-name"), 
-	        __metadata('design:type', String)
-	    ], Ng2AutoCompleteDirective.prototype, "valuePropertyName", void 0);
-	    __decorate([
 	        core_1.Input("display-property-name"), 
 	        __metadata('design:type', String)
 	    ], Ng2AutoCompleteDirective.prototype, "displayPropertyName", void 0);
@@ -706,8 +715,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        __metadata('design:type', String)
 	    ], Ng2AutoCompleteDirective.prototype, "maxNumList", void 0);
 	    __decorate([
+	        core_1.Input("select-value-of"), 
+	        __metadata('design:type', String)
+	    ], Ng2AutoCompleteDirective.prototype, "selectValueOf", void 0);
+	    __decorate([
 	        core_1.Input("list-formatter"), 
-	        __metadata('design:type', Function)
+	        __metadata('design:type', Object)
 	    ], Ng2AutoCompleteDirective.prototype, "listFormatter", void 0);
 	    __decorate([
 	        core_1.Input("loading-text"), 

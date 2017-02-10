@@ -1,6 +1,6 @@
 {
   "name": "ng2-auto-complete",
-  "version": "0.10.6",
+  "version": "0.10.7",
   "description": "Angular2 Input Autocomplete",
   "license": "MIT",
   "main": "dist/ng2-auto-complete.umd.js",

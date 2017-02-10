@@ -23,8 +23,6 @@ var Ng2AutoCompleteDirective = (function () {
             component.showInputTag = false; //Do NOT display autocomplete input tag separately
             component.pathToData = _this.pathToData;
             component.minChars = _this.minChars;
-            component.valuePropertyName = _this.valuePropertyName || "id";
-            component.displayPropertyName = _this.displayPropertyName || "value";
             component.source = _this.source;
             component.placeholder = _this.autoCompletePlaceholder;
             component.acceptUserInput = _this.acceptUserInput;
@@ -84,9 +82,16 @@ var Ng2AutoCompleteDirective = (function () {
                 _this.valueChanged.emit(val);
             }
         };
-        this.selectNewValue = function (val) {
-            if (val !== '') {
-                val = _this.addToStringFunction(val);
+        this.selectNewValue = function (item) {
+            // make displayable value
+            if (item && typeof item === "object") {
+                item = _this.addToStringFunction(item);
+            }
+            _this.inputEl && (_this.inputEl.value = '' + item);
+            // make return value
+            var val = item;
+            if (_this.selectValueOf && item[_this.selectValueOf]) {
+                val = item[_this.selectValueOf];
             }
             if ((_this.parentForm && _this.formControlName) || _this.extFormControl) {
                 if (!!val) {
@@ -95,7 +100,6 @@ var Ng2AutoCompleteDirective = (function () {
             }
             (val !== _this.ngModel) && _this.ngModelChange.emit(val);
             _this.valueChanged.emit(val);
-            _this.inputEl && (_this.inputEl.value = '' + val);
             _this.hideAutoCompleteDropdown();
         };
         // private elementIn(el: Node, containerEl: Node): boolean {
@@ -178,7 +182,19 @@ var Ng2AutoCompleteDirective = (function () {
     };
     Ng2AutoCompleteDirective.prototype.addToStringFunction = function (val) {
         if (val && typeof val === "object") {
-            var displayVal_1 = val[this.displayPropertyName || "value"];
+            var displayVal_1;
+            if (this.displayPropertyName) {
+                console.log(1);
+                displayVal_1 = val[this.displayPropertyName];
+            }
+            else if (this.listFormatter) {
+                console.log(2);
+                displayVal_1 = val[this.listFormatter];
+            }
+            else {
+                console.log(3, val.value);
+                displayVal_1 = val.value;
+            }
             val.toString = function () {
                 return displayVal_1;
             };
@@ -202,10 +218,10 @@ var Ng2AutoCompleteDirective = (function () {
         'source': [{ type: core_1.Input, args: ["source",] },],
         'pathToData': [{ type: core_1.Input, args: ["path-to-data",] },],
         'minChars': [{ type: core_1.Input, args: ["min-chars",] },],
-        'valuePropertyName': [{ type: core_1.Input, args: ["value-property-name",] },],
         'displayPropertyName': [{ type: core_1.Input, args: ["display-property-name",] },],
         'acceptUserInput': [{ type: core_1.Input, args: ["accept-user-input",] },],
         'maxNumList': [{ type: core_1.Input, args: ["max-num-list",] },],
+        'selectValueOf': [{ type: core_1.Input, args: ["select-value-of",] },],
         'listFormatter': [{ type: core_1.Input, args: ["list-formatter",] },],
         'loadingText': [{ type: core_1.Input, args: ["loading-text",] },],
         'blankOptionText': [{ type: core_1.Input, args: ["blank-option-text",] },],

@@ -107,8 +107,8 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   
   * **`path-to-data`**, string, e.g., `data.myList`, path to array data in http response
   * **`min-chars, number`**, when source is remote data, the number of character to see dropdown list
-  * **`value-property-name`**, string, key name of value. default is `id`
   * **`display-property-name`**, string, key name of text to show. default is `value`
+  * **`select-value-of`**, string, when selected, return the value of this key as a selected item
   * **`blank-option-text`**, string, guide text to allow empty value to be selected as in empty value of `option` tag.
   * **`no-match-found-text`**, string, guide text to show no result found.
   * **`valueChanged`** / **`ngModelChange`**, callback function that is executed when a new dropdown is selected.

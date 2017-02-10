@@ -113,8 +113,6 @@ export class Ng2AutoCompleteComponent implements OnInit {
   @Input("source") source: any;
   @Input("path-to-data") pathToData: string;
   @Input("min-chars") minChars: number = 0;
-  @Input("value-property-name") valuePropertyName: string = "id";
-  @Input("display-property-name") displayPropertyName: string = "value";
   @Input("placeholder") placeholder: string;
   @Input("blank-option-text") blankOptionText: string;
   @Input("no-match-found-text") noMatchFoundText: string;
@@ -271,8 +269,22 @@ export class Ng2AutoCompleteComponent implements OnInit {
   };
 
   getFormattedList(data: any): string {
-    let formatter = this.listFormatter || this.defaultListFormatter;
-    return formatter.apply(this, [data]);
+    let formatted;
+    let formatter = this.listFormatter || '(id) value';
+    if (typeof data === 'string') {
+      formatted = data;
+    } else if (typeof formatter === 'string') {
+      formatted = formatter;
+      let matches = formatter.match(/[a-zA-Z0-9_\$]+/g);
+      if (matches && typeof data !== 'string') {
+        matches.forEach(key => {
+          formatted = formatted.replace(key, data[key]);
+        });
+      }
+    } else {
+      formatted = this.listFormatter.apply(this, [data]);
+    }
+    return formatted;
   }
 
   get emptyList(): boolean {
@@ -281,13 +293,6 @@ export class Ng2AutoCompleteComponent implements OnInit {
       (this.minCharsEntered && !this.isLoading && !this.filteredList.length) ||
       (this.filteredList.length)
     );
-  }
-
-  private defaultListFormatter(data: any): string {
-    let html: string = "";
-    html += data[this.valuePropertyName] ? `<b>(${data[this.valuePropertyName]})</b>` : "";
-    html += data[this.displayPropertyName] ? `<span>${data[this.displayPropertyName]}</span>` : data;
-    return html;
   }
 
   private delay = (function () {

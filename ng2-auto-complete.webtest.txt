@@ -23,7 +23,7 @@ Test with array of id/value
   click body
   click #model2
   verify element "ul li:nth-child(1)" text is "Select One"
-  verify element "ul li:nth-child(2)" text is "(1)One"
+  verify element "ul li:nth-child(2)" text is "(1) One"
   see "Select One"
   click
   verify element #model2 value is ""

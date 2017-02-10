@@ -28,12 +28,12 @@ export class Ng2AutoCompleteDirective implements OnInit {
   @Input("source") source: any;
   @Input("path-to-data") pathToData: string;
   @Input("min-chars") minChars: number;
-  @Input("value-property-name") valuePropertyName: string;
   @Input("display-property-name") displayPropertyName: string;
   @Input("accept-user-input") acceptUserInput: boolean;
   @Input("max-num-list") maxNumList: string;
+  @Input("select-value-of") selectValueOf: string;
 
-  @Input("list-formatter") listFormatter: (arg: any) => string;
+  @Input("list-formatter") listFormatter;
   @Input("loading-text") loadingText: string = "Loading";
   @Input("blank-option-text") blankOptionText: string;
   @Input("no-match-found-text") noMatchFoundText: string;
@@ -132,8 +132,6 @@ export class Ng2AutoCompleteDirective implements OnInit {
 
     component.pathToData = this.pathToData;
     component.minChars = this.minChars;
-    component.valuePropertyName = this.valuePropertyName || "id";
-    component.displayPropertyName = this.displayPropertyName || "value";
     component.source = this.source;
     component.placeholder = this.autoCompletePlaceholder;
     component.acceptUserInput = this.acceptUserInput;
@@ -195,13 +193,24 @@ export class Ng2AutoCompleteDirective implements OnInit {
 
   addToStringFunction(val: any): any {
     if (val && typeof val === "object") {
-      let displayVal = val[this.displayPropertyName || "value"];
+      let displayVal;
+      if (this.displayPropertyName) {
+        console.log(1);
+        displayVal = val[this.displayPropertyName];
+      } else if (this.listFormatter) {
+        console.log(2);
+        displayVal = val[this.listFormatter];
+      } else {
+        console.log(3, val.value);
+        displayVal = val.value;
+      }
       val.toString = function () {
         return displayVal;
       }
     }
     return val;
   }
+
 
   componentInputChanged = (val: string) => {
     if (this.acceptUserInput !== false) {
@@ -214,9 +223,17 @@ export class Ng2AutoCompleteDirective implements OnInit {
     }
   };
 
-  selectNewValue = (val: any) => {
-    if (val !== '') {
-      val = this.addToStringFunction(val);
+  selectNewValue = (item: any) => {
+    // make displayable value
+    if (item && typeof item === "object") {
+      item = this.addToStringFunction(item);
+    }
+    this.inputEl && (this.inputEl.value = '' + item);
+
+    // make return value
+    let val = item;
+    if (this.selectValueOf && item[this.selectValueOf]) {
+      val = item[this.selectValueOf];
     }
     if ((this.parentForm && this.formControlName) || this.extFormControl) {
       if (!!val) {
@@ -225,7 +242,6 @@ export class Ng2AutoCompleteDirective implements OnInit {
     }
     (val !== this.ngModel) && this.ngModelChange.emit(val);
     this.valueChanged.emit(val);
-    this.inputEl && (this.inputEl.value = '' + val);
     this.hideAutoCompleteDropdown();
   };
 

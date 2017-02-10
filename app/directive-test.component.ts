@@ -44,8 +44,8 @@ let templateStr: string = `
         id="model3"
         [(ngModel)]="model3"
         placeholder="enter text"
-        value-property-name="key"
-        display-property-name="name"/>
+        display-property-name="name"
+        list-formatter="(key) name" />
       <br/>selected model3: {{model3 | json}}<br/><br/>
     </ng2-utils-3>
     <pre>{{templateStr | htmlCode:'ng2-utils-3'}}</pre>
@@ -61,7 +61,7 @@ let templateStr: string = `
         placeholder="Enter Address(min. 2 chars)"
         [source]="googleGeoCode" 
         no-match-found-text="No Match Found"
-        display-property-name="formatted_address"
+        list-formatter="formatted_address"
         path-to-data="results"
         loading-text="Google Is Thinking..."
         max-num-list="5"

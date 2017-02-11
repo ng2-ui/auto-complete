@@ -368,7 +368,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    Ng2AutoCompleteComponent.prototype.getFormattedList = function (data) {
 	        var formatted;
 	        var formatter = this.listFormatter || '(id) value';
-	        if (typeof data !== 'object') {
+	        if (typeof formatter === 'function') {
+	            formatted = formatter.apply(this, [data]);
+	        }
+	        else if (typeof data !== 'object') {
 	            formatted = data;
 	        }
 	        else if (typeof formatter === 'string') {
@@ -379,9 +382,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    formatted = formatted.replace(key, data[key]);
 	                });
 	            }
-	        }
-	        else if (typeof formatter === 'function') {
-	            formatted = formatter.apply(this, [data]);
 	        }
 	        return formatted;
 	    };
@@ -547,7 +547,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var thisElBCR = _this.el.getBoundingClientRect();
 	                var thisInputElBCR = _this.inputEl.getBoundingClientRect();
 	                var closeToBottom = thisInputElBCR.bottom + 100 > window.innerHeight;
-	                _this.acDropdownEl.style.width = thisElBCR.width + "px";
+	                _this.acDropdownEl.style.width = thisInputElBCR.width + "px";
 	                _this.acDropdownEl.style.position = "absolute";
 	                _this.acDropdownEl.style.zIndex = "1";
 	                _this.acDropdownEl.style.left = "0";
@@ -590,14 +590,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            _this.valueChanged.emit(val);
 	            _this.hideAutoCompleteDropdown();
 	        };
-	        // private elementIn(el: Node, containerEl: Node): boolean {
-	        //   while (el = el.parentNode) {
-	        //     if (el === containerEl) {
-	        //       return true;
-	        //     }
-	        //   }
-	        //   return false;
-	        // }
 	        this.keydownEventHandler = function (evt) {
 	            if (_this.componentRef) {
 	                var component = _this.componentRef.instance;

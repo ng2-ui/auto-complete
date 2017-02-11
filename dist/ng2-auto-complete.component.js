@@ -140,7 +140,10 @@ var Ng2AutoCompleteComponent = (function () {
     Ng2AutoCompleteComponent.prototype.getFormattedList = function (data) {
         var formatted;
         var formatter = this.listFormatter || '(id) value';
-        if (typeof data !== 'object') {
+        if (typeof formatter === 'function') {
+            formatted = formatter.apply(this, [data]);
+        }
+        else if (typeof data !== 'object') {
             formatted = data;
         }
         else if (typeof formatter === 'string') {
@@ -151,9 +154,6 @@ var Ng2AutoCompleteComponent = (function () {
                     formatted = formatted.replace(key, data[key]);
                 });
             }
-        }
-        else if (typeof formatter === 'function') {
-            formatted = formatter.apply(this, [data]);
         }
         return formatted;
     };

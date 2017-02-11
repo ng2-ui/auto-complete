@@ -59,7 +59,7 @@ var Ng2AutoCompleteDirective = (function () {
                 var thisElBCR = _this.el.getBoundingClientRect();
                 var thisInputElBCR = _this.inputEl.getBoundingClientRect();
                 var closeToBottom = thisInputElBCR.bottom + 100 > window.innerHeight;
-                _this.acDropdownEl.style.width = thisElBCR.width + "px";
+                _this.acDropdownEl.style.width = thisInputElBCR.width + "px";
                 _this.acDropdownEl.style.position = "absolute";
                 _this.acDropdownEl.style.zIndex = "1";
                 _this.acDropdownEl.style.left = "0";
@@ -102,14 +102,6 @@ var Ng2AutoCompleteDirective = (function () {
             _this.valueChanged.emit(val);
             _this.hideAutoCompleteDropdown();
         };
-        // private elementIn(el: Node, containerEl: Node): boolean {
-        //   while (el = el.parentNode) {
-        //     if (el === containerEl) {
-        //       return true;
-        //     }
-        //   }
-        //   return false;
-        // }
         this.keydownEventHandler = function (evt) {
             if (_this.componentRef) {
                 var component = _this.componentRef.instance;
@@ -184,11 +176,9 @@ var Ng2AutoCompleteDirective = (function () {
         if (val && typeof val === "object") {
             var displayVal_1;
             if (this.displayPropertyName) {
-                console.log(1);
                 displayVal_1 = val[this.displayPropertyName];
             }
             else if (this.listFormatter) {
-                console.log(2);
                 displayVal_1 = val[this.listFormatter];
             }
             else {

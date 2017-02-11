@@ -140,7 +140,7 @@ var Ng2AutoCompleteComponent = (function () {
     Ng2AutoCompleteComponent.prototype.getFormattedList = function (data) {
         var formatted;
         var formatter = this.listFormatter || '(id) value';
-        if (typeof data === 'string') {
+        if (typeof data !== 'object') {
             formatted = data;
         }
         else if (typeof formatter === 'string') {
@@ -152,8 +152,8 @@ var Ng2AutoCompleteComponent = (function () {
                 });
             }
         }
-        else {
-            formatted = this.listFormatter.apply(this, [data]);
+        else if (typeof formatter === 'function') {
+            formatted = formatter.apply(this, [data]);
         }
         return formatted;
     };
@@ -177,10 +177,10 @@ var Ng2AutoCompleteComponent = (function () {
                 },] },
     ];
     /** @nocollapse */
-    Ng2AutoCompleteComponent.ctorParameters = [
+    Ng2AutoCompleteComponent.ctorParameters = function () { return [
         { type: core_1.ElementRef, },
         { type: ng2_auto_complete_1.Ng2AutoComplete, },
-    ];
+    ]; };
     Ng2AutoCompleteComponent.propDecorators = {
         'listFormatter': [{ type: core_1.Input, args: ["list-formatter",] },],
         'source': [{ type: core_1.Input, args: ["source",] },],

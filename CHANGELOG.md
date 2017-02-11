@@ -6,3 +6,5 @@
 - introduced `select-valule-of`
 - removed `value-property-name`
 - list-formatter now accepts sttirng e.g. `(id) value`
+### [0.10.7]
+- fixed (undefined) display when source is list of number or boolean

@@ -368,7 +368,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    Ng2AutoCompleteComponent.prototype.getFormattedList = function (data) {
 	        var formatted;
 	        var formatter = this.listFormatter || '(id) value';
-	        if (typeof data === 'string') {
+	        if (typeof data !== 'object') {
 	            formatted = data;
 	        }
 	        else if (typeof formatter === 'string') {
@@ -380,8 +380,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                });
 	            }
 	        }
-	        else {
-	            formatted = this.listFormatter.apply(this, [data]);
+	        else if (typeof formatter === 'function') {
+	            formatted = formatter.apply(this, [data]);
 	        }
 	        return formatted;
 	    };

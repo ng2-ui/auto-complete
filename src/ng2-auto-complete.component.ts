@@ -271,7 +271,9 @@ export class Ng2AutoCompleteComponent implements OnInit {
   getFormattedList(data: any): string {
     let formatted;
     let formatter = this.listFormatter || '(id) value';
-    if (typeof data !== 'object') {
+    if (typeof formatter === 'function') {
+      formatted = formatter.apply(this, [data]);
+    } else if (typeof data !== 'object') {
       formatted = data;
     } else if (typeof formatter === 'string') {
       formatted = formatter;
@@ -281,8 +283,6 @@ export class Ng2AutoCompleteComponent implements OnInit {
           formatted = formatted.replace(key, data[key]);
         });
       }
-    } else if (typeof formatter === 'function') {
-      formatted = formatter.apply(this, [data]);
     }
     return formatted;
   }

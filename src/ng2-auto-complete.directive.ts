@@ -177,7 +177,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
       let thisInputElBCR = this.inputEl.getBoundingClientRect();
       let closeToBottom = thisInputElBCR.bottom + 100 > window.innerHeight;
 
-      this.acDropdownEl.style.width = thisElBCR.width + "px";
+      this.acDropdownEl.style.width = thisInputElBCR.width + "px";
       this.acDropdownEl.style.position = "absolute";
       this.acDropdownEl.style.zIndex = "1";
       this.acDropdownEl.style.left = "0";
@@ -195,10 +195,8 @@ export class Ng2AutoCompleteDirective implements OnInit {
     if (val && typeof val === "object") {
       let displayVal;
       if (this.displayPropertyName) {
-        console.log(1);
         displayVal = val[this.displayPropertyName];
       } else if (this.listFormatter) {
-        console.log(2);
         displayVal = val[this.listFormatter];
       } else {
         console.log(3, val.value);
@@ -210,7 +208,6 @@ export class Ng2AutoCompleteDirective implements OnInit {
     }
     return val;
   }
-
 
   componentInputChanged = (val: string) => {
     if (this.acceptUserInput !== false) {
@@ -244,15 +241,6 @@ export class Ng2AutoCompleteDirective implements OnInit {
     this.valueChanged.emit(val);
     this.hideAutoCompleteDropdown();
   };
-
-  // private elementIn(el: Node, containerEl: Node): boolean {
-  //   while (el = el.parentNode) {
-  //     if (el === containerEl) {
-  //       return true;
-  //     }
-  //   }
-  //   return false;
-  // }
 
   private keydownEventHandler = (evt: any) => {
     if (this.componentRef) {

@@ -36,6 +36,7 @@ _FormControl_ http://plnkr.co/edit/WfgdcHLc8KDvsI2G2tHw?p=preview
 **`List Formatter Example`**
 
   http://plnkr.co/edit/T5K1faYzb0LeSD9IttxE&open=app/app.component.ts
+  http://plnkr.co/edit/0QFYFHMmCAFmhbYAGQl7?p=preview (With custom css)
 
 ## Install
 

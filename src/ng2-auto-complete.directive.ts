@@ -199,7 +199,6 @@ export class Ng2AutoCompleteDirective implements OnInit {
       } else if (this.listFormatter) {
         displayVal = val[this.listFormatter];
       } else {
-        console.log(3, val.value);
         displayVal = val.value;
       }
       val.toString = function () {

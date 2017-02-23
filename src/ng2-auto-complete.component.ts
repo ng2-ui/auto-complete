@@ -183,6 +183,12 @@ export class Ng2AutoCompleteComponent implements OnInit {
   hideDropdownList(): void {
     this.dropdownVisible = false;
   }
+  
+  findItemFromSelectValue(selectText: string): any {
+    let matchingItems = this.filteredList
+                            .filter(item => ('' + item) === selectText);
+    return matchingItems.length ? matchingItems[0] : null;
+  }
 
   reloadList(keyword: string): void {
 

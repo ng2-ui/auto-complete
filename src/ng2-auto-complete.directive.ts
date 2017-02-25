@@ -54,7 +54,8 @@ export class Ng2AutoCompleteDirective implements OnInit {
   acDropdownEl: HTMLElement; // auto complete element
   inputEl: HTMLInputElement;  // input element of this element
   formControl: AbstractControl;
-
+  revertValue: any;
+  
   constructor(private resolver: ComponentFactoryResolver,
               private renderer: Renderer,
               public  viewContainerRef: ViewContainerRef,
@@ -100,10 +101,10 @@ export class Ng2AutoCompleteDirective implements OnInit {
     this.inputEl = this.el.tagName === "INPUT" ?
         <HTMLInputElement>this.el : <HTMLInputElement>this.el.querySelector("input");
 
-    this.inputEl.addEventListener('focus', this.showAutoCompleteDropdown);
-    this.inputEl.addEventListener('blur', this.hideAutoCompleteDropdown);
-    this.inputEl.addEventListener('keydown', this.keydownEventHandler);
-    this.inputEl.addEventListener('input', this.inputEventHandler);
+    this.inputEl.addEventListener('focus', e => this.showAutoCompleteDropdown(e));
+    this.inputEl.addEventListener('blur', e => this.hideAutoCompleteDropdown(e));
+    this.inputEl.addEventListener('keydown', e => this.keydownEventHandler(e));
+    this.inputEl.addEventListener('input', e => this.inputEventHandler(e));
   }
 
   ngOnDestroy(): void {
@@ -153,6 +154,8 @@ export class Ng2AutoCompleteDirective implements OnInit {
     if (this.el.tagName !== "INPUT" && this.acDropdownEl) {
       this.inputEl.parentElement.insertBefore(this.acDropdownEl, this.inputEl.nextSibling);
     }
+    
+    this.revertValue = typeof this.ngModel !== "undefined" ? this.ngModel : this.inputEl.value;
 
     setTimeout(() => {
       component.reloadList(this.inputEl.value);
@@ -163,8 +166,19 @@ export class Ng2AutoCompleteDirective implements OnInit {
 
   hideAutoCompleteDropdown = (event?: any): void => {
     if (this.componentRef) {
+      let currentItem: any;
+      let hasRevertValue = (typeof this.revertValue !== "undefined");
+      if(this.inputEl && hasRevertValue && !this.acceptUserInput) {
+        currentItem = this.componentRef.instance.findItemFromSelectValue(this.inputEl.value);
+      }
+      
       this.componentRef.destroy();
       this.componentRef = undefined;
+      
+      if(this.inputEl && hasRevertValue && !this.acceptUserInput && currentItem === null) {
+        this.selectNewValue(this.revertValue);
+      }
+
     }
   };
 

@@ -88,6 +88,11 @@ var Ng2AutoCompleteComponent = (function () {
     Ng2AutoCompleteComponent.prototype.hideDropdownList = function () {
         this.dropdownVisible = false;
     };
+    Ng2AutoCompleteComponent.prototype.findItemFromSelectValue = function (selectText) {
+        var matchingItems = this.filteredList
+            .filter(function (item) { return ('' + item) === selectText; });
+        return matchingItems.length ? matchingItems[0] : null;
+    };
     Ng2AutoCompleteComponent.prototype.reloadList = function (keyword) {
         var _this = this;
         this.filteredList = [];
@@ -177,10 +182,10 @@ var Ng2AutoCompleteComponent = (function () {
                 },] },
     ];
     /** @nocollapse */
-    Ng2AutoCompleteComponent.ctorParameters = function () { return [
+    Ng2AutoCompleteComponent.ctorParameters = [
         { type: core_1.ElementRef, },
         { type: ng2_auto_complete_1.Ng2AutoComplete, },
-    ]; };
+    ];
     Ng2AutoCompleteComponent.propDecorators = {
         'listFormatter': [{ type: core_1.Input, args: ["list-formatter",] },],
         'source': [{ type: core_1.Input, args: ["source",] },],

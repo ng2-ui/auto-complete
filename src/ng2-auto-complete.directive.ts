@@ -239,7 +239,6 @@ export class Ng2AutoCompleteDirective implements OnInit {
   };
 
   selectNewValue = (item: any) => {
-    console.log('item...................', item)
     // make displayable value
     if (item && typeof item === "object") {
       item = this.addToStringFunction(item);

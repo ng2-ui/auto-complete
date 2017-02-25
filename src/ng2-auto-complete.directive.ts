@@ -168,14 +168,19 @@ export class Ng2AutoCompleteDirective implements OnInit {
     if (this.componentRef) {
       let currentItem: any;
       let hasRevertValue = (typeof this.revertValue !== "undefined");
-      if(this.inputEl && hasRevertValue && !this.acceptUserInput) {
+      if(this.inputEl && hasRevertValue && this.acceptUserInput === false) {
         currentItem = this.componentRef.instance.findItemFromSelectValue(this.inputEl.value);
       }
       
       this.componentRef.destroy();
       this.componentRef = undefined;
       
-      if(this.inputEl && hasRevertValue && !this.acceptUserInput && currentItem === null) {
+      if(
+        this.inputEl && 
+        hasRevertValue && 
+        this.acceptUserInput === false &&
+        currentItem === null
+      ) {
         this.selectNewValue(this.revertValue);
       }
 
@@ -234,6 +239,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
   };
 
   selectNewValue = (item: any) => {
+    console.log('item...................', item)
     // make displayable value
     if (item && typeof item === "object") {
       item = this.addToStringFunction(item);

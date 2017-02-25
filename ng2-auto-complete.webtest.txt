@@ -13,6 +13,9 @@ Test with Array of strings
   verify element "ul li:nth-child(1)" text is "text"
   press ENTER into "#model1"
   verify element #model1 value is "text"
+  enter "invalid" into "#model1"
+  click "body"
+  verify element #model1 value is "text"
 
 Test with array of id/value
   verify element #model2 value is "One"
@@ -20,8 +23,7 @@ Test with array of id/value
   verify element #model2 value is "it"
   click #model2
   clear #model2
-  click body
-  click #model2
+  press "o" into "#model2"
   verify element "ul li:nth-child(1)" text is "Select One"
   verify element "ul li:nth-child(2)" text is "(1) One"
   see "Select One"

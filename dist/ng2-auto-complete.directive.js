@@ -95,7 +95,6 @@ var Ng2AutoCompleteDirective = (function () {
             }
         };
         this.selectNewValue = function (item) {
-            console.log('item...................', item);
             // make displayable value
             if (item && typeof item === "object") {
                 item = _this.addToStringFunction(item);

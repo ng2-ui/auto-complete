@@ -36,7 +36,7 @@ import { Ng2AutoComplete } from "./ng2-auto-complete";
       <li *ngIf="isLoading" class="loading">{{loadingText}}</li>
       <li *ngIf="minCharsEntered && !isLoading && !filteredList.length"
            (mousedown)="selectOne('')"
-           class="blank-item">{{noMatchFoundText || 'No Result Found'}}</li>
+           class="no-match-found">{{noMatchFoundText || 'No Result Found'}}</li>
       <li *ngIf="blankOptionText && filteredList.length"
           (mousedown)="selectOne('')"
           class="blank-item">{{blankOptionText}}</li>

@@ -42,7 +42,6 @@ export declare class Ng2AutoCompleteDirective implements OnInit {
     hideAutoCompleteDropdown: (event?: any) => void;
     styleAutoCompleteDropdown: () => void;
     addToStringFunction(val: any): any;
-    componentInputChanged: (val: string) => void;
     selectNewValue: (item: any) => void;
     private keydownEventHandler;
     private inputEventHandler;

@@ -117,7 +117,6 @@ var Ng2AutoCompleteComponent = (function () {
         this.showInputTag = true;
         this.showDropdownOnInit = false;
         this.valueSelected = new core_1.EventEmitter();
-        this.inputChanged = new core_1.EventEmitter();
         this.dropdownVisible = false;
         this.isLoading = false;
         this.filteredList = [];
@@ -128,13 +127,11 @@ var Ng2AutoCompleteComponent = (function () {
             var keyword = evt.target.value;
             // executing after user stopped typing
             _this.delay(function () { return _this.reloadList(keyword); }, delayMs);
-            _this.inputChanged.emit(keyword);
         };
         this.inputElKeyHandler = function (evt) {
             var totalNumItem = _this.filteredList.length;
             switch (evt.keyCode) {
                 case 27:
-                    //this.hideDropdownList();
                     break;
                 case 38:
                     _this.itemIndex = (totalNumItem + _this.itemIndex - 1) % totalNumItem;
@@ -322,10 +319,6 @@ var Ng2AutoCompleteComponent = (function () {
         __metadata('design:type', Object)
     ], Ng2AutoCompleteComponent.prototype, "valueSelected", void 0);
     __decorate([
-        core_1.Output(), 
-        __metadata('design:type', Object)
-    ], Ng2AutoCompleteComponent.prototype, "inputChanged", void 0);
-    __decorate([
         core_1.ViewChild('autoCompleteInput'), 
         __metadata('design:type', core_1.ElementRef)
     ], Ng2AutoCompleteComponent.prototype, "autoCompleteInput", void 0);
@@ -472,7 +465,6 @@ var Ng2AutoCompleteDirective = (function () {
             component.blankOptionText = _this.blankOptionText;
             component.noMatchFoundText = _this.noMatchFoundText;
             component.valueSelected.subscribe(_this.selectNewValue);
-            component.inputChanged.subscribe(_this.componentInputChanged);
             _this.acDropdownEl = _this.componentRef.location.nativeElement;
             _this.acDropdownEl.style.display = "none";
             // if this element is not an input tag, move dropdown after input tag
@@ -522,16 +514,6 @@ var Ng2AutoCompleteDirective = (function () {
                 else {
                     _this.acDropdownEl.style.top = thisInputElBCR.height + "px";
                 }
-            }
-        };
-        this.componentInputChanged = function (val) {
-            if (_this.acceptUserInput !== false) {
-                _this.inputEl.value = val;
-                if ((_this.parentForm && _this.formControlName) || _this.extFormControl) {
-                    _this.formControl.patchValue(val);
-                }
-                (val !== _this.ngModel) && _this.ngModelChange.emit(val);
-                _this.valueChanged.emit(val);
             }
         };
         this.selectNewValue = function (item) {
@@ -599,8 +581,6 @@ var Ng2AutoCompleteDirective = (function () {
         else if (!!this.formControl && this.formControl.value) {
             this.selectNewValue(this.formControl.value[this.displayPropertyName]);
         }
-        // when somewhere else clicked, hide this autocomplete
-        //document.addEventListener("click", this.hideAutoCompleteDropdown);
     };
     Ng2AutoCompleteDirective.prototype.ngAfterViewInit = function () {
         var _this = this;
@@ -616,9 +596,7 @@ var Ng2AutoCompleteDirective = (function () {
     Ng2AutoCompleteDirective.prototype.ngOnDestroy = function () {
         if (this.componentRef) {
             this.componentRef.instance.valueSelected.unsubscribe();
-            this.componentRef.instance.inputChanged.unsubscribe();
         }
-        //document.removeEventListener("click", this.hideAutoCompleteDropdown);
     };
     Ng2AutoCompleteDirective.prototype.ngOnChanges = function (changes) {
         if (changes['ngModel']) {

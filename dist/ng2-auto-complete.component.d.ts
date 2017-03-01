@@ -24,7 +24,6 @@ export declare class Ng2AutoCompleteComponent implements OnInit {
     showInputTag: boolean;
     showDropdownOnInit: boolean;
     valueSelected: EventEmitter<{}>;
-    inputChanged: EventEmitter<{}>;
     autoCompleteInput: ElementRef;
     el: HTMLElement;
     dropdownVisible: boolean;

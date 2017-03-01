@@ -19,7 +19,6 @@ var Ng2AutoCompleteComponent = (function () {
         this.showInputTag = true;
         this.showDropdownOnInit = false;
         this.valueSelected = new core_1.EventEmitter();
-        this.inputChanged = new core_1.EventEmitter();
         this.dropdownVisible = false;
         this.isLoading = false;
         this.filteredList = [];
@@ -30,13 +29,11 @@ var Ng2AutoCompleteComponent = (function () {
             var keyword = evt.target.value;
             // executing after user stopped typing
             _this.delay(function () { return _this.reloadList(keyword); }, delayMs);
-            _this.inputChanged.emit(keyword);
         };
         this.inputElKeyHandler = function (evt) {
             var totalNumItem = _this.filteredList.length;
             switch (evt.keyCode) {
                 case 27:
-                    //this.hideDropdownList();
                     break;
                 case 38:
                     _this.itemIndex = (totalNumItem + _this.itemIndex - 1) % totalNumItem;
@@ -200,7 +197,6 @@ var Ng2AutoCompleteComponent = (function () {
         'showInputTag': [{ type: core_1.Input, args: ["show-input-tag",] },],
         'showDropdownOnInit': [{ type: core_1.Input, args: ["show-dropdown-on-init",] },],
         'valueSelected': [{ type: core_1.Output },],
-        'inputChanged': [{ type: core_1.Output },],
         'autoCompleteInput': [{ type: core_1.ViewChild, args: ['autoCompleteInput',] },],
     };
     return Ng2AutoCompleteComponent;

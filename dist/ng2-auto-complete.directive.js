@@ -32,7 +32,6 @@ var Ng2AutoCompleteDirective = (function () {
             component.blankOptionText = _this.blankOptionText;
             component.noMatchFoundText = _this.noMatchFoundText;
             component.valueSelected.subscribe(_this.selectNewValue);
-            component.inputChanged.subscribe(_this.componentInputChanged);
             _this.acDropdownEl = _this.componentRef.location.nativeElement;
             _this.acDropdownEl.style.display = "none";
             // if this element is not an input tag, move dropdown after input tag
@@ -82,16 +81,6 @@ var Ng2AutoCompleteDirective = (function () {
                 else {
                     _this.acDropdownEl.style.top = thisInputElBCR.height + "px";
                 }
-            }
-        };
-        this.componentInputChanged = function (val) {
-            if (_this.acceptUserInput !== false) {
-                _this.inputEl.value = val;
-                if ((_this.parentForm && _this.formControlName) || _this.extFormControl) {
-                    _this.formControl.patchValue(val);
-                }
-                (val !== _this.ngModel) && _this.ngModelChange.emit(val);
-                _this.valueChanged.emit(val);
             }
         };
         this.selectNewValue = function (item) {
@@ -159,8 +148,6 @@ var Ng2AutoCompleteDirective = (function () {
         else if (!!this.formControl && this.formControl.value) {
             this.selectNewValue(this.formControl.value[this.displayPropertyName]);
         }
-        // when somewhere else clicked, hide this autocomplete
-        //document.addEventListener("click", this.hideAutoCompleteDropdown);
     };
     Ng2AutoCompleteDirective.prototype.ngAfterViewInit = function () {
         var _this = this;
@@ -176,9 +163,7 @@ var Ng2AutoCompleteDirective = (function () {
     Ng2AutoCompleteDirective.prototype.ngOnDestroy = function () {
         if (this.componentRef) {
             this.componentRef.instance.valueSelected.unsubscribe();
-            this.componentRef.instance.inputChanged.unsubscribe();
         }
-        //document.removeEventListener("click", this.hideAutoCompleteDropdown);
     };
     Ng2AutoCompleteDirective.prototype.ngOnChanges = function (changes) {
         if (changes['ngModel']) {

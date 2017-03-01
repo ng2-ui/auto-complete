@@ -91,8 +91,6 @@ export class Ng2AutoCompleteDirective implements OnInit {
       this.selectNewValue(this.formControl.value[this.displayPropertyName]);
     }
 
-    // when somewhere else clicked, hide this autocomplete
-    //document.addEventListener("click", this.hideAutoCompleteDropdown);
   }
 
   ngAfterViewInit() {
@@ -110,9 +108,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
   ngOnDestroy(): void {
     if (this.componentRef) {
       this.componentRef.instance.valueSelected.unsubscribe();
-      this.componentRef.instance.inputChanged.unsubscribe();
     }
-    //document.removeEventListener("click", this.hideAutoCompleteDropdown);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -144,7 +140,6 @@ export class Ng2AutoCompleteDirective implements OnInit {
     component.noMatchFoundText = this.noMatchFoundText;
 
     component.valueSelected.subscribe(this.selectNewValue);
-    component.inputChanged.subscribe(this.componentInputChanged);
 
     this.acDropdownEl = this.componentRef.location.nativeElement;
     this.acDropdownEl.style.display = "none";
@@ -226,17 +221,6 @@ export class Ng2AutoCompleteDirective implements OnInit {
     }
     return val;
   }
-
-  componentInputChanged = (val: string) => {
-    if (this.acceptUserInput !== false) {
-      this.inputEl.value = val;
-      if ((this.parentForm && this.formControlName) || this.extFormControl) {
-        this.formControl.patchValue(val);
-      }
-      (val !== this.ngModel) && this.ngModelChange.emit(val);
-      this.valueChanged.emit(val);
-    }
-  };
 
   selectNewValue = (item: any) => {
     // make displayable value

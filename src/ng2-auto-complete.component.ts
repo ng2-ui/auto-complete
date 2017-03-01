@@ -123,7 +123,6 @@ export class Ng2AutoCompleteComponent implements OnInit {
   @Input("show-dropdown-on-init") showDropdownOnInit: boolean = false;
 
   @Output() valueSelected = new EventEmitter();
-  @Output() inputChanged = new EventEmitter();
   @ViewChild('autoCompleteInput') autoCompleteInput: ElementRef;
 
   el: HTMLElement;           // this component  element `<ng2-auto-complete>`
@@ -172,7 +171,6 @@ export class Ng2AutoCompleteComponent implements OnInit {
 
     // executing after user stopped typing
     this.delay(() => this.reloadList(keyword), delayMs);
-    this.inputChanged.emit(keyword);
   };
 
   showDropdownList(event: any): void {
@@ -253,7 +251,6 @@ export class Ng2AutoCompleteComponent implements OnInit {
 
     switch (evt.keyCode) {
       case 27: // ESC, hide auto complete
-        //this.hideDropdownList();
         break;
 
       case 38: // UP, select the previous li el

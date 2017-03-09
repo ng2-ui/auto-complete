@@ -44,7 +44,7 @@ let templateStr: string = `
         id="model3"
         [(ngModel)]="model3"
         placeholder="enter text"
-        display-property-name="name"
+        value-formatter="(key) name"
         list-formatter="(key) name" />
       <br/>selected model3: {{model3 | json}}<br/><br/>
     </ng2-utils-3>

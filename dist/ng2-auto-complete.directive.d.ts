@@ -21,6 +21,7 @@ export declare class Ng2AutoCompleteDirective implements OnInit {
     loadingText: string;
     blankOptionText: string;
     noMatchFoundText: string;
+    valueFormatter: any;
     ngModel: String;
     formControlName: string;
     extFormControl: FormControl;
@@ -41,7 +42,7 @@ export declare class Ng2AutoCompleteDirective implements OnInit {
     showAutoCompleteDropdown: (event?: any) => void;
     hideAutoCompleteDropdown: (event?: any) => void;
     styleAutoCompleteDropdown: () => void;
-    addToStringFunction(val: any): any;
+    setToStringFunction(item: any): any;
     selectNewValue: (item: any) => void;
     private keydownEventHandler;
     private inputEventHandler;

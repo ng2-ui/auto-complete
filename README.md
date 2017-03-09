@@ -97,13 +97,15 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   * **`ngModel`**, any, variable that autocomplete result is assigned to
   * **`source`**, array or string, required. data source for dropdown list
   * **`auto-complete-placeholder`**,  string, autocomplete input guide text
-  * **`list-formatter`**, function variable name, custom list formatting function. e.g. 'myListFormatter', not 'myListFormatter()'. 
+  * **`value-formatter`**, string or function variable name, custom value formatting function. e.g. '(id) value', 'myValueFormatter'. 
+  
+           myValueFormatter(data: any): string {
+              return `(${data[id]}) ${data[value]`;
+            }
+  * **`list-formatter`**, string or function variable name, custom list formatting function. e.g.  '(key) name', 'myListFormatter'. 
   
            myListFormatter(data: any): string {
-              let html: string = "";
-              html += data[this.valuePropertyName] ? `<b>(${data[this.valuePropertyName]})</b>` : "";
-              html += data[this.displayPropertyName] ? `<span>${data[this.displayPropertyName]}</span>` : data;
-              return html;
+              return `(${data[key]}) ${data[name]`;
             }
   
   * **`path-to-data`**, string, e.g., `data.myList`, path to array data in http response
@@ -115,7 +117,7 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   * **`valueChanged`** / **`ngModelChange`**, callback function that is executed when a new dropdown is selected.
      e.g. `(valueChanged)="myCallback($event)"`
   * **`loading-text`**, text to be displayed when loading. Default, "Loading"
-  * <del>**`accept-user-input`** boolean, if `false` and does not match to source given, it goes back to the original value selected.</del>, please use `readonly="readonly"` to force user to select only from list.
+  * **`accept-user-input`** boolean, if `false` and does not match to source given, it goes back to the original value selected., If you don't event want user to type any, please use `readonly="readonly"` to force user to select only from list.
   * **`max-num-list`** number, maximun number of drop down list items. Default, unlimited
   
 ## For Developers

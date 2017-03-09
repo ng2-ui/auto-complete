@@ -13,3 +13,5 @@
 - fixed (undefined) display when source is list of number or boolean
 ### [0.10.10]
 - fixed `accept-user-input`, fixed tests
+### [0.11.0]
+- added a new property `value-formatter`

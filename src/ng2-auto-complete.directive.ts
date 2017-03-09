@@ -37,6 +37,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
   @Input("loading-text") loadingText: string = "Loading";
   @Input("blank-option-text") blankOptionText: string;
   @Input("no-match-found-text") noMatchFoundText: string;
+  @Input("value-formatter") valueFormatter: any;
 
   @Input() ngModel: String;
   @Input('formControlName') formControlName: string;
@@ -113,7 +114,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['ngModel']) {
-      this.ngModel = this.addToStringFunction(changes['ngModel'].currentValue);
+      this.ngModel = this.setToStringFunction(changes['ngModel'].currentValue);
     }
   }
 
@@ -205,27 +206,39 @@ export class Ng2AutoCompleteDirective implements OnInit {
     }
   };
 
-  addToStringFunction(val: any): any {
-    if (val && typeof val === "object") {
+  setToStringFunction(item: any): any {
+    if (item && typeof item === "object") {
       let displayVal;
-      if (this.displayPropertyName) {
-        displayVal = val[this.displayPropertyName];
-      } else if (this.listFormatter) {
-        displayVal = val[this.listFormatter];
+
+      if (typeof this.valueFormatter === 'string') {
+        let matches = this.valueFormatter.match(/[a-zA-Z0-9_\$]+/g);
+        let formatted = this.valueFormatter;
+        if (matches && typeof item !== 'string') {
+          matches.forEach(key => {
+            formatted = formatted.replace(key, item[key]);
+          });
+        }
+        displayVal = formatted;
+      } else if (typeof this.valueFormatter === 'function') {
+        displayVal = this.valueFormatter(item);
+      } else if (this.displayPropertyName) {
+        displayVal = item[this.displayPropertyName];
+      } else if (!this.displayPropertyName && this.listFormatter && this.listFormatter.match(/^\w+$/)) {
+        displayVal = item[this.listFormatter];
       } else {
-        displayVal = val.value;
+        displayVal = item.value;
       }
-      val.toString = function () {
+      item.toString = function () {
         return displayVal;
       }
     }
-    return val;
+    return item;
   }
 
   selectNewValue = (item: any) => {
     // make displayable value
     if (item && typeof item === "object") {
-      item = this.addToStringFunction(item);
+      item = this.setToStringFunction(item);
     }
     this.inputEl && (this.inputEl.value = '' + item);
 

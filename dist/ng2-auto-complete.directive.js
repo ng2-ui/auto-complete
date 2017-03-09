@@ -86,7 +86,7 @@ var Ng2AutoCompleteDirective = (function () {
         this.selectNewValue = function (item) {
             // make displayable value
             if (item && typeof item === "object") {
-                item = _this.addToStringFunction(item);
+                item = _this.setToStringFunction(item);
             }
             _this.inputEl && (_this.inputEl.value = '' + item);
             // make return value
@@ -167,26 +167,39 @@ var Ng2AutoCompleteDirective = (function () {
     };
     Ng2AutoCompleteDirective.prototype.ngOnChanges = function (changes) {
         if (changes['ngModel']) {
-            this.ngModel = this.addToStringFunction(changes['ngModel'].currentValue);
+            this.ngModel = this.setToStringFunction(changes['ngModel'].currentValue);
         }
     };
-    Ng2AutoCompleteDirective.prototype.addToStringFunction = function (val) {
-        if (val && typeof val === "object") {
+    Ng2AutoCompleteDirective.prototype.setToStringFunction = function (item) {
+        if (item && typeof item === "object") {
             var displayVal_1;
-            if (this.displayPropertyName) {
-                displayVal_1 = val[this.displayPropertyName];
+            if (typeof this.valueFormatter === 'string') {
+                var matches = this.valueFormatter.match(/[a-zA-Z0-9_\$]+/g);
+                var formatted_1 = this.valueFormatter;
+                if (matches && typeof item !== 'string') {
+                    matches.forEach(function (key) {
+                        formatted_1 = formatted_1.replace(key, item[key]);
+                    });
+                }
+                displayVal_1 = formatted_1;
             }
-            else if (this.listFormatter) {
-                displayVal_1 = val[this.listFormatter];
+            else if (typeof this.valueFormatter === 'function') {
+                displayVal_1 = this.valueFormatter(item);
+            }
+            else if (this.displayPropertyName) {
+                displayVal_1 = item[this.displayPropertyName];
+            }
+            else if (!this.displayPropertyName && this.listFormatter && this.listFormatter.match(/^\w+$/)) {
+                displayVal_1 = item[this.listFormatter];
             }
             else {
-                displayVal_1 = val.value;
+                displayVal_1 = item.value;
             }
-            val.toString = function () {
+            item.toString = function () {
                 return displayVal_1;
             };
         }
-        return val;
+        return item;
     };
     Ng2AutoCompleteDirective.decorators = [
         { type: core_1.Directive, args: [{
@@ -213,6 +226,7 @@ var Ng2AutoCompleteDirective = (function () {
         'loadingText': [{ type: core_1.Input, args: ["loading-text",] },],
         'blankOptionText': [{ type: core_1.Input, args: ["blank-option-text",] },],
         'noMatchFoundText': [{ type: core_1.Input, args: ["no-match-found-text",] },],
+        'valueFormatter': [{ type: core_1.Input, args: ["value-formatter",] },],
         'ngModel': [{ type: core_1.Input },],
         'formControlName': [{ type: core_1.Input, args: ['formControlName',] },],
         'extFormControl': [{ type: core_1.Input, args: ['formControl',] },],

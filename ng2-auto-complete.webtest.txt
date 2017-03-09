@@ -34,7 +34,7 @@ Test with array of id/value
   verify element #model2 value is "Four"
 
 Test with array of key/name
-  verify element #model3 value is "Key Three"
+  verify element #model3 value is "(3) Key Three"
   click #model3
   clear #model3
   click body
@@ -43,7 +43,7 @@ Test with array of key/name
   press ARROW_DOWN into "#model3"
   press ARROW_DOWN into "#model3"
   press ENTER into "#model3"
-  verify element #model3 value is "Key Four"
+  verify element #model3 value is "(4) Key Four"
 
 Test With Remote Source as HTTP URI String
   click #model4
@@ -51,9 +51,9 @@ Test With Remote Source as HTTP URI String
   verify text "DC 20500" present
 
 Test With Remote Source as Observable
-  --click #model5
-  --enter text "hulk/Bruce" into "#model5"
-  --verify text "Hulk/Bruce Banner" present
-  --press ENTER into "#model5 ~ ng2-auto-complete input"
+  click #model5
+  enter text "hulk/Bruce" into "#model5"
+  verify text "Hulk/Bruce Banner" present
+  press ENTER into "#model5"
 
 close browser

@@ -1,5 +1,5 @@
 **IMPORTANT**
-_Please be specific with an example. An issue with _ **no example may be closed.** _
+_Please be specific with an example. An issue with **no example may be closed.** _
 
 **Steps to reproduce and a minimal demo**
 

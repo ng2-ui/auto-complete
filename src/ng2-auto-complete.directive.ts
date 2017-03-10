@@ -38,6 +38,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
   @Input("blank-option-text") blankOptionText: string;
   @Input("no-match-found-text") noMatchFoundText: string;
   @Input("value-formatter") valueFormatter: any;
+  @Input("tab-to-select") tabToSelect: boolean = true;
 
   @Input() ngModel: String;
   @Input('formControlName') formControlName: string;
@@ -139,6 +140,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
     component.listFormatter = this.listFormatter;
     component.blankOptionText = this.blankOptionText;
     component.noMatchFoundText = this.noMatchFoundText;
+    component.tabToSelect = this.tabToSelect;
 
     component.valueSelected.subscribe(this.selectNewValue);
 

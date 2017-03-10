@@ -13,6 +13,7 @@ var Ng2AutoCompleteDirective = (function () {
         this.viewContainerRef = viewContainerRef;
         this.parentForm = parentForm;
         this.loadingText = "Loading";
+        this.tabToSelect = true;
         this.ngModelChange = new core_1.EventEmitter();
         this.valueChanged = new core_1.EventEmitter();
         //show auto-complete list below the current element
@@ -31,6 +32,7 @@ var Ng2AutoCompleteDirective = (function () {
             component.listFormatter = _this.listFormatter;
             component.blankOptionText = _this.blankOptionText;
             component.noMatchFoundText = _this.noMatchFoundText;
+            component.tabToSelect = _this.tabToSelect;
             component.valueSelected.subscribe(_this.selectNewValue);
             _this.acDropdownEl = _this.componentRef.location.nativeElement;
             _this.acDropdownEl.style.display = "none";
@@ -227,6 +229,7 @@ var Ng2AutoCompleteDirective = (function () {
         'blankOptionText': [{ type: core_1.Input, args: ["blank-option-text",] },],
         'noMatchFoundText': [{ type: core_1.Input, args: ["no-match-found-text",] },],
         'valueFormatter': [{ type: core_1.Input, args: ["value-formatter",] },],
+        'tabToSelect': [{ type: core_1.Input, args: ["tab-to-select",] },],
         'ngModel': [{ type: core_1.Input },],
         'formControlName': [{ type: core_1.Input, args: ['formControlName',] },],
         'extFormControl': [{ type: core_1.Input, args: ['formControl',] },],

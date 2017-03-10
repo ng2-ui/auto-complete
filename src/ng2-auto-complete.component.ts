@@ -121,6 +121,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
   @Input("max-num-list") maxNumList: number;
   @Input("show-input-tag") showInputTag: boolean = true;
   @Input("show-dropdown-on-init") showDropdownOnInit: boolean = false;
+  @Input("tab-to-select") tabToSelect: boolean = true;
 
   @Output() valueSelected = new EventEmitter();
   @ViewChild('autoCompleteInput') autoCompleteInput: ElementRef;
@@ -267,6 +268,12 @@ export class Ng2AutoCompleteComponent implements OnInit {
           this.selectOne(this.filteredList[this.itemIndex]);
         }
         evt.preventDefault();
+        break;
+
+      case 9: // TAB, choose if tab-to-select is enabled
+        if (this.tabToSelect && this.filteredList.length > 0) {
+          this.selectOne(this.filteredList[this.itemIndex]);
+        }
         break;
     }
   };

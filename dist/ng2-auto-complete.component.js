@@ -18,6 +18,7 @@ var Ng2AutoCompleteComponent = (function () {
         this.loadingText = "Loading";
         this.showInputTag = true;
         this.showDropdownOnInit = false;
+        this.tabToSelect = true;
         this.valueSelected = new core_1.EventEmitter();
         this.dropdownVisible = false;
         this.isLoading = false;
@@ -47,6 +48,11 @@ var Ng2AutoCompleteComponent = (function () {
                         _this.selectOne(_this.filteredList[_this.itemIndex]);
                     }
                     evt.preventDefault();
+                    break;
+                case 9:
+                    if (_this.tabToSelect && _this.filteredList.length > 0) {
+                        _this.selectOne(_this.filteredList[_this.itemIndex]);
+                    }
                     break;
             }
         };
@@ -196,6 +202,7 @@ var Ng2AutoCompleteComponent = (function () {
         'maxNumList': [{ type: core_1.Input, args: ["max-num-list",] },],
         'showInputTag': [{ type: core_1.Input, args: ["show-input-tag",] },],
         'showDropdownOnInit': [{ type: core_1.Input, args: ["show-dropdown-on-init",] },],
+        'tabToSelect': [{ type: core_1.Input, args: ["tab-to-select",] },],
         'valueSelected': [{ type: core_1.Output },],
         'autoCompleteInput': [{ type: core_1.ViewChild, args: ['autoCompleteInput',] },],
     };

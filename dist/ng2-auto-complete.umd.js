@@ -116,6 +116,7 @@ var Ng2AutoCompleteComponent = (function () {
         this.loadingText = "Loading";
         this.showInputTag = true;
         this.showDropdownOnInit = false;
+        this.tabToSelect = true;
         this.valueSelected = new core_1.EventEmitter();
         this.dropdownVisible = false;
         this.isLoading = false;
@@ -145,6 +146,11 @@ var Ng2AutoCompleteComponent = (function () {
                         _this.selectOne(_this.filteredList[_this.itemIndex]);
                     }
                     evt.preventDefault();
+                    break;
+                case 9:
+                    if (_this.tabToSelect && _this.filteredList.length > 0) {
+                        _this.selectOne(_this.filteredList[_this.itemIndex]);
+                    }
                     break;
             }
         };
@@ -315,6 +321,10 @@ var Ng2AutoCompleteComponent = (function () {
         __metadata('design:type', Boolean)
     ], Ng2AutoCompleteComponent.prototype, "showDropdownOnInit", void 0);
     __decorate([
+        core_1.Input("tab-to-select"), 
+        __metadata('design:type', Boolean)
+    ], Ng2AutoCompleteComponent.prototype, "tabToSelect", void 0);
+    __decorate([
         core_1.Output(), 
         __metadata('design:type', Object)
     ], Ng2AutoCompleteComponent.prototype, "valueSelected", void 0);
@@ -446,6 +456,7 @@ var Ng2AutoCompleteDirective = (function () {
         this.viewContainerRef = viewContainerRef;
         this.parentForm = parentForm;
         this.loadingText = "Loading";
+        this.tabToSelect = true;
         this.ngModelChange = new core_1.EventEmitter();
         this.valueChanged = new core_1.EventEmitter();
         //show auto-complete list below the current element
@@ -464,6 +475,7 @@ var Ng2AutoCompleteDirective = (function () {
             component.listFormatter = _this.listFormatter;
             component.blankOptionText = _this.blankOptionText;
             component.noMatchFoundText = _this.noMatchFoundText;
+            component.tabToSelect = _this.tabToSelect;
             component.valueSelected.subscribe(_this.selectNewValue);
             _this.acDropdownEl = _this.componentRef.location.nativeElement;
             _this.acDropdownEl.style.display = "none";
@@ -686,6 +698,10 @@ var Ng2AutoCompleteDirective = (function () {
         core_1.Input("value-formatter"), 
         __metadata('design:type', Object)
     ], Ng2AutoCompleteDirective.prototype, "valueFormatter", void 0);
+    __decorate([
+        core_1.Input("tab-to-select"), 
+        __metadata('design:type', Boolean)
+    ], Ng2AutoCompleteDirective.prototype, "tabToSelect", void 0);
     __decorate([
         core_1.Input(), 
         __metadata('design:type', String)

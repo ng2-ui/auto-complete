@@ -22,6 +22,7 @@ export declare class Ng2AutoCompleteDirective implements OnInit {
     blankOptionText: string;
     noMatchFoundText: string;
     valueFormatter: any;
+    tabToSelect: boolean;
     ngModel: String;
     formControlName: string;
     extFormControl: FormControl;

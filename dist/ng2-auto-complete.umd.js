@@ -634,7 +634,7 @@ var Ng2AutoCompleteDirective = (function () {
             else if (this.displayPropertyName) {
                 displayVal_1 = item[this.displayPropertyName];
             }
-            else if (!this.displayPropertyName && this.listFormatter && this.listFormatter.match(/^\w+$/)) {
+            else if (typeof this.listFormatter === 'string' && this.listFormatter.match(/^\w+$/)) {
                 displayVal_1 = item[this.listFormatter];
             }
             else {

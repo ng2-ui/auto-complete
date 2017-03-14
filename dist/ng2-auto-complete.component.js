@@ -185,10 +185,10 @@ var Ng2AutoCompleteComponent = (function () {
                 },] },
     ];
     /** @nocollapse */
-    Ng2AutoCompleteComponent.ctorParameters = [
+    Ng2AutoCompleteComponent.ctorParameters = function () { return [
         { type: core_1.ElementRef, },
         { type: ng2_auto_complete_1.Ng2AutoComplete, },
-    ];
+    ]; };
     Ng2AutoCompleteComponent.propDecorators = {
         'listFormatter': [{ type: core_1.Input, args: ["list-formatter",] },],
         'source': [{ type: core_1.Input, args: ["source",] },],

@@ -225,7 +225,7 @@ export class Ng2AutoCompleteDirective implements OnInit {
         displayVal = this.valueFormatter(item);
       } else if (this.displayPropertyName) {
         displayVal = item[this.displayPropertyName];
-      } else if (!this.displayPropertyName && this.listFormatter && this.listFormatter.match(/^\w+$/)) {
+      } else if (typeof this.listFormatter === 'string' && this.listFormatter.match(/^\w+$/)) {
         displayVal = item[this.listFormatter];
       } else {
         displayVal = item.value;

@@ -45,7 +45,8 @@ let templateStr: string = `
         [(ngModel)]="model3"
         placeholder="enter text"
         value-formatter="(key) name"
-        list-formatter="(key) name" />
+        list-formatter="(key) name"
+        [match-formatted]="true" />
       <br/>selected model3: {{model3 | json}}<br/><br/>
     </ng2-utils-3>
     <pre>{{templateStr | htmlCode:'ng2-utils-3'}}</pre>
@@ -130,7 +131,7 @@ export class DirectiveTestComponent {
     [{id:1, value:"One"}, {id:2, value:"Two"}, {id:3, value:"Three"}, {id:4, value:"Four"}];
 
   arrayOfKeyValues2: any[] =
-    [{key:1, name:"Key One"}, {key:2, name:"Key Two"}, {key:3, name:"Key Three"}, {key:4, name:"Key Four"}];
+    [{id:11, key:1, name:"Key One"}, {id:12, key:2, name:"Key Two"}, {id:13, key:3, name:"Key Three"}, {id:14, key:4, name:"Key Four"}];
 
   googleGeoCode: string = "https://maps.googleapis.com/maps/api/geocode/json?address=:my_own_keyword";
 

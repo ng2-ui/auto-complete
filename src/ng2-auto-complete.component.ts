@@ -44,7 +44,7 @@ import { Ng2AutoComplete } from "./ng2-auto-complete";
           *ngFor="let item of filteredList; let i=index"
           (mousedown)="selectOne(item)"
           [ngClass]="{selected: i === itemIndex}"
-          [innerHtml]="getFormattedList(item)">
+          [innerHtml]="autoComplete.getFormattedListItem(item)">
       </li>
     </ul>
 
@@ -122,6 +122,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
   @Input("show-input-tag") showInputTag: boolean = true;
   @Input("show-dropdown-on-init") showDropdownOnInit: boolean = false;
   @Input("tab-to-select") tabToSelect: boolean = true;
+  @Input("match-formatted") matchFormatted: boolean = false;
 
   @Output() valueSelected = new EventEmitter();
   @ViewChild('autoCompleteInput') autoCompleteInput: ElementRef;
@@ -156,6 +157,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
   ngOnInit(): void {
     this.autoComplete.source = this.source;
     this.autoComplete.pathToData = this.pathToData;
+    this.autoComplete.listFormatter = this.listFormatter;
     setTimeout(() => {
       if (this.autoCompleteInput) {
         this.autoCompleteInput.nativeElement.focus()
@@ -201,7 +203,7 @@ export class Ng2AutoCompleteComponent implements OnInit {
 
     if (this.isSrcArr()) {    // local source
       this.isLoading = false;
-      this.filteredList = this.autoComplete.filter(this.source, keyword);
+      this.filteredList = this.autoComplete.filter(this.source, keyword, this.matchFormatted);
       if (this.maxNumList) {
         this.filteredList = this.filteredList.slice(0, this.maxNumList);
       }
@@ -277,25 +279,6 @@ export class Ng2AutoCompleteComponent implements OnInit {
         break;
     }
   };
-
-  getFormattedList(data: any): string {
-    let formatted;
-    let formatter = this.listFormatter || '(id) value';
-    if (typeof formatter === 'function') {
-      formatted = formatter.apply(this, [data]);
-    } else if (typeof data !== 'object') {
-      formatted = data;
-    } else if (typeof formatter === 'string') {
-      formatted = formatter;
-      let matches = formatter.match(/[a-zA-Z0-9_\$]+/g);
-      if (matches && typeof data !== 'string') {
-        matches.forEach(key => {
-          formatted = formatted.replace(key, data[key]);
-        });
-      }
-    }
-    return formatted;
-  }
 
   get emptyList(): boolean {
     return !(

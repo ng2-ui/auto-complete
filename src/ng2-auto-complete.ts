@@ -11,20 +11,40 @@ export class Ng2AutoComplete {
 
   public source: string;
   public pathToData: string;
+  public listFormatter: (arg: any) => string;
 
   constructor(@Optional() private http: Http) {
     // ...
   }
 
-  filter(list: any[], keyword: string) {
+  filter(list: any[], keyword: string, matchFormatted: boolean) {
     return list.filter(
       el => {
-        let objStr = JSON.stringify(el).toLowerCase();
+        let objStr = matchFormatted ? this.getFormattedListItem(el).toLowerCase() : JSON.stringify(el).toLowerCase();
         keyword = keyword.toLowerCase();
         //console.log(objStr, keyword, objStr.indexOf(keyword) !== -1);
         return objStr.indexOf(keyword) !== -1;
       }
     );
+  }
+
+  getFormattedListItem(data: any) {
+    let formatted;
+    let formatter = this.listFormatter || '(id) value';
+    if (typeof formatter === 'function') {
+      formatted = formatter.apply(this, [data]);
+    } else if (typeof data !== 'object') {
+      formatted = data;
+    } else if (typeof formatter === 'string') {
+      formatted = formatter;
+      let matches = formatter.match(/[a-zA-Z0-9_\$]+/g);
+      if (matches && typeof data !== 'string') {
+        matches.forEach(key => {
+          formatted = formatted.replace(key, data[key]);
+        });
+      }
+    }
+    return formatted;
   }
 
   /**

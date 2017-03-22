@@ -14,6 +14,7 @@ var Ng2AutoCompleteDirective = (function () {
         this.parentForm = parentForm;
         this.loadingText = "Loading";
         this.tabToSelect = true;
+        this.matchFormatted = false;
         this.ngModelChange = new core_1.EventEmitter();
         this.valueChanged = new core_1.EventEmitter();
         //show auto-complete list below the current element
@@ -33,6 +34,7 @@ var Ng2AutoCompleteDirective = (function () {
             component.blankOptionText = _this.blankOptionText;
             component.noMatchFoundText = _this.noMatchFoundText;
             component.tabToSelect = _this.tabToSelect;
+            component.matchFormatted = _this.matchFormatted;
             component.valueSelected.subscribe(_this.selectNewValue);
             _this.acDropdownEl = _this.componentRef.location.nativeElement;
             _this.acDropdownEl.style.display = "none";
@@ -209,12 +211,12 @@ var Ng2AutoCompleteDirective = (function () {
                 },] },
     ];
     /** @nocollapse */
-    Ng2AutoCompleteDirective.ctorParameters = function () { return [
+    Ng2AutoCompleteDirective.ctorParameters = [
         { type: core_1.ComponentFactoryResolver, },
         { type: core_1.Renderer, },
         { type: core_1.ViewContainerRef, },
         { type: forms_1.ControlContainer, decorators: [{ type: core_1.Optional }, { type: core_1.Host }, { type: core_1.SkipSelf },] },
-    ]; };
+    ];
     Ng2AutoCompleteDirective.propDecorators = {
         'autoCompletePlaceholder': [{ type: core_1.Input, args: ["auto-complete-placeholder",] },],
         'source': [{ type: core_1.Input, args: ["source",] },],
@@ -230,6 +232,7 @@ var Ng2AutoCompleteDirective = (function () {
         'noMatchFoundText': [{ type: core_1.Input, args: ["no-match-found-text",] },],
         'valueFormatter': [{ type: core_1.Input, args: ["value-formatter",] },],
         'tabToSelect': [{ type: core_1.Input, args: ["tab-to-select",] },],
+        'matchFormatted': [{ type: core_1.Input, args: ["match-formatted",] },],
         'ngModel': [{ type: core_1.Input },],
         'formControlName': [{ type: core_1.Input, args: ['formControlName',] },],
         'extFormControl': [{ type: core_1.Input, args: ['formControl',] },],

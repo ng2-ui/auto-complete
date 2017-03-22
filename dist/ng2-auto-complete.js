@@ -10,13 +10,34 @@ var Ng2AutoComplete = (function () {
         this.http = http;
         // ...
     }
-    Ng2AutoComplete.prototype.filter = function (list, keyword) {
+    Ng2AutoComplete.prototype.filter = function (list, keyword, matchFormatted) {
+        var _this = this;
         return list.filter(function (el) {
-            var objStr = JSON.stringify(el).toLowerCase();
+            var objStr = matchFormatted ? _this.getFormattedListItem(el).toLowerCase() : JSON.stringify(el).toLowerCase();
             keyword = keyword.toLowerCase();
             //console.log(objStr, keyword, objStr.indexOf(keyword) !== -1);
             return objStr.indexOf(keyword) !== -1;
         });
+    };
+    Ng2AutoComplete.prototype.getFormattedListItem = function (data) {
+        var formatted;
+        var formatter = this.listFormatter || '(id) value';
+        if (typeof formatter === 'function') {
+            formatted = formatter.apply(this, [data]);
+        }
+        else if (typeof data !== 'object') {
+            formatted = data;
+        }
+        else if (typeof formatter === 'string') {
+            formatted = formatter;
+            var matches = formatter.match(/[a-zA-Z0-9_\$]+/g);
+            if (matches && typeof data !== 'string') {
+                matches.forEach(function (key) {
+                    formatted = formatted.replace(key, data[key]);
+                });
+            }
+        }
+        return formatted;
     };
     /**
      * return remote data from the given source and options, and data path
@@ -51,9 +72,9 @@ var Ng2AutoComplete = (function () {
         { type: core_1.Injectable },
     ];
     /** @nocollapse */
-    Ng2AutoComplete.ctorParameters = function () { return [
+    Ng2AutoComplete.ctorParameters = [
         { type: http_1.Http, decorators: [{ type: core_1.Optional },] },
-    ]; };
+    ];
     return Ng2AutoComplete;
 }());
 exports.Ng2AutoComplete = Ng2AutoComplete;

@@ -24,6 +24,7 @@ export declare class Ng2AutoCompleteComponent implements OnInit {
     showInputTag: boolean;
     showDropdownOnInit: boolean;
     tabToSelect: boolean;
+    matchFormatted: boolean;
     valueSelected: EventEmitter<{}>;
     autoCompleteInput: ElementRef;
     el: HTMLElement;
@@ -49,7 +50,6 @@ export declare class Ng2AutoCompleteComponent implements OnInit {
     reloadList(keyword: string): void;
     selectOne(data: any): void;
     inputElKeyHandler: (evt: any) => void;
-    getFormattedList(data: any): string;
     readonly emptyList: boolean;
     private delay;
 }

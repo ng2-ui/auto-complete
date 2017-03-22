@@ -117,6 +117,7 @@ var Ng2AutoCompleteComponent = (function () {
         this.showInputTag = true;
         this.showDropdownOnInit = false;
         this.tabToSelect = true;
+        this.matchFormatted = false;
         this.valueSelected = new core_1.EventEmitter();
         this.dropdownVisible = false;
         this.isLoading = false;
@@ -173,6 +174,7 @@ var Ng2AutoCompleteComponent = (function () {
         var _this = this;
         this.autoComplete.source = this.source;
         this.autoComplete.pathToData = this.pathToData;
+        this.autoComplete.listFormatter = this.listFormatter;
         setTimeout(function () {
             if (_this.autoCompleteInput) {
                 _this.autoCompleteInput.nativeElement.focus();
@@ -206,7 +208,7 @@ var Ng2AutoCompleteComponent = (function () {
         }
         if (this.isSrcArr()) {
             this.isLoading = false;
-            this.filteredList = this.autoComplete.filter(this.source, keyword);
+            this.filteredList = this.autoComplete.filter(this.source, keyword, this.matchFormatted);
             if (this.maxNumList) {
                 this.filteredList = this.filteredList.slice(0, this.maxNumList);
             }
@@ -243,26 +245,6 @@ var Ng2AutoCompleteComponent = (function () {
         this.valueSelected.emit(data);
     };
     ;
-    Ng2AutoCompleteComponent.prototype.getFormattedList = function (data) {
-        var formatted;
-        var formatter = this.listFormatter || '(id) value';
-        if (typeof formatter === 'function') {
-            formatted = formatter.apply(this, [data]);
-        }
-        else if (typeof data !== 'object') {
-            formatted = data;
-        }
-        else if (typeof formatter === 'string') {
-            formatted = formatter;
-            var matches = formatter.match(/[a-zA-Z0-9_\$]+/g);
-            if (matches && typeof data !== 'string') {
-                matches.forEach(function (key) {
-                    formatted = formatted.replace(key, data[key]);
-                });
-            }
-        }
-        return formatted;
-    };
     Object.defineProperty(Ng2AutoCompleteComponent.prototype, "emptyList", {
         get: function () {
             return !(this.isLoading ||
@@ -325,6 +307,10 @@ var Ng2AutoCompleteComponent = (function () {
         __metadata('design:type', Boolean)
     ], Ng2AutoCompleteComponent.prototype, "tabToSelect", void 0);
     __decorate([
+        core_1.Input("match-formatted"), 
+        __metadata('design:type', Boolean)
+    ], Ng2AutoCompleteComponent.prototype, "matchFormatted", void 0);
+    __decorate([
         core_1.Output(), 
         __metadata('design:type', Object)
     ], Ng2AutoCompleteComponent.prototype, "valueSelected", void 0);
@@ -335,7 +321,7 @@ var Ng2AutoCompleteComponent = (function () {
     Ng2AutoCompleteComponent = __decorate([
         core_1.Component({
             selector: "ng2-auto-complete",
-            template: "\n  <div class=\"ng2-auto-complete\">\n\n    <!-- keyword input -->\n    <input *ngIf=\"showInputTag\"\n           #autoCompleteInput class=\"keyword\"\n           placeholder=\"{{placeholder}}\"\n           (focus)=\"showDropdownList($event)\"\n           (blur)=\"hideDropdownList()\"\n           (keydown)=\"inputElKeyHandler($event)\"\n           (input)=\"reloadListInDelay($event)\"\n           [(ngModel)]=\"keyword\" />\n\n    <!-- dropdown that user can select -->\n    <ul *ngIf=\"dropdownVisible\" [class.empty]=\"emptyList\">\n      <li *ngIf=\"isLoading\" class=\"loading\">{{loadingText}}</li>\n      <li *ngIf=\"minCharsEntered && !isLoading && !filteredList.length\"\n           (mousedown)=\"selectOne('')\"\n           class=\"no-match-found\">{{noMatchFoundText || 'No Result Found'}}</li>\n      <li *ngIf=\"blankOptionText && filteredList.length\"\n          (mousedown)=\"selectOne('')\"\n          class=\"blank-item\">{{blankOptionText}}</li>\n      <li class=\"item\"\n          *ngFor=\"let item of filteredList; let i=index\"\n          (mousedown)=\"selectOne(item)\"\n          [ngClass]=\"{selected: i === itemIndex}\"\n          [innerHtml]=\"getFormattedList(item)\">\n      </li>\n    </ul>\n\n  </div>",
+            template: "\n  <div class=\"ng2-auto-complete\">\n\n    <!-- keyword input -->\n    <input *ngIf=\"showInputTag\"\n           #autoCompleteInput class=\"keyword\"\n           placeholder=\"{{placeholder}}\"\n           (focus)=\"showDropdownList($event)\"\n           (blur)=\"hideDropdownList()\"\n           (keydown)=\"inputElKeyHandler($event)\"\n           (input)=\"reloadListInDelay($event)\"\n           [(ngModel)]=\"keyword\" />\n\n    <!-- dropdown that user can select -->\n    <ul *ngIf=\"dropdownVisible\" [class.empty]=\"emptyList\">\n      <li *ngIf=\"isLoading\" class=\"loading\">{{loadingText}}</li>\n      <li *ngIf=\"minCharsEntered && !isLoading && !filteredList.length\"\n           (mousedown)=\"selectOne('')\"\n           class=\"no-match-found\">{{noMatchFoundText || 'No Result Found'}}</li>\n      <li *ngIf=\"blankOptionText && filteredList.length\"\n          (mousedown)=\"selectOne('')\"\n          class=\"blank-item\">{{blankOptionText}}</li>\n      <li class=\"item\"\n          *ngFor=\"let item of filteredList; let i=index\"\n          (mousedown)=\"selectOne(item)\"\n          [ngClass]=\"{selected: i === itemIndex}\"\n          [innerHtml]=\"autoComplete.getFormattedListItem(item)\">\n      </li>\n    </ul>\n\n  </div>",
             providers: [ng2_auto_complete_1.Ng2AutoComplete],
             styles: ["\n  @keyframes slideDown {\n    0% {\n      transform:  translateY(-10px);\n    }\n    100% {\n      transform: translateY(0px);\n    }\n  }\n  .ng2-auto-complete {\n    background-color: transparent;\n  }\n  .ng2-auto-complete > input {\n    outline: none;\n    border: 0;\n    padding: 2px; \n    box-sizing: border-box;\n    background-clip: content-box;\n  }\n\n  .ng2-auto-complete > ul {\n    background-color: #fff;\n    margin: 0;\n    width : 100%;\n    overflow-y: auto;\n    list-style-type: none;\n    padding: 0;\n    border: 1px solid #ccc;\n    box-sizing: border-box;\n    animation: slideDown 0.1s;\n  }\n  .ng2-auto-complete > ul.empty {\n    display: none;\n  }\n\n  .ng2-auto-complete > ul li {\n    padding: 2px 5px;\n    border-bottom: 1px solid #eee;\n  }\n\n  .ng2-auto-complete > ul li.selected {\n    background-color: #ccc;\n  }\n\n  .ng2-auto-complete > ul li:last-child {\n    border-bottom: none;\n  }\n\n  .ng2-auto-complete > ul li:hover {\n    background-color: #ccc;\n  }"
             ],
@@ -377,13 +363,34 @@ var Ng2AutoComplete = (function () {
         this.http = http;
         // ...
     }
-    Ng2AutoComplete.prototype.filter = function (list, keyword) {
+    Ng2AutoComplete.prototype.filter = function (list, keyword, matchFormatted) {
+        var _this = this;
         return list.filter(function (el) {
-            var objStr = JSON.stringify(el).toLowerCase();
+            var objStr = matchFormatted ? _this.getFormattedListItem(el).toLowerCase() : JSON.stringify(el).toLowerCase();
             keyword = keyword.toLowerCase();
             //console.log(objStr, keyword, objStr.indexOf(keyword) !== -1);
             return objStr.indexOf(keyword) !== -1;
         });
+    };
+    Ng2AutoComplete.prototype.getFormattedListItem = function (data) {
+        var formatted;
+        var formatter = this.listFormatter || '(id) value';
+        if (typeof formatter === 'function') {
+            formatted = formatter.apply(this, [data]);
+        }
+        else if (typeof data !== 'object') {
+            formatted = data;
+        }
+        else if (typeof formatter === 'string') {
+            formatted = formatter;
+            var matches = formatter.match(/[a-zA-Z0-9_\$]+/g);
+            if (matches && typeof data !== 'string') {
+                matches.forEach(function (key) {
+                    formatted = formatted.replace(key, data[key]);
+                });
+            }
+        }
+        return formatted;
     };
     /**
      * return remote data from the given source and options, and data path
@@ -457,6 +464,7 @@ var Ng2AutoCompleteDirective = (function () {
         this.parentForm = parentForm;
         this.loadingText = "Loading";
         this.tabToSelect = true;
+        this.matchFormatted = false;
         this.ngModelChange = new core_1.EventEmitter();
         this.valueChanged = new core_1.EventEmitter();
         //show auto-complete list below the current element
@@ -476,6 +484,7 @@ var Ng2AutoCompleteDirective = (function () {
             component.blankOptionText = _this.blankOptionText;
             component.noMatchFoundText = _this.noMatchFoundText;
             component.tabToSelect = _this.tabToSelect;
+            component.matchFormatted = _this.matchFormatted;
             component.valueSelected.subscribe(_this.selectNewValue);
             _this.acDropdownEl = _this.componentRef.location.nativeElement;
             _this.acDropdownEl.style.display = "none";
@@ -702,6 +711,10 @@ var Ng2AutoCompleteDirective = (function () {
         core_1.Input("tab-to-select"), 
         __metadata('design:type', Boolean)
     ], Ng2AutoCompleteDirective.prototype, "tabToSelect", void 0);
+    __decorate([
+        core_1.Input("match-formatted"), 
+        __metadata('design:type', Boolean)
+    ], Ng2AutoCompleteDirective.prototype, "matchFormatted", void 0);
     __decorate([
         core_1.Input(), 
         __metadata('design:type', String)

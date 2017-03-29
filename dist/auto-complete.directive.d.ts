@@ -1,10 +1,10 @@
 import { ComponentRef, ViewContainerRef, EventEmitter, OnInit, ComponentFactoryResolver, Renderer, SimpleChanges } from "@angular/core";
-import { Ng2AutoCompleteComponent } from "./ng2-auto-complete.component";
+import { NguiAutoCompleteComponent } from "./auto-complete.component";
 import { ControlContainer, AbstractControl, FormControl } from "@angular/forms";
 /**
  * display auto-complete section with input and dropdown list when it is clicked
  */
-export declare class Ng2AutoCompleteDirective implements OnInit {
+export declare class NguiAutoCompleteDirective implements OnInit {
     private resolver;
     private renderer;
     viewContainerRef: ViewContainerRef;
@@ -29,7 +29,7 @@ export declare class Ng2AutoCompleteDirective implements OnInit {
     extFormControl: FormControl;
     ngModelChange: EventEmitter<{}>;
     valueChanged: EventEmitter<{}>;
-    componentRef: ComponentRef<Ng2AutoCompleteComponent>;
+    componentRef: ComponentRef<NguiAutoCompleteComponent>;
     wrapperEl: HTMLElement;
     el: HTMLElement;
     acDropdownEl: HTMLElement;

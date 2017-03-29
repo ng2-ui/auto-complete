@@ -1,13 +1,13 @@
 import { ElementRef, OnInit, EventEmitter } from "@angular/core";
-import { Ng2AutoComplete } from "./ng2-auto-complete";
+import { NguiAutoComplete } from "./auto-complete";
 /**
  * show a selected date in monthly calendar
  * Each filteredList item has the following property in addition to data itself
  *   1. displayValue as string e.g. Allen Kim
  *   2. dataValue as any e.g.
  */
-export declare class Ng2AutoCompleteComponent implements OnInit {
-    autoComplete: Ng2AutoComplete;
+export declare class NguiAutoCompleteComponent implements OnInit {
+    autoComplete: NguiAutoComplete;
     /**
      * public input properties
      */
@@ -38,7 +38,7 @@ export declare class Ng2AutoCompleteComponent implements OnInit {
     /**
      * constructor
      */
-    constructor(elementRef: ElementRef, autoComplete: Ng2AutoComplete);
+    constructor(elementRef: ElementRef, autoComplete: NguiAutoComplete);
     /**
      * user enters into input el, shows list to select, then select one
      */

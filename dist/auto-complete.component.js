@@ -1,17 +1,17 @@
 "use strict";
 var core_1 = require("@angular/core");
-var ng2_auto_complete_1 = require("./ng2-auto-complete");
+var auto_complete_1 = require("./auto-complete");
 /**
  * show a selected date in monthly calendar
  * Each filteredList item has the following property in addition to data itself
  *   1. displayValue as string e.g. Allen Kim
  *   2. dataValue as any e.g.
  */
-var Ng2AutoCompleteComponent = (function () {
+var NguiAutoCompleteComponent = (function () {
     /**
      * constructor
      */
-    function Ng2AutoCompleteComponent(elementRef, autoComplete) {
+    function NguiAutoCompleteComponent(elementRef, autoComplete) {
         var _this = this;
         this.autoComplete = autoComplete;
         this.minChars = 0;
@@ -66,13 +66,13 @@ var Ng2AutoCompleteComponent = (function () {
         })();
         this.el = elementRef.nativeElement;
     }
-    Ng2AutoCompleteComponent.prototype.isSrcArr = function () {
+    NguiAutoCompleteComponent.prototype.isSrcArr = function () {
         return (this.source.constructor.name === "Array");
     };
     /**
      * user enters into input el, shows list to select, then select one
      */
-    Ng2AutoCompleteComponent.prototype.ngOnInit = function () {
+    NguiAutoCompleteComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.autoComplete.source = this.source;
         this.autoComplete.pathToData = this.pathToData;
@@ -86,19 +86,19 @@ var Ng2AutoCompleteComponent = (function () {
             }
         });
     };
-    Ng2AutoCompleteComponent.prototype.showDropdownList = function (event) {
+    NguiAutoCompleteComponent.prototype.showDropdownList = function (event) {
         this.dropdownVisible = true;
         this.reloadList(event.target.value);
     };
-    Ng2AutoCompleteComponent.prototype.hideDropdownList = function () {
+    NguiAutoCompleteComponent.prototype.hideDropdownList = function () {
         this.dropdownVisible = false;
     };
-    Ng2AutoCompleteComponent.prototype.findItemFromSelectValue = function (selectText) {
+    NguiAutoCompleteComponent.prototype.findItemFromSelectValue = function (selectText) {
         var matchingItems = this.filteredList
             .filter(function (item) { return ('' + item) === selectText; });
         return matchingItems.length ? matchingItems[0] : null;
     };
-    Ng2AutoCompleteComponent.prototype.reloadList = function (keyword) {
+    NguiAutoCompleteComponent.prototype.reloadList = function (keyword) {
         var _this = this;
         this.filteredList = [];
         if (keyword.length < (this.minChars || 0)) {
@@ -143,11 +143,11 @@ var Ng2AutoCompleteComponent = (function () {
             }
         }
     };
-    Ng2AutoCompleteComponent.prototype.selectOne = function (data) {
+    NguiAutoCompleteComponent.prototype.selectOne = function (data) {
         this.valueSelected.emit(data);
     };
     ;
-    Object.defineProperty(Ng2AutoCompleteComponent.prototype, "emptyList", {
+    Object.defineProperty(NguiAutoCompleteComponent.prototype, "emptyList", {
         get: function () {
             return !(this.isLoading ||
                 (this.minCharsEntered && !this.isLoading && !this.filteredList.length) ||
@@ -156,22 +156,22 @@ var Ng2AutoCompleteComponent = (function () {
         enumerable: true,
         configurable: true
     });
-    Ng2AutoCompleteComponent.decorators = [
+    NguiAutoCompleteComponent.decorators = [
         { type: core_1.Component, args: [{
-                    selector: "ng2-auto-complete",
-                    template: "\n  <div class=\"ng2-auto-complete\">\n\n    <!-- keyword input -->\n    <input *ngIf=\"showInputTag\"\n           #autoCompleteInput class=\"keyword\"\n           placeholder=\"{{placeholder}}\"\n           (focus)=\"showDropdownList($event)\"\n           (blur)=\"hideDropdownList()\"\n           (keydown)=\"inputElKeyHandler($event)\"\n           (input)=\"reloadListInDelay($event)\"\n           [(ngModel)]=\"keyword\" />\n\n    <!-- dropdown that user can select -->\n    <ul *ngIf=\"dropdownVisible\" [class.empty]=\"emptyList\">\n      <li *ngIf=\"isLoading\" class=\"loading\">{{loadingText}}</li>\n      <li *ngIf=\"minCharsEntered && !isLoading && !filteredList.length\"\n           (mousedown)=\"selectOne('')\"\n           class=\"no-match-found\">{{noMatchFoundText || 'No Result Found'}}</li>\n      <li *ngIf=\"blankOptionText && filteredList.length\"\n          (mousedown)=\"selectOne('')\"\n          class=\"blank-item\">{{blankOptionText}}</li>\n      <li class=\"item\"\n          *ngFor=\"let item of filteredList; let i=index\"\n          (mousedown)=\"selectOne(item)\"\n          [ngClass]=\"{selected: i === itemIndex}\"\n          [innerHtml]=\"autoComplete.getFormattedListItem(item)\">\n      </li>\n    </ul>\n\n  </div>",
-                    providers: [ng2_auto_complete_1.Ng2AutoComplete],
-                    styles: ["\n  @keyframes slideDown {\n    0% {\n      transform:  translateY(-10px);\n    }\n    100% {\n      transform: translateY(0px);\n    }\n  }\n  .ng2-auto-complete {\n    background-color: transparent;\n  }\n  .ng2-auto-complete > input {\n    outline: none;\n    border: 0;\n    padding: 2px; \n    box-sizing: border-box;\n    background-clip: content-box;\n  }\n\n  .ng2-auto-complete > ul {\n    background-color: #fff;\n    margin: 0;\n    width : 100%;\n    overflow-y: auto;\n    list-style-type: none;\n    padding: 0;\n    border: 1px solid #ccc;\n    box-sizing: border-box;\n    animation: slideDown 0.1s;\n  }\n  .ng2-auto-complete > ul.empty {\n    display: none;\n  }\n\n  .ng2-auto-complete > ul li {\n    padding: 2px 5px;\n    border-bottom: 1px solid #eee;\n  }\n\n  .ng2-auto-complete > ul li.selected {\n    background-color: #ccc;\n  }\n\n  .ng2-auto-complete > ul li:last-child {\n    border-bottom: none;\n  }\n\n  .ng2-auto-complete > ul li:hover {\n    background-color: #ccc;\n  }"
+                    selector: "ngui-auto-complete",
+                    template: "\n  <div class=\"ngui-auto-complete\">\n\n    <!-- keyword input -->\n    <input *ngIf=\"showInputTag\"\n           #autoCompleteInput class=\"keyword\"\n           placeholder=\"{{placeholder}}\"\n           (focus)=\"showDropdownList($event)\"\n           (blur)=\"hideDropdownList()\"\n           (keydown)=\"inputElKeyHandler($event)\"\n           (input)=\"reloadListInDelay($event)\"\n           [(ngModel)]=\"keyword\" />\n\n    <!-- dropdown that user can select -->\n    <ul *ngIf=\"dropdownVisible\" [class.empty]=\"emptyList\">\n      <li *ngIf=\"isLoading\" class=\"loading\">{{loadingText}}</li>\n      <li *ngIf=\"minCharsEntered && !isLoading && !filteredList.length\"\n           (mousedown)=\"selectOne('')\"\n           class=\"no-match-found\">{{noMatchFoundText || 'No Result Found'}}</li>\n      <li *ngIf=\"blankOptionText && filteredList.length\"\n          (mousedown)=\"selectOne('')\"\n          class=\"blank-item\">{{blankOptionText}}</li>\n      <li class=\"item\"\n          *ngFor=\"let item of filteredList; let i=index\"\n          (mousedown)=\"selectOne(item)\"\n          [ngClass]=\"{selected: i === itemIndex}\"\n          [innerHtml]=\"autoComplete.getFormattedListItem(item)\">\n      </li>\n    </ul>\n\n  </div>",
+                    providers: [auto_complete_1.NguiAutoComplete],
+                    styles: ["\n  @keyframes slideDown {\n    0% {\n      transform:  translateY(-10px);\n    }\n    100% {\n      transform: translateY(0px);\n    }\n  }\n  .ngui-auto-complete {\n    background-color: transparent;\n  }\n  .ngui-auto-complete > input {\n    outline: none;\n    border: 0;\n    padding: 2px; \n    box-sizing: border-box;\n    background-clip: content-box;\n  }\n\n  .ngui-auto-complete > ul {\n    background-color: #fff;\n    margin: 0;\n    width : 100%;\n    overflow-y: auto;\n    list-style-type: none;\n    padding: 0;\n    border: 1px solid #ccc;\n    box-sizing: border-box;\n    animation: slideDown 0.1s;\n  }\n  .ngui-auto-complete > ul.empty {\n    display: none;\n  }\n\n  .ngui-auto-complete > ul li {\n    padding: 2px 5px;\n    border-bottom: 1px solid #eee;\n  }\n\n  .ngui-auto-complete > ul li.selected {\n    background-color: #ccc;\n  }\n\n  .ngui-auto-complete > ul li:last-child {\n    border-bottom: none;\n  }\n\n  .ngui-auto-complete > ul li:hover {\n    background-color: #ccc;\n  }"
                     ],
                     encapsulation: core_1.ViewEncapsulation.None
                 },] },
     ];
     /** @nocollapse */
-    Ng2AutoCompleteComponent.ctorParameters = [
+    NguiAutoCompleteComponent.ctorParameters = [
         { type: core_1.ElementRef, },
-        { type: ng2_auto_complete_1.Ng2AutoComplete, },
+        { type: auto_complete_1.NguiAutoComplete, },
     ];
-    Ng2AutoCompleteComponent.propDecorators = {
+    NguiAutoCompleteComponent.propDecorators = {
         'listFormatter': [{ type: core_1.Input, args: ["list-formatter",] },],
         'source': [{ type: core_1.Input, args: ["source",] },],
         'pathToData': [{ type: core_1.Input, args: ["path-to-data",] },],
@@ -189,7 +189,7 @@ var Ng2AutoCompleteComponent = (function () {
         'valueSelected': [{ type: core_1.Output },],
         'autoCompleteInput': [{ type: core_1.ViewChild, args: ['autoCompleteInput',] },],
     };
-    return Ng2AutoCompleteComponent;
+    return NguiAutoCompleteComponent;
 }());
-exports.Ng2AutoCompleteComponent = Ng2AutoCompleteComponent;
-//# sourceMappingURL=ng2-auto-complete.component.js.map
+exports.NguiAutoCompleteComponent = NguiAutoCompleteComponent;
+//# sourceMappingURL=auto-complete.component.js.map

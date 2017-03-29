@@ -5,12 +5,12 @@ require("rxjs/add/operator/map");
 /**
  * provides auto-complete related utility functions
  */
-var Ng2AutoComplete = (function () {
-    function Ng2AutoComplete(http) {
+var NguiAutoComplete = (function () {
+    function NguiAutoComplete(http) {
         this.http = http;
         // ...
     }
-    Ng2AutoComplete.prototype.filter = function (list, keyword, matchFormatted) {
+    NguiAutoComplete.prototype.filter = function (list, keyword, matchFormatted) {
         var _this = this;
         return list.filter(function (el) {
             var objStr = matchFormatted ? _this.getFormattedListItem(el).toLowerCase() : JSON.stringify(el).toLowerCase();
@@ -19,7 +19,7 @@ var Ng2AutoComplete = (function () {
             return objStr.indexOf(keyword) !== -1;
         });
     };
-    Ng2AutoComplete.prototype.getFormattedListItem = function (data) {
+    NguiAutoComplete.prototype.getFormattedListItem = function (data) {
         var formatted;
         var formatter = this.listFormatter || '(id) value';
         if (typeof formatter === 'function') {
@@ -42,7 +42,7 @@ var Ng2AutoComplete = (function () {
     /**
      * return remote data from the given source and options, and data path
      */
-    Ng2AutoComplete.prototype.getRemoteData = function (keyword) {
+    NguiAutoComplete.prototype.getRemoteData = function (keyword) {
         var _this = this;
         if (typeof this.source !== 'string') {
             throw "Invalid type of source, must be a string. e.g. http://www.google.com?q=:my_keyword";
@@ -68,14 +68,14 @@ var Ng2AutoComplete = (function () {
         });
     };
     ;
-    Ng2AutoComplete.decorators = [
+    NguiAutoComplete.decorators = [
         { type: core_1.Injectable },
     ];
     /** @nocollapse */
-    Ng2AutoComplete.ctorParameters = [
+    NguiAutoComplete.ctorParameters = [
         { type: http_1.Http, decorators: [{ type: core_1.Optional },] },
     ];
-    return Ng2AutoComplete;
+    return NguiAutoComplete;
 }());
-exports.Ng2AutoComplete = Ng2AutoComplete;
-//# sourceMappingURL=ng2-auto-complete.js.map
+exports.NguiAutoComplete = NguiAutoComplete;
+//# sourceMappingURL=auto-complete.js.map

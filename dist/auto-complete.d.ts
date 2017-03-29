@@ -4,7 +4,7 @@ import "rxjs/add/operator/map";
 /**
  * provides auto-complete related utility functions
  */
-export declare class Ng2AutoComplete {
+export declare class NguiAutoComplete {
     private http;
     source: string;
     pathToData: string;

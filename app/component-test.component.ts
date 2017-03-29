@@ -17,6 +17,7 @@ var templateStr = `
           [accept-user-input]="true"
           [source]="googleGeoCode"
           display-property-name="formatted_address"
+          [list-formatter]="myListFormatter"
           loading-text="Google Is Thinking..."
           max-num-list="5"
           min-chars="2"
@@ -77,5 +78,8 @@ export class ComponentTestComponent {
   removeFromAddrs(evt, index: number): void {
     this.addrs.splice(index,1);
     event.stopPropagation();
+  }
+  myListFormatter(data: any): string {
+      return data['formatted_address'];
   }
 }

@@ -1,12 +1,17 @@
-# ng2-auto-complete
+# auto-complete
 
-[![Build Status](https://travis-ci.org/ng2-ui/ng2-auto-complete.svg?branch=master)](https://travis-ci.org/ng2-ui/ng2-auto-complete)
-[![Join the chat at https://gitter.im/ng2-ui/ng2-auto-complete](https://badges.gitter.im/ng2-ui/ng2-auto-complete.svg)](https://gitter.im/ng2-ui/ng2-auto-complete?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/ng2-ui/auto-complete.svg?branch=master)](https://travis-ci.org/ng2-ui/auto-complete)
+[![Join the chat at https://gitter.im/ng2-ui/auto-complete](https://badges.gitter.im/ng2-ui/auto-complete.svg)](https://gitter.im/ng2-ui/auto-complete?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Angular2 Auto Complete
+## IMPORTANT NOTICE
 
+After 0.13.0 or higher, ng2-auto-complete has been changed to @ngui/auto-complete. Here are the changes;
 
-<a href="https://rawgit.com/ng2-ui/ng2-auto-complete/master/app/index.html">
+  * Module `ng2-auto-complete` is moved to `@ngui/auto-complete`.
+  * Direvtive `ng2-auto-complete` is moved to `ngui-auto-complete`.
+  * Class name `Ng2AutoComplete` is moved to `NguiAutoComplete`.
+
+<a href="https://rawgit.com/ng2-ui/auto-complete/master/app/index.html">
   <img src="http://i.imgur.com/dAmheg0.png" />
 </a>
 
@@ -19,10 +24,10 @@ _ngModel_ http://plnkr.co/edit/3pB1Gx?p=preview
 **`Reactive Forms`**
 
  _FormGroup_  http://plnkr.co/edit/2XRrck2cWVWcvbJnj6z5?p=preview
-  [issue #49](https://github.com/ng2-ui/ng2-auto-complete/issues/49)
+  [issue #49](https://github.com/ng2-ui/auto-complete/issues/49)
 
 _FormControl_ http://plnkr.co/edit/WfgdcHLc8KDvsI2G2tHw?p=preview
-  [issue #100](https://github.com/ng2-ui/ng2-auto-complete/issues/100)
+  [issue #100](https://github.com/ng2-ui/auto-complete/issues/100)
 
 
 **`Material Design`**
@@ -40,21 +45,20 @@ _FormControl_ http://plnkr.co/edit/WfgdcHLc8KDvsI2G2tHw?p=preview
 
 ## Install
 
-1. install ng2-auto-complete
+1. install @ngui/auto-complete
 
-        $ npm install ng2-auto-complete --save
+        $ npm install @ngui/auto-complete --save
 
 2. add `map` and `packages` to your `systemjs.config.js` unless you are using `webpack`
 
-        map['ng2-auto-complete'] = 'node_modules/ng2-auto-complete/dist';
-        packages['ng2-auto-complete'] = { main: 'ng2-auto-complete.umd.js', defaultExtension: 'js' }
+        map['@ngui/auto-complete'] = 'node_modules/@ngui/auto-complete/dist/auto-complete.umd.js';
         
-3. import Ng2AutoCompleteModule to your AppModule
+3. import NguiAutoCompleteModule to your AppModule
 
-        import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
+        import { NguiAutoCompleteModule } from '@ngui/auto-complete';
         
         @NgModule({
-          imports: [BrowserModule, FormsModule, Ng2AutoCompleteModule],
+          imports: [BrowserModule, FormsModule, NguiAutoCompleteModule],
           declarations: [AppComponent],
           providers: [HTTP_PROVIDERS],
           bootstrap: [ AppComponent ]
@@ -126,8 +130,8 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
 
 ### To start
 
-    $ git clone https://github.com/ng2-ui/ng2-auto-complete.git
-    $ cd ng2-auto-complete
+    $ git clone https://github.com/ng2-ui/auto-complete.git
+    $ cd auto-complete
     $ npm install
     $ npm start
  

@@ -3,7 +3,7 @@ var webpack = require('webpack');
 
 var config = {
   entry: {
-    'ng2-auto-complete': path.join(__dirname, 'src', 'index.ts')
+    '@ngui/auto-complete': path.join(__dirname, 'src', 'index.ts')
   },
   resolve: {
     extensions: ['.ts', '.js', '.json', '.css', '.html']
@@ -13,8 +13,8 @@ var config = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: "[name].umd.js",
-    library: ["[name]"],
+    filename: "auto-complete.umd.js",
+    library: ["auto-complete"],
     libraryTarget: "umd"
   },
   externals: [

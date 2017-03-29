@@ -1,3 +1,5 @@
+### [0.13.0]
+- renamed module to @ngui/auto-complete
 ### [0.12.0]
 - added a new property `match-formatted`
 ### [0.11.0]

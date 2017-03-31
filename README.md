@@ -23,10 +23,10 @@ _ngModel_ http://plnkr.co/edit/3pB1Gx?p=preview
   
 **`Reactive Forms`**
 
- _FormGroup_  http://plnkr.co/edit/2XRrck2cWVWcvbJnj6z5?p=preview
+ _FormGroup_  http://plnkr.co/edit/2osUq6?p=preview
   [issue #49](https://github.com/ng2-ui/auto-complete/issues/49)
 
-_FormControl_ http://plnkr.co/edit/WfgdcHLc8KDvsI2G2tHw?p=preview
+_FormControl_ http://plnkr.co/edit/A5CW2e?p=preview
   [issue #100](https://github.com/ng2-ui/auto-complete/issues/100)
 
 
@@ -40,7 +40,7 @@ _FormControl_ http://plnkr.co/edit/WfgdcHLc8KDvsI2G2tHw?p=preview
 
 **`List Formatter Example`**
 
-  http://plnkr.co/edit/T5K1faYzb0LeSD9IttxE&open=app/app.component.ts
+  http://plnkr.co/edit/F9nrWp?p=preview  
   http://plnkr.co/edit/0QFYFHMmCAFmhbYAGQl7?p=preview (With custom css)
 
 ## Install

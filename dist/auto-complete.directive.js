@@ -211,12 +211,12 @@ var NguiAutoCompleteDirective = (function () {
                 },] },
     ];
     /** @nocollapse */
-    NguiAutoCompleteDirective.ctorParameters = [
+    NguiAutoCompleteDirective.ctorParameters = function () { return [
         { type: core_1.ComponentFactoryResolver, },
         { type: core_1.Renderer, },
         { type: core_1.ViewContainerRef, },
         { type: forms_1.ControlContainer, decorators: [{ type: core_1.Optional }, { type: core_1.Host }, { type: core_1.SkipSelf },] },
-    ];
+    ]; };
     NguiAutoCompleteDirective.propDecorators = {
         'autoCompletePlaceholder': [{ type: core_1.Input, args: ["auto-complete-placeholder",] },],
         'source': [{ type: core_1.Input, args: ["source",] },],

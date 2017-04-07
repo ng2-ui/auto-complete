@@ -3,7 +3,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 var templateStr = `
   <br/>
   <fieldset><legend><h2>Component test - multi autocomplete</h2></legend>
-    <ng2-utils-1>
+    <ngui-utils-1>
       <div class="wrapper" (click)="showAutocomplete=true">
       
         <li class="addr" *ngFor="let addr of addrs; let i = index;" >
@@ -11,23 +11,42 @@ var templateStr = `
           <span class="remove" (click)="removeFromAddrs($event, i)">x</span>
         </li>
         
-        <ng2-auto-complete
+        <ngui-auto-complete
           *ngIf="showAutocomplete"
           (valueSelected)="addToAddrs($event)"
           [accept-user-input]="true"
           [source]="googleGeoCode"
           display-property-name="formatted_address"
+          [list-formatter]="myListFormatter"
           loading-text="Google Is Thinking..."
           max-num-list="5"
           min-chars="2"
           no-match-found-text="No Match Found"
           path-to-data="results"
           placeholder="Enter Address"
-        ></ng2-auto-complete>
+        ></ngui-auto-complete>
       </div>
-    </ng2-utils-1>
-    <pre>{{templateStr | htmlCode:'ng2-utils-1'}}</pre>
-  </fieldset>`;
+    </ngui-utils-1>
+    <pre>{{templateStr | htmlCode:'ngui-utils-1'}}</pre>
+  </fieldset>
+  
+  <fieldset>
+    <ngui-utils-2>
+      <input [(ngModel)]="myModel"
+          (focus)="showMe=true"
+          (blur)="showMe=false" />
+      <ngui-auto-complete 
+         *ngIf="showMe"
+         [show-dropdown-on-init]="true"
+         (valueSelected)="myModel = $event"
+         [show-input-tag]="false"
+         [source]="[1,2,3,4,5]">
+      </ngui-auto-complete>
+     </ngui-utils-2>
+     <pre>{{templateStr | htmlCode:'ngui-utils-2'}}</pre>
+  </fieldset>
+`;
+
 
 @Component({
   selector: 'my-app',
@@ -35,11 +54,13 @@ var templateStr = `
   encapsulation: ViewEncapsulation.None,
   styles: [`
     fieldset {display: inline-block; vertical-align: top; margin: 10px; padding: 20px }
-    ng2-auto-complete {display: inline-block}
-    ng2-auto-complete .ng2-auto-complete ul {position: absolute}
+    ngui-auto-complete {display: inline-block}
+    ngui-auto-complete .ngui-auto-complete ul {position: absolute}
     li.addr {margin: 5px; padding: 5px; list-style: none; border: 1px solid #ccc; display: inline-block;}
     .wrapper { padding: 10px; border: 1px solid #ccc}
     span.remove {color: red}
+    ngui-utils-2 ngui-auto-complete {display: block; width: 300px}
+    ngui-utils-2 .ngui-auto-complete > ul {width: 300px}
   `]
 })
 export class ComponentTestComponent {
@@ -57,5 +78,8 @@ export class ComponentTestComponent {
   removeFromAddrs(evt, index: number): void {
     this.addrs.splice(index,1);
     event.stopPropagation();
+  }
+  myListFormatter(data: any): string {
+      return data['formatted_address'];
   }
 }

@@ -10,13 +10,13 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { Ng2UtilsModule } from 'ng2-utils';
+import { NguiUtilsModule } from '@ngui/utils';
 import { MdInputModule } from '@angular2-material/input';
 import { LocationStrategy, HashLocationStrategy } from "@angular/common";
 
 import { AppComponent }   from './app.component';
 // noinspection TypeScriptCheckImport
-import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
+import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 
 import { APP_ROUTER_PROVIDERS, APP_ROUTER_COMPONENTS } from './app.route';
 
@@ -26,9 +26,9 @@ import { APP_ROUTER_PROVIDERS, APP_ROUTER_COMPONENTS } from './app.route';
     APP_ROUTER_PROVIDERS,
     HttpModule,
     FormsModule,
-    Ng2UtilsModule,
+    NguiUtilsModule,
     MdInputModule,
-    Ng2AutoCompleteModule
+    NguiAutoCompleteModule
   ],
   declarations : [AppComponent, APP_ROUTER_COMPONENTS],
   providers: [

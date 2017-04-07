@@ -24,7 +24,7 @@
     "outDir": "dist",
     "baseUrl": "src",
     "paths": {
-      "ng2-auto-complete": ["./index"]
+      "@ngui/auto-complete": ["./index"]
     }
   },
   "types": ["hammerjs"],

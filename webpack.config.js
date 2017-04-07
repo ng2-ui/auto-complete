@@ -1,20 +1,20 @@
-var path = require('path');
+var path = require("path");
 var webpack = require('webpack');
 
 var config = {
   entry: {
-    'ng2-auto-complete': path.join(__dirname, 'src', 'index.ts')
+    '@ngui/auto-complete': path.join(__dirname, 'src', 'index.ts')
   },
   resolve: {
-    extensions: ['', '.ts', '.js', '.json', '.css', '.html']
+    extensions: ['.ts', '.js', '.json', '.css', '.html']
   },
   resolveLoader: {
-    root: path.join(__dirname, 'node_modules')
+    modules: [path.join(__dirname, 'node_modules')]
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: "[name].umd.js",
-    library: ["[name]"],
+    filename: "auto-complete.umd.js",
+    library: ["auto-complete"],
     libraryTarget: "umd"
   },
   externals: [
@@ -23,19 +23,20 @@ var config = {
   ],
   devtool: 'source-map',
   module: {
-    loaders: [
+    rules: [
       { // Support for .ts files.
         test: /\.ts$/,
-        loaders: ['ts', 'angular2-template-loader']
+        use: ['ts-loader', 'angular2-template-loader']
       }
     ]
   }
 };
 
 //Different Environment Setup
+
 if (process.env.NODE_ENV === 'prod') {
-  config.module.loaders.push({
-    test: /\.ts$/, loader: 'strip-loader?strip[]=debug,strip[]=console.log'
+  config.module.rules.push({
+    test: /\.ts$/, use: 'strip-loader?strip[]=debug,strip[]=console.log'
   });
 }
 

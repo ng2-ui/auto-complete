@@ -1,10 +1,10 @@
 "use strict";
-var ng2_auto_complete_1 = require("./ng2-auto-complete");
-exports.Ng2AutoComplete = ng2_auto_complete_1.Ng2AutoComplete;
-var ng2_auto_complete_module_1 = require("./ng2-auto-complete.module");
-exports.Ng2AutoCompleteModule = ng2_auto_complete_module_1.Ng2AutoCompleteModule;
-var ng2_auto_complete_component_1 = require("./ng2-auto-complete.component");
-exports.Ng2AutoCompleteComponent = ng2_auto_complete_component_1.Ng2AutoCompleteComponent;
-var ng2_auto_complete_directive_1 = require("./ng2-auto-complete.directive");
-exports.Ng2AutoCompleteDirective = ng2_auto_complete_directive_1.Ng2AutoCompleteDirective;
+var auto_complete_1 = require("./auto-complete");
+exports.NguiAutoComplete = auto_complete_1.NguiAutoComplete;
+var auto_complete_module_1 = require("./auto-complete.module");
+exports.NguiAutoCompleteModule = auto_complete_module_1.NguiAutoCompleteModule;
+var auto_complete_component_1 = require("./auto-complete.component");
+exports.NguiAutoCompleteComponent = auto_complete_component_1.NguiAutoCompleteComponent;
+var auto_complete_directive_1 = require("./auto-complete.directive");
+exports.NguiAutoCompleteDirective = auto_complete_directive_1.NguiAutoCompleteDirective;
 //# sourceMappingURL=index.js.map

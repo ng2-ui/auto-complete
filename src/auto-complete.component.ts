@@ -291,7 +291,6 @@ export class NguiAutoCompleteComponent implements OnInit {
     const scrollTop = ul.scrollTop;
     const viewport = scrollTop + ul.offsetHeight;
     const scrollOffset = liHeight * index;
-    //console.log('scrollTop', scrollTop, ' viewport', viewport, ' elOffset', scrollOffset);
     if (scrollOffset < scrollTop || (scrollOffset + liHeight) > viewport) {
       ul.scrollTop = scrollOffset;
     }

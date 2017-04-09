@@ -1,4 +1,6 @@
-import { Component } from "@angular/core";
+import { Http } from "@angular/http";
+import { Observable } from 'rxjs/Observable';
+import { Component, ViewEncapsulation } from "@angular/core";
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 
 import { AppSvc } from "./app.service";
@@ -9,7 +11,6 @@ let templateStr: string = `
   <fieldset><legend><h2>Source as Array of Strings</h2></legend>
     <ngui-utils-1>
       <div ngui-auto-complete 
-        [min-chars]="1"
         [source]="arrayOfStrings"
         [accept-user-input]="false"
         (ngModelChange)="myCallback($event)"
@@ -75,11 +76,11 @@ let templateStr: string = `
  
   <fieldset><legend><h2>Source as Observable "Marvel API"</h2></legend>
     <ngui-utils-5>
-      <input  ngui-auto-complete
+      <input ngui-auto-complete
         id="model5"
         placeholder="Start typing a hero name (min. 2 chars) ... for example: Hulk"     
         [(ngModel)]="model5" 
-        [source]="appSvc.findHeroes"  
+        [source]="appSvc.findHeroes"
         path-to-data="data.results"
         [list-formatter]="renderHero"
         min-chars="2" 
@@ -111,10 +112,15 @@ let templateStr: string = `
 @Component({
   selector: "my-app",
   template: templateStr,
+  encapsulation: ViewEncapsulation.None,
   styles: [`
     fieldset {display: inline-block; vertical-align: top; margin: 10px; padding: 20px }
     ngui-auto-complete, input {
       display: block; border: 1px solid #ccc; width: 300px;
+    }
+    ngui-utils-1 .ngui-auto-complete > ul {
+      max-height: 100px;
+      overflow-y: auto;
     }
   `],
    providers : [AppSvc]
@@ -140,6 +146,7 @@ export class DirectiveTestComponent {
   model3 = {key: 3, name: "Key Three"};
 
   constructor (
+    public http: Http,
     public appSvc : AppSvc,
     private _sanitizer: DomSanitizer ) {
   }

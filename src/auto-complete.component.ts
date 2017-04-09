@@ -19,8 +19,7 @@ import { NguiAutoComplete } from "./auto-complete";
 @Component({
   selector: "ngui-auto-complete",
   template: `
-  <div class="ngui-auto-complete">
-
+  <div #autoCompleteContainer class="ngui-auto-complete">
     <!-- keyword input -->
     <input *ngIf="showInputTag"
            #autoCompleteInput class="keyword"
@@ -126,6 +125,7 @@ export class NguiAutoCompleteComponent implements OnInit {
 
   @Output() valueSelected = new EventEmitter();
   @ViewChild('autoCompleteInput') autoCompleteInput: ElementRef;
+  @ViewChild('autoCompleteContainer') autoCompleteContainer: ElementRef;
 
   el: HTMLElement;           // this component  element `<ngui-auto-complete>`
 
@@ -258,11 +258,13 @@ export class NguiAutoCompleteComponent implements OnInit {
 
       case 38: // UP, select the previous li el
         this.itemIndex = (totalNumItem + this.itemIndex - 1) % totalNumItem;
+        this.scrollToView(this.itemIndex);
         break;
 
       case 40: // DOWN, select the next li el or the first one
         this.dropdownVisible = true;
         this.itemIndex = (totalNumItem + this.itemIndex + 1) % totalNumItem;
+        this.scrollToView(this.itemIndex);
         break;
 
       case 13: // ENTER, choose it!!
@@ -279,6 +281,20 @@ export class NguiAutoCompleteComponent implements OnInit {
         break;
     }
   };
+
+
+  scrollToView(index) {
+    const container = this.autoCompleteContainer.nativeElement;
+    const ul = container.querySelector('ul');
+    const li = ul.querySelector('li');  //just sample the first li to get height
+    const liHeight = li.offsetHeight;
+    const scrollTop = ul.scrollTop;
+    const viewport = scrollTop + ul.offsetHeight;
+    const scrollOffset = liHeight * index;
+    if (scrollOffset < scrollTop || (scrollOffset + liHeight) > viewport) {
+      ul.scrollTop = scrollOffset;
+    }
+  }
 
   get emptyList(): boolean {
     return !(

@@ -233,7 +233,7 @@ export class NguiAutoCompleteComponent implements OnInit {
         // remote source
 
         this.autoComplete.getRemoteData(keyword).subscribe(resp => {
-            this.filteredList = (<any>resp);
+            this.filteredList = resp ? (<any>resp) : [];
             if (this.maxNumList) {
               this.filteredList = this.filteredList.slice(0, this.maxNumList);
             }

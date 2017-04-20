@@ -7,7 +7,7 @@
 		exports["auto-complete"] = factory(require("@angular/core"), require("@angular/forms"), require("@angular/common"), require("@angular/http"), require("rxjs/add/operator/map"));
 	else
 		root["auto-complete"] = factory(root["@angular/core"], root["@angular/forms"], root["@angular/common"], root["@angular/http"], root["rxjs/add/operator/map"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_6__, __WEBPACK_EXTERNAL_MODULE_7__, __WEBPACK_EXTERNAL_MODULE_8__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_7__, __WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_9__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -16,9 +16,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -234,7 +234,7 @@ var NguiAutoCompleteComponent = (function () {
             else {
                 // remote source
                 this.autoComplete.getRemoteData(keyword).subscribe(function (resp) {
-                    _this.filteredList = resp;
+                    _this.filteredList = resp ? resp : [];
                     if (_this.maxNumList) {
                         _this.filteredList = _this.filteredList.slice(0, _this.maxNumList);
                     }
@@ -371,8 +371,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 var core_1 = __webpack_require__(0);
-var http_1 = __webpack_require__(7);
-__webpack_require__(8);
+var http_1 = __webpack_require__(8);
+__webpack_require__(9);
 /**
  * provides auto-complete related utility functions
  */
@@ -789,7 +789,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(0);
-var common_1 = __webpack_require__(6);
+var common_1 = __webpack_require__(7);
 var forms_1 = __webpack_require__(4);
 var auto_complete_component_1 = __webpack_require__(1);
 var auto_complete_directive_1 = __webpack_require__(3);
@@ -819,9 +819,19 @@ exports.NguiAutoCompleteModule = NguiAutoCompleteModule;
 
 /***/ }),
 /* 6 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_6__;
+"use strict";
+
+var auto_complete_1 = __webpack_require__(2);
+exports.NguiAutoComplete = auto_complete_1.NguiAutoComplete;
+var auto_complete_module_1 = __webpack_require__(5);
+exports.NguiAutoCompleteModule = auto_complete_module_1.NguiAutoCompleteModule;
+var auto_complete_component_1 = __webpack_require__(1);
+exports.NguiAutoCompleteComponent = auto_complete_component_1.NguiAutoCompleteComponent;
+var auto_complete_directive_1 = __webpack_require__(3);
+exports.NguiAutoCompleteDirective = auto_complete_directive_1.NguiAutoCompleteDirective;
+
 
 /***/ }),
 /* 7 */
@@ -837,19 +847,9 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_8__;
 
 /***/ }),
 /* 9 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-var auto_complete_1 = __webpack_require__(2);
-exports.NguiAutoComplete = auto_complete_1.NguiAutoComplete;
-var auto_complete_module_1 = __webpack_require__(5);
-exports.NguiAutoCompleteModule = auto_complete_module_1.NguiAutoCompleteModule;
-var auto_complete_component_1 = __webpack_require__(1);
-exports.NguiAutoCompleteComponent = auto_complete_component_1.NguiAutoCompleteComponent;
-var auto_complete_directive_1 = __webpack_require__(3);
-exports.NguiAutoCompleteDirective = auto_complete_directive_1.NguiAutoCompleteDirective;
-
+module.exports = __WEBPACK_EXTERNAL_MODULE_9__;
 
 /***/ })
 /******/ ]);

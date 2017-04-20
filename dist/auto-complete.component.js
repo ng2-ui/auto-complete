@@ -136,7 +136,7 @@ var NguiAutoCompleteComponent = (function () {
             else {
                 // remote source
                 this.autoComplete.getRemoteData(keyword).subscribe(function (resp) {
-                    _this.filteredList = resp;
+                    _this.filteredList = resp ? resp : [];
                     if (_this.maxNumList) {
                         _this.filteredList = _this.filteredList.slice(0, _this.maxNumList);
                     }
@@ -181,10 +181,10 @@ var NguiAutoCompleteComponent = (function () {
                 },] },
     ];
     /** @nocollapse */
-    NguiAutoCompleteComponent.ctorParameters = [
+    NguiAutoCompleteComponent.ctorParameters = function () { return [
         { type: core_1.ElementRef, },
         { type: auto_complete_1.NguiAutoComplete, },
-    ];
+    ]; };
     NguiAutoCompleteComponent.propDecorators = {
         'listFormatter': [{ type: core_1.Input, args: ["list-formatter",] },],
         'source': [{ type: core_1.Input, args: ["source",] },],

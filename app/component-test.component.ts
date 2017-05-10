@@ -19,6 +19,7 @@ var templateStr = `
           display-property-name="formatted_address"
           [list-formatter]="myListFormatter"
           loading-text="Google Is Thinking..."
+          [loading-template]="loadingTemplate"
           max-num-list="5"
           min-chars="2"
           no-match-found-text="No Match Found"
@@ -67,6 +68,7 @@ export class ComponentTestComponent {
   templateStr: string = templateStr;
   googleGeoCode: string = "https://maps.googleapis.com/maps/api/geocode/json?address=:my_own_keyword";
   showAutocomplete: boolean = true;
+  loadingTemplate = '<h1>Loading h1</h1>';
   addrs: any[] = [
     {formatted_address: 'my addr 1'},
     {formatted_address: 'my addr 2'}

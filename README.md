@@ -121,6 +121,7 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   * **`valueChanged`** / **`ngModelChange`**, callback function that is executed when a new dropdown is selected.
      e.g. `(valueChanged)="myCallback($event)"`
   * **`loading-text`**, text to be displayed when loading. Default, "Loading"
+  * **`loading-template`**, html markup that is to be rendered when loading. Default, null
   * **`accept-user-input`** boolean, if `false` and does not match to source given, it goes back to the original value selected., If you don't event want user to type any, please use `readonly="readonly"` to force user to select only from list.
   * **`max-num-list`** number, maximun number of drop down list items. Default, unlimited
   * **`tab-to-select`** boolean, if `true`, pressing <kbd>Tab</kbd> will set the value from the selected item before focus leaves the control. Default is `true`

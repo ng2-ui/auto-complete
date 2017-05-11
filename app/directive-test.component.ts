@@ -30,7 +30,8 @@ let templateStr: string = `
         blank-option-text="Select One"
         [(ngModel)]="model2"
         [source]="arrayOfKeyValues" 
-        placeholder="enter text"/> 
+        placeholder="enter text"
+        z-index="4"/> 
       <a href="javascript:void(0)" (click)="model2={id:'change', value: 'it'}">Change It</a>
       <br/>selected model2: {{model2 | json}}<br/><br/>
     </ngui-utils-2>

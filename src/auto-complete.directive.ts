@@ -46,6 +46,7 @@ export class NguiAutoCompleteDirective implements OnInit {
   //if [formControl] is used on the anchor where our directive is sitting
   //a form is not necessary to use a formControl we should also support this
   @Input('formControl') extFormControl: FormControl;
+  @Input("z-index") zIndex: string = "1";
 
   @Output() ngModelChange = new EventEmitter();
   @Output() valueChanged = new EventEmitter();
@@ -214,7 +215,7 @@ export class NguiAutoCompleteDirective implements OnInit {
 
       this.acDropdownEl.style.width = thisInputElBCR.width + "px";
       this.acDropdownEl.style.position = "absolute";
-      this.acDropdownEl.style.zIndex = "1";
+      this.acDropdownEl.style.zIndex = this.zIndex;
       this.acDropdownEl.style.left = "0";
       this.acDropdownEl.style.display = "inline-block";
 

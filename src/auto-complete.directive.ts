@@ -32,7 +32,7 @@ export class NguiAutoCompleteDirective implements OnInit {
   @Input("accept-user-input") acceptUserInput: boolean;
   @Input("max-num-list") maxNumList: string;
   @Input("select-value-of") selectValueOf: string;
-
+  @Input("loading-template") loadingTemplate = null;
   @Input("list-formatter") listFormatter;
   @Input("loading-text") loadingText: string = "Loading";
   @Input("blank-option-text") blankOptionText: string;
@@ -138,6 +138,7 @@ export class NguiAutoCompleteDirective implements OnInit {
     component.maxNumList = parseInt(this.maxNumList, 10);
 
     component.loadingText = this.loadingText;
+    component.loadingTemplate = this.loadingTemplate;
     component.listFormatter = this.listFormatter;
     component.blankOptionText = this.blankOptionText;
     component.noMatchFoundText = this.noMatchFoundText;

@@ -4,7 +4,6 @@ import { Component, ViewEncapsulation } from "@angular/core";
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 
 import { AppSvc } from "./app.service";
-
 let templateStr: string = `
   <h1> Autocomplete Directive Test - Local Source </h1>
     
@@ -66,6 +65,7 @@ let templateStr: string = `
         list-formatter="formatted_address"
         path-to-data="results"
         loading-text="Google Is Thinking..."
+        [loading-template]="loadingTemplate"
         max-num-list="5"
         min-chars="2" />
       <br/>selected model4: {{model4 | json}}<br/><br/>
@@ -127,9 +127,8 @@ let templateStr: string = `
 })
 export class DirectiveTestComponent {
   templateStr: any = templateStr;
-
+  loadingTemplate = '<h1>Loading</h1>';
   arrayOfNumbers: number[] = [100, 200, 300, 400, 500];
-
   arrayOfStrings: string[] =
     ["this", "is", "array", "of", "text", "with", "long", "and long", "and long", "list"];
 

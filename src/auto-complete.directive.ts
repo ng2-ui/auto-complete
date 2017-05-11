@@ -58,8 +58,10 @@ export class NguiAutoCompleteDirective implements OnInit {
   inputEl: HTMLInputElement;  // input element of this element
   formControl: AbstractControl;
   revertValue: any;
-  
-  constructor(private resolver: ComponentFactoryResolver,
+  private scheduledBlurHandler: any;
+
+
+    constructor(private resolver: ComponentFactoryResolver,
               private renderer: Renderer,
               public  viewContainerRef: ViewContainerRef,
               @Optional() @Host() @SkipSelf() private parentForm: ControlContainer) {
@@ -67,6 +69,15 @@ export class NguiAutoCompleteDirective implements OnInit {
   }
 
   ngOnInit(): void {
+    // Blur event is handled only after a click event. This is to prevent handling of blur events resulting from interacting with a scrollbar
+    // introduced by content overflow (Internet explorer issue).
+    // See issue description here: http://stackoverflow.com/questions/2023779/clicking-on-a-divs-scroll-bar-fires-the-blur-event-in-ie
+    document.addEventListener('click', e => {
+        if (this.scheduledBlurHandler) {
+            this.scheduledBlurHandler();
+            this.scheduledBlurHandler = null;
+        }
+    });
     // wrap this element with <div class="ngui-auto-complete">
     this.wrapperEl = document.createElement("div");
     this.wrapperEl.className = "ngui-auto-complete-wrapper";
@@ -103,7 +114,9 @@ export class NguiAutoCompleteDirective implements OnInit {
         <HTMLInputElement>this.el : <HTMLInputElement>this.el.querySelector("input");
 
     this.inputEl.addEventListener('focus', e => this.showAutoCompleteDropdown(e));
-    this.inputEl.addEventListener('blur', e => this.hideAutoCompleteDropdown(e));
+    this.inputEl.addEventListener('blur', e => {
+        this.scheduledBlurHandler = this.hideAutoCompleteDropdown;
+    });
     this.inputEl.addEventListener('keydown', e => this.keydownEventHandler(e));
     this.inputEl.addEventListener('input', e => this.inputEventHandler(e));
   }
@@ -122,6 +135,8 @@ export class NguiAutoCompleteDirective implements OnInit {
 
   //show auto-complete list below the current element
   showAutoCompleteDropdown = (event?: any): void => {
+    this.hideAutoCompleteDropdown();
+    this.scheduledBlurHandler = null;
 
     let factory = this.resolver.resolveComponentFactory(NguiAutoCompleteComponent);
 
@@ -155,7 +170,7 @@ export class NguiAutoCompleteDirective implements OnInit {
     if (this.el.tagName !== "INPUT" && this.acDropdownEl) {
       this.inputEl.parentElement.insertBefore(this.acDropdownEl, this.inputEl.nextSibling);
     }
-    
+
     this.revertValue = typeof this.ngModel !== "undefined" ? this.ngModel : this.inputEl.value;
 
     setTimeout(() => {
@@ -172,13 +187,13 @@ export class NguiAutoCompleteDirective implements OnInit {
       if(this.inputEl && hasRevertValue && this.acceptUserInput === false) {
         currentItem = this.componentRef.instance.findItemFromSelectValue(this.inputEl.value);
       }
-      
+
       this.componentRef.destroy();
       this.componentRef = undefined;
-      
+
       if(
-        this.inputEl && 
-        hasRevertValue && 
+        this.inputEl &&
+        hasRevertValue &&
         this.acceptUserInput === false &&
         currentItem === null
       ) {

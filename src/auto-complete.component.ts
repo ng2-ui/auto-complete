@@ -124,6 +124,7 @@ export class NguiAutoCompleteComponent implements OnInit {
   @Input("show-dropdown-on-init") showDropdownOnInit: boolean = false;
   @Input("tab-to-select") tabToSelect: boolean = true;
   @Input("match-formatted") matchFormatted: boolean = false;
+  @Input("source-changes") sourceChanges: EventEmitter<any>;
 
   @Output() valueSelected = new EventEmitter();
   @ViewChild('autoCompleteInput') autoCompleteInput: ElementRef;
@@ -138,6 +139,8 @@ export class NguiAutoCompleteComponent implements OnInit {
   minCharsEntered: boolean = false;
   itemIndex: number = 0;
   keyword: string;
+
+  private lastKeyword = "";
 
   isSrcArr(): boolean {
     return (this.source.constructor.name === "Array");
@@ -160,6 +163,7 @@ export class NguiAutoCompleteComponent implements OnInit {
     this.autoComplete.source = this.source;
     this.autoComplete.pathToData = this.pathToData;
     this.autoComplete.listFormatter = this.listFormatter;
+    this.subscribeToSourceChanges();
     setTimeout(() => {
       if (this.autoCompleteInput) {
         this.autoCompleteInput.nativeElement.focus()
@@ -195,6 +199,8 @@ export class NguiAutoCompleteComponent implements OnInit {
 
   reloadList(keyword: string): void {
 
+    this.lastKeyword = keyword;
+    
     this.filteredList = [];
     if (keyword.length < (this.minChars || 0)) {
       this.minCharsEntered = false;
@@ -313,5 +319,12 @@ export class NguiAutoCompleteComponent implements OnInit {
       timer = setTimeout(callback, ms);
     };
   })();
+
+  private subscribeToSourceChanges(): void {
+    this.sourceChanges.subscribe((value) => {
+      this.source = value;
+      this.reloadList(this.lastKeyword);
+    });
+  }
 
 }

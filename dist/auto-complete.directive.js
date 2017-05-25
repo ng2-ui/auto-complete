@@ -12,13 +12,17 @@ var NguiAutoCompleteDirective = (function () {
         this.renderer = renderer;
         this.viewContainerRef = viewContainerRef;
         this.parentForm = parentForm;
+        this.loadingTemplate = null;
         this.loadingText = "Loading";
         this.tabToSelect = true;
         this.matchFormatted = false;
+        this.zIndex = "1";
         this.ngModelChange = new core_1.EventEmitter();
         this.valueChanged = new core_1.EventEmitter();
         //show auto-complete list below the current element
         this.showAutoCompleteDropdown = function (event) {
+            _this.hideAutoCompleteDropdown();
+            _this.scheduledBlurHandler = null;
             var factory = _this.resolver.resolveComponentFactory(auto_complete_component_1.NguiAutoCompleteComponent);
             _this.componentRef = _this.viewContainerRef.createComponent(factory);
             var component = _this.componentRef.instance;
@@ -30,6 +34,7 @@ var NguiAutoCompleteDirective = (function () {
             component.acceptUserInput = _this.acceptUserInput;
             component.maxNumList = parseInt(_this.maxNumList, 10);
             component.loadingText = _this.loadingText;
+            component.loadingTemplate = _this.loadingTemplate;
             component.listFormatter = _this.listFormatter;
             component.blankOptionText = _this.blankOptionText;
             component.noMatchFoundText = _this.noMatchFoundText;
@@ -76,7 +81,7 @@ var NguiAutoCompleteDirective = (function () {
                 var closeToBottom = thisInputElBCR.bottom + 100 > window.innerHeight;
                 _this.acDropdownEl.style.width = thisInputElBCR.width + "px";
                 _this.acDropdownEl.style.position = "absolute";
-                _this.acDropdownEl.style.zIndex = "1";
+                _this.acDropdownEl.style.zIndex = _this.zIndex;
                 _this.acDropdownEl.style.left = "0";
                 _this.acDropdownEl.style.display = "inline-block";
                 if (closeToBottom) {
@@ -126,6 +131,16 @@ var NguiAutoCompleteDirective = (function () {
         this.el = this.viewContainerRef.element.nativeElement;
     }
     NguiAutoCompleteDirective.prototype.ngOnInit = function () {
+        var _this = this;
+        // Blur event is handled only after a click event. This is to prevent handling of blur events resulting from interacting with a scrollbar
+        // introduced by content overflow (Internet explorer issue).
+        // See issue description here: http://stackoverflow.com/questions/2023779/clicking-on-a-divs-scroll-bar-fires-the-blur-event-in-ie
+        document.addEventListener('click', function (e) {
+            if (_this.scheduledBlurHandler) {
+                _this.scheduledBlurHandler();
+                _this.scheduledBlurHandler = null;
+            }
+        });
         // wrap this element with <div class="ngui-auto-complete">
         this.wrapperEl = document.createElement("div");
         this.wrapperEl.className = "ngui-auto-complete-wrapper";
@@ -160,7 +175,9 @@ var NguiAutoCompleteDirective = (function () {
         this.inputEl = this.el.tagName === "INPUT" ?
             this.el : this.el.querySelector("input");
         this.inputEl.addEventListener('focus', function (e) { return _this.showAutoCompleteDropdown(e); });
-        this.inputEl.addEventListener('blur', function (e) { return _this.hideAutoCompleteDropdown(e); });
+        this.inputEl.addEventListener('blur', function (e) {
+            _this.scheduledBlurHandler = _this.hideAutoCompleteDropdown;
+        });
         this.inputEl.addEventListener('keydown', function (e) { return _this.keydownEventHandler(e); });
         this.inputEl.addEventListener('input', function (e) { return _this.inputEventHandler(e); });
     };
@@ -211,12 +228,12 @@ var NguiAutoCompleteDirective = (function () {
                 },] },
     ];
     /** @nocollapse */
-    NguiAutoCompleteDirective.ctorParameters = function () { return [
+    NguiAutoCompleteDirective.ctorParameters = [
         { type: core_1.ComponentFactoryResolver, },
         { type: core_1.Renderer, },
         { type: core_1.ViewContainerRef, },
         { type: forms_1.ControlContainer, decorators: [{ type: core_1.Optional }, { type: core_1.Host }, { type: core_1.SkipSelf },] },
-    ]; };
+    ];
     NguiAutoCompleteDirective.propDecorators = {
         'autoCompletePlaceholder': [{ type: core_1.Input, args: ["auto-complete-placeholder",] },],
         'source': [{ type: core_1.Input, args: ["source",] },],
@@ -226,6 +243,7 @@ var NguiAutoCompleteDirective = (function () {
         'acceptUserInput': [{ type: core_1.Input, args: ["accept-user-input",] },],
         'maxNumList': [{ type: core_1.Input, args: ["max-num-list",] },],
         'selectValueOf': [{ type: core_1.Input, args: ["select-value-of",] },],
+        'loadingTemplate': [{ type: core_1.Input, args: ["loading-template",] },],
         'listFormatter': [{ type: core_1.Input, args: ["list-formatter",] },],
         'loadingText': [{ type: core_1.Input, args: ["loading-text",] },],
         'blankOptionText': [{ type: core_1.Input, args: ["blank-option-text",] },],
@@ -236,6 +254,7 @@ var NguiAutoCompleteDirective = (function () {
         'ngModel': [{ type: core_1.Input },],
         'formControlName': [{ type: core_1.Input, args: ['formControlName',] },],
         'extFormControl': [{ type: core_1.Input, args: ['formControl',] },],
+        'zIndex': [{ type: core_1.Input, args: ["z-index",] },],
         'ngModelChange': [{ type: core_1.Output },],
         'valueChanged': [{ type: core_1.Output },],
     };

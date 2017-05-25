@@ -72,9 +72,9 @@ var NguiAutoComplete = (function () {
         { type: core_1.Injectable },
     ];
     /** @nocollapse */
-    NguiAutoComplete.ctorParameters = function () { return [
+    NguiAutoComplete.ctorParameters = [
         { type: http_1.Http, decorators: [{ type: core_1.Optional },] },
-    ]; };
+    ];
     return NguiAutoComplete;
 }());
 exports.NguiAutoComplete = NguiAutoComplete;

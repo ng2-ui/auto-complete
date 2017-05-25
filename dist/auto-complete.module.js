@@ -23,7 +23,7 @@ var NguiAutoCompleteModule = (function () {
                 },] },
     ];
     /** @nocollapse */
-    NguiAutoCompleteModule.ctorParameters = function () { return []; };
+    NguiAutoCompleteModule.ctorParameters = [];
     return NguiAutoCompleteModule;
 }());
 exports.NguiAutoCompleteModule = NguiAutoCompleteModule;

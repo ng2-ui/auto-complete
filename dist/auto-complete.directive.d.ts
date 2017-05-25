@@ -17,6 +17,7 @@ export declare class NguiAutoCompleteDirective implements OnInit {
     acceptUserInput: boolean;
     maxNumList: string;
     selectValueOf: string;
+    loadingTemplate: any;
     listFormatter: any;
     loadingText: string;
     blankOptionText: string;
@@ -27,6 +28,7 @@ export declare class NguiAutoCompleteDirective implements OnInit {
     ngModel: String;
     formControlName: string;
     extFormControl: FormControl;
+    zIndex: string;
     ngModelChange: EventEmitter<{}>;
     valueChanged: EventEmitter<{}>;
     componentRef: ComponentRef<NguiAutoCompleteComponent>;
@@ -36,6 +38,7 @@ export declare class NguiAutoCompleteDirective implements OnInit {
     inputEl: HTMLInputElement;
     formControl: AbstractControl;
     revertValue: any;
+    private scheduledBlurHandler;
     constructor(resolver: ComponentFactoryResolver, renderer: Renderer, viewContainerRef: ViewContainerRef, parentForm: ControlContainer);
     ngOnInit(): void;
     ngAfterViewInit(): void;

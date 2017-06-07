@@ -11,7 +11,8 @@ import {
   SimpleChanges,
   SkipSelf,
   Host,
-  Optional
+  Optional,
+  OnChanges
 } from "@angular/core";
 import { NguiAutoCompleteComponent } from "./auto-complete.component";
 import { ControlContainer, AbstractControl, FormGroup, FormControl, FormGroupName } from "@angular/forms";
@@ -22,7 +23,7 @@ import { ControlContainer, AbstractControl, FormGroup, FormControl, FormGroupNam
 @Directive({
   selector: "[auto-complete], [ngui-auto-complete]"
 })
-export class NguiAutoCompleteDirective implements OnInit {
+export class NguiAutoCompleteDirective implements OnInit, OnChanges {
 
   @Input("auto-complete-placeholder") autoCompletePlaceholder: string;
   @Input("source") source: any;
@@ -61,8 +62,9 @@ export class NguiAutoCompleteDirective implements OnInit {
   revertValue: any;
   private scheduledBlurHandler: any;
 
+  private sourceChanges = new EventEmitter();
 
-    constructor(private resolver: ComponentFactoryResolver,
+  constructor(private resolver: ComponentFactoryResolver,
               private renderer: Renderer,
               public  viewContainerRef: ViewContainerRef,
               @Optional() @Host() @SkipSelf() private parentForm: ControlContainer) {
@@ -131,6 +133,10 @@ export class NguiAutoCompleteDirective implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['ngModel']) {
       this.ngModel = this.setToStringFunction(changes['ngModel'].currentValue);
+      this.renderValue(this.ngModel);
+    }
+    if (changes["source"]) {
+      this.sourceChanges.emit(this.source);
     }
   }
 
@@ -160,6 +166,7 @@ export class NguiAutoCompleteDirective implements OnInit {
     component.noMatchFoundText = this.noMatchFoundText;
     component.tabToSelect = this.tabToSelect;
     component.matchFormatted = this.matchFormatted;
+    component.sourceChanges = this.sourceChanges;
 
     component.valueSelected.subscribe(this.selectNewValue);
 
@@ -249,9 +256,7 @@ export class NguiAutoCompleteDirective implements OnInit {
       } else {
         displayVal = item.value;
       }
-      item.toString = function () {
-        return displayVal;
-      }
+      item.toString = () => displayVal;
     }
     return item;
   }
@@ -261,7 +266,7 @@ export class NguiAutoCompleteDirective implements OnInit {
     if (item && typeof item === "object") {
       item = this.setToStringFunction(item);
     }
-    this.inputEl && (this.inputEl.value = '' + item);
+    this.renderValue(item);
 
     // make return value
     let val = item;
@@ -294,5 +299,9 @@ export class NguiAutoCompleteDirective implements OnInit {
       this.showAutoCompleteDropdown()
     }
   };
+
+  private renderValue(item: any) {
+    this.inputEl && (this.inputEl.value = '' + item);
+  }
 
 }

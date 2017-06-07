@@ -64,7 +64,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
 
   private sourceChanges = new EventEmitter();
 
-    constructor(private resolver: ComponentFactoryResolver,
+  constructor(private resolver: ComponentFactoryResolver,
               private renderer: Renderer,
               public  viewContainerRef: ViewContainerRef,
               @Optional() @Host() @SkipSelf() private parentForm: ControlContainer) {
@@ -131,9 +131,10 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // if (changes['ngModel']) {
-    //   this.ngModel = this.setToStringFunction(changes['ngModel'].currentValue);
-    // }
+    if (changes['ngModel']) {
+      this.ngModel = this.setToStringFunction(changes['ngModel'].currentValue);
+      this.renderValue(this.ngModel);
+    }
     if (changes["source"]) {
       this.sourceChanges.emit(this.source);
     }
@@ -255,9 +256,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
       } else {
         displayVal = item.value;
       }
-      item.toString = function () {
-        return displayVal;
-      }
+      item.toString = () => displayVal;
     }
     return item;
   }
@@ -267,7 +266,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
     if (item && typeof item === "object") {
       item = this.setToStringFunction(item);
     }
-    this.inputEl && (this.inputEl.value = '' + item);
+    this.renderValue(item);
 
     // make return value
     let val = item;
@@ -300,5 +299,9 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
       this.showAutoCompleteDropdown()
     }
   };
+
+  private renderValue(item: any) {
+    this.inputEl && (this.inputEl.value = '' + item);
+  }
 
 }

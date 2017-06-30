@@ -257,11 +257,8 @@ export class NguiAutoCompleteComponent implements OnInit {
         break;
 
       case 38: // UP, select the previous li el
-        this.handleArrowKeyEvent(true);
-        break;
-
       case 40: // DOWN, select the next li el or the first one
-        this.handleArrowKeyEvent(false);
+        this.handleArrowKeyEvent(evt);
         break;
 
       case 13: // ENTER, choose it!!
@@ -309,14 +306,16 @@ export class NguiAutoCompleteComponent implements OnInit {
     };
   })();
 
-  private handleArrowKeyEvent(isUp: boolean) {
+  private handleArrowKeyEvent(event: KeyboardEvent) {
     let totalNumItem = this.filteredList.length;
 
     if (!totalNumItem) {
       return;
     }
 
-    const itemIndex = isUp ? totalNumItem + this.itemIndex - 1 : totalNumItem + this.itemIndex + 1;
+    const itemIndex = event.keyCode === 38
+        ? totalNumItem + this.itemIndex - 1
+        : totalNumItem + this.itemIndex + 1;
 
     this.itemIndex = itemIndex % totalNumItem;
     this.scrollToView(this.itemIndex);

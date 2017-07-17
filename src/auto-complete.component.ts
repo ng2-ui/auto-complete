@@ -252,21 +252,13 @@ export class NguiAutoCompleteComponent implements OnInit {
   };
 
   inputElKeyHandler = (evt: any) => {
-    let totalNumItem = this.filteredList.length;
-
     switch (evt.keyCode) {
       case 27: // ESC, hide auto complete
         break;
 
       case 38: // UP, select the previous li el
-        this.itemIndex = (totalNumItem + this.itemIndex - 1) % totalNumItem;
-        this.scrollToView(this.itemIndex);
-        break;
-
       case 40: // DOWN, select the next li el or the first one
-        this.dropdownVisible = true;
-        this.itemIndex = (totalNumItem + this.itemIndex + 1) % totalNumItem;
-        this.scrollToView(this.itemIndex);
+        this.handleArrowKeyEvent(evt);
         break;
 
       case 13: // ENTER, choose it!!
@@ -313,5 +305,20 @@ export class NguiAutoCompleteComponent implements OnInit {
       timer = setTimeout(callback, ms);
     };
   })();
+
+  private handleArrowKeyEvent(event: KeyboardEvent) {
+    let totalNumItem = this.filteredList.length;
+
+    if (!totalNumItem) {
+      return;
+    }
+
+    const itemIndex = event.keyCode === 38
+        ? totalNumItem + this.itemIndex - 1
+        : totalNumItem + this.itemIndex + 1;
+
+    this.itemIndex = itemIndex % totalNumItem;
+    this.scrollToView(this.itemIndex);
+  }
 
 }

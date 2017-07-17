@@ -61,6 +61,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
   formControl: AbstractControl;
   revertValue: any;
   private scheduledBlurHandler: any;
+  private documentClickListener: (e: MouseEvent) => any;
 
 
   constructor(private resolver: ComponentFactoryResolver,
@@ -74,12 +75,13 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
     // Blur event is handled only after a click event. This is to prevent handling of blur events resulting from interacting with a scrollbar
     // introduced by content overflow (Internet explorer issue).
     // See issue description here: http://stackoverflow.com/questions/2023779/clicking-on-a-divs-scroll-bar-fires-the-blur-event-in-ie
-    document.addEventListener('click', e => {
-        if (this.scheduledBlurHandler) {
-            this.scheduledBlurHandler();
-            this.scheduledBlurHandler = null;
-        }
-    });
+    this.documentClickListener = e => {
+      if (this.scheduledBlurHandler) {
+        this.scheduledBlurHandler();
+        this.scheduledBlurHandler = null;
+      }
+    }
+    document.addEventListener('click', this.documentClickListener);
     // wrap this element with <div class="ngui-auto-complete">
     this.wrapperEl = document.createElement("div");
     this.wrapperEl.className = "ngui-auto-complete-wrapper";
@@ -126,6 +128,9 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
   ngOnDestroy(): void {
     if (this.componentRef) {
       this.componentRef.instance.valueSelected.unsubscribe();
+    }
+    if (this.documentClickListener) {
+      document.removeEventListener('click', this.documentClickListener);
     }
   }
 

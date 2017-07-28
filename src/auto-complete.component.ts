@@ -136,7 +136,7 @@ export class NguiAutoCompleteComponent implements OnInit {
 
   filteredList: any[] = [];
   minCharsEntered: boolean = false;
-  itemIndex: number = 0;
+  itemIndex: number = null;
   keyword: string;
 
   isSrcArr(): boolean {
@@ -265,7 +265,13 @@ export class NguiAutoCompleteComponent implements OnInit {
 
       case 40: // DOWN, select the next li el or the first one
         this.dropdownVisible = true;
-        this.itemIndex = (totalNumItem + this.itemIndex + 1) % totalNumItem;
+        let sum = this.itemIndex;
+        if (this.itemIndex === null) {
+          sum = 0;
+        } else {
+          sum = sum + 1;
+        }
+        this.itemIndex = (totalNumItem + sum) % totalNumItem;
         this.scrollToView(this.itemIndex);
         break;
 

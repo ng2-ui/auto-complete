@@ -7,7 +7,7 @@
 		exports["auto-complete"] = factory(require("@angular/core"), require("@angular/forms"), require("@angular/common"), require("@angular/http"), require("rxjs/add/operator/map"));
 	else
 		root["auto-complete"] = factory(root["@angular/core"], root["@angular/forms"], root["@angular/common"], root["@angular/http"], root["rxjs/add/operator/map"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_6__, __WEBPACK_EXTERNAL_MODULE_7__, __WEBPACK_EXTERNAL_MODULE_8__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_7__, __WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_9__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -16,9 +16,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -124,7 +124,7 @@ var NguiAutoCompleteComponent = (function () {
         this.isLoading = false;
         this.filteredList = [];
         this.minCharsEntered = false;
-        this.itemIndex = 0;
+        this.itemIndex = null;
         this.reloadListInDelay = function (evt) {
             var delayMs = _this.isSrcArr() ? 10 : 500;
             var keyword = evt.target.value;
@@ -142,7 +142,14 @@ var NguiAutoCompleteComponent = (function () {
                     break;
                 case 40:
                     _this.dropdownVisible = true;
-                    _this.itemIndex = (totalNumItem + _this.itemIndex + 1) % totalNumItem;
+                    var sum = _this.itemIndex;
+                    if (_this.itemIndex === null) {
+                        sum = 0;
+                    }
+                    else {
+                        sum = sum + 1;
+                    }
+                    _this.itemIndex = (totalNumItem + sum) % totalNumItem;
                     _this.scrollToView(_this.itemIndex);
                     break;
                 case 13:
@@ -376,8 +383,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 var core_1 = __webpack_require__(0);
-var http_1 = __webpack_require__(7);
-__webpack_require__(8);
+var http_1 = __webpack_require__(8);
+__webpack_require__(9);
 /**
  * provides auto-complete related utility functions
  */
@@ -570,7 +577,7 @@ var NguiAutoCompleteDirective = (function () {
             if (item && typeof item === "object") {
                 item = _this.setToStringFunction(item);
             }
-            _this.inputEl && (_this.inputEl.value = '' + item);
+            _this.renderValue(item);
             // make return value
             var val = item;
             if (_this.selectValueOf && item[_this.selectValueOf]) {
@@ -608,12 +615,13 @@ var NguiAutoCompleteDirective = (function () {
         // Blur event is handled only after a click event. This is to prevent handling of blur events resulting from interacting with a scrollbar
         // introduced by content overflow (Internet explorer issue).
         // See issue description here: http://stackoverflow.com/questions/2023779/clicking-on-a-divs-scroll-bar-fires-the-blur-event-in-ie
-        document.addEventListener('click', function (e) {
+        this.documentClickListener = function (e) {
             if (_this.scheduledBlurHandler) {
                 _this.scheduledBlurHandler();
                 _this.scheduledBlurHandler = null;
             }
-        });
+        };
+        document.addEventListener('click', this.documentClickListener);
         // wrap this element with <div class="ngui-auto-complete">
         this.wrapperEl = document.createElement("div");
         this.wrapperEl.className = "ngui-auto-complete-wrapper";
@@ -658,10 +666,14 @@ var NguiAutoCompleteDirective = (function () {
         if (this.componentRef) {
             this.componentRef.instance.valueSelected.unsubscribe();
         }
+        if (this.documentClickListener) {
+            document.removeEventListener('click', this.documentClickListener);
+        }
     };
     NguiAutoCompleteDirective.prototype.ngOnChanges = function (changes) {
         if (changes['ngModel']) {
             this.ngModel = this.setToStringFunction(changes['ngModel'].currentValue);
+            this.renderValue(this.ngModel);
         }
     };
     NguiAutoCompleteDirective.prototype.setToStringFunction = function (item) {
@@ -689,11 +701,12 @@ var NguiAutoCompleteDirective = (function () {
             else {
                 displayVal_1 = item.value;
             }
-            item.toString = function () {
-                return displayVal_1;
-            };
+            item.toString = function () { return displayVal_1; };
         }
         return item;
+    };
+    NguiAutoCompleteDirective.prototype.renderValue = function (item) {
+        this.inputEl && (this.inputEl.value = '' + item);
     };
     __decorate([
         core_1.Input("auto-complete-placeholder"), 
@@ -819,7 +832,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(0);
-var common_1 = __webpack_require__(6);
+var common_1 = __webpack_require__(7);
 var forms_1 = __webpack_require__(4);
 var auto_complete_component_1 = __webpack_require__(1);
 var auto_complete_directive_1 = __webpack_require__(3);
@@ -849,9 +862,19 @@ exports.NguiAutoCompleteModule = NguiAutoCompleteModule;
 
 /***/ }),
 /* 6 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_6__;
+"use strict";
+
+var auto_complete_1 = __webpack_require__(2);
+exports.NguiAutoComplete = auto_complete_1.NguiAutoComplete;
+var auto_complete_module_1 = __webpack_require__(5);
+exports.NguiAutoCompleteModule = auto_complete_module_1.NguiAutoCompleteModule;
+var auto_complete_component_1 = __webpack_require__(1);
+exports.NguiAutoCompleteComponent = auto_complete_component_1.NguiAutoCompleteComponent;
+var auto_complete_directive_1 = __webpack_require__(3);
+exports.NguiAutoCompleteDirective = auto_complete_directive_1.NguiAutoCompleteDirective;
+
 
 /***/ }),
 /* 7 */
@@ -867,19 +890,9 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_8__;
 
 /***/ }),
 /* 9 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-var auto_complete_1 = __webpack_require__(2);
-exports.NguiAutoComplete = auto_complete_1.NguiAutoComplete;
-var auto_complete_module_1 = __webpack_require__(5);
-exports.NguiAutoCompleteModule = auto_complete_module_1.NguiAutoCompleteModule;
-var auto_complete_component_1 = __webpack_require__(1);
-exports.NguiAutoCompleteComponent = auto_complete_component_1.NguiAutoCompleteComponent;
-var auto_complete_directive_1 = __webpack_require__(3);
-exports.NguiAutoCompleteDirective = auto_complete_directive_1.NguiAutoCompleteDirective;
-
+module.exports = __WEBPACK_EXTERNAL_MODULE_9__;
 
 /***/ })
 /******/ ]);

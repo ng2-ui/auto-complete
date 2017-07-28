@@ -97,7 +97,7 @@ var NguiAutoCompleteDirective = (function () {
             if (item && typeof item === "object") {
                 item = _this.setToStringFunction(item);
             }
-            _this.inputEl && (_this.inputEl.value = '' + item);
+            _this.renderValue(item);
             // make return value
             var val = item;
             if (_this.selectValueOf && item[_this.selectValueOf]) {
@@ -135,12 +135,13 @@ var NguiAutoCompleteDirective = (function () {
         // Blur event is handled only after a click event. This is to prevent handling of blur events resulting from interacting with a scrollbar
         // introduced by content overflow (Internet explorer issue).
         // See issue description here: http://stackoverflow.com/questions/2023779/clicking-on-a-divs-scroll-bar-fires-the-blur-event-in-ie
-        document.addEventListener('click', function (e) {
+        this.documentClickListener = function (e) {
             if (_this.scheduledBlurHandler) {
                 _this.scheduledBlurHandler();
                 _this.scheduledBlurHandler = null;
             }
-        });
+        };
+        document.addEventListener('click', this.documentClickListener);
         // wrap this element with <div class="ngui-auto-complete">
         this.wrapperEl = document.createElement("div");
         this.wrapperEl.className = "ngui-auto-complete-wrapper";
@@ -185,10 +186,14 @@ var NguiAutoCompleteDirective = (function () {
         if (this.componentRef) {
             this.componentRef.instance.valueSelected.unsubscribe();
         }
+        if (this.documentClickListener) {
+            document.removeEventListener('click', this.documentClickListener);
+        }
     };
     NguiAutoCompleteDirective.prototype.ngOnChanges = function (changes) {
         if (changes['ngModel']) {
             this.ngModel = this.setToStringFunction(changes['ngModel'].currentValue);
+            this.renderValue(this.ngModel);
         }
     };
     NguiAutoCompleteDirective.prototype.setToStringFunction = function (item) {
@@ -216,11 +221,12 @@ var NguiAutoCompleteDirective = (function () {
             else {
                 displayVal_1 = item.value;
             }
-            item.toString = function () {
-                return displayVal_1;
-            };
+            item.toString = function () { return displayVal_1; };
         }
         return item;
+    };
+    NguiAutoCompleteDirective.prototype.renderValue = function (item) {
+        this.inputEl && (this.inputEl.value = '' + item);
     };
     NguiAutoCompleteDirective.decorators = [
         { type: core_1.Directive, args: [{
@@ -228,12 +234,12 @@ var NguiAutoCompleteDirective = (function () {
                 },] },
     ];
     /** @nocollapse */
-    NguiAutoCompleteDirective.ctorParameters = [
+    NguiAutoCompleteDirective.ctorParameters = function () { return [
         { type: core_1.ComponentFactoryResolver, },
         { type: core_1.Renderer, },
         { type: core_1.ViewContainerRef, },
         { type: forms_1.ControlContainer, decorators: [{ type: core_1.Optional }, { type: core_1.Host }, { type: core_1.SkipSelf },] },
-    ];
+    ]; };
     NguiAutoCompleteDirective.propDecorators = {
         'autoCompletePlaceholder': [{ type: core_1.Input, args: ["auto-complete-placeholder",] },],
         'source': [{ type: core_1.Input, args: ["source",] },],

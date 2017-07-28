@@ -26,7 +26,7 @@ var NguiAutoCompleteComponent = (function () {
         this.isLoading = false;
         this.filteredList = [];
         this.minCharsEntered = false;
-        this.itemIndex = 0;
+        this.itemIndex = null;
         this.reloadListInDelay = function (evt) {
             var delayMs = _this.isSrcArr() ? 10 : 500;
             var keyword = evt.target.value;
@@ -44,7 +44,14 @@ var NguiAutoCompleteComponent = (function () {
                     break;
                 case 40:
                     _this.dropdownVisible = true;
-                    _this.itemIndex = (totalNumItem + _this.itemIndex + 1) % totalNumItem;
+                    var sum = _this.itemIndex;
+                    if (_this.itemIndex === null) {
+                        sum = 0;
+                    }
+                    else {
+                        sum = sum + 1;
+                    }
+                    _this.itemIndex = (totalNumItem + sum) % totalNumItem;
                     _this.scrollToView(_this.itemIndex);
                     break;
                 case 13:
@@ -182,10 +189,10 @@ var NguiAutoCompleteComponent = (function () {
                 },] },
     ];
     /** @nocollapse */
-    NguiAutoCompleteComponent.ctorParameters = [
+    NguiAutoCompleteComponent.ctorParameters = function () { return [
         { type: core_1.ElementRef, },
         { type: auto_complete_1.NguiAutoComplete, },
-    ];
+    ]; };
     NguiAutoCompleteComponent.propDecorators = {
         'listFormatter': [{ type: core_1.Input, args: ["list-formatter",] },],
         'source': [{ type: core_1.Input, args: ["source",] },],

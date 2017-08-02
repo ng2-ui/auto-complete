@@ -124,7 +124,7 @@ export class NguiAutoCompleteComponent implements OnInit {
   @Input("show-dropdown-on-init") showDropdownOnInit: boolean = false;
   @Input("tab-to-select") tabToSelect: boolean = true;
   @Input("match-formatted") matchFormatted: boolean = false;
-  @Input("auto-complete-first-item") autoCompleteFirstItem: boolean = false;
+  @Input("auto-select-first-item") autoSelectFirstItem: boolean = false;
 
   @Output() valueSelected = new EventEmitter();
   @ViewChild('autoCompleteInput') autoCompleteInput: ElementRef;
@@ -161,7 +161,7 @@ export class NguiAutoCompleteComponent implements OnInit {
     this.autoComplete.source = this.source;
     this.autoComplete.pathToData = this.pathToData;
     this.autoComplete.listFormatter = this.listFormatter;
-    if (this.autoCompleteFirstItem) {
+    if (this.autoSelectFirstItem) {
       this.itemIndex = 0;
     }
     setTimeout(() => {

@@ -11,6 +11,7 @@ Test with Array of strings
   verify element "ul li:nth-child(1)" text is "this"
   press "e" into "#model1"
   verify element "ul li:nth-child(1)" text is "text"
+  press ARROW_DOWN into "#model1"
   press ENTER into "#model1"
   verify element #model1 value is "text"
   enter "invalid" into "#model1"
@@ -42,6 +43,7 @@ Test with array of key/name
   press ARROW_DOWN into "#model3"
   press ARROW_DOWN into "#model3"
   press ARROW_DOWN into "#model3"
+  press ARROW_DOWN into "#model3"
   press ENTER into "#model3"
   verify element #model3 value is "(4) Key Four"
 
@@ -55,5 +57,19 @@ Test With Remote Source as Observable
   enter text "hulk/Bruce" into "#model5"
   verify text "Hulk/Bruce Banner" present
   press ENTER into "#model5"
+
+Test with Array of strings
+  verify text 'selected model7: "is"' present
+  click #model7
+  clear "#model7"
+  press "t" into "#model7"
+  verify element "ul li:nth-child(1)" text is "this"
+  press "e" into "#model7"
+  verify element "ul li:nth-child(1)" text is "text"
+  press ENTER into "#model7"
+  verify element #model7 value is "text"
+  enter "invalid" into "#model7"
+  click "body"
+  verify element #model7 value is "text"
 
 close browser

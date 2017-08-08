@@ -16,6 +16,7 @@ var NguiAutoCompleteDirective = (function () {
         this.loadingText = "Loading";
         this.tabToSelect = true;
         this.matchFormatted = false;
+        this.autoSelectFirstItem = false;
         this.zIndex = "1";
         this.ngModelChange = new core_1.EventEmitter();
         this.valueChanged = new core_1.EventEmitter();
@@ -40,6 +41,7 @@ var NguiAutoCompleteDirective = (function () {
             component.noMatchFoundText = _this.noMatchFoundText;
             component.tabToSelect = _this.tabToSelect;
             component.matchFormatted = _this.matchFormatted;
+            component.autoSelectFirstItem = _this.autoSelectFirstItem;
             component.valueSelected.subscribe(_this.selectNewValue);
             _this.acDropdownEl = _this.componentRef.location.nativeElement;
             _this.acDropdownEl.style.display = "none";
@@ -257,6 +259,7 @@ var NguiAutoCompleteDirective = (function () {
         'valueFormatter': [{ type: core_1.Input, args: ["value-formatter",] },],
         'tabToSelect': [{ type: core_1.Input, args: ["tab-to-select",] },],
         'matchFormatted': [{ type: core_1.Input, args: ["match-formatted",] },],
+        'autoSelectFirstItem': [{ type: core_1.Input, args: ["auto-select-first-item",] },],
         'ngModel': [{ type: core_1.Input },],
         'formControlName': [{ type: core_1.Input, args: ['formControlName',] },],
         'extFormControl': [{ type: core_1.Input, args: ['formControl',] },],

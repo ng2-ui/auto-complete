@@ -21,6 +21,7 @@ var NguiAutoCompleteComponent = (function () {
         this.showDropdownOnInit = false;
         this.tabToSelect = true;
         this.matchFormatted = false;
+        this.autoSelectFirstItem = false;
         this.valueSelected = new core_1.EventEmitter();
         this.dropdownVisible = false;
         this.isLoading = false;
@@ -87,6 +88,9 @@ var NguiAutoCompleteComponent = (function () {
         this.autoComplete.source = this.source;
         this.autoComplete.pathToData = this.pathToData;
         this.autoComplete.listFormatter = this.listFormatter;
+        if (this.autoSelectFirstItem) {
+            this.itemIndex = 0;
+        }
         setTimeout(function () {
             if (_this.autoCompleteInput) {
                 _this.autoCompleteInput.nativeElement.focus();
@@ -209,6 +213,7 @@ var NguiAutoCompleteComponent = (function () {
         'showDropdownOnInit': [{ type: core_1.Input, args: ["show-dropdown-on-init",] },],
         'tabToSelect': [{ type: core_1.Input, args: ["tab-to-select",] },],
         'matchFormatted': [{ type: core_1.Input, args: ["match-formatted",] },],
+        'autoSelectFirstItem': [{ type: core_1.Input, args: ["auto-select-first-item",] },],
         'valueSelected': [{ type: core_1.Output },],
         'autoCompleteInput': [{ type: core_1.ViewChild, args: ['autoCompleteInput',] },],
         'autoCompleteContainer': [{ type: core_1.ViewChild, args: ['autoCompleteContainer',] },],

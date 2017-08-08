@@ -25,6 +25,7 @@ export declare class NguiAutoCompleteDirective implements OnInit, OnChanges {
     valueFormatter: any;
     tabToSelect: boolean;
     matchFormatted: boolean;
+    autoSelectFirstItem: boolean;
     ngModel: String;
     formControlName: string;
     extFormControl: FormControl;

@@ -12,7 +12,7 @@ let templateStr: string = `
       <div ngui-auto-complete 
         [source]="arrayOfStrings"
         [accept-user-input]="false"
-        (ngModelChange)="myCallback($event)"
+        (ngModelChange)="myCallback1($event)"
         placeholder="enter text">
         <input id="model1" [ngModel]="model1" autofocus />
       </div>
@@ -108,6 +108,22 @@ let templateStr: string = `
     <pre>{{templateStr | htmlCode:'ngui-utils-6'}}</pre>
     <pre>arrayOfNumbers: {{json(arrayOfNumbers)}}</pre>
   </fieldset>
+
+  <fieldset><legend><h2>Source as Array of Strings (with auto-select-first-item)</h2></legend>
+    <ngui-utils-7>
+      <div ngui-auto-complete
+        [source]="arrayOfStrings"
+        [accept-user-input]="false"
+        [auto-select-first-item]="true"
+        (ngModelChange)="myCallback7($event)"
+        placeholder="enter text">
+        <input id="model7" [ngModel]="model7" autofocus />
+      </div>
+      <br/>selected model7: {{json(model7)}}<br/><br/>
+    </ngui-utils-7>
+    <pre>{{templateStr | htmlCode:'ngui-utils-7'}}</pre>
+    <pre> arrayOfStrings: {{json(arrayOfStrings)}}</pre>
+  </fieldset>
  `;
 
 @Component({
@@ -144,6 +160,7 @@ export class DirectiveTestComponent {
   model1 = "is";
   model2 = {id:1, value: "One"};
   model3 = {key: 3, name: "Key Three"};
+  model7 = "is";
 
   constructor (
     public http: Http,
@@ -151,9 +168,14 @@ export class DirectiveTestComponent {
     private _sanitizer: DomSanitizer ) {
   }
 
-  myCallback(newVal) {
+  myCallback1(newVal) {
     console.log("value is changed to ", newVal);
     this.model1 = newVal;
+  }
+
+  myCallback7(newVal) {
+    console.log("value is changed to ", newVal);
+    this.model7 = newVal;
   }
 
   renderHero = (data: any) : SafeHtml => {

@@ -124,9 +124,10 @@ export class NguiAutoCompleteComponent implements OnInit {
   @Input("show-dropdown-on-init") showDropdownOnInit: boolean = false;
   @Input("tab-to-select") tabToSelect: boolean = true;
   @Input("match-formatted") matchFormatted: boolean = false;
-  @Input("auto-select-first-item") autoSelectFirstItem: boolean = false;
+  @Input("auto-select-first-item") autoSelectFirstItem: boolean = true;
 
   @Output() valueSelected = new EventEmitter();
+  @Output() textEntered = new EventEmitter();
   @ViewChild('autoCompleteInput') autoCompleteInput: ElementRef;
   @ViewChild('autoCompleteContainer') autoCompleteContainer: ElementRef;
 
@@ -255,6 +256,10 @@ export class NguiAutoCompleteComponent implements OnInit {
     this.valueSelected.emit(data);
   };
 
+  enterText(data: any) {
+    this.textEntered.emit(data);
+  }
+
   inputElKeyHandler = (evt: any) => {
     let totalNumItem = this.filteredList.length;
 
@@ -280,8 +285,10 @@ export class NguiAutoCompleteComponent implements OnInit {
         break;
 
       case 13: // ENTER, choose it!!
-        if (this.filteredList.length > 0) {
+        if (this.filteredList.length > 0 && this.itemIndex !== null) {
           this.selectOne(this.filteredList[this.itemIndex]);
+        } else {
+          this.enterText(evt.target.value);
         }
         evt.preventDefault();
         break;

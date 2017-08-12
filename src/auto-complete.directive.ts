@@ -41,7 +41,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
   @Input("value-formatter") valueFormatter: any;
   @Input("tab-to-select") tabToSelect: boolean = true;
   @Input("match-formatted") matchFormatted: boolean = false;
-  @Input("auto-select-first-item") autoSelectFirstItem: boolean = false;
+  @Input("auto-select-first-item") autoSelectFirstItem: boolean = true;
 
   @Input() ngModel: String;
   @Input('formControlName') formControlName: string;
@@ -119,8 +119,10 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
         <HTMLInputElement>this.el : <HTMLInputElement>this.el.querySelector("input");
 
     this.inputEl.addEventListener('focus', e => this.showAutoCompleteDropdown(e));
-    this.inputEl.addEventListener('blur', e => {
-        this.scheduledBlurHandler = this.hideAutoCompleteDropdown;
+    this.inputEl.addEventListener('blur', (e) => {
+        this.scheduledBlurHandler = () => {
+          return this.hideAutoCompleteDropdown(e);
+        };
     });
     this.inputEl.addEventListener('keydown', e => this.keydownEventHandler(e));
     this.inputEl.addEventListener('input', e => this.inputEventHandler(e));
@@ -129,6 +131,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
   ngOnDestroy(): void {
     if (this.componentRef) {
       this.componentRef.instance.valueSelected.unsubscribe();
+      this.componentRef.instance.textEntered.unsubscribe();
     }
     if (this.documentClickListener) {
       document.removeEventListener('click', this.documentClickListener);
@@ -171,6 +174,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
     component.autoSelectFirstItem = this.autoSelectFirstItem;
 
     component.valueSelected.subscribe(this.selectNewValue);
+    component.textEntered.subscribe(this.enterNewText);
 
     this.acDropdownEl = this.componentRef.location.nativeElement;
     this.acDropdownEl.style.display = "none";
@@ -208,6 +212,12 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
         currentItem === null
       ) {
         this.selectNewValue(this.revertValue);
+      } else if (
+        this.inputEl &&
+        this.acceptUserInput === true &&
+        typeof currentItem === "undefined" &&
+        event && event.target.value) {
+        this.enterNewText(event.target.value);
       }
 
     }
@@ -284,6 +294,13 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
     this.valueChanged.emit(val);
     this.hideAutoCompleteDropdown();
   };
+
+  enterNewText = (value: any) => {
+    this.renderValue(value);
+    this.ngModelChange.emit(value);
+    this.valueChanged.emit(value);
+    this.hideAutoCompleteDropdown();
+  }
 
   private keydownEventHandler = (evt: any) => {
     if (this.componentRef) {

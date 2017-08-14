@@ -104,12 +104,12 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   * **`value-formatter`**, string or function variable name, custom value formatting function. e.g. '(id) value', 'myValueFormatter'. 
   
            myValueFormatter(data: any): string {
-              return `(${data[id]}) ${data[value]`;
+              return `(${data[id]}) ${data[value]}`;
             }
   * **`list-formatter`**, string or function variable name, custom list formatting function. e.g.  '(key) name', 'myListFormatter'. 
   
            myListFormatter(data: any): string {
-              return `(${data[key]}) ${data[name]`;
+              return `(${data[key]}) ${data[name]}`;
             }
   
   * **`path-to-data`**, string, e.g., `data.myList`, path to array data in http response

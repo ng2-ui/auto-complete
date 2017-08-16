@@ -11,6 +11,7 @@ Test with Array of strings
   verify element "ul li:nth-child(1)" text is "this"
   press "e" into "#model1"
   verify element "ul li:nth-child(1)" text is "text"
+  press ARROW_DOWN into "#model1"
   press ENTER into "#model1"
   verify element #model1 value is "text"
   enter "invalid" into "#model1"
@@ -39,6 +40,7 @@ Test with array of key/name
   clear #model3
   click body
   click #model3
+  press ARROW_DOWN into "#model3"
   press ARROW_DOWN into "#model3"
   press ARROW_DOWN into "#model3"
   press ARROW_DOWN into "#model3"

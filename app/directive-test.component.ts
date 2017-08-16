@@ -109,12 +109,10 @@ let templateStr: string = `
     <pre>arrayOfNumbers: {{json(arrayOfNumbers)}}</pre>
   </fieldset>
 
-  <fieldset><legend><h2>Source as Array of Strings (without auto-select-first-item)</h2></legend>
+  <fieldset><legend><h2>Source as Array of Strings (with auto-select-first-item)</h2></legend>
     <ngui-utils-7>
       <div ngui-auto-complete
         [source]="arrayOfStrings"
-        [accept-user-input]="true"
-        [auto-select-first-item]="false"
         (ngModelChange)="myCallback7($event)"
         placeholder="enter text">
         <input id="model7" [ngModel]="model7"/>

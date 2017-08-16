@@ -30,7 +30,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
   @Input("path-to-data") pathToData: string;
   @Input("min-chars") minChars: number;
   @Input("display-property-name") displayPropertyName: string;
-  @Input("accept-user-input") acceptUserInput: boolean;
+  @Input("accept-user-input") acceptUserInput: boolean = true;
   @Input("max-num-list") maxNumList: string;
   @Input("select-value-of") selectValueOf: string;
   @Input("loading-template") loadingTemplate = null;
@@ -41,7 +41,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
   @Input("value-formatter") valueFormatter: any;
   @Input("tab-to-select") tabToSelect: boolean = true;
   @Input("match-formatted") matchFormatted: boolean = false;
-  @Input("auto-select-first-item") autoSelectFirstItem: boolean = true;
+  @Input("auto-select-first-item") autoSelectFirstItem: boolean = false;
 
   @Input() ngModel: String;
   @Input('formControlName') formControlName: string;

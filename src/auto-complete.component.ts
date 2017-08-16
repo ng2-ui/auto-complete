@@ -116,7 +116,7 @@ export class NguiAutoCompleteComponent implements OnInit {
   @Input("placeholder") placeholder: string;
   @Input("blank-option-text") blankOptionText: string;
   @Input("no-match-found-text") noMatchFoundText: string;
-  @Input("accept-user-input") acceptUserInput: boolean;
+  @Input("accept-user-input") acceptUserInput: boolean = true;
   @Input("loading-text") loadingText: string = "Loading";
   @Input("loading-template") loadingTemplate = null;
   @Input("max-num-list") maxNumList: number;
@@ -124,7 +124,7 @@ export class NguiAutoCompleteComponent implements OnInit {
   @Input("show-dropdown-on-init") showDropdownOnInit: boolean = false;
   @Input("tab-to-select") tabToSelect: boolean = true;
   @Input("match-formatted") matchFormatted: boolean = false;
-  @Input("auto-select-first-item") autoSelectFirstItem: boolean = true;
+  @Input("auto-select-first-item") autoSelectFirstItem: boolean = false;
 
   @Output() valueSelected = new EventEmitter();
   @Output() textEntered = new EventEmitter();

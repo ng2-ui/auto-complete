@@ -116,7 +116,7 @@ export class NguiAutoCompleteComponent implements OnInit {
   @Input("placeholder") placeholder: string;
   @Input("blank-option-text") blankOptionText: string;
   @Input("no-match-found-text") noMatchFoundText: string;
-  @Input("accept-user-input") acceptUserInput: boolean;
+  @Input("accept-user-input") acceptUserInput: boolean = true;
   @Input("loading-text") loadingText: string = "Loading";
   @Input("loading-template") loadingTemplate = null;
   @Input("max-num-list") maxNumList: number;
@@ -127,6 +127,7 @@ export class NguiAutoCompleteComponent implements OnInit {
   @Input("auto-select-first-item") autoSelectFirstItem: boolean = false;
 
   @Output() valueSelected = new EventEmitter();
+  @Output() textEntered = new EventEmitter();
   @ViewChild('autoCompleteInput') autoCompleteInput: ElementRef;
   @ViewChild('autoCompleteContainer') autoCompleteContainer: ElementRef;
 
@@ -255,6 +256,10 @@ export class NguiAutoCompleteComponent implements OnInit {
     this.valueSelected.emit(data);
   };
 
+  enterText(data: any) {
+    this.textEntered.emit(data);
+  }
+
   inputElKeyHandler = (evt: any) => {
     let totalNumItem = this.filteredList.length;
 
@@ -280,8 +285,10 @@ export class NguiAutoCompleteComponent implements OnInit {
         break;
 
       case 13: // ENTER, choose it!!
-        if (this.filteredList.length > 0) {
+        if (this.filteredList.length > 0 && this.itemIndex !== null) {
           this.selectOne(this.filteredList[this.itemIndex]);
+        } else {
+          this.enterText(evt.target.value);
         }
         evt.preventDefault();
         break;

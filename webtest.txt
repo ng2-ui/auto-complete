@@ -58,18 +58,20 @@ Test With Remote Source as Observable
   verify text "Hulk/Bruce Banner" present
   press ENTER into "#model5"
 
-Test with Array of strings
-  verify text 'selected model7: "is"' present
+Test with Array of strings and auto-select-first-item false
+  verify element #model7 value is ""
   click #model7
-  clear "#model7"
+  press ENTER into "#model7"
+  verify element #model7 value is ""
   press "t" into "#model7"
   verify element "ul li:nth-child(1)" text is "this"
   press "e" into "#model7"
   verify element "ul li:nth-child(1)" text is "text"
   press ENTER into "#model7"
-  verify element #model7 value is "text"
-  enter "invalid" into "#model7"
+  verify element #model7 value is "te"
+  clear #model7
+  enter text "invalid" into "#model7"
   click "body"
-  verify element #model7 value is "text"
+  verify element #model7 value is "invalid"
 
 close browser

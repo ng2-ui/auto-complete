@@ -113,11 +113,9 @@ let templateStr: string = `
     <ngui-utils-7>
       <div ngui-auto-complete
         [source]="arrayOfStrings"
-        [accept-user-input]="false"
-        [auto-select-first-item]="true"
         (ngModelChange)="myCallback7($event)"
         placeholder="enter text">
-        <input id="model7" [ngModel]="model7" autofocus />
+        <input id="model7" [ngModel]="model7"/>
       </div>
       <br/>selected model7: {{json(model7)}}<br/><br/>
     </ngui-utils-7>
@@ -160,7 +158,7 @@ export class DirectiveTestComponent {
   model1 = "is";
   model2 = {id:1, value: "One"};
   model3 = {key: 3, name: "Key Three"};
-  model7 = "is";
+  model7 = "";
 
   constructor (
     public http: Http,

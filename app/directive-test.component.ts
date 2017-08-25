@@ -123,7 +123,7 @@ let templateStr: string = `
     <pre> arrayOfStrings: {{json(arrayOfStrings)}}</pre>
   </fieldset>
   
- <fieldset style="direction:rtl;text-align:right"><legend><h2>Source as Array of Strings</h2></legend>
+ <fieldset style="direction:rtl;text-align:right"><legend><h2>RTL support</h2></legend>
     <ngui-utils-8>
       <div ngui-auto-complete 
         [source]="arrayOfStrings"

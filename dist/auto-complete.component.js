@@ -15,6 +15,7 @@ var NguiAutoCompleteComponent = (function () {
         var _this = this;
         this.autoComplete = autoComplete;
         this.minChars = 0;
+        this.acceptUserInput = true;
         this.loadingText = "Loading";
         this.loadingTemplate = null;
         this.showInputTag = true;
@@ -23,6 +24,7 @@ var NguiAutoCompleteComponent = (function () {
         this.matchFormatted = false;
         this.autoSelectFirstItem = false;
         this.valueSelected = new core_1.EventEmitter();
+        this.textEntered = new core_1.EventEmitter();
         this.dropdownVisible = false;
         this.isLoading = false;
         this.filteredList = [];
@@ -56,8 +58,11 @@ var NguiAutoCompleteComponent = (function () {
                     _this.scrollToView(_this.itemIndex);
                     break;
                 case 13:
-                    if (_this.filteredList.length > 0) {
+                    if (_this.filteredList.length > 0 && _this.itemIndex !== null) {
                         _this.selectOne(_this.filteredList[_this.itemIndex]);
+                    }
+                    else {
+                        _this.enterText(evt.target.value);
                     }
                     evt.preventDefault();
                     break;
@@ -161,6 +166,9 @@ var NguiAutoCompleteComponent = (function () {
         this.valueSelected.emit(data);
     };
     ;
+    NguiAutoCompleteComponent.prototype.enterText = function (data) {
+        this.textEntered.emit(data);
+    };
     NguiAutoCompleteComponent.prototype.scrollToView = function (index) {
         var container = this.autoCompleteContainer.nativeElement;
         var ul = container.querySelector('ul');
@@ -215,6 +223,7 @@ var NguiAutoCompleteComponent = (function () {
         'matchFormatted': [{ type: core_1.Input, args: ["match-formatted",] },],
         'autoSelectFirstItem': [{ type: core_1.Input, args: ["auto-select-first-item",] },],
         'valueSelected': [{ type: core_1.Output },],
+        'textEntered': [{ type: core_1.Output },],
         'autoCompleteInput': [{ type: core_1.ViewChild, args: ['autoCompleteInput',] },],
         'autoCompleteContainer': [{ type: core_1.ViewChild, args: ['autoCompleteContainer',] },],
     };

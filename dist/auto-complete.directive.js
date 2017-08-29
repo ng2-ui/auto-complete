@@ -12,6 +12,7 @@ var NguiAutoCompleteDirective = (function () {
         this.renderer = renderer;
         this.viewContainerRef = viewContainerRef;
         this.parentForm = parentForm;
+        this.acceptUserInput = true;
         this.loadingTemplate = null;
         this.loadingText = "Loading";
         this.tabToSelect = true;
@@ -43,6 +44,7 @@ var NguiAutoCompleteDirective = (function () {
             component.matchFormatted = _this.matchFormatted;
             component.autoSelectFirstItem = _this.autoSelectFirstItem;
             component.valueSelected.subscribe(_this.selectNewValue);
+            component.textEntered.subscribe(_this.enterNewText);
             _this.acDropdownEl = _this.componentRef.location.nativeElement;
             _this.acDropdownEl.style.display = "none";
             // if this element is not an input tag, move dropdown after input tag
@@ -71,6 +73,12 @@ var NguiAutoCompleteDirective = (function () {
                     _this.acceptUserInput === false &&
                     currentItem === null) {
                     _this.selectNewValue(_this.revertValue);
+                }
+                else if (_this.inputEl &&
+                    _this.acceptUserInput === true &&
+                    typeof currentItem === "undefined" &&
+                    event && event.target.value) {
+                    _this.enterNewText(event.target.value);
                 }
             }
         };
@@ -112,6 +120,12 @@ var NguiAutoCompleteDirective = (function () {
             }
             (val !== _this.ngModel) && _this.ngModelChange.emit(val);
             _this.valueChanged.emit(val);
+            _this.hideAutoCompleteDropdown();
+        };
+        this.enterNewText = function (value) {
+            _this.renderValue(value);
+            _this.ngModelChange.emit(value);
+            _this.valueChanged.emit(value);
             _this.hideAutoCompleteDropdown();
         };
         this.keydownEventHandler = function (evt) {
@@ -179,7 +193,9 @@ var NguiAutoCompleteDirective = (function () {
             this.el : this.el.querySelector("input");
         this.inputEl.addEventListener('focus', function (e) { return _this.showAutoCompleteDropdown(e); });
         this.inputEl.addEventListener('blur', function (e) {
-            _this.scheduledBlurHandler = _this.hideAutoCompleteDropdown;
+            _this.scheduledBlurHandler = function () {
+                return _this.hideAutoCompleteDropdown(e);
+            };
         });
         this.inputEl.addEventListener('keydown', function (e) { return _this.keydownEventHandler(e); });
         this.inputEl.addEventListener('input', function (e) { return _this.inputEventHandler(e); });
@@ -187,6 +203,7 @@ var NguiAutoCompleteDirective = (function () {
     NguiAutoCompleteDirective.prototype.ngOnDestroy = function () {
         if (this.componentRef) {
             this.componentRef.instance.valueSelected.unsubscribe();
+            this.componentRef.instance.textEntered.unsubscribe();
         }
         if (this.documentClickListener) {
             document.removeEventListener('click', this.documentClickListener);

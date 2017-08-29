@@ -51,6 +51,7 @@ export declare class NguiAutoCompleteDirective implements OnInit, OnChanges {
     styleAutoCompleteDropdown: () => void;
     setToStringFunction(item: any): any;
     selectNewValue: (item: any) => void;
+    enterNewText: (value: any) => void;
     private keydownEventHandler;
     private inputEventHandler;
     private renderValue(item);

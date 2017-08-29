@@ -97,7 +97,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var auto_complete_1 = __webpack_require__(2);
 /**
@@ -114,7 +113,6 @@ var NguiAutoCompleteComponent = (function () {
         var _this = this;
         this.autoComplete = autoComplete;
         this.minChars = 0;
-        this.acceptUserInput = true;
         this.loadingText = "Loading";
         this.loadingTemplate = null;
         this.showInputTag = true;
@@ -122,10 +120,7 @@ var NguiAutoCompleteComponent = (function () {
         this.tabToSelect = true;
         this.matchFormatted = false;
         this.autoSelectFirstItem = false;
-        this.selectOnBlur = false;
         this.valueSelected = new core_1.EventEmitter();
-        this.customSelected = new core_1.EventEmitter();
-        this.textEntered = new core_1.EventEmitter();
         this.dropdownVisible = false;
         this.isLoading = false;
         this.filteredList = [];
@@ -140,13 +135,13 @@ var NguiAutoCompleteComponent = (function () {
         this.inputElKeyHandler = function (evt) {
             var totalNumItem = _this.filteredList.length;
             switch (evt.keyCode) {
-                case 27:// ESC, hide auto complete
+                case 27:
                     break;
-                case 38:// UP, select the previous li el
+                case 38:
                     _this.itemIndex = (totalNumItem + _this.itemIndex - 1) % totalNumItem;
                     _this.scrollToView(_this.itemIndex);
                     break;
-                case 40:// DOWN, select the next li el or the first one
+                case 40:
                     _this.dropdownVisible = true;
                     var sum = _this.itemIndex;
                     if (_this.itemIndex === null) {
@@ -158,12 +153,14 @@ var NguiAutoCompleteComponent = (function () {
                     _this.itemIndex = (totalNumItem + sum) % totalNumItem;
                     _this.scrollToView(_this.itemIndex);
                     break;
-                case 13:// ENTER, choose it!!
-                    _this.selectOne(_this.filteredList[_this.itemIndex]);
+                case 13:
+                    if (_this.filteredList.length > 0) {
+                        _this.selectOne(_this.filteredList[_this.itemIndex]);
+                    }
                     evt.preventDefault();
                     break;
-                case 9:// TAB, choose if tab-to-select is enabled
-                    if (_this.tabToSelect) {
+                case 9:
+                    if (_this.tabToSelect && _this.filteredList.length > 0) {
                         _this.selectOne(_this.filteredList[_this.itemIndex]);
                     }
                     break;
@@ -259,22 +256,7 @@ var NguiAutoCompleteComponent = (function () {
         }
     };
     NguiAutoCompleteComponent.prototype.selectOne = function (data) {
-        if (data) {
-            this.valueSelected.emit(data);
-        }
-        else {
-            this.customSelected.emit(this.keyword);
-        }
-    };
-    ;
-    NguiAutoCompleteComponent.prototype.enterText = function (data) {
-        this.textEntered.emit(data);
-    };
-    NguiAutoCompleteComponent.prototype.blurHandler = function (evt) {
-        if (this.selectOnBlur) {
-            this.selectOne(this.filteredList[this.itemIndex]);
-        }
-        this.hideDropdownList();
+        this.valueSelected.emit(data);
     };
     ;
     NguiAutoCompleteComponent.prototype.scrollToView = function (index) {
@@ -299,104 +281,91 @@ var NguiAutoCompleteComponent = (function () {
         configurable: true
     });
     __decorate([
-        core_1.Input("list-formatter"),
-        __metadata("design:type", Function)
+        core_1.Input("list-formatter"), 
+        __metadata('design:type', Function)
     ], NguiAutoCompleteComponent.prototype, "listFormatter", void 0);
     __decorate([
-        core_1.Input("source"),
-        __metadata("design:type", Object)
+        core_1.Input("source"), 
+        __metadata('design:type', Object)
     ], NguiAutoCompleteComponent.prototype, "source", void 0);
     __decorate([
-        core_1.Input("path-to-data"),
-        __metadata("design:type", String)
+        core_1.Input("path-to-data"), 
+        __metadata('design:type', String)
     ], NguiAutoCompleteComponent.prototype, "pathToData", void 0);
     __decorate([
-        core_1.Input("min-chars"),
-        __metadata("design:type", Number)
+        core_1.Input("min-chars"), 
+        __metadata('design:type', Number)
     ], NguiAutoCompleteComponent.prototype, "minChars", void 0);
     __decorate([
-        core_1.Input("placeholder"),
-        __metadata("design:type", String)
+        core_1.Input("placeholder"), 
+        __metadata('design:type', String)
     ], NguiAutoCompleteComponent.prototype, "placeholder", void 0);
     __decorate([
-        core_1.Input("blank-option-text"),
-        __metadata("design:type", String)
+        core_1.Input("blank-option-text"), 
+        __metadata('design:type', String)
     ], NguiAutoCompleteComponent.prototype, "blankOptionText", void 0);
     __decorate([
-        core_1.Input("no-match-found-text"),
-        __metadata("design:type", String)
+        core_1.Input("no-match-found-text"), 
+        __metadata('design:type', String)
     ], NguiAutoCompleteComponent.prototype, "noMatchFoundText", void 0);
     __decorate([
-        core_1.Input("accept-user-input"),
-        __metadata("design:type", Boolean)
+        core_1.Input("accept-user-input"), 
+        __metadata('design:type', Boolean)
     ], NguiAutoCompleteComponent.prototype, "acceptUserInput", void 0);
     __decorate([
-        core_1.Input("loading-text"),
-        __metadata("design:type", String)
+        core_1.Input("loading-text"), 
+        __metadata('design:type', String)
     ], NguiAutoCompleteComponent.prototype, "loadingText", void 0);
     __decorate([
-        core_1.Input("loading-template"),
-        __metadata("design:type", Object)
+        core_1.Input("loading-template"), 
+        __metadata('design:type', Object)
     ], NguiAutoCompleteComponent.prototype, "loadingTemplate", void 0);
     __decorate([
-        core_1.Input("max-num-list"),
-        __metadata("design:type", Number)
+        core_1.Input("max-num-list"), 
+        __metadata('design:type', Number)
     ], NguiAutoCompleteComponent.prototype, "maxNumList", void 0);
     __decorate([
-        core_1.Input("show-input-tag"),
-        __metadata("design:type", Boolean)
+        core_1.Input("show-input-tag"), 
+        __metadata('design:type', Boolean)
     ], NguiAutoCompleteComponent.prototype, "showInputTag", void 0);
     __decorate([
-        core_1.Input("show-dropdown-on-init"),
-        __metadata("design:type", Boolean)
+        core_1.Input("show-dropdown-on-init"), 
+        __metadata('design:type', Boolean)
     ], NguiAutoCompleteComponent.prototype, "showDropdownOnInit", void 0);
     __decorate([
-        core_1.Input("tab-to-select"),
-        __metadata("design:type", Boolean)
+        core_1.Input("tab-to-select"), 
+        __metadata('design:type', Boolean)
     ], NguiAutoCompleteComponent.prototype, "tabToSelect", void 0);
     __decorate([
-        core_1.Input("match-formatted"),
-        __metadata("design:type", Boolean)
+        core_1.Input("match-formatted"), 
+        __metadata('design:type', Boolean)
     ], NguiAutoCompleteComponent.prototype, "matchFormatted", void 0);
     __decorate([
-        core_1.Input("auto-select-first-item"),
-        __metadata("design:type", Boolean)
+        core_1.Input("auto-select-first-item"), 
+        __metadata('design:type', Boolean)
     ], NguiAutoCompleteComponent.prototype, "autoSelectFirstItem", void 0);
     __decorate([
-        core_1.Input("select-on-blur"),
-        __metadata("design:type", Boolean)
-    ], NguiAutoCompleteComponent.prototype, "selectOnBlur", void 0);
-    __decorate([
-        core_1.Output(),
-        __metadata("design:type", Object)
+        core_1.Output(), 
+        __metadata('design:type', Object)
     ], NguiAutoCompleteComponent.prototype, "valueSelected", void 0);
     __decorate([
-        core_1.Output(),
-        __metadata("design:type", Object)
-    ], NguiAutoCompleteComponent.prototype, "customSelected", void 0);
-    __decorate([
-        core_1.Output(),
-        __metadata("design:type", Object)
-    ], NguiAutoCompleteComponent.prototype, "textEntered", void 0);
-    __decorate([
-        core_1.ViewChild('autoCompleteInput'),
-        __metadata("design:type", core_1.ElementRef)
+        core_1.ViewChild('autoCompleteInput'), 
+        __metadata('design:type', core_1.ElementRef)
     ], NguiAutoCompleteComponent.prototype, "autoCompleteInput", void 0);
     __decorate([
-        core_1.ViewChild('autoCompleteContainer'),
-        __metadata("design:type", core_1.ElementRef)
+        core_1.ViewChild('autoCompleteContainer'), 
+        __metadata('design:type', core_1.ElementRef)
     ], NguiAutoCompleteComponent.prototype, "autoCompleteContainer", void 0);
     NguiAutoCompleteComponent = __decorate([
         core_1.Component({
             selector: "ngui-auto-complete",
-            template: "\n  <div #autoCompleteContainer class=\"ngui-auto-complete\">\n    <!-- keyword input -->\n    <input *ngIf=\"showInputTag\"\n           #autoCompleteInput class=\"keyword\"\n           placeholder=\"{{placeholder}}\"\n           (focus)=\"showDropdownList($event)\"\n           (blur)=\"blurHandler($event)\"\n           (keydown)=\"inputElKeyHandler($event)\"\n           (input)=\"reloadListInDelay($event)\"\n           [(ngModel)]=\"keyword\" />\n\n    <!-- dropdown that user can select -->\n    <ul *ngIf=\"dropdownVisible\" [class.empty]=\"emptyList\">\n      <li *ngIf=\"isLoading && loadingTemplate\" class=\"loading\" [innerHTML]=\"loadingTemplate\"></li>\n      <li *ngIf=\"isLoading && !loadingTemplate\" class=\"loading\">{{loadingText}}</li>\n      <li *ngIf=\"minCharsEntered && !isLoading && !filteredList.length\"\n           (mousedown)=\"selectOne('')\"\n           class=\"no-match-found\">{{noMatchFoundText || 'No Result Found'}}</li>\n      <li *ngIf=\"blankOptionText && filteredList.length\"\n          (mousedown)=\"selectOne('')\"\n          class=\"blank-item\">{{blankOptionText}}</li>\n      <li class=\"item\"\n          *ngFor=\"let item of filteredList; let i=index\"\n          (mousedown)=\"selectOne(item)\"\n          [ngClass]=\"{selected: i === itemIndex}\"\n          [innerHtml]=\"autoComplete.getFormattedListItem(item)\">\n      </li>\n    </ul>\n\n  </div>",
+            template: "\n  <div #autoCompleteContainer class=\"ngui-auto-complete\">\n    <!-- keyword input -->\n    <input *ngIf=\"showInputTag\"\n           #autoCompleteInput class=\"keyword\"\n           placeholder=\"{{placeholder}}\"\n           (focus)=\"showDropdownList($event)\"\n           (blur)=\"hideDropdownList()\"\n           (keydown)=\"inputElKeyHandler($event)\"\n           (input)=\"reloadListInDelay($event)\"\n           [(ngModel)]=\"keyword\" />\n\n    <!-- dropdown that user can select -->\n    <ul *ngIf=\"dropdownVisible\" [class.empty]=\"emptyList\">\n      <li *ngIf=\"isLoading && loadingTemplate\" class=\"loading\" [innerHTML]=\"loadingTemplate\"></li>\n      <li *ngIf=\"isLoading && !loadingTemplate\" class=\"loading\">{{loadingText}}</li>\n      <li *ngIf=\"minCharsEntered && !isLoading && !filteredList.length\"\n           (mousedown)=\"selectOne('')\"\n           class=\"no-match-found\">{{noMatchFoundText || 'No Result Found'}}</li>\n      <li *ngIf=\"blankOptionText && filteredList.length\"\n          (mousedown)=\"selectOne('')\"\n          class=\"blank-item\">{{blankOptionText}}</li>\n      <li class=\"item\"\n          *ngFor=\"let item of filteredList; let i=index\"\n          (mousedown)=\"selectOne(item)\"\n          [ngClass]=\"{selected: i === itemIndex}\"\n          [innerHtml]=\"autoComplete.getFormattedListItem(item)\">\n      </li>\n    </ul>\n\n  </div>",
             providers: [auto_complete_1.NguiAutoComplete],
             styles: ["\n  @keyframes slideDown {\n    0% {\n      transform:  translateY(-10px);\n    }\n    100% {\n      transform: translateY(0px);\n    }\n  }\n  .ngui-auto-complete {\n    background-color: transparent;\n  }\n  .ngui-auto-complete > input {\n    outline: none;\n    border: 0;\n    padding: 2px; \n    box-sizing: border-box;\n    background-clip: content-box;\n  }\n\n  .ngui-auto-complete > ul {\n    background-color: #fff;\n    margin: 0;\n    width : 100%;\n    overflow-y: auto;\n    list-style-type: none;\n    padding: 0;\n    border: 1px solid #ccc;\n    box-sizing: border-box;\n    animation: slideDown 0.1s;\n  }\n  .ngui-auto-complete > ul.empty {\n    display: none;\n  }\n\n  .ngui-auto-complete > ul li {\n    padding: 2px 5px;\n    border-bottom: 1px solid #eee;\n  }\n\n  .ngui-auto-complete > ul li.selected {\n    background-color: #ccc;\n  }\n\n  .ngui-auto-complete > ul li:last-child {\n    border-bottom: none;\n  }\n\n  .ngui-auto-complete > ul li:hover {\n    background-color: #ccc;\n  }"
             ],
             encapsulation: core_1.ViewEncapsulation.None
-        }),
-        __metadata("design:paramtypes", [core_1.ElementRef,
-            auto_complete_1.NguiAutoComplete])
+        }), 
+        __metadata('design:paramtypes', [core_1.ElementRef, auto_complete_1.NguiAutoComplete])
     ], NguiAutoCompleteComponent);
     return NguiAutoCompleteComponent;
 }());
@@ -421,7 +390,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var http_1 = __webpack_require__(8);
 __webpack_require__(9);
@@ -493,8 +461,8 @@ var NguiAutoComplete = (function () {
     ;
     NguiAutoComplete = __decorate([
         core_1.Injectable(),
-        __param(0, core_1.Optional()),
-        __metadata("design:paramtypes", [http_1.Http])
+        __param(0, core_1.Optional()), 
+        __metadata('design:paramtypes', [http_1.Http])
     ], NguiAutoComplete);
     return NguiAutoComplete;
 }());
@@ -519,7 +487,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var auto_complete_component_1 = __webpack_require__(1);
 var forms_1 = __webpack_require__(4);
@@ -533,17 +500,14 @@ var NguiAutoCompleteDirective = (function () {
         this.renderer = renderer;
         this.viewContainerRef = viewContainerRef;
         this.parentForm = parentForm;
-        this.acceptUserInput = true;
         this.loadingTemplate = null;
         this.loadingText = "Loading";
         this.tabToSelect = true;
-        this.selectOnBlur = false;
         this.matchFormatted = false;
         this.autoSelectFirstItem = false;
         this.zIndex = "1";
         this.ngModelChange = new core_1.EventEmitter();
         this.valueChanged = new core_1.EventEmitter();
-        this.customSelected = new core_1.EventEmitter();
         //show auto-complete list below the current element
         this.showAutoCompleteDropdown = function (event) {
             _this.hideAutoCompleteDropdown();
@@ -551,7 +515,6 @@ var NguiAutoCompleteDirective = (function () {
             var factory = _this.resolver.resolveComponentFactory(auto_complete_component_1.NguiAutoCompleteComponent);
             _this.componentRef = _this.viewContainerRef.createComponent(factory);
             var component = _this.componentRef.instance;
-            component.keyword = _this.inputEl.value;
             component.showInputTag = false; //Do NOT display autocomplete input tag separately
             component.pathToData = _this.pathToData;
             component.minChars = _this.minChars;
@@ -565,12 +528,9 @@ var NguiAutoCompleteDirective = (function () {
             component.blankOptionText = _this.blankOptionText;
             component.noMatchFoundText = _this.noMatchFoundText;
             component.tabToSelect = _this.tabToSelect;
-            component.selectOnBlur = _this.selectOnBlur;
             component.matchFormatted = _this.matchFormatted;
             component.autoSelectFirstItem = _this.autoSelectFirstItem;
             component.valueSelected.subscribe(_this.selectNewValue);
-            component.textEntered.subscribe(_this.enterNewText);
-            component.customSelected.subscribe(_this.selectCustomValue);
             _this.acDropdownEl = _this.componentRef.location.nativeElement;
             _this.acDropdownEl.style.display = "none";
             // if this element is not an input tag, move dropdown after input tag
@@ -599,12 +559,6 @@ var NguiAutoCompleteDirective = (function () {
                     _this.acceptUserInput === false &&
                     currentItem === null) {
                     _this.selectNewValue(_this.revertValue);
-                }
-                else if (_this.inputEl &&
-                    _this.acceptUserInput === true &&
-                    typeof currentItem === "undefined" &&
-                    event && event.target.value) {
-                    _this.enterNewText(event.target.value);
                 }
             }
         };
@@ -648,16 +602,6 @@ var NguiAutoCompleteDirective = (function () {
             _this.valueChanged.emit(val);
             _this.hideAutoCompleteDropdown();
         };
-        this.selectCustomValue = function (text) {
-            _this.customSelected.emit(text);
-            _this.hideAutoCompleteDropdown();
-        };
-        this.enterNewText = function (value) {
-            _this.renderValue(value);
-            _this.ngModelChange.emit(value);
-            _this.valueChanged.emit(value);
-            _this.hideAutoCompleteDropdown();
-        };
         this.keydownEventHandler = function (evt) {
             if (_this.componentRef) {
                 var component = _this.componentRef.instance;
@@ -668,7 +612,6 @@ var NguiAutoCompleteDirective = (function () {
             if (_this.componentRef) {
                 var component = _this.componentRef.instance;
                 component.dropdownVisible = true;
-                component.keyword = evt.target.value;
                 component.reloadListInDelay(evt);
             }
             else {
@@ -724,9 +667,7 @@ var NguiAutoCompleteDirective = (function () {
             this.el : this.el.querySelector("input");
         this.inputEl.addEventListener('focus', function (e) { return _this.showAutoCompleteDropdown(e); });
         this.inputEl.addEventListener('blur', function (e) {
-            _this.scheduledBlurHandler = function () {
-                return _this.blurHandler(e);
-            };
+            _this.scheduledBlurHandler = _this.hideAutoCompleteDropdown;
         });
         this.inputEl.addEventListener('keydown', function (e) { return _this.keydownEventHandler(e); });
         this.inputEl.addEventListener('input', function (e) { return _this.inputEventHandler(e); });
@@ -734,7 +675,6 @@ var NguiAutoCompleteDirective = (function () {
     NguiAutoCompleteDirective.prototype.ngOnDestroy = function () {
         if (this.componentRef) {
             this.componentRef.instance.valueSelected.unsubscribe();
-            this.componentRef.instance.textEntered.unsubscribe();
         }
         if (this.documentClickListener) {
             document.removeEventListener('click', this.documentClickListener);
@@ -744,15 +684,6 @@ var NguiAutoCompleteDirective = (function () {
         if (changes['ngModel']) {
             this.ngModel = this.setToStringFunction(changes['ngModel'].currentValue);
             this.renderValue(this.ngModel);
-        }
-    };
-    NguiAutoCompleteDirective.prototype.blurHandler = function (evt) {
-        if (this.componentRef) {
-            var component = this.componentRef.instance;
-            if (this.selectOnBlur) {
-                component.selectOne(component.filteredList[component.itemIndex]);
-            }
-            this.hideAutoCompleteDropdown(evt);
         }
     };
     NguiAutoCompleteDirective.prototype.setToStringFunction = function (item) {
@@ -788,114 +719,105 @@ var NguiAutoCompleteDirective = (function () {
         this.inputEl && (this.inputEl.value = '' + item);
     };
     __decorate([
-        core_1.Input("auto-complete-placeholder"),
-        __metadata("design:type", String)
+        core_1.Input("auto-complete-placeholder"), 
+        __metadata('design:type', String)
     ], NguiAutoCompleteDirective.prototype, "autoCompletePlaceholder", void 0);
     __decorate([
-        core_1.Input("source"),
-        __metadata("design:type", Object)
+        core_1.Input("source"), 
+        __metadata('design:type', Object)
     ], NguiAutoCompleteDirective.prototype, "source", void 0);
     __decorate([
-        core_1.Input("path-to-data"),
-        __metadata("design:type", String)
+        core_1.Input("path-to-data"), 
+        __metadata('design:type', String)
     ], NguiAutoCompleteDirective.prototype, "pathToData", void 0);
     __decorate([
-        core_1.Input("min-chars"),
-        __metadata("design:type", Number)
+        core_1.Input("min-chars"), 
+        __metadata('design:type', Number)
     ], NguiAutoCompleteDirective.prototype, "minChars", void 0);
     __decorate([
-        core_1.Input("display-property-name"),
-        __metadata("design:type", String)
+        core_1.Input("display-property-name"), 
+        __metadata('design:type', String)
     ], NguiAutoCompleteDirective.prototype, "displayPropertyName", void 0);
     __decorate([
-        core_1.Input("accept-user-input"),
-        __metadata("design:type", Boolean)
+        core_1.Input("accept-user-input"), 
+        __metadata('design:type', Boolean)
     ], NguiAutoCompleteDirective.prototype, "acceptUserInput", void 0);
     __decorate([
-        core_1.Input("max-num-list"),
-        __metadata("design:type", String)
+        core_1.Input("max-num-list"), 
+        __metadata('design:type', String)
     ], NguiAutoCompleteDirective.prototype, "maxNumList", void 0);
     __decorate([
-        core_1.Input("select-value-of"),
-        __metadata("design:type", String)
+        core_1.Input("select-value-of"), 
+        __metadata('design:type', String)
     ], NguiAutoCompleteDirective.prototype, "selectValueOf", void 0);
     __decorate([
-        core_1.Input("loading-template"),
-        __metadata("design:type", Object)
+        core_1.Input("loading-template"), 
+        __metadata('design:type', Object)
     ], NguiAutoCompleteDirective.prototype, "loadingTemplate", void 0);
     __decorate([
-        core_1.Input("list-formatter"),
-        __metadata("design:type", Object)
+        core_1.Input("list-formatter"), 
+        __metadata('design:type', Object)
     ], NguiAutoCompleteDirective.prototype, "listFormatter", void 0);
     __decorate([
-        core_1.Input("loading-text"),
-        __metadata("design:type", String)
+        core_1.Input("loading-text"), 
+        __metadata('design:type', String)
     ], NguiAutoCompleteDirective.prototype, "loadingText", void 0);
     __decorate([
-        core_1.Input("blank-option-text"),
-        __metadata("design:type", String)
+        core_1.Input("blank-option-text"), 
+        __metadata('design:type', String)
     ], NguiAutoCompleteDirective.prototype, "blankOptionText", void 0);
     __decorate([
-        core_1.Input("no-match-found-text"),
-        __metadata("design:type", String)
+        core_1.Input("no-match-found-text"), 
+        __metadata('design:type', String)
     ], NguiAutoCompleteDirective.prototype, "noMatchFoundText", void 0);
     __decorate([
-        core_1.Input("value-formatter"),
-        __metadata("design:type", Object)
+        core_1.Input("value-formatter"), 
+        __metadata('design:type', Object)
     ], NguiAutoCompleteDirective.prototype, "valueFormatter", void 0);
     __decorate([
-        core_1.Input("tab-to-select"),
-        __metadata("design:type", Boolean)
+        core_1.Input("tab-to-select"), 
+        __metadata('design:type', Boolean)
     ], NguiAutoCompleteDirective.prototype, "tabToSelect", void 0);
     __decorate([
-        core_1.Input("select-on-blur"),
-        __metadata("design:type", Boolean)
-    ], NguiAutoCompleteDirective.prototype, "selectOnBlur", void 0);
-    __decorate([
-        core_1.Input("match-formatted"),
-        __metadata("design:type", Boolean)
+        core_1.Input("match-formatted"), 
+        __metadata('design:type', Boolean)
     ], NguiAutoCompleteDirective.prototype, "matchFormatted", void 0);
     __decorate([
-        core_1.Input("auto-select-first-item"),
-        __metadata("design:type", Boolean)
+        core_1.Input("auto-select-first-item"), 
+        __metadata('design:type', Boolean)
     ], NguiAutoCompleteDirective.prototype, "autoSelectFirstItem", void 0);
     __decorate([
-        core_1.Input(),
-        __metadata("design:type", String)
+        core_1.Input(), 
+        __metadata('design:type', String)
     ], NguiAutoCompleteDirective.prototype, "ngModel", void 0);
     __decorate([
-        core_1.Input('formControlName'),
-        __metadata("design:type", String)
+        core_1.Input('formControlName'), 
+        __metadata('design:type', String)
     ], NguiAutoCompleteDirective.prototype, "formControlName", void 0);
     __decorate([
-        core_1.Input('formControl'),
-        __metadata("design:type", forms_1.FormControl)
+        core_1.Input('formControl'), 
+        __metadata('design:type', forms_1.FormControl)
     ], NguiAutoCompleteDirective.prototype, "extFormControl", void 0);
     __decorate([
-        core_1.Input("z-index"),
-        __metadata("design:type", String)
+        core_1.Input("z-index"), 
+        __metadata('design:type', String)
     ], NguiAutoCompleteDirective.prototype, "zIndex", void 0);
     __decorate([
-        core_1.Output(),
-        __metadata("design:type", Object)
+        core_1.Output(), 
+        __metadata('design:type', Object)
     ], NguiAutoCompleteDirective.prototype, "ngModelChange", void 0);
     __decorate([
-        core_1.Output(),
-        __metadata("design:type", Object)
+        core_1.Output(), 
+        __metadata('design:type', Object)
     ], NguiAutoCompleteDirective.prototype, "valueChanged", void 0);
-    __decorate([
-        core_1.Output(),
-        __metadata("design:type", Object)
-    ], NguiAutoCompleteDirective.prototype, "customSelected", void 0);
     NguiAutoCompleteDirective = __decorate([
         core_1.Directive({
             selector: "[auto-complete], [ngui-auto-complete]"
         }),
-        __param(3, core_1.Optional()), __param(3, core_1.Host()), __param(3, core_1.SkipSelf()),
-        __metadata("design:paramtypes", [core_1.ComponentFactoryResolver,
-            core_1.Renderer,
-            core_1.ViewContainerRef,
-            forms_1.ControlContainer])
+        __param(3, core_1.Optional()),
+        __param(3, core_1.Host()),
+        __param(3, core_1.SkipSelf()), 
+        __metadata('design:paramtypes', [core_1.ComponentFactoryResolver, core_1.Renderer, core_1.ViewContainerRef, forms_1.ControlContainer])
     ], NguiAutoCompleteDirective);
     return NguiAutoCompleteDirective;
 }());
@@ -920,7 +842,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(7);
 var forms_1 = __webpack_require__(4);
@@ -930,23 +854,22 @@ var auto_complete_1 = __webpack_require__(2);
 var NguiAutoCompleteModule = (function () {
     function NguiAutoCompleteModule() {
     }
-    NguiAutoCompleteModule_1 = NguiAutoCompleteModule;
     NguiAutoCompleteModule.forRoot = function () {
         return {
-            ngModule: NguiAutoCompleteModule_1,
+            ngModule: NguiAutoCompleteModule,
             providers: [auto_complete_1.NguiAutoComplete]
         };
     };
-    NguiAutoCompleteModule = NguiAutoCompleteModule_1 = __decorate([
+    NguiAutoCompleteModule = __decorate([
         core_1.NgModule({
             imports: [common_1.CommonModule, forms_1.FormsModule],
             declarations: [auto_complete_component_1.NguiAutoCompleteComponent, auto_complete_directive_1.NguiAutoCompleteDirective],
             exports: [auto_complete_component_1.NguiAutoCompleteComponent, auto_complete_directive_1.NguiAutoCompleteDirective],
             entryComponents: [auto_complete_component_1.NguiAutoCompleteComponent]
-        })
+        }), 
+        __metadata('design:paramtypes', [])
     ], NguiAutoCompleteModule);
     return NguiAutoCompleteModule;
-    var NguiAutoCompleteModule_1;
 }());
 exports.NguiAutoCompleteModule = NguiAutoCompleteModule;
 
@@ -957,7 +880,6 @@ exports.NguiAutoCompleteModule = NguiAutoCompleteModule;
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
 var auto_complete_1 = __webpack_require__(2);
 exports.NguiAutoComplete = auto_complete_1.NguiAutoComplete;
 var auto_complete_module_1 = __webpack_require__(5);

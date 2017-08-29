@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var auto_complete_1 = require("./auto-complete");
 exports.NguiAutoComplete = auto_complete_1.NguiAutoComplete;
 var auto_complete_module_1 = require("./auto-complete.module");

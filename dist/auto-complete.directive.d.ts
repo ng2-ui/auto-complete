@@ -1,6 +1,6 @@
-import { ComponentFactoryResolver, ComponentRef, EventEmitter, OnChanges, OnInit, Renderer, SimpleChanges, ViewContainerRef } from "@angular/core";
+import { ComponentRef, ViewContainerRef, EventEmitter, OnInit, ComponentFactoryResolver, Renderer, SimpleChanges, OnChanges } from "@angular/core";
 import { NguiAutoCompleteComponent } from "./auto-complete.component";
-import { AbstractControl, ControlContainer, FormControl } from "@angular/forms";
+import { ControlContainer, AbstractControl, FormControl } from "@angular/forms";
 /**
  * display auto-complete section with input and dropdown list when it is clicked
  */
@@ -24,7 +24,6 @@ export declare class NguiAutoCompleteDirective implements OnInit, OnChanges {
     noMatchFoundText: string;
     valueFormatter: any;
     tabToSelect: boolean;
-    selectOnBlur: boolean;
     matchFormatted: boolean;
     autoSelectFirstItem: boolean;
     ngModel: String;
@@ -33,7 +32,6 @@ export declare class NguiAutoCompleteDirective implements OnInit, OnChanges {
     zIndex: string;
     ngModelChange: EventEmitter<{}>;
     valueChanged: EventEmitter<{}>;
-    customSelected: EventEmitter<{}>;
     componentRef: ComponentRef<NguiAutoCompleteComponent>;
     wrapperEl: HTMLElement;
     el: HTMLElement;
@@ -49,13 +47,10 @@ export declare class NguiAutoCompleteDirective implements OnInit, OnChanges {
     ngOnDestroy(): void;
     ngOnChanges(changes: SimpleChanges): void;
     showAutoCompleteDropdown: (event?: any) => void;
-    blurHandler(evt: any): void;
     hideAutoCompleteDropdown: (event?: any) => void;
     styleAutoCompleteDropdown: () => void;
     setToStringFunction(item: any): any;
     selectNewValue: (item: any) => void;
-    selectCustomValue: (text: string) => void;
-    enterNewText: (value: any) => void;
     private keydownEventHandler;
     private inputEventHandler;
     private renderValue(item);

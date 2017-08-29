@@ -122,6 +122,22 @@ let templateStr: string = `
     <pre>{{templateStr | htmlCode:'ngui-utils-7'}}</pre>
     <pre> arrayOfStrings: {{json(arrayOfStrings)}}</pre>
   </fieldset>
+  
+ <fieldset style="direction:rtl;text-align:right"><legend><h2>RTL support</h2></legend>
+    <ngui-utils-8>
+      <div ngui-auto-complete 
+        [source]="arrayOfStrings"
+        [accept-user-input]="false"
+        (ngModelChange)="myCallback1($event)"
+        [is-rtl]="true"
+        placeholder="enter text">
+        <input id="model1" [ngModel]="model1" autofocus />
+      </div>
+      <br/>selected model1: {{json(model1)}}<br/><br/>
+    </ngui-utils-8>
+    <pre>{{templateStr | htmlCode:'ngui-utils-1'}}</pre>
+    <pre> arrayOfStrings: {{json(arrayOfStrings)}}</pre>
+  </fieldset>
  `;
 
 @Component({

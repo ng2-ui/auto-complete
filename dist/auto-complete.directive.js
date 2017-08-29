@@ -19,6 +19,7 @@ var NguiAutoCompleteDirective = (function () {
         this.matchFormatted = false;
         this.autoSelectFirstItem = false;
         this.zIndex = "1";
+        this.isRtl = false;
         this.ngModelChange = new core_1.EventEmitter();
         this.valueChanged = new core_1.EventEmitter();
         //show auto-complete list below the current element
@@ -89,10 +90,11 @@ var NguiAutoCompleteDirective = (function () {
                 var thisElBCR = _this.el.getBoundingClientRect();
                 var thisInputElBCR = _this.inputEl.getBoundingClientRect();
                 var closeToBottom = thisInputElBCR.bottom + 100 > window.innerHeight;
+                var directionOfStyle = _this.isRtl ? 'right' : 'left';
                 _this.acDropdownEl.style.width = thisInputElBCR.width + "px";
                 _this.acDropdownEl.style.position = "absolute";
                 _this.acDropdownEl.style.zIndex = _this.zIndex;
-                _this.acDropdownEl.style.left = "0";
+                _this.acDropdownEl.style[directionOfStyle] = "0";
                 _this.acDropdownEl.style.display = "inline-block";
                 if (closeToBottom) {
                     _this.acDropdownEl.style.bottom = thisInputElBCR.height + "px";
@@ -281,6 +283,7 @@ var NguiAutoCompleteDirective = (function () {
         'formControlName': [{ type: core_1.Input, args: ['formControlName',] },],
         'extFormControl': [{ type: core_1.Input, args: ['formControl',] },],
         'zIndex': [{ type: core_1.Input, args: ["z-index",] },],
+        'isRtl': [{ type: core_1.Input, args: ["is-rtl",] },],
         'ngModelChange': [{ type: core_1.Output },],
         'valueChanged': [{ type: core_1.Output },],
     };

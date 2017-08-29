@@ -30,6 +30,7 @@ export declare class NguiAutoCompleteDirective implements OnInit, OnChanges {
     formControlName: string;
     extFormControl: FormControl;
     zIndex: string;
+    isRtl: boolean;
     ngModelChange: EventEmitter<{}>;
     valueChanged: EventEmitter<{}>;
     componentRef: ComponentRef<NguiAutoCompleteComponent>;

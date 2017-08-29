@@ -1,3 +1,5 @@
+### [0.14.0]
+- #####Upgraded to Angular 4
 ### [0.13.4]
 - now the first item on the suggestion dropdown will not be auto-selected until we press the arrow down key
 ### [0.13.0]

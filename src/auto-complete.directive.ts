@@ -1,21 +1,21 @@
 import {
-  Directive,
-  Input,
-  Output,
-  ComponentRef,
-  ViewContainerRef,
-  EventEmitter,
-  OnInit,
-  ComponentFactoryResolver,
-  Renderer,
-  SimpleChanges,
-  SkipSelf,
-  Host,
-  Optional,
-  OnChanges
+    ComponentFactoryResolver,
+    ComponentRef,
+    Directive,
+    EventEmitter,
+    Host,
+    Input,
+    OnChanges,
+    OnInit,
+    Optional,
+    Output,
+    Renderer,
+    SimpleChanges,
+    SkipSelf,
+    ViewContainerRef
 } from "@angular/core";
-import { NguiAutoCompleteComponent } from "./auto-complete.component";
-import { ControlContainer, AbstractControl, FormGroup, FormControl, FormGroupName } from "@angular/forms";
+import {NguiAutoCompleteComponent} from "./auto-complete.component";
+import {AbstractControl, ControlContainer, FormControl, FormGroup, FormGroupName} from "@angular/forms";
 
 /**
  * display auto-complete section with input and dropdown list when it is clicked
@@ -40,6 +40,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
   @Input("no-match-found-text") noMatchFoundText: string;
   @Input("value-formatter") valueFormatter: any;
   @Input("tab-to-select") tabToSelect: boolean = true;
+  @Input("select-on-blur") selectOnBlur: boolean = false;
   @Input("match-formatted") matchFormatted: boolean = false;
   @Input("auto-select-first-item") autoSelectFirstItem: boolean = false;
 
@@ -121,7 +122,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
     this.inputEl.addEventListener('focus', e => this.showAutoCompleteDropdown(e));
     this.inputEl.addEventListener('blur', (e) => {
         this.scheduledBlurHandler = () => {
-          return this.hideAutoCompleteDropdown(e);
+          return this.blurHandler(e);
         };
     });
     this.inputEl.addEventListener('keydown', e => this.keydownEventHandler(e));
@@ -170,6 +171,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
     component.blankOptionText = this.blankOptionText;
     component.noMatchFoundText = this.noMatchFoundText;
     component.tabToSelect = this.tabToSelect;
+    component.selectOnBlur = this.selectOnBlur;
     component.matchFormatted = this.matchFormatted;
     component.autoSelectFirstItem = this.autoSelectFirstItem;
 
@@ -193,6 +195,18 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
       component.dropdownVisible = true;
     });
   };
+
+  blurHandler(evt: any) {
+    if (this.componentRef) {
+      const component = this.componentRef.instance;
+
+      if (this.selectOnBlur && component.filteredList.length > 0) {
+        component.selectOne(component.filteredList[component.itemIndex]);
+      }
+
+      this.hideAutoCompleteDropdown(evt);
+    }
+  }
 
   hideAutoCompleteDropdown = (event?: any): void => {
     if (this.componentRef) {

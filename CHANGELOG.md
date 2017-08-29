@@ -1,3 +1,5 @@
+### [0.14.1]
+- add a new property `select-on-blur`
 ### [0.14.0]
 - #####Upgraded to Angular 4
 ### [0.13.4]

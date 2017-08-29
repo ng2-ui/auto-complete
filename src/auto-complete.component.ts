@@ -1,14 +1,5 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  Output,
-  OnInit,
-  ViewEncapsulation,
-  EventEmitter,
-  ViewChild
-} from "@angular/core";
-import { NguiAutoComplete } from "./auto-complete";
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation} from "@angular/core";
+import {NguiAutoComplete} from "./auto-complete";
 
 /**
  * show a selected date in monthly calendar
@@ -25,7 +16,7 @@ import { NguiAutoComplete } from "./auto-complete";
            #autoCompleteInput class="keyword"
            placeholder="{{placeholder}}"
            (focus)="showDropdownList($event)"
-           (blur)="hideDropdownList()"
+           (blur)="blurHandler($event)"
            (keydown)="inputElKeyHandler($event)"
            (input)="reloadListInDelay($event)"
            [(ngModel)]="keyword" />
@@ -125,6 +116,7 @@ export class NguiAutoCompleteComponent implements OnInit {
   @Input("tab-to-select") tabToSelect: boolean = true;
   @Input("match-formatted") matchFormatted: boolean = false;
   @Input("auto-select-first-item") autoSelectFirstItem: boolean = false;
+  @Input("select-on-blur") selectOnBlur: boolean = false;
 
   @Output() valueSelected = new EventEmitter();
   @Output() textEntered = new EventEmitter();
@@ -259,6 +251,14 @@ export class NguiAutoCompleteComponent implements OnInit {
   enterText(data: any) {
     this.textEntered.emit(data);
   }
+
+  blurHandler(evt: any) {
+    if (this.selectOnBlur && this.filteredList.length > 0) {
+      this.selectOne(this.filteredList[this.itemIndex]);
+    }
+
+    this.hideDropdownList();
+  };
 
   inputElKeyHandler = (evt: any) => {
     let totalNumItem = this.filteredList.length;

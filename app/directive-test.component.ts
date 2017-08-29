@@ -10,7 +10,9 @@ let templateStr: string = `
     <ngui-utils-1>
       <div ngui-auto-complete 
         [source]="arrayOfStrings"
-        [accept-user-input]="false"
+        [accept-user-input]="true"
+        [auto-select-first-item]="false"
+        [select-on-blur]="true"
         (ngModelChange)="myCallback1($event)"
         placeholder="enter text">
         <input id="model1" [ngModel]="model1" autofocus />

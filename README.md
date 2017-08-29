@@ -8,7 +8,7 @@
 After 0.13.0 or higher, ng2-auto-complete has been changed to @ngui/auto-complete. Here are the changes;
 
   * Module `ng2-auto-complete` is moved to `@ngui/auto-complete`.
-  * Direvtive `ng2-auto-complete` is moved to `ngui-auto-complete`.
+  * Directive `ng2-auto-complete` is moved to `ngui-auto-complete`.
   * Class name `Ng2AutoComplete` is moved to `NguiAutoComplete`.
 
 <a href="https://rawgit.com/ng2-ui/auto-complete/master/app/index.html">
@@ -80,7 +80,7 @@ For full example, please check `test` directory to see the example of;
 
 This module is only improved and maintained by contributors like you;
 
-As a contributor, it's NOT required to be skilled in Javascript nor Angular2. 
+As a contributor, it's NOT required to be skilled in Javascript nor Angular. 
 You can contribute to the following;
 
   * Updating README.md
@@ -113,17 +113,19 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
             }
   
   * **`path-to-data`**, string, e.g., `data.myList`, path to array data in http response
-  * **`min-chars, number`**, when source is remote data, the number of character to see dropdown list
+  * **`min-chars, number`**, when source is remote data, the number of character to see drop-down list
   * **`display-property-name`**, string, key name of text to show. default is `value`
   * **`select-value-of`**, string, when selected, return the value of this key as a selected item
   * **`blank-option-text`**, string, guide text to allow empty value to be selected as in empty value of `option` tag.
   * **`no-match-found-text`**, string, guide text to show no result found.
-  * **`valueChanged`** / **`ngModelChange`**, callback function that is executed when a new dropdown is selected.
-     e.g. `(valueChanged)="myCallback($event)"`
+  * **`valueChanged`** / **`ngModelChange`**, callback function that is executed when a new drop-down is selected.
+     e.g. `(valueChanged)="myCallback($event)"`  
+  * **`customSelected`** callback function that is executed when a value selected not included in drop-down, so it will return the keyword used.
+     e.g. `(customSelected)="customCallback($event)"`
   * **`loading-text`**, text to be displayed when loading. Default, "Loading"
   * **`loading-template`**, html markup that is to be rendered when loading. Default, null
   * **`accept-user-input`** boolean, if `false` and does not match to source given, it goes back to the original value selected., If you don't event want user to type any, please use `readonly="readonly"` to force user to select only from list. Default is `true`
-  * **`max-num-list`** number, maximun number of drop down list items. Default, unlimited
+  * **`max-num-list`** number, maximum number of drop down list items. Default, unlimited
   * **`tab-to-select`** boolean, if `true`, pressing <kbd>Tab</kbd> will set the value from the selected item before focus leaves the control. Default is `true`
   * **`select-on-blur`** boolean, if `true`, `blur` event will set the value from the selected item before focus leaves the control. Default is `false`
   * **`match-formatted`** boolean, if `true`, keyword will be matched against list values formatted with `list-formatter`, instead of raw objects. Default is `false`

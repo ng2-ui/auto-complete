@@ -1,3 +1,5 @@
+### [0.14.2]
+- return keyword if no items were selected
 ### [0.14.1]
 - add a new property `select-on-blur`
 ### [0.14.0]

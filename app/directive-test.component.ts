@@ -1,8 +1,9 @@
-import { Http } from "@angular/http";
-import { Component, ViewEncapsulation } from "@angular/core";
-import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
+import {Http} from "@angular/http";
+import {Component, ViewEncapsulation} from "@angular/core";
+import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 
-import { AppSvc } from "./app.service";
+import {AppSvc} from "./app.service";
+
 let templateStr: string = `
   <h1> Autocomplete Directive Test - Local Source </h1>
     
@@ -14,6 +15,7 @@ let templateStr: string = `
         [auto-select-first-item]="false"
         [select-on-blur]="true"
         (ngModelChange)="myCallback1($event)"
+        (customSelected)="customCallback($event)"
         placeholder="enter text">
         <input id="model1" [ngModel]="model1" autofocus />
       </div>
@@ -166,6 +168,10 @@ export class DirectiveTestComponent {
     public http: Http,
     public appSvc : AppSvc,
     private _sanitizer: DomSanitizer ) {
+  }
+
+  customCallback(text) {
+    console.log("keyword ", text)
   }
 
   myCallback1(newVal) {

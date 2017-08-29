@@ -53,6 +53,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
 
   @Output() ngModelChange = new EventEmitter();
   @Output() valueChanged = new EventEmitter();
+  @Output() customSelected = new EventEmitter();
 
 
   componentRef: ComponentRef<NguiAutoCompleteComponent>;
@@ -156,6 +157,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
     this.componentRef = this.viewContainerRef.createComponent(factory);
 
     let component = this.componentRef.instance;
+    component.keyword = this.inputEl.value;
     component.showInputTag = false; //Do NOT display autocomplete input tag separately
 
     component.pathToData = this.pathToData;
@@ -177,6 +179,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
 
     component.valueSelected.subscribe(this.selectNewValue);
     component.textEntered.subscribe(this.enterNewText);
+    component.customSelected.subscribe(this.selectCustomValue);
 
     this.acDropdownEl = this.componentRef.location.nativeElement;
     this.acDropdownEl.style.display = "none";
@@ -200,7 +203,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
     if (this.componentRef) {
       const component = this.componentRef.instance;
 
-      if (this.selectOnBlur && component.filteredList.length > 0) {
+      if (this.selectOnBlur) {
         component.selectOne(component.filteredList[component.itemIndex]);
       }
 
@@ -309,6 +312,11 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
     this.hideAutoCompleteDropdown();
   };
 
+  selectCustomValue = (text: string) => {
+    this.customSelected.emit(text);
+    this.hideAutoCompleteDropdown();
+  };
+
   enterNewText = (value: any) => {
     this.renderValue(value);
     this.ngModelChange.emit(value);
@@ -327,6 +335,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
     if (this.componentRef) {
       let component = <NguiAutoCompleteComponent>this.componentRef.instance;
       component.dropdownVisible = true;
+      component.keyword = evt.target.value;
       component.reloadListInDelay(evt);
     } else {
       this.showAutoCompleteDropdown()

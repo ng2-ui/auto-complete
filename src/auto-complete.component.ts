@@ -119,6 +119,7 @@ export class NguiAutoCompleteComponent implements OnInit {
   @Input("select-on-blur") selectOnBlur: boolean = false;
 
   @Output() valueSelected = new EventEmitter();
+  @Output() customSelected = new EventEmitter();
   @Output() textEntered = new EventEmitter();
   @ViewChild('autoCompleteInput') autoCompleteInput: ElementRef;
   @ViewChild('autoCompleteContainer') autoCompleteContainer: ElementRef;
@@ -245,7 +246,11 @@ export class NguiAutoCompleteComponent implements OnInit {
   }
 
   selectOne(data: any) {
-    this.valueSelected.emit(data);
+    if (data) {
+      this.valueSelected.emit(data);
+    } else {
+      this.customSelected.emit(this.keyword);
+    }
   };
 
   enterText(data: any) {
@@ -253,7 +258,7 @@ export class NguiAutoCompleteComponent implements OnInit {
   }
 
   blurHandler(evt: any) {
-    if (this.selectOnBlur && this.filteredList.length > 0) {
+    if (this.selectOnBlur) {
       this.selectOne(this.filteredList[this.itemIndex]);
     }
 
@@ -285,16 +290,12 @@ export class NguiAutoCompleteComponent implements OnInit {
         break;
 
       case 13: // ENTER, choose it!!
-        if (this.filteredList.length > 0 && this.itemIndex !== null) {
-          this.selectOne(this.filteredList[this.itemIndex]);
-        } else {
-          this.enterText(evt.target.value);
-        }
+        this.selectOne(this.filteredList[this.itemIndex]);
         evt.preventDefault();
         break;
 
       case 9: // TAB, choose if tab-to-select is enabled
-        if (this.tabToSelect && this.filteredList.length > 0) {
+        if (this.tabToSelect) {
           this.selectOne(this.filteredList[this.itemIndex]);
         }
         break;

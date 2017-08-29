@@ -16,8 +16,8 @@
     "test:webtest": "webtest webtest.txt",
     "build": "npm-run-all --serial clean build:ngc build:umd build:app",
     "build:ngc": "ngc -p tsconfig.ngc.json",
-    "build:umd": "NODE_ENV=prod webpack",
-    "build:app": "NODE_ENV=prod webpack --config app/webpack.config"
+    "build:umd": "cross-env NODE_ENV=prod webpack",
+    "build:app": "cross-env NODE_ENV=prod webpack --config app/webpack.config"
   },
   "dependencies": {
     "@ngui/utils": "^0.8.0"
@@ -41,6 +41,7 @@
     "@types/node": "^6.0.31",
     "angular2-template-loader": "^0.6.2",
     "core-js": "^2.4.1",
+    "cross-env": "^5.0.5",
     "forever": "^0.15.3",
     "hammerjs": "^2.0.8",
     "http-server": "^0.10.0",

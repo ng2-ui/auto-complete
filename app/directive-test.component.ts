@@ -174,14 +174,14 @@ export class DirectiveTestComponent {
     console.log("keyword ", text)
   }
 
-  myCallback1(newVal) {
-    console.log("value is changed to ", newVal);
-    this.model1 = newVal;
+  myCallback1(newVal1) {
+    console.log("value is changed to ", newVal1);
+    this.model1 = newVal1;
   }
 
-  myCallback7(newVal) {
-    console.log("value is changed to ", newVal);
-    this.model7 = newVal;
+  myCallback7(newVal7) {
+    console.log("value is changed to ", newVal7);
+    this.model7 = newVal7;
   }
 
   renderHero = (data: any) : SafeHtml => {

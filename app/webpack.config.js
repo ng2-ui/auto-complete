@@ -1,5 +1,8 @@
 var path = require('path');
 const webpack = require('webpack');
+const helpers = require('./helpers');
+
+const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 
 const config = {
   resolve: {
@@ -27,7 +30,20 @@ const config = {
       { test: /\.html$/, use: ['raw-loader'] }
     ]
   },
-  plugins: [],
+  plugins: [
+      new ContextReplacementPlugin(
+          /**
+           * The (\\|\/) piece accounts for path separators in *nix and Windows
+           */
+          /angular(\\|\/)core(\\|\/)@angular/,
+          helpers.root('src'), // location of your src
+          {
+              /**
+               * Your Angular Async Route paths relative to this root directory
+               */
+          }
+      )
+  ],
   output: {
     path: `${__dirname}/build/`,
     publicPath: '/build/',

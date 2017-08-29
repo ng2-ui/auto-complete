@@ -1,5 +1,4 @@
 import { Http } from "@angular/http";
-import { Observable } from 'rxjs/Observable';
 import { Component, ViewEncapsulation } from "@angular/core";
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 
@@ -57,7 +56,7 @@ let templateStr: string = `
       
   <fieldset><legend><h2>Source as HTTP URI String</h2></legend>
     <ngui-utils-4>
-      <input  ngui-auto-complete
+      <input ngui-auto-complete
         id="model4"
         [(ngModel)]="model4"
         placeholder="Enter Address(min. 2 chars)"
@@ -95,15 +94,16 @@ let templateStr: string = `
     
   <fieldset><legend><h2>With Material Design</h2></legend>
     <ngui-utils-6>
-      <md-input ngui-auto-complete 
-        id="model6"
-        [(ngModel)]="myModel"
-        [source]="arrayOfNumbers"
-        [list-formatter]="rightAligned"
-        placeholder="amount" align="end">
-        <span md-prefix>$&nbsp;</span>
-        <span md-suffix>.00</span>
-      </md-input>
+      <md-input-container>
+        <span mdPrefix>$&nbsp;</span>
+        <input mdInput ngui-auto-complete style="border: 1px solid #ccc"
+          id="model6"
+          [(ngModel)]="myModel"
+          [source]="arrayOfNumbers"
+          [list-formatter]="rightAligned"
+          placeholder="amount" align="end"/>
+          <span mdSuffix>.00</span>
+      </md-input-container>
     </ngui-utils-6>
     <pre>{{templateStr | htmlCode:'ngui-utils-6'}}</pre>
     <pre>arrayOfNumbers: {{json(arrayOfNumbers)}}</pre>

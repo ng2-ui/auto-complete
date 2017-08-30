@@ -1,10 +1,11 @@
 "use strict";
-var core_1 = require('@angular/core');
-var common_1 = require('@angular/common');
-var forms_1 = require('@angular/forms');
-var auto_complete_component_1 = require('./auto-complete.component');
-var auto_complete_directive_1 = require('./auto-complete.directive');
-var auto_complete_1 = require('./auto-complete');
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var common_1 = require("@angular/common");
+var forms_1 = require("@angular/forms");
+var auto_complete_component_1 = require("./auto-complete.component");
+var auto_complete_directive_1 = require("./auto-complete.directive");
+var auto_complete_1 = require("./auto-complete");
 var NguiAutoCompleteModule = (function () {
     function NguiAutoCompleteModule() {
     }

@@ -1,4 +1,4 @@
-import { Http, Response } from "@angular/http";
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from "rxjs";
 import "rxjs/add/operator/map";
 /**
@@ -9,11 +9,11 @@ export declare class NguiAutoComplete {
     source: string;
     pathToData: string;
     listFormatter: (arg: any) => string;
-    constructor(http: Http);
+    constructor(http: HttpClient);
     filter(list: any[], keyword: string, matchFormatted: boolean): any[];
     getFormattedListItem(data: any): any;
     /**
      * return remote data from the given source and options, and data path
      */
-    getRemoteData(keyword: string): Observable<Response>;
+    getRemoteData(keyword: string): Observable<HttpResponse<any>>;
 }

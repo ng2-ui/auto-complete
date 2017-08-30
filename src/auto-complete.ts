@@ -1,5 +1,5 @@
 import { Injectable, Optional } from "@angular/core";
-import { Http, Response } from "@angular/http";
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from "rxjs";
 import "rxjs/add/operator/map";
 
@@ -13,7 +13,7 @@ export class NguiAutoComplete {
   public pathToData: string;
   public listFormatter: (arg: any) => string;
 
-  constructor(@Optional() private http: Http) {
+  constructor( @Optional() private http: HttpClient) {
     // ...
   }
 
@@ -50,7 +50,7 @@ export class NguiAutoComplete {
   /**
    * return remote data from the given source and options, and data path
    */
-  getRemoteData(keyword: string): Observable<Response> {
+  getRemoteData(keyword: string): Observable<HttpResponse<any>> {
     if (typeof this.source !== 'string') {
       throw "Invalid type of source, must be a string. e.g. http://www.google.com?q=:my_keyword";
     } else if (!this.http) {
@@ -66,9 +66,8 @@ export class NguiAutoComplete {
     let url = this.source.replace(replacementWord, keyword);
 
     return this.http.get(url)
-      .map(resp => resp.json())
-      .map(resp => {
-        let list = resp.data || resp;
+      .map((resp: HttpResponse<any>) => {
+        let list = resp.body || resp;
 
         if (this.pathToData) {
           let paths = this.pathToData.split(".");

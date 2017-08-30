@@ -1,6 +1,7 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var http_1 = require("@angular/http");
+var http_1 = require("@angular/common/http");
 require("rxjs/add/operator/map");
 /**
  * provides auto-complete related utility functions
@@ -57,9 +58,8 @@ var NguiAutoComplete = (function () {
         var replacementWord = matches[0];
         var url = this.source.replace(replacementWord, keyword);
         return this.http.get(url)
-            .map(function (resp) { return resp.json(); })
             .map(function (resp) {
-            var list = resp.data || resp;
+            var list = resp.body || resp;
             if (_this.pathToData) {
                 var paths = _this.pathToData.split(".");
                 paths.forEach(function (prop) { return list = list[prop]; });
@@ -73,7 +73,7 @@ var NguiAutoComplete = (function () {
     ];
     /** @nocollapse */
     NguiAutoComplete.ctorParameters = function () { return [
-        { type: http_1.Http, decorators: [{ type: core_1.Optional },] },
+        { type: http_1.HttpClient, decorators: [{ type: core_1.Optional },] },
     ]; };
     return NguiAutoComplete;
 }());

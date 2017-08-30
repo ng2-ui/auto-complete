@@ -1,4 +1,3 @@
-import { Http } from "@angular/http";
 import { Observable } from 'rxjs/Observable';
 import { Component, ViewEncapsulation } from "@angular/core";
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
@@ -92,22 +91,6 @@ let templateStr: string = `
     <b>appSvc.findHeroes functoin</b>
     <pre>{{appSvc.findHeroes | jsCode}}</pre>
   </fieldset>
-    
-  <fieldset><legend><h2>With Material Design</h2></legend>
-    <ngui-utils-6>
-      <md-input ngui-auto-complete 
-        id="model6"
-        [(ngModel)]="myModel"
-        [source]="arrayOfNumbers"
-        [list-formatter]="rightAligned"
-        placeholder="amount" align="end">
-        <span md-prefix>$&nbsp;</span>
-        <span md-suffix>.00</span>
-      </md-input>
-    </ngui-utils-6>
-    <pre>{{templateStr | htmlCode:'ngui-utils-6'}}</pre>
-    <pre>arrayOfNumbers: {{json(arrayOfNumbers)}}</pre>
-  </fieldset>
 
   <fieldset><legend><h2>Source as Array of Strings (with auto-select-first-item)</h2></legend>
     <ngui-utils-7>
@@ -154,32 +137,31 @@ let templateStr: string = `
       overflow-y: auto;
     }
   `],
-   providers : [AppSvc]
+  providers: [AppSvc]
 })
 export class DirectiveTestComponent {
   templateStr: any = templateStr;
   loadingTemplate = '<h1>Loading</h1>';
   arrayOfNumbers: number[] = [100, 200, 300, 400, 500];
   arrayOfStrings: string[] =
-    ["this", "is", "array", "of", "text", "with", "long", "and long", "and long", "list"];
+  ["this", "is", "array", "of", "text", "with", "long", "and long", "and long", "list"];
 
   arrayOfKeyValues: any[] =
-    [{id:1, value:"One"}, {id:2, value:"Two"}, {id:3, value:"Three"}, {id:4, value:"Four"}];
+  [{ id: 1, value: "One" }, { id: 2, value: "Two" }, { id: 3, value: "Three" }, { id: 4, value: "Four" }];
 
   arrayOfKeyValues2: any[] =
-    [{id:11, key:1, name:"Key One"}, {id:12, key:2, name:"Key Two"}, {id:13, key:3, name:"Key Three"}, {id:14, key:4, name:"Key Four"}];
+  [{ id: 11, key: 1, name: "Key One" }, { id: 12, key: 2, name: "Key Two" }, { id: 13, key: 3, name: "Key Three" }, { id: 14, key: 4, name: "Key Four" }];
 
   googleGeoCode: string = "https://maps.googleapis.com/maps/api/geocode/json?address=:my_own_keyword";
 
   model1 = "is";
-  model2 = {id:1, value: "One"};
-  model3 = {key: 3, name: "Key Three"};
+  model2 = { id: 1, value: "One" };
+  model3 = { key: 3, name: "Key Three" };
   model7 = "";
 
-  constructor (
-    public http: Http,
-    public appSvc : AppSvc,
-    private _sanitizer: DomSanitizer ) {
+  constructor(
+    public appSvc: AppSvc,
+    private _sanitizer: DomSanitizer) {
   }
 
   myCallback1(newVal) {
@@ -192,7 +174,7 @@ export class DirectiveTestComponent {
     this.model7 = newVal;
   }
 
-  renderHero = (data: any) : SafeHtml => {
+  renderHero = (data: any): SafeHtml => {
     let html = `<b style='float:left;width:100%'>${data.name}</b>
                 <img style="float: left;padding: 5px;" src="${data.thumbnail.path}/portrait_small.${data.thumbnail.extension}"> 
                 <span>${data.description}</span>`;
@@ -200,7 +182,7 @@ export class DirectiveTestComponent {
     return this._sanitizer.bypassSecurityTrustHtml(html);
   };
 
-  rightAligned = (data: any) : SafeHtml => {
+  rightAligned = (data: any): SafeHtml => {
     let html = `<div style="text-align:right">${data}.00</div>`;
     return this._sanitizer.bypassSecurityTrustHtml(html);
   };

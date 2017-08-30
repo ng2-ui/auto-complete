@@ -9,9 +9,8 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NguiUtilsModule } from '@ngui/utils';
-import { MdInputModule } from '@angular2-material/input';
 import { LocationStrategy, HashLocationStrategy } from "@angular/common";
 
 import { AppComponent }   from './app.component';
@@ -24,10 +23,9 @@ import { APP_ROUTER_PROVIDERS, APP_ROUTER_COMPONENTS } from './app.route';
   imports : [
     BrowserModule,
     APP_ROUTER_PROVIDERS,
-    HttpModule,
+    HttpClientModule,
     FormsModule,
     NguiUtilsModule,
-    MdInputModule,
     NguiAutoCompleteModule
   ],
   declarations : [AppComponent, APP_ROUTER_COMPONENTS],

@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var auto_complete_component_1 = require("./auto-complete.component");
 var forms_1 = require("@angular/forms");

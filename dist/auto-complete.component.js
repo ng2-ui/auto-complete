@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var auto_complete_1 = require("./auto-complete");
 /**
@@ -39,13 +40,13 @@ var NguiAutoCompleteComponent = (function () {
         this.inputElKeyHandler = function (evt) {
             var totalNumItem = _this.filteredList.length;
             switch (evt.keyCode) {
-                case 27:
+                case 27:// ESC, hide auto complete
                     break;
-                case 38:
+                case 38:// UP, select the previous li el
                     _this.itemIndex = (totalNumItem + _this.itemIndex - 1) % totalNumItem;
                     _this.scrollToView(_this.itemIndex);
                     break;
-                case 40:
+                case 40:// DOWN, select the next li el or the first one
                     _this.dropdownVisible = true;
                     var sum = _this.itemIndex;
                     if (_this.itemIndex === null) {
@@ -57,7 +58,7 @@ var NguiAutoCompleteComponent = (function () {
                     _this.itemIndex = (totalNumItem + sum) % totalNumItem;
                     _this.scrollToView(_this.itemIndex);
                     break;
-                case 13:
+                case 13:// ENTER, choose it!!
                     if (_this.filteredList.length > 0 && _this.itemIndex !== null) {
                         _this.selectOne(_this.filteredList[_this.itemIndex]);
                     }
@@ -66,7 +67,7 @@ var NguiAutoCompleteComponent = (function () {
                     }
                     evt.preventDefault();
                     break;
-                case 9:
+                case 9:// TAB, choose if tab-to-select is enabled
                     if (_this.tabToSelect && _this.filteredList.length > 0) {
                         _this.selectOne(_this.filteredList[_this.itemIndex]);
                     }

@@ -50,6 +50,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
   //a form is not necessary to use a formControl we should also support this
   @Input('formControl') extFormControl: FormControl;
   @Input("z-index") zIndex: string = "1";
+  @Input("is-rtl") isRtl: boolean = false;
 
   @Output() ngModelChange = new EventEmitter();
   @Output() valueChanged = new EventEmitter();
@@ -248,11 +249,12 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
       let thisElBCR = this.el.getBoundingClientRect();
       let thisInputElBCR = this.inputEl.getBoundingClientRect();
       let closeToBottom = thisInputElBCR.bottom + 100 > window.innerHeight;
+      let directionOfStyle = this.isRtl ? 'right' : 'left';
 
       this.acDropdownEl.style.width = thisInputElBCR.width + "px";
       this.acDropdownEl.style.position = "absolute";
       this.acDropdownEl.style.zIndex = this.zIndex;
-      this.acDropdownEl.style.left = "0";
+      this.acDropdownEl.style[directionOfStyle] = "0";
       this.acDropdownEl.style.display = "inline-block";
 
       if (closeToBottom) {

@@ -1,21 +1,21 @@
 import {
-  Directive,
-  Input,
-  Output,
-  ComponentRef,
-  ViewContainerRef,
-  EventEmitter,
-  OnInit,
-  ComponentFactoryResolver,
-  Renderer,
-  SimpleChanges,
-  SkipSelf,
-  Host,
-  Optional,
-  OnChanges
+    ComponentFactoryResolver,
+    ComponentRef,
+    Directive,
+    EventEmitter,
+    Host,
+    Input,
+    OnChanges,
+    OnInit,
+    Optional,
+    Output,
+    Renderer,
+    SimpleChanges,
+    SkipSelf,
+    ViewContainerRef
 } from "@angular/core";
-import { NguiAutoCompleteComponent } from "./auto-complete.component";
-import { ControlContainer, AbstractControl, FormGroup, FormControl, FormGroupName } from "@angular/forms";
+import {NguiAutoCompleteComponent} from "./auto-complete.component";
+import {AbstractControl, ControlContainer, FormControl, FormGroup, FormGroupName} from "@angular/forms";
 
 /**
  * display auto-complete section with input and dropdown list when it is clicked
@@ -40,6 +40,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
   @Input("no-match-found-text") noMatchFoundText: string;
   @Input("value-formatter") valueFormatter: any;
   @Input("tab-to-select") tabToSelect: boolean = true;
+  @Input("select-on-blur") selectOnBlur: boolean = false;
   @Input("match-formatted") matchFormatted: boolean = false;
   @Input("auto-select-first-item") autoSelectFirstItem: boolean = false;
 
@@ -53,6 +54,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
 
   @Output() ngModelChange = new EventEmitter();
   @Output() valueChanged = new EventEmitter();
+  @Output() customSelected = new EventEmitter();
 
 
   componentRef: ComponentRef<NguiAutoCompleteComponent>;
@@ -122,7 +124,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
     this.inputEl.addEventListener('focus', e => this.showAutoCompleteDropdown(e));
     this.inputEl.addEventListener('blur', (e) => {
         this.scheduledBlurHandler = () => {
-          return this.hideAutoCompleteDropdown(e);
+          return this.blurHandler(e);
         };
     });
     this.inputEl.addEventListener('keydown', e => this.keydownEventHandler(e));
@@ -156,6 +158,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
     this.componentRef = this.viewContainerRef.createComponent(factory);
 
     let component = this.componentRef.instance;
+    component.keyword = this.inputEl.value;
     component.showInputTag = false; //Do NOT display autocomplete input tag separately
 
     component.pathToData = this.pathToData;
@@ -171,11 +174,13 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
     component.blankOptionText = this.blankOptionText;
     component.noMatchFoundText = this.noMatchFoundText;
     component.tabToSelect = this.tabToSelect;
+    component.selectOnBlur = this.selectOnBlur;
     component.matchFormatted = this.matchFormatted;
     component.autoSelectFirstItem = this.autoSelectFirstItem;
 
     component.valueSelected.subscribe(this.selectNewValue);
     component.textEntered.subscribe(this.enterNewText);
+    component.customSelected.subscribe(this.selectCustomValue);
 
     this.acDropdownEl = this.componentRef.location.nativeElement;
     this.acDropdownEl.style.display = "none";
@@ -194,6 +199,18 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
       component.dropdownVisible = true;
     });
   };
+
+  blurHandler(evt: any) {
+    if (this.componentRef) {
+      const component = this.componentRef.instance;
+
+      if (this.selectOnBlur) {
+        component.selectOne(component.filteredList[component.itemIndex]);
+      }
+
+      this.hideAutoCompleteDropdown(evt);
+    }
+  }
 
   hideAutoCompleteDropdown = (event?: any): void => {
     if (this.componentRef) {
@@ -297,6 +314,11 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
     this.hideAutoCompleteDropdown();
   };
 
+  selectCustomValue = (text: string) => {
+    this.customSelected.emit(text);
+    this.hideAutoCompleteDropdown();
+  };
+
   enterNewText = (value: any) => {
     this.renderValue(value);
     this.ngModelChange.emit(value);
@@ -315,6 +337,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
     if (this.componentRef) {
       let component = <NguiAutoCompleteComponent>this.componentRef.instance;
       component.dropdownVisible = true;
+      component.keyword = evt.target.value;
       component.reloadListInDelay(evt);
     } else {
       this.showAutoCompleteDropdown()

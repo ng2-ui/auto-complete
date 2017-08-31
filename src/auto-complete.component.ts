@@ -1,14 +1,5 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  Output,
-  OnInit,
-  ViewEncapsulation,
-  EventEmitter,
-  ViewChild
-} from "@angular/core";
-import { NguiAutoComplete } from "./auto-complete";
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation} from "@angular/core";
+import {NguiAutoComplete} from "./auto-complete";
 
 /**
  * show a selected date in monthly calendar
@@ -25,7 +16,7 @@ import { NguiAutoComplete } from "./auto-complete";
            #autoCompleteInput class="keyword"
            placeholder="{{placeholder}}"
            (focus)="showDropdownList($event)"
-           (blur)="hideDropdownList()"
+           (blur)="blurHandler($event)"
            (keydown)="inputElKeyHandler($event)"
            (input)="reloadListInDelay($event)"
            [(ngModel)]="keyword" />
@@ -125,8 +116,10 @@ export class NguiAutoCompleteComponent implements OnInit {
   @Input("tab-to-select") tabToSelect: boolean = true;
   @Input("match-formatted") matchFormatted: boolean = false;
   @Input("auto-select-first-item") autoSelectFirstItem: boolean = false;
+  @Input("select-on-blur") selectOnBlur: boolean = false;
 
   @Output() valueSelected = new EventEmitter();
+  @Output() customSelected = new EventEmitter();
   @Output() textEntered = new EventEmitter();
   @ViewChild('autoCompleteInput') autoCompleteInput: ElementRef;
   @ViewChild('autoCompleteContainer') autoCompleteContainer: ElementRef;
@@ -253,12 +246,24 @@ export class NguiAutoCompleteComponent implements OnInit {
   }
 
   selectOne(data: any) {
-    this.valueSelected.emit(data);
+    if (data) {
+      this.valueSelected.emit(data);
+    } else {
+      this.customSelected.emit(this.keyword);
+    }
   };
 
   enterText(data: any) {
     this.textEntered.emit(data);
   }
+
+  blurHandler(evt: any) {
+    if (this.selectOnBlur) {
+      this.selectOne(this.filteredList[this.itemIndex]);
+    }
+
+    this.hideDropdownList();
+  };
 
   inputElKeyHandler = (evt: any) => {
     let totalNumItem = this.filteredList.length;
@@ -285,16 +290,12 @@ export class NguiAutoCompleteComponent implements OnInit {
         break;
 
       case 13: // ENTER, choose it!!
-        if (this.filteredList.length > 0 && this.itemIndex !== null) {
-          this.selectOne(this.filteredList[this.itemIndex]);
-        } else {
-          this.enterText(evt.target.value);
-        }
+        this.selectOne(this.filteredList[this.itemIndex]);
         evt.preventDefault();
         break;
 
       case 9: // TAB, choose if tab-to-select is enabled
-        if (this.tabToSelect && this.filteredList.length > 0) {
+        if (this.tabToSelect) {
           this.selectOne(this.filteredList[this.itemIndex]);
         }
         break;

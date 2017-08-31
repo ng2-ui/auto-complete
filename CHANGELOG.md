@@ -1,3 +1,9 @@
+### [0.14.2]
+- return keyword if no items were selected
+### [0.14.1]
+- add a new property `select-on-blur`
+### [0.14.0]
+- #####Upgraded to Angular 4
 ### [0.13.4]
 - now the first item on the suggestion dropdown will not be auto-selected until we press the arrow down key
 ### [0.13.0]

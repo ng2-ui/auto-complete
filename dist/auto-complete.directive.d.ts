@@ -1,12 +1,11 @@
-import { ComponentRef, ViewContainerRef, EventEmitter, OnInit, ComponentFactoryResolver, Renderer, SimpleChanges, OnChanges } from "@angular/core";
+import { ComponentFactoryResolver, ComponentRef, EventEmitter, OnChanges, OnInit, SimpleChanges, ViewContainerRef } from "@angular/core";
 import { NguiAutoCompleteComponent } from "./auto-complete.component";
-import { ControlContainer, AbstractControl, FormControl } from "@angular/forms";
+import { AbstractControl, ControlContainer, FormControl } from "@angular/forms";
 /**
  * display auto-complete section with input and dropdown list when it is clicked
  */
 export declare class NguiAutoCompleteDirective implements OnInit, OnChanges {
     private resolver;
-    private renderer;
     viewContainerRef: ViewContainerRef;
     private parentForm;
     autoCompletePlaceholder: string;
@@ -24,6 +23,7 @@ export declare class NguiAutoCompleteDirective implements OnInit, OnChanges {
     noMatchFoundText: string;
     valueFormatter: any;
     tabToSelect: boolean;
+    selectOnBlur: boolean;
     matchFormatted: boolean;
     autoSelectFirstItem: boolean;
     ngModel: String;
@@ -33,6 +33,7 @@ export declare class NguiAutoCompleteDirective implements OnInit, OnChanges {
     isRtl: boolean;
     ngModelChange: EventEmitter<{}>;
     valueChanged: EventEmitter<{}>;
+    customSelected: EventEmitter<{}>;
     componentRef: ComponentRef<NguiAutoCompleteComponent>;
     wrapperEl: HTMLElement;
     el: HTMLElement;
@@ -42,16 +43,18 @@ export declare class NguiAutoCompleteDirective implements OnInit, OnChanges {
     revertValue: any;
     private scheduledBlurHandler;
     private documentClickListener;
-    constructor(resolver: ComponentFactoryResolver, renderer: Renderer, viewContainerRef: ViewContainerRef, parentForm: ControlContainer);
+    constructor(resolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, parentForm: ControlContainer);
     ngOnInit(): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
     ngOnChanges(changes: SimpleChanges): void;
     showAutoCompleteDropdown: (event?: any) => void;
+    blurHandler(event: any): void;
     hideAutoCompleteDropdown: (event?: any) => void;
     styleAutoCompleteDropdown: () => void;
     setToStringFunction(item: any): any;
     selectNewValue: (item: any) => void;
+    selectCustomValue: (text: string) => void;
     enterNewText: (value: any) => void;
     private keydownEventHandler;
     private inputEventHandler;

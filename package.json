@@ -1,6 +1,6 @@
 {
   "name": "@ngui/auto-complete",
-  "version": "0.14.2",
+  "version": "0.14.3",
   "description": "Angular Input Autocomplete",
   "license": "MIT",
   "main": "dist/auto-complete.umd.js",

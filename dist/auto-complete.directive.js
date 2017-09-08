@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var auto_complete_component_1 = require("./auto-complete.component");
 var forms_1 = require("@angular/forms");
@@ -6,22 +7,23 @@ var forms_1 = require("@angular/forms");
  * display auto-complete section with input and dropdown list when it is clicked
  */
 var NguiAutoCompleteDirective = (function () {
-    function NguiAutoCompleteDirective(resolver, renderer, viewContainerRef, parentForm) {
+    function NguiAutoCompleteDirective(resolver, viewContainerRef, parentForm) {
         var _this = this;
         this.resolver = resolver;
-        this.renderer = renderer;
         this.viewContainerRef = viewContainerRef;
         this.parentForm = parentForm;
         this.acceptUserInput = true;
         this.loadingTemplate = null;
         this.loadingText = "Loading";
         this.tabToSelect = true;
+        this.selectOnBlur = false;
         this.matchFormatted = false;
         this.autoSelectFirstItem = false;
         this.zIndex = "1";
         this.isRtl = false;
         this.ngModelChange = new core_1.EventEmitter();
         this.valueChanged = new core_1.EventEmitter();
+        this.customSelected = new core_1.EventEmitter();
         //show auto-complete list below the current element
         this.showAutoCompleteDropdown = function (event) {
             _this.hideAutoCompleteDropdown();
@@ -29,6 +31,7 @@ var NguiAutoCompleteDirective = (function () {
             var factory = _this.resolver.resolveComponentFactory(auto_complete_component_1.NguiAutoCompleteComponent);
             _this.componentRef = _this.viewContainerRef.createComponent(factory);
             var component = _this.componentRef.instance;
+            component.keyword = _this.inputEl.value;
             component.showInputTag = false; //Do NOT display autocomplete input tag separately
             component.pathToData = _this.pathToData;
             component.minChars = _this.minChars;
@@ -42,10 +45,12 @@ var NguiAutoCompleteDirective = (function () {
             component.blankOptionText = _this.blankOptionText;
             component.noMatchFoundText = _this.noMatchFoundText;
             component.tabToSelect = _this.tabToSelect;
+            component.selectOnBlur = _this.selectOnBlur;
             component.matchFormatted = _this.matchFormatted;
             component.autoSelectFirstItem = _this.autoSelectFirstItem;
             component.valueSelected.subscribe(_this.selectNewValue);
             component.textEntered.subscribe(_this.enterNewText);
+            component.customSelected.subscribe(_this.selectCustomValue);
             _this.acDropdownEl = _this.componentRef.location.nativeElement;
             _this.acDropdownEl.style.display = "none";
             // if this element is not an input tag, move dropdown after input tag
@@ -69,16 +74,10 @@ var NguiAutoCompleteDirective = (function () {
                 }
                 _this.componentRef.destroy();
                 _this.componentRef = undefined;
-                if (_this.inputEl &&
-                    hasRevertValue &&
-                    _this.acceptUserInput === false &&
-                    currentItem === null) {
+                if (_this.inputEl && hasRevertValue && _this.acceptUserInput === false && currentItem === null) {
                     _this.selectNewValue(_this.revertValue);
                 }
-                else if (_this.inputEl &&
-                    _this.acceptUserInput === true &&
-                    typeof currentItem === "undefined" &&
-                    event && event.target.value) {
+                else if (_this.inputEl && _this.acceptUserInput === true && typeof currentItem === "undefined" && event && event.target.value) {
                     _this.enterNewText(event.target.value);
                 }
             }
@@ -124,6 +123,10 @@ var NguiAutoCompleteDirective = (function () {
             _this.valueChanged.emit(val);
             _this.hideAutoCompleteDropdown();
         };
+        this.selectCustomValue = function (text) {
+            _this.customSelected.emit(text);
+            _this.hideAutoCompleteDropdown();
+        };
         this.enterNewText = function (value) {
             _this.renderValue(value);
             _this.ngModelChange.emit(value);
@@ -140,6 +143,7 @@ var NguiAutoCompleteDirective = (function () {
             if (_this.componentRef) {
                 var component = _this.componentRef.instance;
                 component.dropdownVisible = true;
+                component.keyword = evt.target.value;
                 component.reloadListInDelay(evt);
             }
             else {
@@ -196,7 +200,7 @@ var NguiAutoCompleteDirective = (function () {
         this.inputEl.addEventListener('focus', function (e) { return _this.showAutoCompleteDropdown(e); });
         this.inputEl.addEventListener('blur', function (e) {
             _this.scheduledBlurHandler = function () {
-                return _this.hideAutoCompleteDropdown(e);
+                return _this.blurHandler(e);
             };
         });
         this.inputEl.addEventListener('keydown', function (e) { return _this.keydownEventHandler(e); });
@@ -215,6 +219,15 @@ var NguiAutoCompleteDirective = (function () {
         if (changes['ngModel']) {
             this.ngModel = this.setToStringFunction(changes['ngModel'].currentValue);
             this.renderValue(this.ngModel);
+        }
+    };
+    NguiAutoCompleteDirective.prototype.blurHandler = function (event) {
+        if (this.componentRef) {
+            var component = this.componentRef.instance;
+            if (this.selectOnBlur) {
+                component.selectOne(component.filteredList[component.itemIndex]);
+            }
+            this.hideAutoCompleteDropdown(event);
         }
     };
     NguiAutoCompleteDirective.prototype.setToStringFunction = function (item) {
@@ -257,7 +270,6 @@ var NguiAutoCompleteDirective = (function () {
     /** @nocollapse */
     NguiAutoCompleteDirective.ctorParameters = function () { return [
         { type: core_1.ComponentFactoryResolver, },
-        { type: core_1.Renderer, },
         { type: core_1.ViewContainerRef, },
         { type: forms_1.ControlContainer, decorators: [{ type: core_1.Optional }, { type: core_1.Host }, { type: core_1.SkipSelf },] },
     ]; };
@@ -277,6 +289,7 @@ var NguiAutoCompleteDirective = (function () {
         'noMatchFoundText': [{ type: core_1.Input, args: ["no-match-found-text",] },],
         'valueFormatter': [{ type: core_1.Input, args: ["value-formatter",] },],
         'tabToSelect': [{ type: core_1.Input, args: ["tab-to-select",] },],
+        'selectOnBlur': [{ type: core_1.Input, args: ["select-on-blur",] },],
         'matchFormatted': [{ type: core_1.Input, args: ["match-formatted",] },],
         'autoSelectFirstItem': [{ type: core_1.Input, args: ["auto-select-first-item",] },],
         'ngModel': [{ type: core_1.Input },],
@@ -286,6 +299,7 @@ var NguiAutoCompleteDirective = (function () {
         'isRtl': [{ type: core_1.Input, args: ["is-rtl",] },],
         'ngModelChange': [{ type: core_1.Output },],
         'valueChanged': [{ type: core_1.Output },],
+        'customSelected': [{ type: core_1.Output },],
     };
     return NguiAutoCompleteDirective;
 }());

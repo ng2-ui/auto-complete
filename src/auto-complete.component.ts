@@ -246,7 +246,7 @@ export class NguiAutoCompleteComponent implements OnInit {
   }
 
   selectOne(data: any) {
-    if (data) {
+    if (!!data || data === '') {
       this.valueSelected.emit(data);
     } else {
       this.customSelected.emit(this.keyword);

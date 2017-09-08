@@ -132,14 +132,14 @@ let templateStr: string = `
       <div ngui-auto-complete 
         [source]="arrayOfStrings"
         [accept-user-input]="false"
-        (ngModelChange)="myCallback1($event)"
+        (ngModelChange)="myCallback8($event)"
         [is-rtl]="true"
         placeholder="enter text">
-        <input id="model1" [ngModel]="model1" autofocus />
+        <input id="model8" [ngModel]="model8" autofocus />
       </div>
-      <br/>selected model1: {{json(model1)}}<br/><br/>
+      <br/>selected model8: {{json(model8)}}<br/><br/>
     </ngui-utils-8>
-    <pre>{{templateStr | htmlCode:'ngui-utils-1'}}</pre>
+    <pre>{{templateStr | htmlCode:'ngui-utils-8'}}</pre>
     <pre> arrayOfStrings: {{json(arrayOfStrings)}}</pre>
   </fieldset>
  `;
@@ -179,6 +179,7 @@ export class DirectiveTestComponent {
   model2 = {id:1, value: "One"};
   model3 = {key: 3, name: "Key Three"};
   model7 = "";
+  model8 = "";
 
   constructor (
     public http: Http,
@@ -198,6 +199,11 @@ export class DirectiveTestComponent {
   myCallback7(newVal7) {
     console.log("value is changed to ", newVal7);
     this.model7 = newVal7;
+  }
+
+  myCallback8(newVal8) {
+    console.log("value is changed to ", newVal8);
+    this.model8 = newVal8;
   }
 
   renderHero = (data: any) : SafeHtml => {

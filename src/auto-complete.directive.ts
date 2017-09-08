@@ -9,7 +9,6 @@ import {
     OnInit,
     Optional,
     Output,
-    Renderer,
     SimpleChanges,
     SkipSelf,
     ViewContainerRef
@@ -69,7 +68,6 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
 
 
   constructor(private resolver: ComponentFactoryResolver,
-              private renderer: Renderer,
               public  viewContainerRef: ViewContainerRef,
               @Optional() @Host() @SkipSelf() private parentForm: ControlContainer) {
     this.el = this.viewContainerRef.element.nativeElement;
@@ -84,7 +82,8 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
         this.scheduledBlurHandler();
         this.scheduledBlurHandler = null;
       }
-    }
+    };
+
     document.addEventListener('click', this.documentClickListener);
     // wrap this element with <div class="ngui-auto-complete">
     this.wrapperEl = document.createElement("div");
@@ -190,7 +189,6 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
     if (this.el.tagName !== "INPUT" && this.acDropdownEl) {
       this.inputEl.parentElement.insertBefore(this.acDropdownEl, this.inputEl.nextSibling);
     }
-
     this.revertValue = typeof this.ngModel !== "undefined" ? this.ngModel : this.inputEl.value;
 
     setTimeout(() => {
@@ -200,7 +198,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
     });
   };
 
-  blurHandler(evt: any) {
+  blurHandler(event: any) {
     if (this.componentRef) {
       const component = this.componentRef.instance;
 
@@ -208,7 +206,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
         component.selectOne(component.filteredList[component.itemIndex]);
       }
 
-      this.hideAutoCompleteDropdown(evt);
+      this.hideAutoCompleteDropdown(event);
     }
   }
 
@@ -216,28 +214,17 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
     if (this.componentRef) {
       let currentItem: any;
       let hasRevertValue = (typeof this.revertValue !== "undefined");
-      if(this.inputEl && hasRevertValue && this.acceptUserInput === false) {
-        currentItem = this.componentRef.instance.findItemFromSelectValue(this.inputEl.value);
+      if (this.inputEl && hasRevertValue && this.acceptUserInput === false) {
+          currentItem = this.componentRef.instance.findItemFromSelectValue(this.inputEl.value);
       }
-
       this.componentRef.destroy();
       this.componentRef = undefined;
 
-      if(
-        this.inputEl &&
-        hasRevertValue &&
-        this.acceptUserInput === false &&
-        currentItem === null
-      ) {
-        this.selectNewValue(this.revertValue);
-      } else if (
-        this.inputEl &&
-        this.acceptUserInput === true &&
-        typeof currentItem === "undefined" &&
-        event && event.target.value) {
-        this.enterNewText(event.target.value);
+      if (this.inputEl && hasRevertValue && this.acceptUserInput === false && currentItem === null) {
+          this.selectNewValue(this.revertValue);
+      } else if (this.inputEl && this.acceptUserInput === true && typeof currentItem === "undefined" && event && event.target.value) {
+          this.enterNewText(event.target.value);
       }
-
     }
   };
 
@@ -324,7 +311,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
     this.ngModelChange.emit(value);
     this.valueChanged.emit(value);
     this.hideAutoCompleteDropdown();
-  }
+  };
 
   private keydownEventHandler = (evt: any) => {
     if (this.componentRef) {

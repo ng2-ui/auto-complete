@@ -63,6 +63,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
   inputEl: HTMLInputElement;  // input element of this element
   formControl: AbstractControl;
   revertValue: any;
+  private dropdownJustHidden: boolean;
   private scheduledBlurHandler: any;
   private documentClickListener: (e: MouseEvent) => any;
 
@@ -149,6 +150,9 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
 
   //show auto-complete list below the current element
   showAutoCompleteDropdown = (event?: any): void => {
+    if (this.dropdownJustHidden) {
+      return;
+    }
     this.hideAutoCompleteDropdown();
     this.scheduledBlurHandler = null;
 
@@ -226,6 +230,8 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
           this.enterNewText(event.target.value);
       }
     }
+    this.dropdownJustHidden = true;
+    setTimeout(() => this.dropdownJustHidden = false, 100);
   };
 
   styleAutoCompleteDropdown = () => {
@@ -299,11 +305,13 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
     (val !== this.ngModel) && this.ngModelChange.emit(val);
     this.valueChanged.emit(val);
     this.hideAutoCompleteDropdown();
+    setTimeout( () => this.inputEl && this.inputEl.focus());
   };
 
   selectCustomValue = (text: string) => {
     this.customSelected.emit(text);
     this.hideAutoCompleteDropdown();
+    setTimeout( () => this.inputEl && this.inputEl.focus());
   };
 
   enterNewText = (value: any) => {

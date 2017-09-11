@@ -549,6 +549,9 @@ var NguiAutoCompleteDirective = (function () {
         this.customSelected = new core_1.EventEmitter();
         //show auto-complete list below the current element
         this.showAutoCompleteDropdown = function (event) {
+            if (_this.dropdownJustHidden) {
+                return;
+            }
             _this.hideAutoCompleteDropdown();
             _this.scheduledBlurHandler = null;
             var factory = _this.resolver.resolveComponentFactory(auto_complete_component_1.NguiAutoCompleteComponent);
@@ -604,6 +607,8 @@ var NguiAutoCompleteDirective = (function () {
                     _this.enterNewText(event.target.value);
                 }
             }
+            _this.dropdownJustHidden = true;
+            setTimeout(function () { return _this.dropdownJustHidden = false; }, 100);
         };
         this.styleAutoCompleteDropdown = function () {
             if (_this.componentRef) {
@@ -645,10 +650,12 @@ var NguiAutoCompleteDirective = (function () {
             (val !== _this.ngModel) && _this.ngModelChange.emit(val);
             _this.valueChanged.emit(val);
             _this.hideAutoCompleteDropdown();
+            setTimeout(function () { return _this.inputEl && _this.inputEl.focus(); });
         };
         this.selectCustomValue = function (text) {
             _this.customSelected.emit(text);
             _this.hideAutoCompleteDropdown();
+            setTimeout(function () { return _this.inputEl && _this.inputEl.focus(); });
         };
         this.enterNewText = function (value) {
             _this.renderValue(value);

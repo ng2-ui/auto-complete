@@ -30,7 +30,9 @@ Test with array of id/value
   see "Select One"
   click
   verify element #model2 value is ""
-  enter text "four" into #model2
+  press "f" into "#model2"
+  press "o" into "#model2"
+  press "u" into "#model2"
   click "ul li:nth-child(2)"
   verify element #model2 value is "Four"
 

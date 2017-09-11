@@ -41,6 +41,7 @@ export declare class NguiAutoCompleteDirective implements OnInit, OnChanges {
     inputEl: HTMLInputElement;
     formControl: AbstractControl;
     revertValue: any;
+    private dropdownJustHidden;
     private scheduledBlurHandler;
     private documentClickListener;
     constructor(resolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, parentForm: ControlContainer);

@@ -15,10 +15,10 @@ import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 
 import {AppComponent} from './app.component';
 // noinspection TypeScriptCheckImport
-import {NguiAutoCompleteModule} from '@ngui/auto-complete';
+import {NguiAutoCompleteModule} from '../src/auto-complete.module';
 
 import {APP_ROUTER_COMPONENTS, APP_ROUTER_PROVIDERS} from './app.route';
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
     imports: [

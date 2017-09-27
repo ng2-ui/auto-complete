@@ -24,6 +24,25 @@ let templateStr: string = `
     <pre>{{templateStr | htmlCode:'ngui-utils-1'}}</pre>
     <pre> arrayOfStrings: {{json(arrayOfStrings)}}</pre>
   </fieldset>
+
+  <fieldset><legend><h2>Source as Array of Strings. Drop-down on focus disable</h2></legend>
+    <ngui-utils-1>
+      <div ngui-auto-complete 
+        [source]="arrayOfStrings"
+        [accept-user-input]="true"
+        [open-on-focus]="false"
+        [auto-select-first-item]="false"
+        [select-on-blur]="true"
+        (ngModelChange)="myCallback1($event)"
+        (customSelected)="customCallback($event)"
+        placeholder="enter text">
+        <input id="model1" [ngModel]="model1" autofocus />
+      </div>
+      <br/>selected model1: {{json(model1)}}<br/><br/>
+    </ngui-utils-1>
+    <pre>{{templateStr | htmlCode:'ngui-utils-1'}}</pre>
+    <pre> arrayOfStrings: {{json(arrayOfStrings)}}</pre>
+  </fieldset>
     
   <fieldset><legend><h2>Source as Array of id/value</h2></legend>
     <ngui-utils-2>

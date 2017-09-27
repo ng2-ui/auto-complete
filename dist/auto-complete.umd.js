@@ -542,6 +542,7 @@ var NguiAutoCompleteDirective = (function () {
         this.selectOnBlur = false;
         this.matchFormatted = false;
         this.autoSelectFirstItem = false;
+        this.openOnFocus = true;
         this.zIndex = "1";
         this.isRtl = false;
         this.ngModelChange = new core_1.EventEmitter();
@@ -727,7 +728,9 @@ var NguiAutoCompleteDirective = (function () {
         // so that it displays correctly
         this.inputEl = this.el.tagName === "INPUT" ?
             this.el : this.el.querySelector("input");
-        this.inputEl.addEventListener('focus', function (e) { return _this.showAutoCompleteDropdown(e); });
+        if (this.openOnFocus) {
+            this.inputEl.addEventListener('focus', function (e) { return _this.showAutoCompleteDropdown(e); });
+        }
         this.inputEl.addEventListener('blur', function (e) {
             _this.scheduledBlurHandler = function () {
                 return _this.blurHandler(e);
@@ -864,6 +867,10 @@ var NguiAutoCompleteDirective = (function () {
         core_1.Input("auto-select-first-item"),
         __metadata("design:type", Boolean)
     ], NguiAutoCompleteDirective.prototype, "autoSelectFirstItem", void 0);
+    __decorate([
+        core_1.Input("open-on-focus"),
+        __metadata("design:type", Boolean)
+    ], NguiAutoCompleteDirective.prototype, "openOnFocus", void 0);
     __decorate([
         core_1.Input(),
         __metadata("design:type", String)

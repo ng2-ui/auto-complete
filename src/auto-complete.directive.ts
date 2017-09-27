@@ -42,6 +42,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
   @Input("select-on-blur") selectOnBlur: boolean = false;
   @Input("match-formatted") matchFormatted: boolean = false;
   @Input("auto-select-first-item") autoSelectFirstItem: boolean = false;
+  @Input("open-on-focus") openOnFocus: boolean = true;
 
   @Input() ngModel: String;
   @Input('formControlName') formControlName: string;
@@ -121,7 +122,9 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
     this.inputEl = this.el.tagName === "INPUT" ?
         <HTMLInputElement>this.el : <HTMLInputElement>this.el.querySelector("input");
 
-    this.inputEl.addEventListener('focus', e => this.showAutoCompleteDropdown(e));
+      if (this.openOnFocus) {
+          this.inputEl.addEventListener('focus', e => this.showAutoCompleteDropdown(e));
+      }
     this.inputEl.addEventListener('blur', (e) => {
         this.scheduledBlurHandler = () => {
           return this.blurHandler(e);

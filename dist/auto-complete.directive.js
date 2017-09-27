@@ -19,6 +19,7 @@ var NguiAutoCompleteDirective = (function () {
         this.selectOnBlur = false;
         this.matchFormatted = false;
         this.autoSelectFirstItem = false;
+        this.openOnFocus = true;
         this.zIndex = "1";
         this.isRtl = false;
         this.ngModelChange = new core_1.EventEmitter();
@@ -204,7 +205,9 @@ var NguiAutoCompleteDirective = (function () {
         // so that it displays correctly
         this.inputEl = this.el.tagName === "INPUT" ?
             this.el : this.el.querySelector("input");
-        this.inputEl.addEventListener('focus', function (e) { return _this.showAutoCompleteDropdown(e); });
+        if (this.openOnFocus) {
+            this.inputEl.addEventListener('focus', function (e) { return _this.showAutoCompleteDropdown(e); });
+        }
         this.inputEl.addEventListener('blur', function (e) {
             _this.scheduledBlurHandler = function () {
                 return _this.blurHandler(e);
@@ -299,6 +302,7 @@ var NguiAutoCompleteDirective = (function () {
         'selectOnBlur': [{ type: core_1.Input, args: ["select-on-blur",] },],
         'matchFormatted': [{ type: core_1.Input, args: ["match-formatted",] },],
         'autoSelectFirstItem': [{ type: core_1.Input, args: ["auto-select-first-item",] },],
+        'openOnFocus': [{ type: core_1.Input, args: ["open-on-focus",] },],
         'ngModel': [{ type: core_1.Input },],
         'formControlName': [{ type: core_1.Input, args: ['formControlName',] },],
         'extFormControl': [{ type: core_1.Input, args: ['formControl',] },],

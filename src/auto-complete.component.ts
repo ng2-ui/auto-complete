@@ -184,7 +184,7 @@ export class NguiAutoCompleteComponent implements OnInit {
   hideDropdownList(): void {
     this.dropdownVisible = false;
   }
-  
+
   findItemFromSelectValue(selectText: string): any {
     let matchingItems = this.filteredList
                             .filter(item => ('' + item) === selectText);
@@ -267,6 +267,9 @@ export class NguiAutoCompleteComponent implements OnInit {
 
   inputElKeyHandler = (evt: any) => {
     let totalNumItem = this.filteredList.length;
+    if (0 === totalNumItem) {
+        return ;
+    }
 
     switch (evt.keyCode) {
       case 27: // ESC, hide auto complete
@@ -280,11 +283,7 @@ export class NguiAutoCompleteComponent implements OnInit {
       case 40: // DOWN, select the next li el or the first one
         this.dropdownVisible = true;
         let sum = this.itemIndex;
-        if (this.itemIndex === null) {
-          sum = 0;
-        } else {
-          sum = sum + 1;
-        }
+        sum = (this.itemIndex === null) ? 0 : sum + 1;
         this.itemIndex = (totalNumItem + sum) % totalNumItem;
         this.scrollToView(this.itemIndex);
         break;
@@ -301,7 +300,6 @@ export class NguiAutoCompleteComponent implements OnInit {
         break;
     }
   };
-
 
   scrollToView(index) {
     const container = this.autoCompleteContainer.nativeElement;

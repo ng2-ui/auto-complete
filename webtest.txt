@@ -3,7 +3,7 @@ To run this file, please run `npm test` or `webtest webtest.txt`
 
 Test with Array of strings
   open browser
-  go to http://localhost:9002
+  go to http://localhost:9002/#/directive-test
   verify text 'selected model1: "is"' present
   click #model1
   clear "#model1"

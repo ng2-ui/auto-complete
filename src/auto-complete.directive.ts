@@ -43,6 +43,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
   @Input("match-formatted") matchFormatted: boolean = false;
   @Input("auto-select-first-item") autoSelectFirstItem: boolean = false;
   @Input("open-on-focus") openOnFocus: boolean = true;
+  @Input("blur-after-click") blurAfterClick: boolean = true;
 
   @Input() ngModel: String;
   @Input('formControlName') formControlName: string;
@@ -86,7 +87,9 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
       }
     };
 
-    document.addEventListener('click', this.documentClickListener);
+    if(this.blurAfterClick){
+      document.addEventListener('click', this.documentClickListener);
+    }
     // wrap this element with <div class="ngui-auto-complete">
     this.wrapperEl = document.createElement("div");
     this.wrapperEl.className = "ngui-auto-complete-wrapper";

@@ -41,6 +41,9 @@ var NguiAutoCompleteComponent = (function () {
         };
         this.inputElKeyHandler = function (evt) {
             var totalNumItem = _this.filteredList.length;
+            if (0 === totalNumItem) {
+                return;
+            }
             switch (evt.keyCode) {
                 case 27:// ESC, hide auto complete
                     break;
@@ -51,12 +54,7 @@ var NguiAutoCompleteComponent = (function () {
                 case 40:// DOWN, select the next li el or the first one
                     _this.dropdownVisible = true;
                     var sum = _this.itemIndex;
-                    if (_this.itemIndex === null) {
-                        sum = 0;
-                    }
-                    else {
-                        sum = sum + 1;
-                    }
+                    sum = (_this.itemIndex === null) ? 0 : sum + 1;
                     _this.itemIndex = (totalNumItem + sum) % totalNumItem;
                     _this.scrollToView(_this.itemIndex);
                     break;

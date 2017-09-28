@@ -131,6 +131,7 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   * **`match-formatted`** boolean, if `true`, keyword will be matched against list values formatted with `list-formatter`, instead of raw objects. Default is `false`
   * **`auto-select-first-item`**, boolean, if `true`, the first item of the list is automatically selected, if `false`, user must select manually an item. Default is `false`
   * **`open-on-focus`**, boolean, if `false` drop down won't open on a focus event, . Default is `true`
+  * **`blur-after-click`**, boolean, if `false` disabling `handling of blur events resulting from interacting with a scrollbar introduced by content overflow (Internet explorer issue)` workaround, . Default is `true`
   
 ## For Developers
 

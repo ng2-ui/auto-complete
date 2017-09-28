@@ -130,6 +130,7 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   * **`select-on-blur`** boolean, if `true`, `blur` event will set the value from the selected item before focus leaves the control. Default is `false`
   * **`match-formatted`** boolean, if `true`, keyword will be matched against list values formatted with `list-formatter`, instead of raw objects. Default is `false`
   * **`auto-select-first-item`**, boolean, if `true`, the first item of the list is automatically selected, if `false`, user must select manually an item. Default is `false`
+  * **`open-on-focus`**, boolean, if `false` drop down won't open on a focus event, . Default is `true`
   
 ## For Developers
 

@@ -234,6 +234,9 @@ var NguiAutoCompleteComponent = (function () {
         };
         this.inputElKeyHandler = function (evt) {
             var totalNumItem = _this.filteredList.length;
+            if (0 === totalNumItem) {
+                return;
+            }
             switch (evt.keyCode) {
                 case 27:// ESC, hide auto complete
                     break;
@@ -244,12 +247,7 @@ var NguiAutoCompleteComponent = (function () {
                 case 40:// DOWN, select the next li el or the first one
                     _this.dropdownVisible = true;
                     var sum = _this.itemIndex;
-                    if (_this.itemIndex === null) {
-                        sum = 0;
-                    }
-                    else {
-                        sum = sum + 1;
-                    }
+                    sum = (_this.itemIndex === null) ? 0 : sum + 1;
                     _this.itemIndex = (totalNumItem + sum) % totalNumItem;
                     _this.scrollToView(_this.itemIndex);
                     break;
@@ -543,6 +541,7 @@ var NguiAutoCompleteDirective = (function () {
         this.matchFormatted = false;
         this.autoSelectFirstItem = false;
         this.openOnFocus = true;
+        this.blurAfterClick = true;
         this.zIndex = "1";
         this.isRtl = false;
         this.ngModelChange = new core_1.EventEmitter();
@@ -694,7 +693,9 @@ var NguiAutoCompleteDirective = (function () {
                 _this.scheduledBlurHandler = null;
             }
         };
-        document.addEventListener('click', this.documentClickListener);
+        if (this.blurAfterClick) {
+            document.addEventListener('click', this.documentClickListener);
+        }
         // wrap this element with <div class="ngui-auto-complete">
         this.wrapperEl = document.createElement("div");
         this.wrapperEl.className = "ngui-auto-complete-wrapper";
@@ -871,6 +872,10 @@ var NguiAutoCompleteDirective = (function () {
         core_1.Input("open-on-focus"),
         __metadata("design:type", Boolean)
     ], NguiAutoCompleteDirective.prototype, "openOnFocus", void 0);
+    __decorate([
+        core_1.Input("blur-after-click"),
+        __metadata("design:type", Boolean)
+    ], NguiAutoCompleteDirective.prototype, "blurAfterClick", void 0);
     __decorate([
         core_1.Input(),
         __metadata("design:type", String)

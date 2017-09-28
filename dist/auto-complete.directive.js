@@ -20,6 +20,7 @@ var NguiAutoCompleteDirective = (function () {
         this.matchFormatted = false;
         this.autoSelectFirstItem = false;
         this.openOnFocus = true;
+        this.blurAfterClick = true;
         this.zIndex = "1";
         this.isRtl = false;
         this.ngModelChange = new core_1.EventEmitter();
@@ -171,7 +172,9 @@ var NguiAutoCompleteDirective = (function () {
                 _this.scheduledBlurHandler = null;
             }
         };
-        document.addEventListener('click', this.documentClickListener);
+        if (this.blurAfterClick) {
+            document.addEventListener('click', this.documentClickListener);
+        }
         // wrap this element with <div class="ngui-auto-complete">
         this.wrapperEl = document.createElement("div");
         this.wrapperEl.className = "ngui-auto-complete-wrapper";
@@ -303,6 +306,7 @@ var NguiAutoCompleteDirective = (function () {
         'matchFormatted': [{ type: core_1.Input, args: ["match-formatted",] },],
         'autoSelectFirstItem': [{ type: core_1.Input, args: ["auto-select-first-item",] },],
         'openOnFocus': [{ type: core_1.Input, args: ["open-on-focus",] },],
+        'blurAfterClick': [{ type: core_1.Input, args: ["blur-after-click",] },],
         'ngModel': [{ type: core_1.Input },],
         'formControlName': [{ type: core_1.Input, args: ['formControlName',] },],
         'extFormControl': [{ type: core_1.Input, args: ['formControl',] },],

@@ -1,16 +1,5 @@
 # auto-complete
 
-[![Build Status](https://travis-ci.org/ng2-ui/auto-complete.svg?branch=master)](https://travis-ci.org/ng2-ui/auto-complete)
-[![Join the chat at https://gitter.im/ng2-ui/auto-complete](https://badges.gitter.im/ng2-ui/auto-complete.svg)](https://gitter.im/ng2-ui/auto-complete?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-## IMPORTANT NOTICE
-
-After 0.13.0 or higher, ng2-auto-complete has been changed to @ngui/auto-complete. Here are the changes;
-
-  * Module `ng2-auto-complete` is moved to `@ngui/auto-complete`.
-  * Directive `ng2-auto-complete` is moved to `ngui-auto-complete`.
-  * Class name `Ng2AutoComplete` is moved to `NguiAutoComplete`.
-
 <a href="https://rawgit.com/ng2-ui/auto-complete/master/app/index.html">
   <img src="http://i.imgur.com/dAmheg0.png" />
 </a>

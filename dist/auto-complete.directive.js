@@ -20,6 +20,7 @@ var NguiAutoCompleteDirective = (function () {
         this.matchFormatted = false;
         this.autoSelectFirstItem = false;
         this.openOnFocus = true;
+        this.reFocusAfterSelect = true;
         this.zIndex = "1";
         this.isRtl = false;
         this.ngModelChange = new core_1.EventEmitter();
@@ -128,12 +129,22 @@ var NguiAutoCompleteDirective = (function () {
             (val !== _this.ngModel) && _this.ngModelChange.emit(val);
             _this.valueChanged.emit(val);
             _this.hideAutoCompleteDropdown();
-            setTimeout(function () { return _this.inputEl && _this.inputEl.focus(); });
+            setTimeout(function () {
+                if (_this.reFocusAfterSelect) {
+                    _this.inputEl.focus();
+                }
+                return _this.inputEl;
+            });
         };
         this.selectCustomValue = function (text) {
             _this.customSelected.emit(text);
             _this.hideAutoCompleteDropdown();
-            setTimeout(function () { return _this.inputEl && _this.inputEl.focus(); });
+            setTimeout(function () {
+                if (_this.reFocusAfterSelect) {
+                    _this.inputEl.focus();
+                }
+                return _this.inputEl;
+            });
         };
         this.enterNewText = function (value) {
             _this.renderValue(value);
@@ -303,6 +314,7 @@ var NguiAutoCompleteDirective = (function () {
         'matchFormatted': [{ type: core_1.Input, args: ["match-formatted",] },],
         'autoSelectFirstItem': [{ type: core_1.Input, args: ["auto-select-first-item",] },],
         'openOnFocus': [{ type: core_1.Input, args: ["open-on-focus",] },],
+        'reFocusAfterSelect': [{ type: core_1.Input, args: ["re-focus-after-select",] },],
         'ngModel': [{ type: core_1.Input },],
         'formControlName': [{ type: core_1.Input, args: ['formControlName',] },],
         'extFormControl': [{ type: core_1.Input, args: ['formControl',] },],

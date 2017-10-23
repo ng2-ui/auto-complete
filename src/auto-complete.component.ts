@@ -267,20 +267,24 @@ export class NguiAutoCompleteComponent implements OnInit {
 
   inputElKeyHandler = (evt: any) => {
     let totalNumItem = this.filteredList.length;
-    if (0 === totalNumItem) {
-        return ;
-    }
 
     switch (evt.keyCode) {
       case 27: // ESC, hide auto complete
+        this.selectOne(undefined);
         break;
 
       case 38: // UP, select the previous li el
+        if (0 === totalNumItem) {
+          return;
+        }
         this.itemIndex = (totalNumItem + this.itemIndex - 1) % totalNumItem;
         this.scrollToView(this.itemIndex);
         break;
 
       case 40: // DOWN, select the next li el or the first one
+        if (0 === totalNumItem) {
+          return;
+        }
         this.dropdownVisible = true;
         let sum = this.itemIndex;
         sum = (this.itemIndex === null) ? 0 : sum + 1;

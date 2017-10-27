@@ -121,7 +121,7 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   * **`auto-select-first-item`**, boolean, if `true`, the first item of the list is automatically selected, if `false`, user must select manually an item. Default is `false`
   * **`open-on-focus`**, boolean, if `false` drop down won't open on a focus event, . Default is `true`
   * **`re-focus-after-select property`**, boolean, if `false` an auto focus behavior after select (example: custom value on blur event or issue #276) is disabled . Default is `true`
-  
+  * **`autocomplete`**, boolean, default `false`, if `true` remove the attribute `autocomplete="off"` of the input. 
 ## For Developers
 
 ### To start

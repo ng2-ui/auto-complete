@@ -24,6 +24,7 @@ import {AbstractControl, ControlContainer, FormControl, FormGroup, FormGroupName
 })
 export class NguiAutoCompleteDirective implements OnInit, OnChanges {
 
+  @Input("autocomplete") autocomplete = false;
   @Input("auto-complete-placeholder") autoCompletePlaceholder: string;
   @Input("source") source: any;
   @Input("path-to-data") pathToData: string;
@@ -123,9 +124,13 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
     this.inputEl = this.el.tagName === "INPUT" ?
         <HTMLInputElement>this.el : <HTMLInputElement>this.el.querySelector("input");
 
-      if (this.openOnFocus) {
-          this.inputEl.addEventListener('focus', e => this.showAutoCompleteDropdown(e));
-      }
+    if (this.openOnFocus) {
+        this.inputEl.addEventListener('focus', e => this.showAutoCompleteDropdown(e));
+    }
+
+    if (!this.autocomplete) {
+      this.inputEl.setAttribute('autocomplete', 'off');
+    }
     this.inputEl.addEventListener('blur', (e) => {
         this.scheduledBlurHandler = () => {
           return this.blurHandler(e);

@@ -117,16 +117,16 @@ let templateStr: string = `
     
   <fieldset><legend><h2>With Material Design</h2></legend>
     <ngui-utils-6>
-      <md-input-container>
-        <span mdPrefix>$&nbsp;</span>
-        <input mdInput ngui-auto-complete style="border: 1px solid #ccc"
+      <mat-input-container>
+        <span matPrefix>$&nbsp;</span>
+        <input matInput ngui-auto-complete style="border: 1px solid #ccc"
           id="model6"
           [(ngModel)]="myModel"
           [source]="arrayOfNumbers"
           [list-formatter]="rightAligned"
           placeholder="amount" align="end"/>
-          <span mdSuffix>.00</span>
-      </md-input-container>
+          <span matSuffix>.00</span>
+      </mat-input-container>
     </ngui-utils-6>
     <pre>{{templateStr | htmlCode:'ngui-utils-6'}}</pre>
     <pre>arrayOfNumbers: {{json(arrayOfNumbers)}}</pre>

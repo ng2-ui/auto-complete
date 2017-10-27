@@ -14,6 +14,7 @@ import {NguiAutoComplete} from "./auto-complete";
     <!-- keyword input -->
     <input *ngIf="showInputTag"
            #autoCompleteInput class="keyword"
+           [attr.autocomplete]="autocomplete ? 'null' : 'off'"
            placeholder="{{placeholder}}"
            (focus)="showDropdownList($event)"
            (blur)="blurHandler($event)"
@@ -100,6 +101,7 @@ export class NguiAutoCompleteComponent implements OnInit {
   /**
    * public input properties
    */
+  @Input("autocomplete") autocomplete = false;
   @Input("list-formatter") listFormatter: (arg: any) => string;
   @Input("source") source: any;
   @Input("path-to-data") pathToData: string;

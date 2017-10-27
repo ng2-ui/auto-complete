@@ -10,7 +10,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {NguiUtilsModule} from '@ngui/utils';
-import {MdInputModule} from '@angular/material';
+import {MatInputModule} from '@angular/material';
 import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 
 import {AppComponent} from './app.component';
@@ -28,7 +28,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
         FormsModule,
         HttpModule,
         NguiUtilsModule,
-        MdInputModule,
+        MatInputModule,
         NguiAutoCompleteModule
     ],
     declarations: [AppComponent, APP_ROUTER_COMPONENTS],
@@ -37,8 +37,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     ],
     bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule { }
 
 // compile and launch the module
 platformBrowserDynamic().bootstrapModule(AppModule);

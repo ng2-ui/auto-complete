@@ -1,7 +1,7 @@
 # auto-complete
 
-## NOTE: NOT-MATAINED. 
-Accepting volunteers and ready to transfer full power to who wants to maintain this repo.
+## IMPORTANT: NOT-MATAINED. 
+Accepting volunteers and ready to transfer ownership.
 
 <a href="https://rawgit.com/ng2-ui/auto-complete/master/app/index.html">
   <img src="http://i.imgur.com/dAmheg0.png" />

@@ -13,21 +13,22 @@
     "build": "npm-run-all --serial clean build:ngc build:umd build:app",
     "build:ngc": "ngc -p tsconfig.ngc.json",
     "build:umd": "cross-env NODE_ENV=prod webpack",
-    "build:app": "cross-env NODE_ENV=prod webpack --config app/webpack.config"
+    "build:app": "cross-env NODE_ENV=prod webpack --config app/webpack.config",
+    "build-and-publish": "npm run build && npm version patch && npm publish --access=public"
   },
   "dependencies": {
     "@ngui/utils": "^0.8.0"
   },
   "devDependencies": {
     "@angular/animations": "^4.0.0",
-    "@angular/cdk": "^2.0.0-beta.8",
+    "@angular/cdk": "^2.0.0-beta.12",
     "@angular/common": "^4.0.0",
     "@angular/compiler": "^4.0.0",
     "@angular/compiler-cli": "^4.0.0",
     "@angular/core": "^4.0.0",
     "@angular/forms": "^4.0.0",
     "@angular/http": "^4.0.0",
-    "@angular/material": "^2.0.0-beta.8",
+    "@angular/material": "^2.0.0-beta.12",
     "@angular/platform-browser": "^4.0.0",
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",

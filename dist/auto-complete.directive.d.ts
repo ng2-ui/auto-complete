@@ -8,6 +8,7 @@ export declare class NguiAutoCompleteDirective implements OnInit, OnChanges {
     private resolver;
     viewContainerRef: ViewContainerRef;
     private parentForm;
+    autocomplete: boolean;
     autoCompletePlaceholder: string;
     source: any;
     pathToData: string;
@@ -27,6 +28,7 @@ export declare class NguiAutoCompleteDirective implements OnInit, OnChanges {
     matchFormatted: boolean;
     autoSelectFirstItem: boolean;
     openOnFocus: boolean;
+    closeOnFocusOut: boolean;
     reFocusAfterSelect: boolean;
     ngModel: String;
     formControlName: string;

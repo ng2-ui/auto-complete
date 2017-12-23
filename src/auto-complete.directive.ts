@@ -44,6 +44,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
   @Input("match-formatted") matchFormatted: boolean = false;
   @Input("auto-select-first-item") autoSelectFirstItem: boolean = false;
   @Input("open-on-focus") openOnFocus: boolean = true;
+  @Input("close-on-focusout") closeOnFocusOut: boolean = true;
   @Input("re-focus-after-select") reFocusAfterSelect: boolean = true;
 
   @Input() ngModel: String;
@@ -126,6 +127,10 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges {
 
     if (this.openOnFocus) {
         this.inputEl.addEventListener('focus', e => this.showAutoCompleteDropdown(e));
+    }
+
+    if (this.closeOnFocusOut) {
+        this.inputEl.addEventListener('focusout', e => this.hideAutoCompleteDropdown(e));
     }
 
     if (!this.autocomplete) {

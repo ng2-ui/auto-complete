@@ -1,6 +1,6 @@
 # auto-complete
 
-## IMPORTANT: NOT-MATAINED. 
+## IMPORTANT: NOT-MATAINED.
 Accepting volunteers and ready to transfer ownership.
 
 <a href="https://rawgit.com/ng2-ui/auto-complete/master/app/index.html">
@@ -12,7 +12,7 @@ Below are plunks for different scenarios:
 **`Template Driven Forms`**
 
 _ngModel_ http://plnkr.co/edit/3pB1Gx?p=preview
-  
+
 **`Reactive Forms`**
 
  _FormGroup_  http://plnkr.co/edit/2osUq6?p=preview
@@ -44,11 +44,11 @@ _FormControl_ http://plnkr.co/edit/A5CW2e?p=preview
 2. add `map` and `packages` to your `systemjs.config.js` unless you are using `webpack`
 
         map['@ngui/auto-complete'] = 'node_modules/@ngui/auto-complete/dist/auto-complete.umd.js';
-        
+
 3. import NguiAutoCompleteModule to your AppModule
 
         import { NguiAutoCompleteModule } from '@ngui/auto-complete';
-        
+
         @NgModule({
           imports: [BrowserModule, FormsModule, NguiAutoCompleteModule],
           declarations: [AppComponent],
@@ -60,7 +60,7 @@ _FormControl_ http://plnkr.co/edit/A5CW2e?p=preview
 ## Usage it in your code
 
         <input auto-complete [(ngModel)]="myData" [source]="mySource" />
-        
+
 For full example, please check `test` directory to see the example of;
 
   - `systemjs.config.js`
@@ -72,7 +72,7 @@ For full example, please check `test` directory to see the example of;
 
 This module is only improved and maintained by contributors like you;
 
-As a contributor, it's NOT required to be skilled in Javascript nor Angular. 
+As a contributor, it's NOT required to be skilled in Javascript nor Angular.
 You can contribute to the following;
 
   * Updating README.md
@@ -85,7 +85,7 @@ In result of your active contribution, you will be listed as a core contributor
 on https://ng2-ui.github.io, and a member of ng2-ui too.
 
 If you are interested in becoming a contributor and/or a member of ng-ui,
-please send me email to `allenhwkim AT gmail.com` with your github id. 
+please send me email to `allenhwkim AT gmail.com` with your github id.
 
 ## attributes
   All options are optional except ngModel and source
@@ -93,17 +93,17 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   * **`ngModel`**, any, variable that autocomplete result is assigned to
   * **`source`**, array or string, required. data source for dropdown list
   * **`auto-complete-placeholder`**,  string, autocomplete input guide text
-  * **`value-formatter`**, string or function variable name, custom value formatting function. e.g. '(id) value', 'myValueFormatter'. 
-  
+  * **`value-formatter`**, string or function variable name, custom value formatting function. e.g. '(id) value', 'myValueFormatter'.
+
            myValueFormatter(data: any): string {
               return `(${data[id]}) ${data[value]}`;
             }
-  * **`list-formatter`**, string or function variable name, custom list formatting function. e.g.  '(key) name', 'myListFormatter'. 
-  
+  * **`list-formatter`**, string or function variable name, custom list formatting function. e.g.  '(key) name', 'myListFormatter'.
+
            myListFormatter(data: any): string {
               return `(${data[key]}) ${data[name]}`;
             }
-  
+
   * **`path-to-data`**, string, e.g., `data.myList`, path to array data in http response
   * **`min-chars, number`**, when source is remote data, the number of character to see drop-down list
   * **`display-property-name`**, string, key name of text to show. default is `value`
@@ -123,8 +123,9 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   * **`match-formatted`** boolean, if `true`, keyword will be matched against list values formatted with `list-formatter`, instead of raw objects. Default is `false`
   * **`auto-select-first-item`**, boolean, if `true`, the first item of the list is automatically selected, if `false`, user must select manually an item. Default is `false`
   * **`open-on-focus`**, boolean, if `false` drop down won't open on a focus event, . Default is `true`
+  * **`close-on-focus`**, boolean, if `false` drop down will close on a focusout event, . Default is `true`
   * **`re-focus-after-select property`**, boolean, if `false` an auto focus behavior after select (example: custom value on blur event or issue #276) is disabled . Default is `true`
-  * **`autocomplete`**, boolean, default `false`, if `true` remove the attribute `autocomplete="off"` of the input. 
+  * **`autocomplete`**, boolean, default `false`, if `true` remove the attribute `autocomplete="off"` of the input.
 ## For Developers
 
 ### To start
@@ -133,7 +134,7 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
     $ cd auto-complete
     $ npm install
     $ npm start
- 
+
 ### List of available npm tasks
 
   * `npm run` : List all available tasks

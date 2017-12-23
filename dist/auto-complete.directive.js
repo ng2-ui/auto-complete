@@ -12,6 +12,7 @@ var NguiAutoCompleteDirective = (function () {
         this.resolver = resolver;
         this.viewContainerRef = viewContainerRef;
         this.parentForm = parentForm;
+        this.autocomplete = false;
         this.acceptUserInput = true;
         this.loadingTemplate = null;
         this.loadingText = "Loading";
@@ -20,6 +21,7 @@ var NguiAutoCompleteDirective = (function () {
         this.matchFormatted = false;
         this.autoSelectFirstItem = false;
         this.openOnFocus = true;
+        this.closeOnFocusOut = true;
         this.reFocusAfterSelect = true;
         this.zIndex = "1";
         this.isRtl = false;
@@ -219,6 +221,12 @@ var NguiAutoCompleteDirective = (function () {
         if (this.openOnFocus) {
             this.inputEl.addEventListener('focus', function (e) { return _this.showAutoCompleteDropdown(e); });
         }
+        if (this.closeOnFocusOut) {
+            this.inputEl.addEventListener('focusout', function (e) { return _this.hideAutoCompleteDropdown(e); });
+        }
+        if (!this.autocomplete) {
+            this.inputEl.setAttribute('autocomplete', 'off');
+        }
         this.inputEl.addEventListener('blur', function (e) {
             _this.scheduledBlurHandler = function () {
                 return _this.blurHandler(e);
@@ -295,6 +303,7 @@ var NguiAutoCompleteDirective = (function () {
         { type: forms_1.ControlContainer, decorators: [{ type: core_1.Optional }, { type: core_1.Host }, { type: core_1.SkipSelf },] },
     ]; };
     NguiAutoCompleteDirective.propDecorators = {
+        'autocomplete': [{ type: core_1.Input, args: ["autocomplete",] },],
         'autoCompletePlaceholder': [{ type: core_1.Input, args: ["auto-complete-placeholder",] },],
         'source': [{ type: core_1.Input, args: ["source",] },],
         'pathToData': [{ type: core_1.Input, args: ["path-to-data",] },],
@@ -314,6 +323,7 @@ var NguiAutoCompleteDirective = (function () {
         'matchFormatted': [{ type: core_1.Input, args: ["match-formatted",] },],
         'autoSelectFirstItem': [{ type: core_1.Input, args: ["auto-select-first-item",] },],
         'openOnFocus': [{ type: core_1.Input, args: ["open-on-focus",] },],
+        'closeOnFocusOut': [{ type: core_1.Input, args: ["close-on-focusout",] },],
         'reFocusAfterSelect': [{ type: core_1.Input, args: ["re-focus-after-select",] },],
         'ngModel': [{ type: core_1.Input },],
         'formControlName': [{ type: core_1.Input, args: ['formControlName',] },],

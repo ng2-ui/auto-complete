@@ -11,6 +11,7 @@ export declare class NguiAutoCompleteComponent implements OnInit {
     /**
      * public input properties
      */
+    autocomplete: boolean;
     listFormatter: (arg: any) => string;
     source: any;
     pathToData: string;

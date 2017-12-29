@@ -1,7 +1,8 @@
-import { Component } from "@angular/core";
-import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
+import {Http} from "@angular/http";
+import {Component, ViewEncapsulation} from "@angular/core";
+import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 
-import { AppSvc } from "./app.service";
+import {AppSvc} from "./app.service";
 
 let templateStr: string = `
   <h1> Autocomplete Directive Test - Local Source </h1>
@@ -9,10 +10,31 @@ let templateStr: string = `
   <fieldset><legend><h2>Source as Array of Strings</h2></legend>
     <ngui-utils-1>
       <div ngui-auto-complete 
-        [min-chars]="1"
         [source]="arrayOfStrings"
-        [accept-user-input]="false"
-        (ngModelChange)="myCallback($event)"
+        [accept-user-input]="true"
+        [auto-select-first-item]="false"
+        [select-on-blur]="true"
+        (ngModelChange)="myCallback1($event)"
+        (customSelected)="customCallback($event)"
+        placeholder="enter text">
+        <input id="model1" [ngModel]="model1" autofocus />
+      </div>
+      <br/>selected model1: {{json(model1)}}<br/><br/>
+    </ngui-utils-1>
+    <pre>{{templateStr | htmlCode:'ngui-utils-1'}}</pre>
+    <pre> arrayOfStrings: {{json(arrayOfStrings)}}</pre>
+  </fieldset>
+
+  <fieldset><legend><h2>Source as Array of Strings. Drop-down on focus disable</h2></legend>
+    <ngui-utils-1>
+      <div ngui-auto-complete 
+        [source]="arrayOfStrings"
+        [accept-user-input]="true"
+        [open-on-focus]="false"
+        [auto-select-first-item]="false"
+        [select-on-blur]="true"
+        (ngModelChange)="myCallback1($event)"
+        (customSelected)="customCallback($event)"
         placeholder="enter text">
         <input id="model1" [ngModel]="model1" autofocus />
       </div>
@@ -30,7 +52,8 @@ let templateStr: string = `
         blank-option-text="Select One"
         [(ngModel)]="model2"
         [source]="arrayOfKeyValues" 
-        placeholder="enter text"/> 
+        placeholder="enter text"
+        z-index="4"/> 
       <a href="javascript:void(0)" (click)="model2={id:'change', value: 'it'}">Change It</a>
       <br/>selected model2: {{model2 | json}}<br/><br/>
     </ngui-utils-2>
@@ -56,7 +79,7 @@ let templateStr: string = `
       
   <fieldset><legend><h2>Source as HTTP URI String</h2></legend>
     <ngui-utils-4>
-      <input  ngui-auto-complete
+      <input ngui-auto-complete
         id="model4"
         [(ngModel)]="model4"
         placeholder="Enter Address(min. 2 chars)"
@@ -65,6 +88,7 @@ let templateStr: string = `
         list-formatter="formatted_address"
         path-to-data="results"
         loading-text="Google Is Thinking..."
+        [loading-template]="loadingTemplate"
         max-num-list="5"
         min-chars="2" />
       <br/>selected model4: {{model4 | json}}<br/><br/>
@@ -75,11 +99,11 @@ let templateStr: string = `
  
   <fieldset><legend><h2>Source as Observable "Marvel API"</h2></legend>
     <ngui-utils-5>
-      <input  ngui-auto-complete
+      <input ngui-auto-complete
         id="model5"
         placeholder="Start typing a hero name (min. 2 chars) ... for example: Hulk"     
         [(ngModel)]="model5" 
-        [source]="appSvc.findHeroes"  
+        [source]="appSvc.findHeroes"
         path-to-data="data.results"
         [list-formatter]="renderHero"
         min-chars="2" 
@@ -93,37 +117,72 @@ let templateStr: string = `
     
   <fieldset><legend><h2>With Material Design</h2></legend>
     <ngui-utils-6>
-      <md-input ngui-auto-complete 
-        id="model6"
-        [(ngModel)]="myModel"
-        [source]="arrayOfNumbers"
-        [list-formatter]="rightAligned"
-        placeholder="amount" align="end">
-        <span md-prefix>$&nbsp;</span>
-        <span md-suffix>.00</span>
-      </md-input>
+      <mat-input-container>
+        <span matPrefix>$&nbsp;</span>
+        <input matInput ngui-auto-complete style="border: 1px solid #ccc"
+          id="model6"
+          [(ngModel)]="myModel"
+          [source]="arrayOfNumbers"
+          [list-formatter]="rightAligned"
+          placeholder="amount" align="end"/>
+          <span matSuffix>.00</span>
+      </mat-input-container>
     </ngui-utils-6>
     <pre>{{templateStr | htmlCode:'ngui-utils-6'}}</pre>
     <pre>arrayOfNumbers: {{json(arrayOfNumbers)}}</pre>
+  </fieldset>
+
+  <fieldset><legend><h2>Source as Array of Strings (with auto-select-first-item)</h2></legend>
+    <ngui-utils-7>
+      <div ngui-auto-complete
+        [source]="arrayOfStrings"
+        (ngModelChange)="myCallback7($event)"
+        placeholder="enter text">
+        <input id="model7" [ngModel]="model7"/>
+      </div>
+      <br/>selected model7: {{json(model7)}}<br/><br/>
+    </ngui-utils-7>
+    <pre>{{templateStr | htmlCode:'ngui-utils-7'}}</pre>
+    <pre> arrayOfStrings: {{json(arrayOfStrings)}}</pre>
+  </fieldset>
+  
+ <fieldset style="direction:rtl;text-align:right"><legend><h2>RTL support</h2></legend>
+    <ngui-utils-8>
+      <div ngui-auto-complete 
+        [source]="arrayOfStrings"
+        [accept-user-input]="false"
+        (ngModelChange)="myCallback8($event)"
+        [is-rtl]="true"
+        placeholder="enter text">
+        <input id="model8" [ngModel]="model8" autofocus />
+      </div>
+      <br/>selected model8: {{json(model8)}}<br/><br/>
+    </ngui-utils-8>
+    <pre>{{templateStr | htmlCode:'ngui-utils-8'}}</pre>
+    <pre> arrayOfStrings: {{json(arrayOfStrings)}}</pre>
   </fieldset>
  `;
 
 @Component({
   selector: "my-app",
   template: templateStr,
+  encapsulation: ViewEncapsulation.None,
   styles: [`
     fieldset {display: inline-block; vertical-align: top; margin: 10px; padding: 20px }
     ngui-auto-complete, input {
       display: block; border: 1px solid #ccc; width: 300px;
+    }
+    ngui-utils-1 .ngui-auto-complete > ul {
+      max-height: 100px;
+      overflow-y: auto;
     }
   `],
    providers : [AppSvc]
 })
 export class DirectiveTestComponent {
   templateStr: any = templateStr;
-
+  loadingTemplate = '<h1>Loading</h1>';
   arrayOfNumbers: number[] = [100, 200, 300, 400, 500];
-
   arrayOfStrings: string[] =
     ["this", "is", "array", "of", "text", "with", "long", "and long", "and long", "list"];
 
@@ -138,15 +197,32 @@ export class DirectiveTestComponent {
   model1 = "is";
   model2 = {id:1, value: "One"};
   model3 = {key: 3, name: "Key Three"};
+  model7 = "";
+  model8 = "";
 
   constructor (
+    public http: Http,
     public appSvc : AppSvc,
     private _sanitizer: DomSanitizer ) {
   }
 
-  myCallback(newVal) {
-    console.log("value is changed to ", newVal);
-    this.model1 = newVal;
+  customCallback(text) {
+    console.log("keyword ", text)
+  }
+
+  myCallback1(newVal1) {
+    console.log("value is changed to ", newVal1);
+    this.model1 = newVal1;
+  }
+
+  myCallback7(newVal7) {
+    console.log("value is changed to ", newVal7);
+    this.model7 = newVal7;
+  }
+
+  myCallback8(newVal8) {
+    console.log("value is changed to ", newVal8);
+    this.model8 = newVal8;
   }
 
   renderHero = (data: any) : SafeHtml => {

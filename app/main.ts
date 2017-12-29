@@ -2,39 +2,40 @@
 import 'hammerjs';
 import 'core-js/es6';
 import 'core-js/es7/reflect';
-import 'zone.js/dist/zone';// the browser platform with a compiler
+import 'zone.js/dist/zone'; // the browser platform with a compiler
+import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {FormsModule} from '@angular/forms';
+import {HttpModule} from '@angular/http';
+import {NguiUtilsModule} from '@ngui/utils';
+import {MatInputModule} from '@angular/material';
+import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-import { NguiUtilsModule } from '@ngui/utils';
-import { MdInputModule } from '@angular2-material/input';
-import { LocationStrategy, HashLocationStrategy } from "@angular/common";
-
-import { AppComponent }   from './app.component';
+import {AppComponent} from './app.component';
 // noinspection TypeScriptCheckImport
-import { NguiAutoCompleteModule } from '@ngui/auto-complete';
+import {NguiAutoCompleteModule} from '../src/auto-complete.module';
 
-import { APP_ROUTER_PROVIDERS, APP_ROUTER_COMPONENTS } from './app.route';
+import {APP_ROUTER_COMPONENTS, APP_ROUTER_PROVIDERS} from './app.route';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
-  imports : [
-    BrowserModule,
-    APP_ROUTER_PROVIDERS,
-    HttpModule,
-    FormsModule,
-    NguiUtilsModule,
-    MdInputModule,
-    NguiAutoCompleteModule
-  ],
-  declarations : [AppComponent, APP_ROUTER_COMPONENTS],
-  providers: [
-    { provide: LocationStrategy, useClass: HashLocationStrategy },
-  ],
-  bootstrap : [AppComponent]
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        APP_ROUTER_PROVIDERS,
+        FormsModule,
+        HttpModule,
+        NguiUtilsModule,
+        MatInputModule,
+        NguiAutoCompleteModule
+    ],
+    declarations: [AppComponent, APP_ROUTER_COMPONENTS],
+    providers: [
+        {provide: LocationStrategy, useClass: HashLocationStrategy},
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }
 

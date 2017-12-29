@@ -1,14 +1,14 @@
-import { ComponentRef, ViewContainerRef, EventEmitter, OnInit, ComponentFactoryResolver, Renderer, SimpleChanges } from "@angular/core";
+import { ComponentFactoryResolver, ComponentRef, EventEmitter, OnChanges, OnInit, SimpleChanges, ViewContainerRef } from "@angular/core";
 import { NguiAutoCompleteComponent } from "./auto-complete.component";
-import { ControlContainer, AbstractControl, FormControl } from "@angular/forms";
+import { AbstractControl, ControlContainer, FormControl } from "@angular/forms";
 /**
  * display auto-complete section with input and dropdown list when it is clicked
  */
-export declare class NguiAutoCompleteDirective implements OnInit {
+export declare class NguiAutoCompleteDirective implements OnInit, OnChanges {
     private resolver;
-    private renderer;
     viewContainerRef: ViewContainerRef;
     private parentForm;
+    autocomplete: boolean;
     autoCompletePlaceholder: string;
     source: any;
     pathToData: string;
@@ -17,18 +17,27 @@ export declare class NguiAutoCompleteDirective implements OnInit {
     acceptUserInput: boolean;
     maxNumList: string;
     selectValueOf: string;
+    loadingTemplate: any;
     listFormatter: any;
     loadingText: string;
     blankOptionText: string;
     noMatchFoundText: string;
     valueFormatter: any;
     tabToSelect: boolean;
+    selectOnBlur: boolean;
     matchFormatted: boolean;
+    autoSelectFirstItem: boolean;
+    openOnFocus: boolean;
+    closeOnFocusOut: boolean;
+    reFocusAfterSelect: boolean;
     ngModel: String;
     formControlName: string;
     extFormControl: FormControl;
+    zIndex: string;
+    isRtl: boolean;
     ngModelChange: EventEmitter<{}>;
     valueChanged: EventEmitter<{}>;
+    customSelected: EventEmitter<{}>;
     componentRef: ComponentRef<NguiAutoCompleteComponent>;
     wrapperEl: HTMLElement;
     el: HTMLElement;
@@ -36,16 +45,23 @@ export declare class NguiAutoCompleteDirective implements OnInit {
     inputEl: HTMLInputElement;
     formControl: AbstractControl;
     revertValue: any;
-    constructor(resolver: ComponentFactoryResolver, renderer: Renderer, viewContainerRef: ViewContainerRef, parentForm: ControlContainer);
+    private dropdownJustHidden;
+    private scheduledBlurHandler;
+    private documentClickListener;
+    constructor(resolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, parentForm: ControlContainer);
     ngOnInit(): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
     ngOnChanges(changes: SimpleChanges): void;
     showAutoCompleteDropdown: (event?: any) => void;
+    blurHandler(event: any): void;
     hideAutoCompleteDropdown: (event?: any) => void;
     styleAutoCompleteDropdown: () => void;
     setToStringFunction(item: any): any;
     selectNewValue: (item: any) => void;
+    selectCustomValue: (text: string) => void;
+    enterNewText: (value: any) => void;
     private keydownEventHandler;
     private inputEventHandler;
+    private renderValue(item);
 }

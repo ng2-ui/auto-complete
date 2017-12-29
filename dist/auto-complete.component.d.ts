@@ -1,4 +1,4 @@
-import { ElementRef, OnInit, EventEmitter } from "@angular/core";
+import { ElementRef, EventEmitter, OnInit } from "@angular/core";
 import { NguiAutoComplete } from "./auto-complete";
 /**
  * show a selected date in monthly calendar
@@ -11,6 +11,7 @@ export declare class NguiAutoCompleteComponent implements OnInit {
     /**
      * public input properties
      */
+    autocomplete: boolean;
     listFormatter: (arg: any) => string;
     source: any;
     pathToData: string;
@@ -20,13 +21,19 @@ export declare class NguiAutoCompleteComponent implements OnInit {
     noMatchFoundText: string;
     acceptUserInput: boolean;
     loadingText: string;
+    loadingTemplate: any;
     maxNumList: number;
     showInputTag: boolean;
     showDropdownOnInit: boolean;
     tabToSelect: boolean;
     matchFormatted: boolean;
+    autoSelectFirstItem: boolean;
+    selectOnBlur: boolean;
     valueSelected: EventEmitter<{}>;
+    customSelected: EventEmitter<{}>;
+    textEntered: EventEmitter<{}>;
     autoCompleteInput: ElementRef;
+    autoCompleteContainer: ElementRef;
     el: HTMLElement;
     dropdownVisible: boolean;
     isLoading: boolean;
@@ -49,7 +56,10 @@ export declare class NguiAutoCompleteComponent implements OnInit {
     findItemFromSelectValue(selectText: string): any;
     reloadList(keyword: string): void;
     selectOne(data: any): void;
+    enterText(data: any): void;
+    blurHandler(evt: any): void;
     inputElKeyHandler: (evt: any) => void;
+    scrollToView(index: any): void;
     readonly emptyList: boolean;
     private delay;
 }

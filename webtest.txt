@@ -3,7 +3,7 @@ To run this file, please run `npm test` or `webtest webtest.txt`
 
 Test with Array of strings
   open browser
-  go to http://localhost:9002
+  go to http://localhost:9002/#/directive-test
   verify text 'selected model1: "is"' present
   click #model1
   clear "#model1"
@@ -11,6 +11,7 @@ Test with Array of strings
   verify element "ul li:nth-child(1)" text is "this"
   press "e" into "#model1"
   verify element "ul li:nth-child(1)" text is "text"
+  press ARROW_DOWN into "#model1"
   press ENTER into "#model1"
   verify element #model1 value is "text"
   enter "invalid" into "#model1"
@@ -29,7 +30,9 @@ Test with array of id/value
   see "Select One"
   click
   verify element #model2 value is ""
-  enter text "four" into #model2
+  press "f" into "#model2"
+  press "o" into "#model2"
+  press "u" into "#model2"
   click "ul li:nth-child(2)"
   verify element #model2 value is "Four"
 
@@ -39,6 +42,7 @@ Test with array of key/name
   clear #model3
   click body
   click #model3
+  press ARROW_DOWN into "#model3"
   press ARROW_DOWN into "#model3"
   press ARROW_DOWN into "#model3"
   press ARROW_DOWN into "#model3"
@@ -55,5 +59,21 @@ Test With Remote Source as Observable
   enter text "hulk/Bruce" into "#model5"
   verify text "Hulk/Bruce Banner" present
   press ENTER into "#model5"
+
+Test with Array of strings and auto-select-first-item false
+  verify element #model7 value is ""
+  click #model7
+  press ENTER into "#model7"
+  verify element #model7 value is ""
+  press "t" into "#model7"
+  verify element "ul li:nth-child(1)" text is "this"
+  press "e" into "#model7"
+  verify element "ul li:nth-child(1)" text is "text"
+  press ENTER into "#model7"
+  verify element #model7 value is "te"
+  clear #model7
+  enter text "invalid" into "#model7"
+  click "body"
+  verify element #model7 value is "invalid"
 
 close browser

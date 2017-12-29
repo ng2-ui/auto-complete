@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
 require("rxjs/add/operator/map");
@@ -72,9 +73,9 @@ var NguiAutoComplete = (function () {
         { type: core_1.Injectable },
     ];
     /** @nocollapse */
-    NguiAutoComplete.ctorParameters = [
+    NguiAutoComplete.ctorParameters = function () { return [
         { type: http_1.Http, decorators: [{ type: core_1.Optional },] },
-    ];
+    ]; };
     return NguiAutoComplete;
 }());
 exports.NguiAutoComplete = NguiAutoComplete;

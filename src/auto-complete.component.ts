@@ -1,14 +1,5 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  Output,
-  OnInit,
-  ViewEncapsulation,
-  EventEmitter,
-  ViewChild
-} from "@angular/core";
-import { NguiAutoComplete } from "./auto-complete";
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation} from "@angular/core";
+import {NguiAutoComplete} from "./auto-complete";
 
 /**
  * show a selected date in monthly calendar
@@ -19,21 +10,22 @@ import { NguiAutoComplete } from "./auto-complete";
 @Component({
   selector: "ngui-auto-complete",
   template: `
-  <div class="ngui-auto-complete">
-
+  <div #autoCompleteContainer class="ngui-auto-complete">
     <!-- keyword input -->
     <input *ngIf="showInputTag"
            #autoCompleteInput class="keyword"
+           [attr.autocomplete]="autocomplete ? 'null' : 'off'"
            placeholder="{{placeholder}}"
            (focus)="showDropdownList($event)"
-           (blur)="hideDropdownList()"
+           (blur)="blurHandler($event)"
            (keydown)="inputElKeyHandler($event)"
            (input)="reloadListInDelay($event)"
            [(ngModel)]="keyword" />
 
     <!-- dropdown that user can select -->
     <ul *ngIf="dropdownVisible" [class.empty]="emptyList">
-      <li *ngIf="isLoading" class="loading">{{loadingText}}</li>
+      <li *ngIf="isLoading && loadingTemplate" class="loading" [innerHTML]="loadingTemplate"></li>
+      <li *ngIf="isLoading && !loadingTemplate" class="loading">{{loadingText}}</li>
       <li *ngIf="minCharsEntered && !isLoading && !filteredList.length"
            (mousedown)="selectOne('')"
            class="no-match-found">{{noMatchFoundText || 'No Result Found'}}</li>
@@ -109,6 +101,7 @@ export class NguiAutoCompleteComponent implements OnInit {
   /**
    * public input properties
    */
+  @Input("autocomplete") autocomplete = false;
   @Input("list-formatter") listFormatter: (arg: any) => string;
   @Input("source") source: any;
   @Input("path-to-data") pathToData: string;
@@ -116,16 +109,22 @@ export class NguiAutoCompleteComponent implements OnInit {
   @Input("placeholder") placeholder: string;
   @Input("blank-option-text") blankOptionText: string;
   @Input("no-match-found-text") noMatchFoundText: string;
-  @Input("accept-user-input") acceptUserInput: boolean;
+  @Input("accept-user-input") acceptUserInput: boolean = true;
   @Input("loading-text") loadingText: string = "Loading";
+  @Input("loading-template") loadingTemplate = null;
   @Input("max-num-list") maxNumList: number;
   @Input("show-input-tag") showInputTag: boolean = true;
   @Input("show-dropdown-on-init") showDropdownOnInit: boolean = false;
   @Input("tab-to-select") tabToSelect: boolean = true;
   @Input("match-formatted") matchFormatted: boolean = false;
+  @Input("auto-select-first-item") autoSelectFirstItem: boolean = false;
+  @Input("select-on-blur") selectOnBlur: boolean = false;
 
   @Output() valueSelected = new EventEmitter();
+  @Output() customSelected = new EventEmitter();
+  @Output() textEntered = new EventEmitter();
   @ViewChild('autoCompleteInput') autoCompleteInput: ElementRef;
+  @ViewChild('autoCompleteContainer') autoCompleteContainer: ElementRef;
 
   el: HTMLElement;           // this component  element `<ngui-auto-complete>`
 
@@ -134,7 +133,7 @@ export class NguiAutoCompleteComponent implements OnInit {
 
   filteredList: any[] = [];
   minCharsEntered: boolean = false;
-  itemIndex: number = 0;
+  itemIndex: number = null;
   keyword: string;
 
   isSrcArr(): boolean {
@@ -158,6 +157,9 @@ export class NguiAutoCompleteComponent implements OnInit {
     this.autoComplete.source = this.source;
     this.autoComplete.pathToData = this.pathToData;
     this.autoComplete.listFormatter = this.listFormatter;
+    if (this.autoSelectFirstItem) {
+      this.itemIndex = 0;
+    }
     setTimeout(() => {
       if (this.autoCompleteInput) {
         this.autoCompleteInput.nativeElement.focus()
@@ -184,7 +186,7 @@ export class NguiAutoCompleteComponent implements OnInit {
   hideDropdownList(): void {
     this.dropdownVisible = false;
   }
-  
+
   findItemFromSelectValue(selectText: string): any {
     let matchingItems = this.filteredList
                             .filter(item => ('' + item) === selectText);
@@ -233,7 +235,7 @@ export class NguiAutoCompleteComponent implements OnInit {
         // remote source
 
         this.autoComplete.getRemoteData(keyword).subscribe(resp => {
-            this.filteredList = (<any>resp);
+            this.filteredList = resp ? (<any>resp) : [];
             if (this.maxNumList) {
               this.filteredList = this.filteredList.slice(0, this.maxNumList);
             }
@@ -246,7 +248,23 @@ export class NguiAutoCompleteComponent implements OnInit {
   }
 
   selectOne(data: any) {
-    this.valueSelected.emit(data);
+    if (!!data || data === '') {
+      this.valueSelected.emit(data);
+    } else {
+      this.customSelected.emit(this.keyword);
+    }
+  };
+
+  enterText(data: any) {
+    this.textEntered.emit(data);
+  }
+
+  blurHandler(evt: any) {
+    if (this.selectOnBlur) {
+      this.selectOne(this.filteredList[this.itemIndex]);
+    }
+
+    this.hideDropdownList();
   };
 
   inputElKeyHandler = (evt: any) => {
@@ -254,31 +272,53 @@ export class NguiAutoCompleteComponent implements OnInit {
 
     switch (evt.keyCode) {
       case 27: // ESC, hide auto complete
+        this.selectOne(undefined);
         break;
 
       case 38: // UP, select the previous li el
+        if (0 === totalNumItem) {
+          return;
+        }
         this.itemIndex = (totalNumItem + this.itemIndex - 1) % totalNumItem;
+        this.scrollToView(this.itemIndex);
         break;
 
       case 40: // DOWN, select the next li el or the first one
+        if (0 === totalNumItem) {
+          return;
+        }
         this.dropdownVisible = true;
-        this.itemIndex = (totalNumItem + this.itemIndex + 1) % totalNumItem;
+        let sum = this.itemIndex;
+        sum = (this.itemIndex === null) ? 0 : sum + 1;
+        this.itemIndex = (totalNumItem + sum) % totalNumItem;
+        this.scrollToView(this.itemIndex);
         break;
 
       case 13: // ENTER, choose it!!
-        if (this.filteredList.length > 0) {
-          this.selectOne(this.filteredList[this.itemIndex]);
-        }
+        this.selectOne(this.filteredList[this.itemIndex]);
         evt.preventDefault();
         break;
 
       case 9: // TAB, choose if tab-to-select is enabled
-        if (this.tabToSelect && this.filteredList.length > 0) {
+        if (this.tabToSelect) {
           this.selectOne(this.filteredList[this.itemIndex]);
         }
         break;
     }
   };
+
+  scrollToView(index) {
+    const container = this.autoCompleteContainer.nativeElement;
+    const ul = container.querySelector('ul');
+    const li = ul.querySelector('li');  //just sample the first li to get height
+    const liHeight = li.offsetHeight;
+    const scrollTop = ul.scrollTop;
+    const viewport = scrollTop + ul.offsetHeight;
+    const scrollOffset = liHeight * index;
+    if (scrollOffset < scrollTop || (scrollOffset + liHeight) > viewport) {
+      ul.scrollTop = scrollOffset;
+    }
+  }
 
   get emptyList(): boolean {
     return !(

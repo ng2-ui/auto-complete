@@ -137,7 +137,7 @@ export class NguiAutoCompleteComponent implements OnInit {
   keyword: string;
 
   isSrcArr(): boolean {
-    return (this.source.constructor.name === "Array");
+    return Array.isArray(this.source);
   }
 
   /**

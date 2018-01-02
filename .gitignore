@@ -3,3 +3,4 @@ typings
 .idea
 .vscode
 *.log
+dist

@@ -119,6 +119,7 @@ export class NguiAutoCompleteComponent implements OnInit {
   @Input("match-formatted") matchFormatted: boolean = false;
   @Input("auto-select-first-item") autoSelectFirstItem: boolean = false;
   @Input("select-on-blur") selectOnBlur: boolean = false;
+  @Input("re-focus-after-select") reFocusAfterSelect: boolean = true;
 
   @Output() valueSelected = new EventEmitter();
   @Output() customSelected = new EventEmitter();
@@ -161,7 +162,7 @@ export class NguiAutoCompleteComponent implements OnInit {
       this.itemIndex = 0;
     }
     setTimeout(() => {
-      if (this.autoCompleteInput) {
+      if (this.autoCompleteInput && this.reFocusAfterSelect) {
         this.autoCompleteInput.nativeElement.focus()
       }
       if (this.showDropdownOnInit) {

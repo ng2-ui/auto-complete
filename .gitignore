@@ -4,3 +4,4 @@ typings
 .vscode
 *.log
 dist
+auto-complete.iml

@@ -1,7 +1,8 @@
-# auto-complete
+##### IMPORTANT: HELP NEEDED
+ 
+The project now back to life, any help for fixing bugs and improvements are welcome 
 
-## IMPORTANT: NOT-MATAINED :(
-This project has been archived because of inactivity of the owner, Allen Kim. The current owner is looking for a new owner and ready to transfer ownership. Please send me the email to "allenhwkim AT gmail.com" to claim the ownership.
+# auto-complete
 
 <a href="https://rawgit.com/ng2-ui/auto-complete/master/app/index.html">
   <img src="http://i.imgur.com/dAmheg0.png" />

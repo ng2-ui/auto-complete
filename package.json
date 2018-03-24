@@ -10,7 +10,7 @@
     "start": "webpack-dev-server --port 9002 --content-base app --config app/webpack.config --open",
     "lint": "npm run tslint 'src/**/*.ts' 'app/**/*.ts'",
     "clean": "rimraf dist",
-    "build": "npm-run-all --serial clean build:ngc build:umd build:app",
+    "build": "npm-run-all --serial lint clean build:ngc build:umd build:app",
     "build:ngc": "ngc -p tsconfig.ngc.json",
     "build:umd": "cross-env NODE_ENV=prod webpack",
     "build:app": "cross-env NODE_ENV=prod webpack --config app/webpack.config",

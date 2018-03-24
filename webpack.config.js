@@ -1,7 +1,7 @@
-var path = require("path");
-var webpack = require('webpack');
+const path = require('path');
+const webpack = require('webpack');
 
-var config = {
+const config = {
     entry: {
         '@ngui/auto-complete': path.join(__dirname, 'src', 'index.ts')
     },
@@ -13,9 +13,9 @@ var config = {
     },
     output: {
         path: path.join(__dirname, 'dist'),
-        filename: "auto-complete.umd.js",
-        library: ["auto-complete"],
-        libraryTarget: "umd"
+        filename: 'auto-complete.umd.js',
+        library: ['auto-complete'],
+        libraryTarget: 'umd'
     },
     externals: [
         /^rxjs\//,    //.... any other way? rx.umd.min.js does work?

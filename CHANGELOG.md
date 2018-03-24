@@ -1,3 +1,5 @@
+## [1.0.0] Major Update
+* This version publish latest changes from PRs and support Angular 5 and may have some breaking changes
 ### [0.14.2]
 - return keyword if no items were selected
 ### [0.14.1]

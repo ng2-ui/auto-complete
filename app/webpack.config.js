@@ -33,11 +33,11 @@ const config = {
             /**
              * The (\\|\/) piece accounts for path separators in *nix and Windows
              */
-            /angular(\\|\/)core(\\|\/)@angular/,
+            /\@angular(\\|\/)core(\\|\/)esm5/,
             helpers.root('src'), // location of your src
             {
                 /**
-                 * Your Angular Async Route paths relative to this root directory
+                 * your Angular Async Route paths relative to this root directory
                  */
             }
         )
@@ -56,11 +56,11 @@ if (process.env.NODE_ENV === 'prod') {
             /**
              * The (\\|\/) piece accounts for path separators in *nix and Windows
              */
-            /angular(\\|\/)core(\\|\/)@angular/,
+            /\@angular(\\|\/)core(\\|\/)esm5/,
             helpers.root('src'), // location of your src
             {
                 /**
-                 * Your Angular Async Route paths relative to this root directory
+                 * your Angular Async Route paths relative to this root directory
                  */
             }
         )

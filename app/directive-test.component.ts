@@ -1,8 +1,8 @@
-import {Http} from "@angular/http";
-import {Component, ViewEncapsulation} from "@angular/core";
-import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
+import { HttpClient } from '@angular/common/http';
+import { Component, ViewEncapsulation } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
-import {AppSvc} from "./app.service";
+import { AppSvc } from "./app.service";
 
 let templateStr: string = `
   <h1> Autocomplete Directive Test - Local Source </h1>
@@ -164,82 +164,97 @@ let templateStr: string = `
  `;
 
 @Component({
-  selector: "my-app",
-  template: templateStr,
-  encapsulation: ViewEncapsulation.None,
-  styles: [`
-    fieldset {display: inline-block; vertical-align: top; margin: 10px; padding: 20px }
-    ngui-auto-complete, input {
-      display: block; border: 1px solid #ccc; width: 300px;
-    }
-    ngui-utils-1 .ngui-auto-complete > ul {
-      max-height: 100px;
-      overflow-y: auto;
-    }
-  `],
-   providers : [AppSvc]
+    selector: "my-app",
+    template: templateStr,
+    encapsulation: ViewEncapsulation.None,
+    styles: [`
+        fieldset {
+            display: inline-block;
+            vertical-align: top;
+            margin: 10px;
+            padding: 20px
+        }
+
+        ngui-auto-complete, input {
+            display: block;
+            border: 1px solid #ccc;
+            width: 300px;
+        }
+
+        ngui-utils-1 .ngui-auto-complete > ul {
+            max-height: 100px;
+            overflow-y: auto;
+        }
+    `],
+    providers: [AppSvc]
 })
 export class DirectiveTestComponent {
-  templateStr: any = templateStr;
-  loadingTemplate = '<h1>Loading</h1>';
-  arrayOfNumbers: number[] = [100, 200, 300, 400, 500];
-  arrayOfStrings: string[] =
-    ["this", "is", "array", "of", "text", "with", "long", "and long", "and long", "list"];
+    templateStr: any = templateStr;
+    loadingTemplate = '<h1>Loading</h1>';
+    arrayOfNumbers: number[] = [100, 200, 300, 400, 500];
+    arrayOfStrings: string[] =
+        ["this", "is", "array", "of", "text", "with", "long", "and long", "and long", "list"];
 
-  arrayOfKeyValues: any[] =
-    [{id:1, value:"One"}, {id:2, value:"Two"}, {id:3, value:"Three"}, {id:4, value:"Four"}];
+    arrayOfKeyValues: any[] =
+        [{id: 1, value: "One"}, {id: 2, value: "Two"}, {id: 3, value: "Three"}, {
+            id: 4,
+            value: "Four"
+        }];
 
-  arrayOfKeyValues2: any[] =
-    [{id:11, key:1, name:"Key One"}, {id:12, key:2, name:"Key Two"}, {id:13, key:3, name:"Key Three"}, {id:14, key:4, name:"Key Four"}];
+    arrayOfKeyValues2: any[] =
+        [{id: 11, key: 1, name: "Key One"}, {id: 12, key: 2, name: "Key Two"}, {
+            id: 13,
+            key: 3,
+            name: "Key Three"
+        }, {id: 14, key: 4, name: "Key Four"}];
 
-  googleGeoCode: string = "https://maps.googleapis.com/maps/api/geocode/json?address=:my_own_keyword";
+    googleGeoCode: string = "https://maps.googleapis.com/maps/api/geocode/json?address=:my_own_keyword";
 
-  model1 = "is";
-  model2 = {id:1, value: "One"};
-  model3 = {key: 3, name: "Key Three"};
-  model7 = "";
-  model8 = "";
+    model1 = "is";
+    model2 = {id: 1, value: "One"};
+    model3 = {key: 3, name: "Key Three"};
+    model7 = "";
+    model8 = "";
 
-  constructor (
-    public http: Http,
-    public appSvc : AppSvc,
-    private _sanitizer: DomSanitizer ) {
-  }
+    constructor(public http: HttpClient,
+                public appSvc: AppSvc,
+                private _sanitizer: DomSanitizer) {
+    }
 
-  customCallback(text) {
-    console.log("keyword ", text)
-  }
+    customCallback(text) {
+        console.log("keyword ", text)
+    }
 
-  myCallback1(newVal1) {
-    console.log("value is changed to ", newVal1);
-    this.model1 = newVal1;
-  }
+    myCallback1(newVal1) {
+        console.log("value is changed to ", newVal1);
+        this.model1 = newVal1;
+    }
 
-  myCallback7(newVal7) {
-    console.log("value is changed to ", newVal7);
-    this.model7 = newVal7;
-  }
+    myCallback7(newVal7) {
+        console.log("value is changed to ", newVal7);
+        this.model7 = newVal7;
+    }
 
-  myCallback8(newVal8) {
-    console.log("value is changed to ", newVal8);
-    this.model8 = newVal8;
-  }
+    myCallback8(newVal8) {
+        console.log("value is changed to ", newVal8);
+        this.model8 = newVal8;
+    }
 
-  renderHero = (data: any) : SafeHtml => {
-    let html = `<b style='float:left;width:100%'>${data.name}</b>
+    renderHero = (data: any): SafeHtml => {
+        let html = `<b style='float:left;width:100%'>${data.name}</b>
                 <img style="float: left;padding: 5px;" src="${data.thumbnail.path}/portrait_small.${data.thumbnail.extension}"> 
                 <span>${data.description}</span>`;
 
-    return this._sanitizer.bypassSecurityTrustHtml(html);
-  };
+        return this._sanitizer.bypassSecurityTrustHtml(html);
+    };
 
-  rightAligned = (data: any) : SafeHtml => {
-    let html = `<div style="text-align:right">${data}.00</div>`;
-    return this._sanitizer.bypassSecurityTrustHtml(html);
-  };
+    rightAligned = (data: any): SafeHtml => {
+        let html = `<div style="text-align:right">${data}.00</div>`;
+        return this._sanitizer.bypassSecurityTrustHtml(html);
+    };
 
-  json(obj) {
-    return JSON.stringify(obj, null, '  ');
-  }
+    json(obj) {
+        return JSON.stringify(obj, null, '  ');
+    }
 
 }

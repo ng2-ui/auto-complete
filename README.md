@@ -1,3 +1,5 @@
+# auto-complete
+
 [![npm](https://img.shields.io/npm/dt/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)  [![npm](https://img.shields.io/npm/v/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete) [![npm](https://img.shields.io/npm/l/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)
 
 ##### IMPORTANT: HELP NEEDED
@@ -5,39 +7,40 @@
 The project now back to life, any help for fixing bugs and improvements are welcome! [![GitHub issues](https://img.shields.io/github/issues/ng2-ui/auto-complete.svg)](https://github.com/ng2-ui/auto-complete/issues)
 
 
-# auto-complete
 
 <a href="https://rawgit.com/ng2-ui/auto-complete/master/app/index.html">
   <img src="http://i.imgur.com/dAmheg0.png" />
 </a>
 
+
 Below are plunks for different scenarios:
+----
 
-**`Template Driven Forms`**
+**Template Driven Forms**
 
-_ngModel_ http://plnkr.co/edit/3pB1Gx?p=preview
+* _ngModel_ http://plnkr.co/edit/3pB1Gx?p=preview
 
-**`Reactive Forms`**
+**Reactive Forms**
 
- _FormGroup_  http://plnkr.co/edit/2osUq6?p=preview
+*  _FormGroup_  http://plnkr.co/edit/2osUq6?p=preview
   [issue #49](https://github.com/ng2-ui/auto-complete/issues/49)
 
-_FormControl_ http://plnkr.co/edit/A5CW2e?p=preview
+* _FormControl_ http://plnkr.co/edit/A5CW2e?p=preview
   [issue #100](https://github.com/ng2-ui/auto-complete/issues/100)
 
 
-**`Material Design`**
+**Material Design**
 
-   http://plnkr.co/edit/2YLDjX?p=preview&open=app/app.component.ts
+* _Example_ http://plnkr.co/edit/2YLDjX?p=preview&open=app/app.component.ts
 
-**`Obervable Source`**
+**Obervable Source**
 
-  http://plnkr.co/edit/ExzNSh?p=preview
+* _Example_ http://plnkr.co/edit/ExzNSh?p=preview
 
-**`List Formatter Example`**
+**List Formatter Example**
 
-  http://plnkr.co/edit/F9nrWp?p=preview  
-  http://plnkr.co/edit/0QFYFHMmCAFmhbYAGQl7?p=preview (With custom css)
+* _Example 1_ http://plnkr.co/edit/F9nrWp?p=preview  
+* _Example 2 (With custom css)_ http://plnkr.co/edit/0QFYFHMmCAFmhbYAGQl7?p=preview
 
 ## Install
 
@@ -97,12 +100,12 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   * **`ngModel`**, any, variable that autocomplete result is assigned to
   * **`source`**, array or string, required. data source for dropdown list
   * **`auto-complete-placeholder`**,  string, autocomplete input guide text
-  * **`value-formatter`**, string or function variable name, custom value formatting function. e.g. '(id) value', 'myValueFormatter'.
+  * **`value-formatter`**, string or function variable name, custom value formatting function. e.g. `(id) value`, '`myValueFormatter`.
 
            myValueFormatter(data: any): string {
               return `(${data[id]}) ${data[value]}`;
             }
-  * **`list-formatter`**, string or function variable name, custom list formatting function. e.g.  '(key) name', 'myListFormatter'.
+  * **`list-formatter`**, string or function variable name, custom list formatting function. e.g.  `(key) name`, `myListFormatter`.
 
            myListFormatter(data: any): string {
               return `(${data[key]}) ${data[name]}`;
@@ -130,6 +133,8 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   * **`close-on-focus`**, boolean, if `false` drop down will close on a focusout event, . Default is `true`
   * **`re-focus-after-select property`**, boolean, if `false` an auto focus behavior after select (example: custom value on blur event or issue #276) is disabled . Default is `true`
   * **`autocomplete`**, boolean, default `false`, if `true` remove the attribute `autocomplete="off"` of the input.
+
+
 ## For Developers
 
 ### To start

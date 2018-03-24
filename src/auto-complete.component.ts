@@ -154,6 +154,14 @@ export class NguiAutoCompleteComponent implements OnInit {
     private el: HTMLElement;           // this component  element `<ngui-auto-complete>`
     private timer = 0;
 
+    private delay = (function() {
+        let timer = 0;
+        return function(callback: any, ms: number) {
+            clearTimeout(timer);
+            timer = setTimeout(callback, ms);
+        };
+    })();
+
     /**
      * constructor
      */
@@ -185,7 +193,7 @@ export class NguiAutoCompleteComponent implements OnInit {
         return Array.isArray(this.source);
     }
 
-    public reloadListInDelay(evt: any): void {
+    public reloadListInDelay = (evt: any): void => {
         const delayMs = this.isSrcArr() ? 10 : 500;
         const keyword = evt.target.value;
 
@@ -281,7 +289,7 @@ export class NguiAutoCompleteComponent implements OnInit {
         this.hideDropdownList();
     }
 
-    public inputElKeyHandler(evt: any) {
+    public inputElKeyHandler = (evt: any) => {
         const totalNumItem = this.filteredList.length;
 
         switch (evt.keyCode) {
@@ -344,11 +352,6 @@ export class NguiAutoCompleteComponent implements OnInit {
             (this.minCharsEntered && !this.isLoading && !this.filteredList.length) ||
             (this.filteredList.length)
         );
-    }
-
-    private delay(callback: any, ms: number) {
-        clearTimeout(this.timer);
-        this.timer = setTimeout(callback, ms);
     }
 
 }

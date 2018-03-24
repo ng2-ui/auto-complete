@@ -166,7 +166,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
     }
 
     // show auto-complete list below the current element
-    public showAutoCompleteDropdown(event?: any): void {
+    public showAutoCompleteDropdown = (event?: any): void => {
         if (this.dropdownJustHidden) {
             return;
         }
@@ -231,7 +231,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
         }
     }
 
-    public hideAutoCompleteDropdown(event?: any): void {
+    public hideAutoCompleteDropdown = (event?: any): void => {
         if (this.componentRef) {
             let currentItem: any;
             const hasRevertValue = (typeof this.revertValue !== 'undefined');
@@ -251,7 +251,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
         setTimeout(() => this.dropdownJustHidden = false, 100);
     }
 
-    public styleAutoCompleteDropdown() {
+    public styleAutoCompleteDropdown = () => {
         if (this.componentRef) {
             const component = this.componentRef.instance;
 
@@ -302,11 +302,12 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
         return item;
     }
 
-    public selectNewValue(item: any) {
+    public selectNewValue = (item: any) => {
         // make displayable value
         if (item && typeof item === 'object') {
             item = this.setToStringFunction(item);
         }
+
         this.renderValue(item);
 
         // make return value
@@ -333,7 +334,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
         });
     }
 
-    public selectCustomValue(text: string) {
+    public selectCustomValue = (text: string) => {
         this.customSelected.emit(text);
         this.hideAutoCompleteDropdown();
         setTimeout(() => {
@@ -345,21 +346,21 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
         });
     }
 
-    public enterNewText(value: any) {
+    public enterNewText = (value: any) => {
         this.renderValue(value);
         this.ngModelChange.emit(value);
         this.valueChanged.emit(value);
         this.hideAutoCompleteDropdown();
     }
 
-    private keydownEventHandler(evt: any) {
+    private keydownEventHandler = (evt: any) => {
         if (this.componentRef) {
             const component = this.componentRef.instance;
             component.inputElKeyHandler(evt);
         }
     }
 
-    private inputEventHandler(evt: any) {
+    private inputEventHandler = (evt: any) => {
         if (this.componentRef) {
             const component = this.componentRef.instance;
             component.dropdownVisible = true;

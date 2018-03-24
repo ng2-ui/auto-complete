@@ -1,3 +1,5 @@
+### [1.0.1] 
+* Fix bug of directive when select an item causes "cannot read property 'renderValue' of undefined"
 ## [1.0.0] Major Update
 * This version publish latest changes from PRs and support Angular 5 and may have some breaking changes
 ### [0.14.2]

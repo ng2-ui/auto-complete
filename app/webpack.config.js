@@ -1,4 +1,4 @@
-var path = require('path');
+const path = require('path');
 const webpack = require('webpack');
 const helpers = require('./helpers');
 

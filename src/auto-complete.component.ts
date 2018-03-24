@@ -45,7 +45,7 @@ import { NguiAutoComplete } from './auto-complete';
                     class="blank-item">{{blankOptionText}}
                 </li>
                 <li class="item"
-                    *ngFor="let item of filteredList; let i=index"
+                    *ngFor="let item of filteredList; let i=index; trackBy: trackByIndex"
                     (mousedown)="selectOne(item)"
                     [ngClass]="{selected: i === itemIndex}"
                     [innerHtml]="autoComplete.getFormattedListItem(item)">
@@ -332,6 +332,10 @@ export class NguiAutoCompleteComponent implements OnInit {
         if (scrollOffset < scrollTop || (scrollOffset + liHeight) > viewport) {
             ul.scrollTop = scrollOffset;
         }
+    }
+
+    public trackByIndex(index, item) {
+        return index;
     }
 
     get emptyList(): boolean {

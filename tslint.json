@@ -19,8 +19,8 @@
     "no-output-on-prefix-name": true,
     "no-attribute-parameter-decorator": true,
     "no-forward-ref": true,
-    "no-input-rename": true,
-    "no-output-rename": true,
+    "no-input-rename": false,
+    "no-output-rename": false,
     "only-arrow-functions": false,
     "pipe-naming": [true, "camelCase", "my"],
     "use-host-property-decorator": true,
@@ -36,7 +36,7 @@
     ],
     "max-line-length": [
       true,
-      120
+      180
     ],
     "no-string-literal": false,
     "no-use-before-declare": true,
@@ -53,6 +53,8 @@
       "allow-pascal-case",
       "ban-keywords",
       "check-format"
-    ]
+    ],
+    "member-access": false,
+    "semicolon": [true, "always"]
   }
 }

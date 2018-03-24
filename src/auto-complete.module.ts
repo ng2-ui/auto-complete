@@ -7,17 +7,16 @@ import { NguiAutoCompleteDirective } from './auto-complete.directive';
 import { NguiAutoComplete } from './auto-complete';
 
 @NgModule({
-  imports: [CommonModule, FormsModule],
-  declarations: [NguiAutoCompleteComponent, NguiAutoCompleteDirective],
-  exports:  [NguiAutoCompleteComponent, NguiAutoCompleteDirective],
-  entryComponents: [NguiAutoCompleteComponent]
+    imports: [CommonModule, FormsModule],
+    declarations: [NguiAutoCompleteComponent, NguiAutoCompleteDirective],
+    exports: [NguiAutoCompleteComponent, NguiAutoCompleteDirective],
+    entryComponents: [NguiAutoCompleteComponent]
 })
 export class NguiAutoCompleteModule {
-  static forRoot() {
-    return {
-      ngModule: NguiAutoCompleteModule,
-      providers: [NguiAutoComplete]
+    public static forRoot() {
+        return {
+            ngModule: NguiAutoCompleteModule,
+            providers: [NguiAutoComplete]
+        };
     }
-  }
 }
-

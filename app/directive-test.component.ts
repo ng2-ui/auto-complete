@@ -1,15 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ViewEncapsulation } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { AppSvc } from './app.service';
 
-import { AppSvc } from "./app.service";
-
-let templateStr: string = `
+const templateStr: string = `
   <h1> Autocomplete Directive Test - Local Source </h1>
-    
+
   <fieldset><legend><h2>Source as Array of Strings</h2></legend>
     <ngui-utils-1>
-      <div ngui-auto-complete 
+      <div ngui-auto-complete
         [source]="arrayOfStrings"
         [accept-user-input]="true"
         [auto-select-first-item]="false"
@@ -27,7 +26,7 @@ let templateStr: string = `
 
   <fieldset><legend><h2>Source as Array of Strings. Drop-down on focus disable</h2></legend>
     <ngui-utils-1>
-      <div ngui-auto-complete 
+      <div ngui-auto-complete
         [source]="arrayOfStrings"
         [accept-user-input]="true"
         [open-on-focus]="false"
@@ -43,24 +42,24 @@ let templateStr: string = `
     <pre>{{templateStr | htmlCode:'ngui-utils-1'}}</pre>
     <pre> arrayOfStrings: {{json(arrayOfStrings)}}</pre>
   </fieldset>
-    
+
   <fieldset><legend><h2>Source as Array of id/value</h2></legend>
     <ngui-utils-2>
-      <input 
+      <input
         id="model2"
         ngui-auto-complete
         blank-option-text="Select One"
         [(ngModel)]="model2"
-        [source]="arrayOfKeyValues" 
+        [source]="arrayOfKeyValues"
         placeholder="enter text"
-        z-index="4"/> 
+        z-index="4"/>
       <a href="javascript:void(0)" (click)="model2={id:'change', value: 'it'}">Change It</a>
       <br/>selected model2: {{model2 | json}}<br/><br/>
     </ngui-utils-2>
     <pre>{{templateStr | htmlCode:'ngui-utils-2'}}</pre>
     <pre>arrayOfKeyValues: {{json(arrayOfKeyValues)}}</pre>
   </fieldset>
-    
+
   <fieldset><legend><h2>Source as Array of Key/Name</h2></legend>
     <ngui-utils-3>
       <input ngui-auto-complete [source]="arrayOfKeyValues2"
@@ -75,15 +74,14 @@ let templateStr: string = `
     <pre>{{templateStr | htmlCode:'ngui-utils-3'}}</pre>
     <pre>arrayOfKeyValues2: {{json(arrayOfKeyValues2)}}</pre>
   </fieldset>
-  
-      
+
   <fieldset><legend><h2>Source as HTTP URI String</h2></legend>
     <ngui-utils-4>
       <input ngui-auto-complete
         id="model4"
         [(ngModel)]="model4"
         placeholder="Enter Address(min. 2 chars)"
-        [source]="googleGeoCode" 
+        [source]="googleGeoCode"
         no-match-found-text="No Match Found"
         list-formatter="formatted_address"
         path-to-data="results"
@@ -96,17 +94,17 @@ let templateStr: string = `
     <pre>{{templateStr | htmlCode:'ngui-utils-4'}}</pre>
     <pre> source: {{googleGeoCode}}</pre>
   </fieldset>
- 
+
   <fieldset><legend><h2>Source as Observable "Marvel API"</h2></legend>
     <ngui-utils-5>
       <input ngui-auto-complete
         id="model5"
-        placeholder="Start typing a hero name (min. 2 chars) ... for example: Hulk"     
-        [(ngModel)]="model5" 
+        placeholder="Start typing a hero name (min. 2 chars) ... for example: Hulk"
+        [(ngModel)]="model5"
         [source]="appSvc.findHeroes"
         path-to-data="data.results"
         [list-formatter]="renderHero"
-        min-chars="2" 
+        min-chars="2"
       />
       <br/>selected model5: {{model5 | json}}<br/><br/>
     </ngui-utils-5>
@@ -114,7 +112,7 @@ let templateStr: string = `
     <b>appSvc.findHeroes functoin</b>
     <pre>{{appSvc.findHeroes | jsCode}}</pre>
   </fieldset>
-    
+
   <fieldset><legend><h2>With Material Design</h2></legend>
     <ngui-utils-6>
       <mat-input-container>
@@ -145,10 +143,10 @@ let templateStr: string = `
     <pre>{{templateStr | htmlCode:'ngui-utils-7'}}</pre>
     <pre> arrayOfStrings: {{json(arrayOfStrings)}}</pre>
   </fieldset>
-  
+
  <fieldset style="direction:rtl;text-align:right"><legend><h2>RTL support</h2></legend>
     <ngui-utils-8>
-      <div ngui-auto-complete 
+      <div ngui-auto-complete
         [source]="arrayOfStrings"
         [accept-user-input]="false"
         (ngModelChange)="myCallback8($event)"
@@ -164,7 +162,7 @@ let templateStr: string = `
  `;
 
 @Component({
-    selector: "my-app",
+    selector: 'my-app',
     template: templateStr,
     encapsulation: ViewEncapsulation.None,
     styles: [`
@@ -189,71 +187,68 @@ let templateStr: string = `
     providers: [AppSvc]
 })
 export class DirectiveTestComponent {
-    templateStr: any = templateStr;
-    loadingTemplate = '<h1>Loading</h1>';
-    arrayOfNumbers: number[] = [100, 200, 300, 400, 500];
-    arrayOfStrings: string[] =
-        ["this", "is", "array", "of", "text", "with", "long", "and long", "and long", "list"];
+    public templateStr: any = templateStr;
+    public loadingTemplate = `<h1>Loading</h1>`;
+    public arrayOfNumbers: number[] = [100, 200, 300, 400, 500];
+    public arrayOfStrings: string[] = ['this', 'is', 'array', 'of', 'text', 'with', 'long', 'and long', 'and long', 'list'];
 
-    arrayOfKeyValues: any[] =
-        [{id: 1, value: "One"}, {id: 2, value: "Two"}, {id: 3, value: "Three"}, {
+    public arrayOfKeyValues: any[] =
+        [{id: 1, value: 'One'}, {id: 2, value: 'Two'}, {id: 3, value: 'Three'}, {
             id: 4,
-            value: "Four"
+            value: 'Four'
         }];
 
-    arrayOfKeyValues2: any[] =
-        [{id: 11, key: 1, name: "Key One"}, {id: 12, key: 2, name: "Key Two"}, {
+    public arrayOfKeyValues2: any[] =
+        [{id: 11, key: 1, name: 'Key One'}, {id: 12, key: 2, name: 'Key Two'}, {
             id: 13,
             key: 3,
-            name: "Key Three"
-        }, {id: 14, key: 4, name: "Key Four"}];
+            name: 'Key Three'
+        }, {id: 14, key: 4, name: 'Key Four'}];
 
-    googleGeoCode: string = "https://maps.googleapis.com/maps/api/geocode/json?address=:my_own_keyword";
+    public googleGeoCode: string = 'https://maps.googleapis.com/maps/api/geocode/json?address=:my_own_keyword';
 
-    model1 = "is";
-    model2 = {id: 1, value: "One"};
-    model3 = {key: 3, name: "Key Three"};
-    model7 = "";
-    model8 = "";
+    public model1 = 'is';
+    public model2 = {id: 1, value: 'One'};
+    public model3 = {key: 3, name: 'Key Three'};
+    public model7 = '';
+    public model8 = '';
 
-    constructor(public http: HttpClient,
-                public appSvc: AppSvc,
-                private _sanitizer: DomSanitizer) {
+    constructor(public http: HttpClient, public appSvc: AppSvc, private _sanitizer: DomSanitizer) {
     }
 
-    customCallback(text) {
-        console.log("keyword ", text)
+    public customCallback(text) {
+        console.log('keyword ', text);
     }
 
-    myCallback1(newVal1) {
-        console.log("value is changed to ", newVal1);
+    public myCallback1(newVal1) {
+        console.log('value is changed to ', newVal1);
         this.model1 = newVal1;
     }
 
-    myCallback7(newVal7) {
-        console.log("value is changed to ", newVal7);
+    public myCallback7(newVal7) {
+        console.log('value is changed to ', newVal7);
         this.model7 = newVal7;
     }
 
-    myCallback8(newVal8) {
-        console.log("value is changed to ", newVal8);
+    public myCallback8(newVal8) {
+        console.log('value is changed to ', newVal8);
         this.model8 = newVal8;
     }
 
-    renderHero = (data: any): SafeHtml => {
-        let html = `<b style='float:left;width:100%'>${data.name}</b>
-                <img style="float: left;padding: 5px;" src="${data.thumbnail.path}/portrait_small.${data.thumbnail.extension}"> 
+    public renderHero(data: any): SafeHtml {
+        const html = `<b style='float:left;width:100%'>${data.name}</b>
+                <img style="float: left;padding: 5px;" src="${data.thumbnail.path}/portrait_small.${data.thumbnail.extension}">
                 <span>${data.description}</span>`;
 
         return this._sanitizer.bypassSecurityTrustHtml(html);
-    };
+    }
 
-    rightAligned = (data: any): SafeHtml => {
-        let html = `<div style="text-align:right">${data}.00</div>`;
+    public rightAligned(data: any): SafeHtml {
+        const html = `<div style="text-align:right">${data}.00</div>`;
         return this._sanitizer.bypassSecurityTrustHtml(html);
-    };
+    }
 
-    json(obj) {
+    public json(obj) {
         return JSON.stringify(obj, null, '  ');
     }
 

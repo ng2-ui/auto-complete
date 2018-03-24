@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NguiUtilsModule } from '@ngui/utils';
 import { MatInputModule } from '@angular/material';
-import { HashLocationStrategy, LocationStrategy } from "@angular/common";
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 import { AppComponent } from './app.component';
 // noinspection TypeScriptCheckImport
@@ -42,4 +42,3 @@ export class AppModule {
 
 // compile and launch the module
 platformBrowserDynamic().bootstrapModule(AppModule);
-

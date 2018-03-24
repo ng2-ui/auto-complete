@@ -185,7 +185,7 @@ export class NguiAutoCompleteComponent implements OnInit {
         return Array.isArray(this.source);
     }
 
-    public reloadListInDelay = (evt: any): void => {
+    public reloadListInDelay(evt: any): void {
         const delayMs = this.isSrcArr() ? 10 : 500;
         const keyword = evt.target.value;
 

@@ -17,25 +17,20 @@
     "suppressExcessPropertyErrors": true,
     "suppressImplicitAnyIndexErrors": true,
     "skipDefaultLibCheck": true,
-    "noEmitHelpers": true,
-    "importHelpers": true,
+    "noEmitHelpers": false,
     "isolatedModules": false,
     "strictNullChecks": false,
     "outDir": "dist",
-    "baseUrl": "./src",
+    "baseUrl": "src",
     "paths": {
       "@ngui/auto-complete": ["./index"]
-    },
-    "typeRoots": [
-      "node_modules/@types"
-    ]
+    }
   },
   "files": [
     "src/index.ts"
   ],
   "exclude": [
-    "node_modules",
-    "dist"
+    "node_modules"
   ],
   "compileOnSave": false,
   "buildOnSave": false,

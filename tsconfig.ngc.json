@@ -22,22 +22,22 @@
     "isolatedModules": false,
     "strictNullChecks": false,
     "outDir": "dist",
-    "baseUrl": "./src",
+    "baseUrl": "src",
     "paths": {
       "@ngui/auto-complete": ["./index"]
-    },
-    "typeRoots": [
-      "node_modules/@types"
-    ]
+    }
   },
   "types": ["hammerjs"],
   "files": [
     "src/index.ts"
   ],
   "exclude": [
-    "node_modules",
-    "dist"
+    "node_modules"
   ],
   "compileOnSave": false,
-  "buildOnSave": false
+  "buildOnSave": false,
+  "angularCompilerOptions": {
+    "strictMetadataEmit": true,
+    "skipTemplateCodegen": true
+  }
 }

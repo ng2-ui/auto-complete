@@ -6,42 +6,6 @@
 
 The project now back to life, any help for fixing bugs and improvements are welcome! [![GitHub issues](https://img.shields.io/github/issues/ng2-ui/auto-complete.svg)](https://github.com/ng2-ui/auto-complete/issues)
 
-
-
-<a href="https://rawgit.com/ng2-ui/auto-complete/master/app/index.html">
-  <img src="http://i.imgur.com/dAmheg0.png" />
-</a>
-
-
-Below are plunks for different scenarios:
-----
-
-**Template Driven Forms**
-
-* _ngModel_ http://plnkr.co/edit/3pB1Gx?p=preview
-
-**Reactive Forms**
-
-*  _FormGroup_  http://plnkr.co/edit/2osUq6?p=preview
-  [issue #49](https://github.com/ng2-ui/auto-complete/issues/49)
-
-* _FormControl_ http://plnkr.co/edit/A5CW2e?p=preview
-  [issue #100](https://github.com/ng2-ui/auto-complete/issues/100)
-
-
-**Material Design**
-
-* _Example_ http://plnkr.co/edit/2YLDjX?p=preview&open=app/app.component.ts
-
-**Obervable Source**
-
-* _Example_ http://plnkr.co/edit/ExzNSh?p=preview
-
-**List Formatter Example**
-
-* _Example 1_ http://plnkr.co/edit/F9nrWp?p=preview  
-* _Example 2 (With custom css)_ http://plnkr.co/edit/0QFYFHMmCAFmhbYAGQl7?p=preview
-
 ## Install
 
 1. install @ngui/auto-complete
@@ -74,25 +38,8 @@ For full example, please check `test` directory to see the example of;
   - `app.module.ts`
   -  and `app.component.ts`.
 
-
-## Contributors are welcomed
-
-This module is only improved and maintained by contributors like you;
-
-As a contributor, it's NOT required to be skilled in Javascript nor Angular.
-You can contribute to the following;
-
-  * Updating README.md
-  * Making more and clearer comments
-  * Answering issues and building FAQ
-  * Documentation
-  * Translation
-
-In result of your active contribution, you will be listed as a core contributor
-on https://ng2-ui.github.io, and a member of ng2-ui too.
-
-If you are interested in becoming a contributor and/or a member of ng-ui,
-please send me email to `allenhwkim AT gmail.com` with your github id.
+## Demo 
+You can look at different show cases for it here as [Component](https://rawgit.com/ng2-ui/auto-complete/master/app/index.html#/component-test) or [Directive](https://rawgit.com/ng2-ui/auto-complete/master/app/index.html#/directive-test). 
 
 ## attributes
   All options are optional except ngModel and source
@@ -134,6 +81,52 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   * **`re-focus-after-select property`**, boolean, if `false` an auto focus behavior after select (example: custom value on blur event or issue #276) is disabled . Default is `true`
   * **`autocomplete`**, boolean, default `false`, if `true` remove the attribute `autocomplete="off"` of the input.
 
+## Below are plunks for different scenarios:
+
+**Template Driven Forms**
+
+* _ngModel_ http://plnkr.co/edit/3pB1Gx?p=preview
+
+**Reactive Forms**
+
+*  _FormGroup_  http://plnkr.co/edit/2osUq6?p=preview
+  [issue #49](https://github.com/ng2-ui/auto-complete/issues/49)
+
+* _FormControl_ http://plnkr.co/edit/A5CW2e?p=preview
+  [issue #100](https://github.com/ng2-ui/auto-complete/issues/100)
+
+
+**Material Design**
+
+* _Example_ http://plnkr.co/edit/2YLDjX?p=preview&open=app/app.component.ts
+
+**Obervable Source**
+
+* _Example_ http://plnkr.co/edit/ExzNSh?p=preview
+
+**List Formatter Example**
+
+* _Example 1_ http://plnkr.co/edit/F9nrWp?p=preview  
+* _Example 2 (With custom css)_ http://plnkr.co/edit/0QFYFHMmCAFmhbYAGQl7?p=preview
+
+## Contributors are welcomed
+
+This module is only improved and maintained by contributors like you;
+
+As a contributor, it's NOT required to be skilled in Javascript nor Angular.
+You can contribute to the following;
+
+  * Updating README.md
+  * Making more and clearer comments
+  * Answering issues and building FAQ
+  * Documentation
+  * Translation
+
+In result of your active contribution, you will be listed as a core contributor
+on https://ng2-ui.github.io, and a member of ng2-ui too.
+
+If you are interested in becoming a contributor and/or a member of ng-ui,
+please send me email to `allenhwkim AT gmail.com` with your github id.
 
 ## For Developers
 

@@ -107,12 +107,6 @@ import { NguiAutoComplete } from './auto-complete';
             border-bottom: none;
         }
 
-        .header-item {
-            background-color: #ff0000;
-            color: #ffffff;
-            font-weight: bold;
-        }
-
         .ngui-auto-complete > ul li:not(.header-item):hover {
             background-color: #ccc;
         }`

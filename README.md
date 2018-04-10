@@ -80,6 +80,7 @@ You can look at different show cases for it here as [Component](https://rawgit.c
   * **`close-on-focus`**, boolean, if `false` drop down will close on a focusout event, . Default is `true`
   * **`re-focus-after-select property`**, boolean, if `false` an auto focus behavior after select (example: custom value on blur event or issue #276) is disabled . Default is `true`
   * **`autocomplete`**, boolean, default `false`, if `true` remove the attribute `autocomplete="off"` of the input.
+  * **`header-item-template`**, html markup to optionally create a non-selectable header row above the list of results. Default, null
 
 ## Below are plunks for different scenarios:
 

@@ -40,6 +40,8 @@ import { NguiAutoComplete } from './auto-complete';
                     (mousedown)="selectOne('')"
                     class="no-match-found">{{noMatchFoundText || 'No Result Found'}}
                 </li>
+                <li *ngIf="headerItemTemplate && filteredList.length" class="header-item"
+                    [innerHTML]="headerItemTemplate"></li>
                 <li *ngIf="blankOptionText && filteredList.length"
                     (mousedown)="selectOne('')"
                     class="blank-item">{{blankOptionText}}
@@ -105,7 +107,13 @@ import { NguiAutoComplete } from './auto-complete';
             border-bottom: none;
         }
 
-        .ngui-auto-complete > ul li:hover {
+        .header-item {
+            background-color: #ff0000;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .ngui-auto-complete > ul li:not(.header-item):hover {
             background-color: #ccc;
         }`
     ],
@@ -135,6 +143,7 @@ export class NguiAutoCompleteComponent implements OnInit {
     @Input('auto-select-first-item') public autoSelectFirstItem: boolean = false;
     @Input('select-on-blur') public selectOnBlur: boolean = false;
     @Input('re-focus-after-select') public reFocusAfterSelect: boolean = true;
+    @Input('header-item-template') public headerItemTemplate = null;
 
     @Output() public valueSelected = new EventEmitter();
     @Output() public customSelected = new EventEmitter();

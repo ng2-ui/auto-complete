@@ -251,7 +251,7 @@ export class DirectiveTestComponent {
             name: 'Key Three'
         }, {id: 14, key: 4, name: 'Key Four'}];
 
-    public arrayOfCities: any[] = 
+    public arrayOfCities: any[] =
         [{city: 'New York', state: 'New York', nickname: 'The Big Apple', population: '8,537,673'},
          {city: 'Los Angeles', state: 'California', nickname: 'City of Angels', population: '3,976,322'},
          {city: 'Chicago', state: 'Illinois', nickname: 'The Windy City', population: '2,704,958'},

@@ -159,6 +159,24 @@ const templateStr: string = `
     <pre>{{templateStr | htmlCode:'ngui-utils-8'}}</pre>
     <pre> arrayOfStrings: {{json(arrayOfStrings)}}</pre>
   </fieldset>
+
+  <fieldset><legend><h2>Grid-Style Results with Header Row</h2></legend>
+    <ngui-utils-9>
+      <input ngui-auto-complete
+        style="width: 650px"
+        [(ngModel)]="model9"
+        [source]="arrayOfCities"
+        [accept-user-input]="false"
+        [list-formatter]="renderCity"
+        placeholder="Search for a city"
+        display-property-name="city"
+        [header-item-template]="cityHeaderTemplate"
+        />
+        <br />selected model9: {{json(model9)}}<br /><br />
+    </ngui-utils-9>
+    <pre>{{templateStr | htmlCode:'ngui-utils-9'}}</pre>
+    <pre> arrayOfCities: {{json(arrayOfCities)}}</pre>
+  </fieldset>
  `;
 
 @Component({
@@ -183,12 +201,40 @@ const templateStr: string = `
             max-height: 100px;
             overflow-y: auto;
         }
+
+        .header-row {
+          background-color: #505050;
+          color: #ffffff;
+          margin: -2px -5px;
+        }
+        .data-row {
+          margin: -2px -5px;
+        }
+        .col-1 {
+          border-left: 1px solid #ccc;
+          padding-left: 5px;
+          display: inline-block;
+          width: 100px;
+        }
+        .col-2 {
+          border-left: 1px solid #ccc;
+          padding-left: 5px;
+          display: inline-block;
+          width: 200px;
+        }
     `],
     providers: [AppSvc]
 })
 export class DirectiveTestComponent {
     public templateStr: any = templateStr;
     public loadingTemplate = `<h1>Loading</h1>`;
+    public cityHeaderTemplate = `
+      <div class="header-row">
+        <div class="col-2">City</div>
+        <div class="col-1">State</div>
+        <div class="col-2">Nickname</div>
+        <div class="col-1">Population</div>
+      </div>`;
     public arrayOfNumbers: number[] = [100, 200, 300, 400, 500];
     public arrayOfStrings: string[] = ['this', 'is', 'array', 'of', 'text', 'with', 'long', 'and long', 'and long', 'list'];
 
@@ -205,6 +251,18 @@ export class DirectiveTestComponent {
             name: 'Key Three'
         }, {id: 14, key: 4, name: 'Key Four'}];
 
+    public arrayOfCities: any[] =
+        [{city: 'New York', state: 'New York', nickname: 'The Big Apple', population: '8,537,673'},
+         {city: 'Los Angeles', state: 'California', nickname: 'City of Angels', population: '3,976,322'},
+         {city: 'Chicago', state: 'Illinois', nickname: 'The Windy City', population: '2,704,958'},
+         {city: 'Houston', state: 'Texas', nickname: 'Space City', population: '2,303,482'},
+         {city: 'Phoenix', state: 'Arizona', nickname: 'Valley of the Sun', population: '1,615,017'},
+         {city: 'Philadelphia', state: 'Pennsylvania', nickname: 'City of Brotherly Love', population: '1,567,872'},
+         {city: 'San Antonio', state: 'Texas', nickname: 'Alamo City', population: '1,492,510'},
+         {city: 'San Diego', state: 'California', nickname: 'America\'s Finest City', population: '1,406,630'},
+         {city: 'Dallas', state: 'Texas', nickname: 'The Big D', population: '1,317,929'},
+         {city: 'San Jose', state: 'California', nickname: 'Capital of Silicon Valley', population: '1,025,350'}];
+
     public googleGeoCode: string = 'https://maps.googleapis.com/maps/api/geocode/json?address=:my_own_keyword';
 
     public model1 = 'is';
@@ -212,6 +270,7 @@ export class DirectiveTestComponent {
     public model3 = {key: 3, name: 'Key Three'};
     public model7 = '';
     public model8 = '';
+    public model9 = '';
 
     constructor(public http: HttpClient, public appSvc: AppSvc, private _sanitizer: DomSanitizer) {
     }
@@ -242,6 +301,18 @@ export class DirectiveTestComponent {
 
         return this._sanitizer.bypassSecurityTrustHtml(html);
     }
+
+    public renderCity(data: any): string {
+        const html = `
+          <div class="data-row">
+            <div class="col-2">${data.city}</div>
+            <div class="col-1">${data.state}</div>
+            <div class="col-2">${data.nickname}</div>
+            <div class="col-1">${data.population}</div>
+          </div>`;
+
+        return html;
+      }
 
     public rightAligned(data: any): SafeHtml {
         const html = `<div style="text-align:right">${data}.00</div>`;

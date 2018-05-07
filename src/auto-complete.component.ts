@@ -164,6 +164,7 @@ export class NguiAutoCompleteComponent implements OnInit {
             timer = setTimeout(callback, ms);
         };
     })();
+    private selectOnEnter: boolean = false;
 
     /**
      * constructor
@@ -210,6 +211,7 @@ export class NguiAutoCompleteComponent implements OnInit {
     }
 
     public hideDropdownList(): void {
+        this.selectOnEnter = false;
         this.dropdownVisible = false;
     }
 
@@ -297,6 +299,7 @@ export class NguiAutoCompleteComponent implements OnInit {
 
         switch (evt.keyCode) {
             case 27: // ESC, hide auto complete
+                this.selectOnEnter = false;
                 this.selectOne(undefined);
                 break;
 
@@ -304,6 +307,7 @@ export class NguiAutoCompleteComponent implements OnInit {
                 if (0 === totalNumItem) {
                     return;
                 }
+                this.selectOnEnter = true;
                 this.itemIndex = (totalNumItem + this.itemIndex - 1) % totalNumItem;
                 this.scrollToView(this.itemIndex);
                 break;
@@ -312,6 +316,7 @@ export class NguiAutoCompleteComponent implements OnInit {
                 if (0 === totalNumItem) {
                     return;
                 }
+                this.selectOnEnter = true;
                 this.dropdownVisible = true;
                 let sum = this.itemIndex;
                 sum = (this.itemIndex === null) ? 0 : sum + 1;
@@ -320,7 +325,9 @@ export class NguiAutoCompleteComponent implements OnInit {
                 break;
 
             case 13: // ENTER, choose it!!
-                this.selectOne(this.filteredList[this.itemIndex]);
+                if (this.selectOnEnter) {
+                    this.selectOne(this.filteredList[this.itemIndex]);
+                }
                 evt.preventDefault();
                 break;
 

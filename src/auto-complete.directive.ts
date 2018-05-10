@@ -229,7 +229,9 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
                 component.selectOne(component.filteredList[component.itemIndex]);
             }
 
-            this.hideAutoCompleteDropdown(event);
+            if (this.closeOnFocusOut) {
+                this.hideAutoCompleteDropdown(event);
+            }
         }
     }
 

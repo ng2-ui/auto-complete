@@ -101,7 +101,7 @@ You can look at different show cases for it here as [Component](https://rawgit.c
 
 * _Example_ http://plnkr.co/edit/2YLDjX?p=preview&open=app/app.component.ts
 
-**Obervable Source**
+**Observable Source**
 
 * _Example_ http://plnkr.co/edit/ExzNSh?p=preview
 

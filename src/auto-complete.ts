@@ -1,7 +1,7 @@
 import { Injectable, Optional } from '@angular/core';
 import { HttpClient, } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 /**
  * provides auto-complete related utility functions
@@ -22,7 +22,7 @@ export class NguiAutoComplete {
             (el) => {
                 const objStr = matchFormatted ? this.getFormattedListItem(el).toLowerCase() : JSON.stringify(el).toLowerCase();
                 keyword = keyword.toLowerCase();
-                // console.log(objStr, keyword, objStr.indexOf(keyword) !== -1);
+
                 return objStr.indexOf(keyword) !== -1;
             }
         );
@@ -66,15 +66,16 @@ export class NguiAutoComplete {
         const url = this.source.replace(replacementWord, keyword);
 
         return this.http.get<any[]>(url)
-            .map((list) => {
-                console.debug(list);
+            .pipe(
+                map((list) => {
 
-                if (this.pathToData) {
-                    const paths = this.pathToData.split('.');
-                    paths.forEach((prop) => list = list[prop]);
-                }
+                    if (this.pathToData) {
+                        const paths = this.pathToData.split('.');
+                        paths.forEach((prop) => list = list[prop]);
+                    }
 
-                return list;
-            });
+                    return list;
+                })
+            );
     }
 }

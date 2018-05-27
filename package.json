@@ -1,6 +1,6 @@
 {
   "name": "@ngui/auto-complete",
-  "version": "1.0.3",
+  "version": "1.2.0",
   "description": "Angular Input Autocomplete",
   "license": "MIT",
   "main": "dist/auto-complete.umd.js",
@@ -18,12 +18,12 @@
     "tslint": "tslint"
   },
   "dependencies": {
-    "@angular/cli": "^6.0.3",
     "@ngui/utils": "^0.8.1"
   },
   "devDependencies": {
     "@angular/animations": "^6.0.3",
     "@angular/cdk": "^6.1.0",
+    "@angular/cli": "^6.0.3",
     "@angular/common": "^6.0.3",
     "@angular/compiler": "^6.0.3",
     "@angular/compiler-cli": "^6.0.3",

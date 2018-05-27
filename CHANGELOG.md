@@ -1,4 +1,4 @@
-### [1.0.3] 
+### [1.2.0]
 - Upgraded to Angular 6
 ### [1.0.2] 
 - Fix build and publish issues.

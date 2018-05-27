@@ -115,7 +115,7 @@ const templateStr: string = `
 
   <fieldset><legend><h2>With Material Design</h2></legend>
     <ngui-utils-6>
-      <mat-input-container>
+      <mat-form-field>
         <span matPrefix>$&nbsp;</span>
         <input matInput ngui-auto-complete style="border: 1px solid #ccc"
           id="model6"
@@ -124,7 +124,7 @@ const templateStr: string = `
           [list-formatter]="rightAligned"
           placeholder="amount" align="end"/>
           <span matSuffix>.00</span>
-      </mat-input-container>
+      </mat-form-field>
     </ngui-utils-6>
     <pre>{{templateStr | htmlCode:'ngui-utils-6'}}</pre>
     <pre>arrayOfNumbers: {{json(arrayOfNumbers)}}</pre>

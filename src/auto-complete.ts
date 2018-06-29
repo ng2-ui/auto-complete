@@ -17,15 +17,24 @@ export class NguiAutoComplete {
         // ...
     }
 
-    public filter(list: any[], keyword: string, matchFormatted: boolean) {
-        return list.filter(
-            (el) => {
-                const objStr = matchFormatted ? this.getFormattedListItem(el).toLowerCase() : JSON.stringify(el).toLowerCase();
-                keyword = keyword.toLowerCase();
+    public filter(list: any[], keyword: string, matchFormatted: boolean, accentInsensitive: boolean) {
+        return accentInsensitive
+            ? list.filter(
+                (el) => {
+                    const objStr = matchFormatted ? this.getFormattedListItem(el).toLowerCase() : JSON.stringify(el).toLowerCase();
+                    keyword = keyword.toLowerCase();
 
-                return objStr.indexOf(keyword) !== -1;
-            }
-        );
+                    return objStr.normalize( 'NFD' ).replace( /[\u0300-\u036f]/g, '' )
+                        .indexOf(keyword.normalize( 'NFD' ).replace( /[\u0300-\u036f]/g, '' )) !== -1;
+                })
+            : list.filter(
+                (el) => {
+                    const objStr = matchFormatted ? this.getFormattedListItem(el).toLowerCase() : JSON.stringify(el).toLowerCase();
+                    keyword = keyword.toLowerCase();
+
+                    return objStr.indexOf(keyword) !== -1;
+                }
+            );
     }
 
     public getFormattedListItem(data: any) {

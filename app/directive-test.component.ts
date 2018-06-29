@@ -177,6 +177,25 @@ const templateStr: string = `
     <pre>{{templateStr | htmlCode:'ngui-utils-9'}}</pre>
     <pre> arrayOfCities: {{json(arrayOfCities)}}</pre>
   </fieldset>
+
+   <fieldset><legend><h2>Exact Match Including Accents</h2></legend>
+    <ngui-utils-10>
+      <div ngui-auto-complete
+        [ignore-accents] = "false"
+        [source]="arrayOfAccentedStrings"
+        [accept-user-input]="true"
+        [auto-select-first-item]="false"
+        [select-on-blur]="true"
+        (ngModelChange)="myCallback10($event)"
+        (customSelected)="customCallback($event)"
+        placeholder="enter text">
+        <input id="model10" [ngModel]="model10" autofocus />
+      </div>
+      <br/>selected model10: {{json(model10)}}<br/><br/>
+    </ngui-utils-10>
+    <pre>{{templateStr | htmlCode:'ngui-utils-10'}}</pre>
+    <pre> arrayOfStrings: {{json(arrayOfAccentedStrings)}}</pre>
+  </fieldset>
  `;
 
 @Component({
@@ -237,6 +256,7 @@ export class DirectiveTestComponent {
       </div>`;
     public arrayOfNumbers: number[] = [100, 200, 300, 400, 500];
     public arrayOfStrings: string[] = ['this', 'is', 'array', 'of', 'text', 'with', 'long', 'and long', 'and long', 'list'];
+    public arrayOfAccentedStrings: string[] = ['Cádiz', 'München'];
 
     public arrayOfKeyValues: any[] =
         [{id: 1, value: 'One'}, {id: 2, value: 'Two'}, {id: 3, value: 'Three'}, {
@@ -271,6 +291,7 @@ export class DirectiveTestComponent {
     public model7 = '';
     public model8 = '';
     public model9 = '';
+    public model10 = '';
 
     constructor(public http: HttpClient, public appSvc: AppSvc, private _sanitizer: DomSanitizer) {
     }
@@ -292,6 +313,11 @@ export class DirectiveTestComponent {
     public myCallback8(newVal8) {
         console.log('value is changed to ', newVal8);
         this.model8 = newVal8;
+    }
+
+    public myCallback10(newVal10) {
+        console.log('value is changed to ', newVal10);
+        this.model10 = newVal10;
     }
 
     public renderHero(data: any): SafeHtml {

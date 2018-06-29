@@ -1,3 +1,5 @@
+### [1.2.1]
+- Added new property `ignore-accents`
 ### [1.2.0]
 - Upgraded to Angular 6
 ### [1.0.2] 

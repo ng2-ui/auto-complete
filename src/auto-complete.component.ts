@@ -138,6 +138,7 @@ export class NguiAutoCompleteComponent implements OnInit {
     @Input('select-on-blur') public selectOnBlur: boolean = false;
     @Input('re-focus-after-select') public reFocusAfterSelect: boolean = true;
     @Input('header-item-template') public headerItemTemplate = null;
+    @Input('ignore-accents') public ignoreAccents: boolean = true;
 
     @Output() public valueSelected = new EventEmitter();
     @Output() public customSelected = new EventEmitter();
@@ -232,7 +233,7 @@ export class NguiAutoCompleteComponent implements OnInit {
 
         if (this.isSrcArr()) {    // local source
             this.isLoading = false;
-            this.filteredList = this.autoComplete.filter(this.source, keyword, this.matchFormatted);
+            this.filteredList = this.autoComplete.filter(this.source, keyword, this.matchFormatted, this.ignoreAccents);
             if (this.maxNumList) {
                 this.filteredList = this.filteredList.slice(0, this.maxNumList);
             }

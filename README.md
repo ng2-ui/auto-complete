@@ -81,7 +81,7 @@ You can look at different show cases for it here as [Component](https://rawgit.c
   * **`re-focus-after-select property`**, boolean, if `false` an auto focus behavior after select (example: custom value on blur event or issue #276) is disabled . Default is `true`
   * **`autocomplete`**, boolean, default `false`, if `true` remove the attribute `autocomplete="off"` of the input.
   * **`header-item-template`**, html markup to optionally create a non-selectable header row above the list of results. Default, null
-  * **`ignore-accents`**, boolean, default `false`, if `true` matches user input with source given ignoring accents or diacritics included in the [Unicode Combining Diacritical Marks block](https://www.wikiwand.com/en/Combining_Diacritical_Marks)
+  * **`ignore-accents`**, boolean, default `true`, if `false` user input must match exactly with source given, including accents or diacritics
 
 ## Below are plunks for different scenarios:
 

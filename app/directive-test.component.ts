@@ -178,10 +178,10 @@ const templateStr: string = `
     <pre> arrayOfCities: {{json(arrayOfCities)}}</pre>
   </fieldset>
 
-   <fieldset><legend><h2>Ignore Accents Option</h2></legend>
+   <fieldset><legend><h2>Exact Match Including Accents</h2></legend>
     <ngui-utils-10>
       <div ngui-auto-complete
-        [ignore-accents] = "true"
+        [ignore-accents] = "false"
         [source]="arrayOfAccentedStrings"
         [accept-user-input]="true"
         [auto-select-first-item]="false"

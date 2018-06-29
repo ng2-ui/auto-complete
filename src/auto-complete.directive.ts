@@ -54,7 +54,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
     @Input('close-on-focusout') public closeOnFocusOut: boolean = true;
     @Input('re-focus-after-select') public reFocusAfterSelect: boolean = true;
     @Input('header-item-template') public headerItemTemplate = null;
-    @Input('ignore-accents') public ignoreAccents: boolean = false;
+    @Input('ignore-accents') public ignoreAccents: boolean = true;
 
     @Input() public ngModel: string;
     @Input('formControlName') public formControlName: string;

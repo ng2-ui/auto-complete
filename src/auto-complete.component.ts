@@ -138,7 +138,7 @@ export class NguiAutoCompleteComponent implements OnInit {
     @Input('select-on-blur') public selectOnBlur: boolean = false;
     @Input('re-focus-after-select') public reFocusAfterSelect: boolean = true;
     @Input('header-item-template') public headerItemTemplate = null;
-    @Input('ignore-accents') public ignoreAccents: boolean = false;
+    @Input('ignore-accents') public ignoreAccents: boolean = true;
 
     @Output() public valueSelected = new EventEmitter();
     @Output() public customSelected = new EventEmitter();

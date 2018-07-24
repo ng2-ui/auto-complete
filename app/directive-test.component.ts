@@ -196,6 +196,24 @@ const templateStr: string = `
     <pre>{{templateStr | htmlCode:'ngui-utils-10'}}</pre>
     <pre> arrayOfStrings: {{json(arrayOfAccentedStrings)}}</pre>
   </fieldset>
+
+  <fieldset><legend><h2>Outer input</h2></legend>
+    <ngui-utils-11>
+        <input #outerInput id="model11" [ngModel]="model11" autofocus placeholder="enter text"/>
+        <div ngui-auto-complete
+            [outer-input-element]="outerInput"
+            [source]="arrayOfStrings"
+            [accept-user-input]="true"
+            [auto-select-first-item]="false"
+            [select-on-blur]="true"
+            (ngModelChange)="myCallback11($event)"
+            (customSelected)="customCallback($event)" >
+        </div>
+      <br/>selected model11: {{json(model11)}}<br/><br/>
+    </ngui-utils-11>
+    <pre>{{templateStr | htmlCode:'ngui-utils-11'}}</pre>
+    <pre> arrayOfStrings: {{json(arrayOfStrings)}}</pre>
+  </fieldset>
  `;
 
 @Component({
@@ -292,6 +310,7 @@ export class DirectiveTestComponent {
     public model8 = '';
     public model9 = '';
     public model10 = '';
+    public model11 = '';
 
     constructor(public http: HttpClient, public appSvc: AppSvc, private _sanitizer: DomSanitizer) {
     }
@@ -318,6 +337,11 @@ export class DirectiveTestComponent {
     public myCallback10(newVal10) {
         console.log('value is changed to ', newVal10);
         this.model10 = newVal10;
+    }
+
+    public myCallback11(newVal11) {
+        console.log('value is changed to ', newVal11);
+        this.model11 = newVal11;
     }
 
     public renderHero(data: any): SafeHtml {

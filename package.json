@@ -18,7 +18,8 @@
     "tslint": "tslint"
   },
   "dependencies": {
-    "@ngui/utils": "^0.8.1"
+    "@ngui/utils": "^0.8.1",
+    "unorm": "^1.4.1"
   },
   "devDependencies": {
     "@angular/animations": "^6.0.3",

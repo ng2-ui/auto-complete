@@ -1,3 +1,5 @@
+### [1.2.2]
+- Support IE11 when `ignore-accents` is true
 ### [1.2.1]
 - Added new property `ignore-accents`
 ### [1.2.0]

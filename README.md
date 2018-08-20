@@ -57,7 +57,8 @@ You can look at different show cases for it here as [Component](https://rawgit.c
            myListFormatter(data: any): string {
               return `(${data[key]}) ${data[name]}`;
             }
-
+  * **`outer-input-element`**, HTMLInputElement reference, pass any input from outer scope.
+  * **`extFormControl`**, AbstractControl, pass your own AbstractControl object, can be used with outer-input-element.
   * **`path-to-data`**, string, e.g., `data.myList`, path to array data in http response
   * **`min-chars, number`**, when source is remote data, the number of character to see drop-down list
   * **`display-property-name`**, string, key name of text to show. default is `value`

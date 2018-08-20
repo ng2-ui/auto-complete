@@ -3,6 +3,7 @@ import {
     ElementRef,
     EventEmitter,
     Input,
+    NgZone,
     OnInit,
     Output,
     ViewChild,
@@ -170,7 +171,9 @@ export class NguiAutoCompleteComponent implements OnInit {
     /**
      * constructor
      */
-    constructor(elementRef: ElementRef, public autoComplete: NguiAutoComplete) {
+    constructor(elementRef: ElementRef,
+                public autoComplete: NguiAutoComplete,
+                private zone: NgZone) {
         this.el = elementRef.nativeElement;
     }
 
@@ -257,7 +260,7 @@ export class NguiAutoCompleteComponent implements OnInit {
                         }
                     },
                     (error) => null,
-                    () => this.isLoading = false // complete
+                    () =>  this.zone.run(() => this.isLoading = false) // complete
                 );
             } else {
                 // remote source
@@ -269,7 +272,7 @@ export class NguiAutoCompleteComponent implements OnInit {
                         }
                     },
                     (error) => null,
-                    () => this.isLoading = false // complete
+                    () => this.zone.run(() => this.isLoading = false) // complete
                 );
             }
         }

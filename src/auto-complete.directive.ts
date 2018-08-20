@@ -1,27 +1,10 @@
 import {
-    AfterViewInit,
-    ComponentFactoryResolver,
-    ComponentRef,
-    Directive,
-    EventEmitter,
-    Host,
-    Input,
-    OnChanges, OnDestroy,
-    OnInit,
-    Optional,
-    Output,
-    SimpleChanges,
-    SkipSelf,
-    ViewContainerRef
+    AfterViewInit, ComponentFactoryResolver, ComponentRef, Directive, EventEmitter, Host, Input, OnChanges,
+    OnDestroy, OnInit, Optional, Output, SimpleChanges, SkipSelf, ViewContainerRef
 } from '@angular/core';
 import { NguiAutoCompleteComponent } from './auto-complete.component';
-import {
-    AbstractControl,
-    ControlContainer,
-    FormControl,
-    FormGroup,
-    FormGroupName
-} from '@angular/forms';
+import { AbstractControl, ControlContainer, FormGroup, FormGroupName } from '@angular/forms';
+import { AutoCompleteFilter } from './auto-complete.filter';
 
 /**
  * display auto-complete section with input and dropdown list when it is clicked
@@ -55,6 +38,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
     @Input('re-focus-after-select') public reFocusAfterSelect: boolean = true;
     @Input('header-item-template') public headerItemTemplate = null;
     @Input('ignore-accents') public ignoreAccents: boolean = true;
+    @Input('filters') public filters: AutoCompleteFilter[] = [];
 
     @Input() public ngModel: string;
     @Input('form') public form: FormGroup;
@@ -140,7 +124,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
             this.inputEl.addEventListener('focus', this.showAutoCompleteDropdown);
         }
 
-        if (this.closeOnFocusOut) {
+        if (this.closeOnFocusOut && !(this.filters && this.filters.length)) {
             this.inputEl.addEventListener('focusout', this.hideAutoCompleteDropdown);
         }
 
@@ -217,10 +201,12 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
         component.autoSelectFirstItem = this.autoSelectFirstItem;
         component.headerItemTemplate = this.headerItemTemplate;
         component.ignoreAccents = this.ignoreAccents;
+        component.filters = this.filters;
 
         component.valueSelected.subscribe(this.selectNewValue);
         component.textEntered.subscribe(this.enterNewText);
         component.customSelected.subscribe(this.selectCustomValue);
+        component.filterSelected.subscribe(this.selectCustomValue2);
 
         this.acDropdownEl = this.componentRef.location.nativeElement;
         this.acDropdownEl.style.display = 'none';
@@ -346,6 +332,16 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
         }
         this.valueChanged.emit(val);
         this.hideAutoCompleteDropdown();
+        setTimeout(() => {
+            if (this.reFocusAfterSelect) {
+                this.inputEl.focus();
+            }
+
+            return this.inputEl;
+        });
+    }
+
+    public selectCustomValue2 = (text: string) => {
         setTimeout(() => {
             if (this.reFocusAfterSelect) {
                 this.inputEl.focus();

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, ViewEncapsulation } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { AppSvc } from './app.service';
+import { AutoCompleteFilter } from '../src/auto-complete.filter';
 
 const templateStr: string = `
   <h1> Autocomplete Directive Test - Local Source </h1>
@@ -214,6 +215,35 @@ const templateStr: string = `
     <pre>{{templateStr | htmlCode:'ngui-utils-11'}}</pre>
     <pre> arrayOfStrings: {{json(arrayOfStrings)}}</pre>
   </fieldset>
+
+    <fieldset><legend><h2>With inline filters</h2></legend>
+    <ngui-utils-12>
+        <input #withInlineFilters
+         id="model12"
+         [ngModel]="model12"
+         autofocus
+         placeholder="enter text"
+         style="width: 650px"/>
+        <div ngui-auto-complete
+            style="width: 650px"
+            [outer-input-element]="withInlineFilters"
+            [source]="arrayOfCities"
+            [list-formatter]="renderCity"
+            placeholder="Search for a city"
+            display-property-name="city"
+            [accept-user-input]="false"
+            [auto-select-first-item]="false"
+            [select-on-blur]="true"
+            [filters]="filters"
+            [header-item-template]="cityHeaderTemplate"
+            (ngModelChange)="myCallback12($event)"
+            (customSelected)="customCallback($event)" >
+        </div>
+        <br/>selected model12: {{json(model12)}}<br/><br/>
+    </ngui-utils-12>
+    <pre>{{templateStr | htmlCode:'ngui-utils-12'}}</pre>
+    <pre> arrayOfStrings: {{json(arrayOfStrings)}}</pre>
+  </fieldset>
  `;
 
 @Component({
@@ -311,6 +341,12 @@ export class DirectiveTestComponent {
     public model9 = '';
     public model10 = '';
     public model11 = '';
+    public model12 = '';
+
+    public filters: AutoCompleteFilter[] = [{
+        label: 'Contains San',
+        filterBy: (item: any) => item.city && item.city.indexOf('San') > -1
+    }];
 
     constructor(public http: HttpClient, public appSvc: AppSvc, private _sanitizer: DomSanitizer) {
     }
@@ -342,6 +378,11 @@ export class DirectiveTestComponent {
     public myCallback11(newVal11) {
         console.log('value is changed to ', newVal11);
         this.model11 = newVal11;
+    }
+
+    public myCallback12(newVal12) {
+        console.log('value is changed to ', newVal12);
+        this.model12 = newVal12;
     }
 
     public renderHero(data: any): SafeHtml {

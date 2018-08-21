@@ -206,7 +206,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
         component.valueSelected.subscribe(this.selectNewValue);
         component.textEntered.subscribe(this.enterNewText);
         component.customSelected.subscribe(this.selectCustomValue);
-        component.filterSelected.subscribe(this.selectCustomValue2);
+        component.filterSelected.subscribe(this.filterSelected);
 
         this.acDropdownEl = this.componentRef.location.nativeElement;
         this.acDropdownEl.style.display = 'none';
@@ -341,7 +341,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
         });
     }
 
-    public selectCustomValue2 = (text: string) => {
+    public filterSelected = (text: string) => {
         setTimeout(() => {
             if (this.reFocusAfterSelect) {
                 this.inputEl.focus();

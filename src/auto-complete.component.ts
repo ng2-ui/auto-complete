@@ -43,8 +43,8 @@ import { AutoCompleteFilter } from './auto-complete.filter';
                     (mousedown)="onFilterClicked(filter)">
                     <input type="checkbox"
                            class="ngui-auto-complete-filter-checkbox"
-                           (change)="onFilterChange(filter)"
-                           [(ngModel)]="filter.enabled" />
+                           (click)="onFilterChange()"
+                           [checked]="filter.enabled"/>
                     <span class="ngui-auto-complete-filter-label">{{filter.label}}</span>
                 </li>
                 <li *ngIf="isLoading && loadingTemplate" class="loading"
@@ -274,7 +274,7 @@ export class NguiAutoCompleteComponent implements OnInit {
 
             if (typeof this.source === 'function') {
                 // custom function that returns observable
-                this.source(keyword, this.filters).subscribe(
+                this.source(keyword).subscribe(
                     (resp) => {
 
                         if (this.pathToData) {
@@ -398,11 +398,11 @@ export class NguiAutoCompleteComponent implements OnInit {
     }
 
     public onFilterChange() {
-       this.reloadList(this.keyword);
+        return false;
     }
 
     public onFilterClicked(filter: AutoCompleteFilter) {
-        filter.enabled = !filter.enabled;
+        this.zone.run(() => filter.enabled = !filter.enabled);
         this.filterSelected.emit();
         this.reloadList(this.keyword);
     }

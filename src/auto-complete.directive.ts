@@ -38,7 +38,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
     @Input('re-focus-after-select') public reFocusAfterSelect: boolean = true;
     @Input('header-item-template') public headerItemTemplate = null;
     @Input('ignore-accents') public ignoreAccents: boolean = true;
-    @Input('filters') public filters: AutoCompleteFilter[] = [];
+    @Input('filters') public filters: AutoCompleteFilter[];
 
     @Input() public ngModel: string;
     @Input('form') public form: FormGroup;
@@ -63,6 +63,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
     private dropdownJustHidden: boolean;
     private scheduledBlurHandler: any;
     private documentClickListener: (e: MouseEvent) => any;
+    private filterClicked: boolean;
 
     constructor(private resolver: ComponentFactoryResolver,
                 public  viewContainerRef: ViewContainerRef,
@@ -201,7 +202,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
         component.autoSelectFirstItem = this.autoSelectFirstItem;
         component.headerItemTemplate = this.headerItemTemplate;
         component.ignoreAccents = this.ignoreAccents;
-        component.filters = this.filters;
+        component.filters = this.filters || [];
 
         component.valueSelected.subscribe(this.selectNewValue);
         component.textEntered.subscribe(this.enterNewText);
@@ -233,9 +234,10 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
                 component.selectOne(component.filteredList[component.itemIndex]);
             }
 
-            if (this.closeOnFocusOut) {
+            if (this.closeOnFocusOut && !this.filterClicked) {
                 this.hideAutoCompleteDropdown(event);
             }
+            this.filterClicked = false;
         }
     }
 
@@ -332,35 +334,18 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
         }
         this.valueChanged.emit(val);
         this.hideAutoCompleteDropdown();
-        setTimeout(() => {
-            if (this.reFocusAfterSelect) {
-                this.inputEl.focus();
-            }
-
-            return this.inputEl;
-        });
+        this.focusInput();
     }
 
     public filterSelected = (text: string) => {
-        setTimeout(() => {
-            if (this.reFocusAfterSelect) {
-                this.inputEl.focus();
-            }
-
-            return this.inputEl;
-        });
+        this.filterClicked = true;
+        this.focusInput();
     }
 
     public selectCustomValue = (text: string) => {
         this.customSelected.emit(text);
         this.hideAutoCompleteDropdown();
-        setTimeout(() => {
-            if (this.reFocusAfterSelect) {
-                this.inputEl.focus();
-            }
-
-            return this.inputEl;
-        });
+        this.focusInput();
     }
 
     public enterNewText = (value: any) => {
@@ -392,5 +377,15 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
         if (!!this.inputEl) {
             this.inputEl.value = '' + item;
         }
+    }
+
+    private focusInput() {
+        setTimeout(() => {
+            if (this.reFocusAfterSelect) {
+                this.inputEl.focus();
+            }
+
+            return this.inputEl;
+        });
     }
 }

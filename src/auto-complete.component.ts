@@ -10,6 +10,7 @@ import {
     ViewEncapsulation
 } from '@angular/core';
 import { NguiAutoComplete } from './auto-complete';
+import { AutoCompleteFilter } from './auto-complete.filter';
 
 /**
  * show a selected date in monthly calendar
@@ -34,6 +35,18 @@ import { NguiAutoComplete } from './auto-complete';
 
             <!-- dropdown that user can select -->
             <ul *ngIf="dropdownVisible" [class.empty]="emptyList">
+                <li *ngIf="headerItemTemplate && filteredList.length" class="header-item"
+                    [innerHTML]="headerItemTemplate"></li>
+                <li *ngFor="let filter of filters; let i=index; trackBy: trackByIndex"
+                    class="ngui-auto-complete-filter-item"
+                    [ngClass]="{selected: i === itemIndex}"
+                    (mousedown)="onFilterClicked(filter)">
+                    <input type="checkbox"
+                           class="ngui-auto-complete-filter-checkbox"
+                           (click)="onFilterChange()"
+                           [checked]="filter.enabled"/>
+                    <span class="ngui-auto-complete-filter-label">{{filter.label}}</span>
+                </li>
                 <li *ngIf="isLoading && loadingTemplate" class="loading"
                     [innerHTML]="loadingTemplate"></li>
                 <li *ngIf="isLoading && !loadingTemplate" class="loading">{{loadingText}}</li>
@@ -41,8 +54,6 @@ import { NguiAutoComplete } from './auto-complete';
                     (mousedown)="selectOne('')"
                     class="no-match-found">{{noMatchFoundText || 'No Result Found'}}
                 </li>
-                <li *ngIf="headerItemTemplate && filteredList.length" class="header-item"
-                    [innerHTML]="headerItemTemplate"></li>
                 <li *ngIf="blankOptionText && filteredList.length"
                     (mousedown)="selectOne('')"
                     class="blank-item">{{blankOptionText}}
@@ -50,7 +61,7 @@ import { NguiAutoComplete } from './auto-complete';
                 <li class="item"
                     *ngFor="let item of filteredList; let i=index; trackBy: trackByIndex"
                     (mousedown)="selectOne(item)"
-                    [ngClass]="{selected: i === itemIndex}"
+                    [ngClass]="{selected: i + filters.length === itemIndex}"
                     [innerHtml]="autoComplete.getFormattedListItem(item)">
                 </li>
             </ul>
@@ -110,7 +121,18 @@ import { NguiAutoComplete } from './auto-complete';
 
         .ngui-auto-complete > ul li:not(.header-item):hover {
             background-color: #ccc;
-        }`
+        }
+
+        .ngui-auto-complete-filter-item {
+            display: flex;
+            flex-direction: row;
+            cursor: pointer;
+        }
+
+        .ngui-auto-complete-filter-item input {
+            width: auto;
+        }
+    `
     ],
     encapsulation: ViewEncapsulation.None
 })
@@ -140,10 +162,12 @@ export class NguiAutoCompleteComponent implements OnInit {
     @Input('re-focus-after-select') public reFocusAfterSelect: boolean = true;
     @Input('header-item-template') public headerItemTemplate = null;
     @Input('ignore-accents') public ignoreAccents: boolean = true;
+    @Input('filters') public filters: AutoCompleteFilter[] = [];
 
     @Output() public valueSelected = new EventEmitter();
     @Output() public customSelected = new EventEmitter();
     @Output() public textEntered = new EventEmitter();
+    @Output() public filterSelected = new EventEmitter();
 
     @ViewChild('autoCompleteInput') public autoCompleteInput: ElementRef;
     @ViewChild('autoCompleteContainer') public autoCompleteContainer: ElementRef;
@@ -225,7 +249,6 @@ export class NguiAutoCompleteComponent implements OnInit {
     }
 
     public reloadList(keyword: string): void {
-
         this.filteredList = [];
         if (keyword.length < (this.minChars || 0)) {
             this.minCharsEntered = false;
@@ -236,7 +259,12 @@ export class NguiAutoCompleteComponent implements OnInit {
 
         if (this.isSrcArr()) {    // local source
             this.isLoading = false;
-            this.filteredList = this.autoComplete.filter(this.source, keyword, this.matchFormatted, this.ignoreAccents);
+            this.filteredList = this.autoComplete.filter(
+                this.source,
+                keyword,
+                this.matchFormatted,
+                this.ignoreAccents,
+                this.filters);
             if (this.maxNumList) {
                 this.filteredList = this.filteredList.slice(0, this.maxNumList);
             }
@@ -299,7 +327,7 @@ export class NguiAutoCompleteComponent implements OnInit {
     }
 
     public inputElKeyHandler = (evt: any) => {
-        const totalNumItem = this.filteredList.length;
+        const totalNumItem = this.filteredList.length + this.filters.length;
 
         switch (evt.keyCode) {
             case 27: // ESC, hide auto complete
@@ -330,16 +358,25 @@ export class NguiAutoCompleteComponent implements OnInit {
 
             case 13: // ENTER, choose it!!
                 if (this.selectOnEnter) {
-                    this.selectOne(this.filteredList[this.itemIndex]);
+                    this.onEnterPressed();
                 }
                 evt.preventDefault();
                 break;
 
             case 9: // TAB, choose if tab-to-select is enabled
                 if (this.tabToSelect) {
-                    this.selectOne(this.filteredList[this.itemIndex]);
+                    this.onEnterPressed();
                 }
                 break;
+        }
+    }
+
+    public onEnterPressed() {
+        if (this.itemIndex < this.filters.length) {
+            this.filters[this.itemIndex].enabled = !this.filters[this.itemIndex].enabled;
+            this.reloadList(this.keyword);
+        } else {
+            this.selectOne(this.filteredList[this.itemIndex - this.filters.length]);
         }
     }
 
@@ -358,6 +395,16 @@ export class NguiAutoCompleteComponent implements OnInit {
 
     public trackByIndex(index, item) {
         return index;
+    }
+
+    public onFilterChange() {
+        return false;
+    }
+
+    public onFilterClicked(filter: AutoCompleteFilter) {
+        this.zone.run(() => filter.enabled = !filter.enabled);
+        this.filterSelected.emit();
+        this.reloadList(this.keyword);
     }
 
     get emptyList(): boolean {

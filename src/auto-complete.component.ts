@@ -155,9 +155,6 @@ export class NguiAutoCompleteComponent implements OnInit {
     public itemIndex: number = null;
     public keyword: string;
 
-    private el: HTMLElement;           // this component  element `<ngui-auto-complete>`
-    private timer = 0;
-
     private delay = (function() {
         let timer = 0;
         return function(callback: any, ms: number) {
@@ -171,7 +168,6 @@ export class NguiAutoCompleteComponent implements OnInit {
      * constructor
      */
     constructor(elementRef: ElementRef, public autoComplete: NguiAutoComplete) {
-        this.el = elementRef.nativeElement;
     }
 
     /**

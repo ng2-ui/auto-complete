@@ -6,10 +6,12 @@ import {
     EventEmitter,
     Host,
     Input,
+    Inject,
     OnChanges, OnDestroy,
     OnInit,
     Optional,
     Output,
+    PLATFORM_ID,
     SimpleChanges,
     SkipSelf,
     ViewContainerRef
@@ -22,6 +24,7 @@ import {
     FormGroup,
     FormGroupName
 } from '@angular/forms';
+import { isPlatformBrowser } from '@angular/common';
 
 /**
  * display auto-complete section with input and dropdown list when it is clicked
@@ -79,84 +82,91 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
     private scheduledBlurHandler: any;
     private documentClickListener: (e: MouseEvent) => any;
 
-    constructor(private resolver: ComponentFactoryResolver,
+    constructor(@Inject(PLATFORM_ID) protected platformId: Object,
+                private resolver: ComponentFactoryResolver,
                 public  viewContainerRef: ViewContainerRef,
                 @Optional() @Host() @SkipSelf() private parentForm: ControlContainer) {
         this.el = this.viewContainerRef.element.nativeElement;
     }
 
     ngOnInit(): void {
-        // Blur event is handled only after a click event. This is to prevent handling of blur events resulting from interacting with a scrollbar
-        // introduced by content overflow (Internet explorer issue).
-        // See issue description here: http://stackoverflow.com/questions/2023779/clicking-on-a-divs-scroll-bar-fires-the-blur-event-in-ie
-        this.documentClickListener = (e) => {
-            if (this.scheduledBlurHandler) {
-                this.scheduledBlurHandler();
-                this.scheduledBlurHandler = null;
+        if (isPlatformBrowser(this.platformId)) {
+            // Blur event is handled only after a click event. This is to prevent handling of blur events resulting from interacting with a scrollbar
+            // introduced by content overflow (Internet explorer issue).
+            // See issue description here: http://stackoverflow.com/questions/2023779/clicking-on-a-divs-scroll-bar-fires-the-blur-event-in-ie
+            this.documentClickListener = (e) => {
+                if (this.scheduledBlurHandler) {
+                    this.scheduledBlurHandler();
+                    this.scheduledBlurHandler = null;
+                }
+            };
+
+            document.addEventListener('click', this.documentClickListener);
+            // wrap this element with <div class="ngui-auto-complete">
+            this.wrapperEl = document.createElement('div');
+            this.wrapperEl.className = 'ngui-auto-complete-wrapper';
+            this.wrapperEl.style.position = 'relative';
+            this.el.parentElement.insertBefore(this.wrapperEl, this.el.nextSibling);
+            this.wrapperEl.appendChild(this.el);
+
+            // Check if we were supplied with a [formControlName] and it is inside a [form]
+            // else check if we are supplied with a [FormControl] regardless if it is inside a [form] tag
+            if (this.parentForm && this.formControlName) {
+                if (this.parentForm['form']) {
+                    this.formControl = (this.parentForm['form'] as FormGroup).get(this.formControlName);
+                } else if (this.parentForm instanceof FormGroupName) {
+                    this.formControl = (this.parentForm as FormGroupName).control.controls[this.formControlName];
+                }
+            } else if (this.extFormControl) {
+                this.formControl = this.extFormControl;
             }
-        };
 
-        document.addEventListener('click', this.documentClickListener);
-        // wrap this element with <div class="ngui-auto-complete">
-        this.wrapperEl = document.createElement('div');
-        this.wrapperEl.className = 'ngui-auto-complete-wrapper';
-        this.wrapperEl.style.position = 'relative';
-        this.el.parentElement.insertBefore(this.wrapperEl, this.el.nextSibling);
-        this.wrapperEl.appendChild(this.el);
-
-        // Check if we were supplied with a [formControlName] and it is inside a [form]
-        // else check if we are supplied with a [FormControl] regardless if it is inside a [form] tag
-        if (this.parentForm && this.formControlName) {
-            if (this.parentForm['form']) {
-                this.formControl = (this.parentForm['form'] as FormGroup).get(this.formControlName);
-            } else if (this.parentForm instanceof FormGroupName) {
-                this.formControl = (this.parentForm as FormGroupName).control.controls[this.formControlName];
+            // apply toString() method for the object
+            if (!!this.ngModel) {
+                this.selectNewValue(this.ngModel);
+            } else if (!!this.formControl && this.formControl.value) {
+                this.selectNewValue(this.formControl.value);
             }
-        } else if (this.extFormControl) {
-            this.formControl = this.extFormControl;
-        }
-
-        // apply toString() method for the object
-        if (!!this.ngModel) {
-            this.selectNewValue(this.ngModel);
-        } else if (!!this.formControl && this.formControl.value) {
-            this.selectNewValue(this.formControl.value);
         }
 
     }
 
     ngAfterViewInit() {
-        // if this element is not an input tag, move dropdown after input tag
-        // so that it displays correctly
-        this.inputEl = this.el.tagName === 'INPUT' ? this.el as HTMLInputElement : this.el.querySelector('input');
+        if (isPlatformBrowser(this.platformId)) {
+            // if this element is not an input tag, move dropdown after input tag
+            // so that it displays correctly
+            this.inputEl = this.el.tagName === 'INPUT' ? this.el as HTMLInputElement : this.el.querySelector('input');
 
-        if (this.openOnFocus) {
-            this.inputEl.addEventListener('focus', (e) => this.showAutoCompleteDropdown(e));
-        }
+            if (this.openOnFocus) {
+                this.inputEl.addEventListener('focus', (e) => this.showAutoCompleteDropdown(e));
+            }
 
-        if (this.closeOnFocusOut) {
-            this.inputEl.addEventListener('focusout', (e) => this.hideAutoCompleteDropdown(e));
-        }
+            if (this.closeOnFocusOut) {
+                this.inputEl.addEventListener('focusout', (e) => this.hideAutoCompleteDropdown(e));
+            }
 
-        if (!this.autocomplete) {
-            this.inputEl.setAttribute('autocomplete', 'off');
+            if (!this.autocomplete) {
+                this.inputEl.setAttribute('autocomplete', 'off');
+            }
+            this.inputEl.addEventListener('blur', (e) => {
+                this.scheduledBlurHandler = () => {
+                    return this.blurHandler(e);
+                };
+            });
+            this.inputEl.addEventListener('keydown', (e) => this.keydownEventHandler(e));
+            this.inputEl.addEventListener('input', (e) => this.inputEventHandler(e));
         }
-        this.inputEl.addEventListener('blur', (e) => {
-            this.scheduledBlurHandler = () => {
-                return this.blurHandler(e);
-            };
-        });
-        this.inputEl.addEventListener('keydown', (e) => this.keydownEventHandler(e));
-        this.inputEl.addEventListener('input', (e) => this.inputEventHandler(e));
     }
 
     ngOnDestroy(): void {
-        if (this.componentRef) {
-            this.componentRef.instance.valueSelected.unsubscribe();
-            this.componentRef.instance.textEntered.unsubscribe();
-        }
-        if (this.documentClickListener) {
-            document.removeEventListener('click', this.documentClickListener);
+        if (isPlatformBrowser(this.platformId)) {
+            if (this.componentRef) {
+                this.componentRef.instance.valueSelected.unsubscribe();
+                this.componentRef.instance.textEntered.unsubscribe();
+            }
+            if (this.documentClickListener) {
+                document.removeEventListener('click', this.documentClickListener);
+            }
         }
     }
 
@@ -259,10 +269,8 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 
     public styleAutoCompleteDropdown = () => {
         if (this.componentRef) {
-            const component = this.componentRef.instance;
 
             /* setting width/height auto complete */
-            const thisElBCR = this.el.getBoundingClientRect();
             const thisInputElBCR = this.inputEl.getBoundingClientRect();
             const closeToBottom = thisInputElBCR.bottom + 100 > window.innerHeight;
             const directionOfStyle = this.isRtl ? 'right' : 'left';

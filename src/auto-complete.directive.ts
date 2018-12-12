@@ -214,7 +214,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
         if (this.el.tagName !== 'INPUT' && this.acDropdownEl) {
             this.inputEl.parentElement.insertBefore(this.acDropdownEl, this.inputEl.nextSibling);
         }
-        this.revertValue = typeof this.ngModel !== 'undefined' ? this.ngModel : this.inputEl.value;
+        this.revertValue = typeof this.revertValue !== 'undefined' ? this.revertValue : '';
 
         setTimeout(() => {
             component.reloadList(this.inputEl.value);
@@ -247,11 +247,13 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
             this.componentRef.destroy();
             this.componentRef = undefined;
 
-            if (this.inputEl && hasRevertValue && this.acceptUserInput === false && currentItem === null) {
+            if (this.inputEl && hasRevertValue && this.acceptUserInput === false && currentItem === null && this.inputEl.value !== '') {
                 this.selectNewValue(this.revertValue);
+                currentItem = this.revertValue;
             } else if (this.inputEl && this.acceptUserInput === true && typeof currentItem === 'undefined' && event && event.target.value) {
                 this.enterNewText(event.target.value);
             }
+            this.revertValue = currentItem;
         }
         this.dropdownJustHidden = true;
         setTimeout(() => this.dropdownJustHidden = false, 100);

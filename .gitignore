@@ -3,7 +3,6 @@ typings
 .idea
 .vscode
 *.log
-dist
 auto-complete.iml
 yarn.lock
 package-lock.json

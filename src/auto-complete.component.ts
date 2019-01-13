@@ -364,6 +364,11 @@ export class NguiAutoCompleteComponent implements OnInit {
                 break;
 
             case 9: // TAB, choose if tab-to-select is enabled
+                if (this.itemIndex === null || this.itemIndex === undefined) {
+                  this.hideDropdownList();
+                  break;
+                }
+
                 if (this.tabToSelect) {
                     this.onEnterPressed();
                 }

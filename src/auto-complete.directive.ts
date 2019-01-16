@@ -55,6 +55,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
     @Input('re-focus-after-select') public reFocusAfterSelect: boolean = true;
     @Input('header-item-template') public headerItemTemplate = null;
     @Input('ignore-accents') public ignoreAccents: boolean = true;
+    @Input('clear-on-focus') public clearOnFocus: boolean = false;
 
     @Input() public ngModel: string;
     @Input('formControlName') public formControlName: string;
@@ -217,6 +218,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
         this.revertValue = typeof this.ngModel !== 'undefined' ? this.ngModel : this.inputEl.value;
 
         setTimeout(() => {
+            if(this.clearOnFocus) this.inputEl.value = '';
             component.reloadList(this.inputEl.value);
             this.styleAutoCompleteDropdown();
             component.dropdownVisible = true;

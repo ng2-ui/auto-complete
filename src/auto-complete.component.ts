@@ -1,14 +1,5 @@
-import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    Input,
-    OnInit,
-    Output,
-    ViewChild,
-    ViewEncapsulation
-} from '@angular/core';
-import { NguiAutoComplete } from './auto-complete';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation} from '@angular/core';
+import {NguiAutoComplete} from './auto-complete';
 
 /**
  * show a selected date in monthly calendar
@@ -158,9 +149,9 @@ export class NguiAutoCompleteComponent implements OnInit {
     private el: HTMLElement;           // this component  element `<ngui-auto-complete>`
     private timer = 0;
 
-    private delay = (function() {
+    private delay = (function () {
         let timer = 0;
-        return function(callback: any, ms: number) {
+        return function (callback: any, ms: number) {
             clearTimeout(timer);
             timer = setTimeout(callback, ms);
         };

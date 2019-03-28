@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { NguiAutoComplete } from './auto-complete';
 import { AutoCompleteFilter } from './auto-complete.filter';
+import { NguiAutoCompleteNoMatchFoundMessage } from './model/no-match-found-message.model';
 
 /**
  * show a selected date in monthly calendar
@@ -51,8 +52,17 @@ import { AutoCompleteFilter } from './auto-complete.filter';
                     [innerHTML]="loadingTemplate"></li>
                 <li *ngIf="isLoading && !loadingTemplate" class="loading">{{loadingText}}</li>
                 <li *ngIf="minCharsEntered && !isLoading && !filteredList.length"
-                    (mousedown)="selectOne('')"
-                    class="no-match-found">{{noMatchFoundText || 'No Result Found'}}
+                    class="no-match-found">
+                    <ng-container *ngIf="noMatchFoundMessage; else defaultNoMatchFoundText">
+                        <span>{{noMatchFoundMessage.text}}</span>&nbsp;
+                        <a *ngIf="noMatchFoundMessage.linkText"
+                            (mousedown)="onNoMatchFoundAction($event)"
+                           class="no-match-found-action-link"
+                           href="javascript:;">{{noMatchFoundMessage.linkText}}</a>
+                    </ng-container>
+                    <ng-template #defaultNoMatchFoundText>
+                        <div (mousedown)="selectOne('')">No Result Found</div>
+                    </ng-template>
                 </li>
                 <li *ngIf="blankOptionText && filteredList.length"
                     (mousedown)="selectOne('')"
@@ -148,7 +158,6 @@ export class NguiAutoCompleteComponent implements OnInit {
     @Input('min-chars') public minChars: number = 0;
     @Input('placeholder') public placeholder: string;
     @Input('blank-option-text') public blankOptionText: string;
-    @Input('no-match-found-text') public noMatchFoundText: string;
     @Input('accept-user-input') public acceptUserInput: boolean = true;
     @Input('loading-text') public loadingText: string = 'Loading';
     @Input('loading-template') public loadingTemplate = null;
@@ -164,13 +173,25 @@ export class NguiAutoCompleteComponent implements OnInit {
     @Input('ignore-accents') public ignoreAccents: boolean = true;
     @Input('filters') public filters: AutoCompleteFilter[] = [];
 
+    @Input('no-match-found-text')
+    public set noMatchFoundText(noMatchFoundMessage: string | NguiAutoCompleteNoMatchFoundMessage) {
+        if (typeof noMatchFoundMessage === 'string') {
+            this.noMatchFoundMessage = {text: noMatchFoundMessage};
+        } else {
+            this.noMatchFoundMessage = noMatchFoundMessage;
+        }
+    }
+
     @Output() public valueSelected = new EventEmitter();
     @Output() public customSelected = new EventEmitter();
     @Output() public textEntered = new EventEmitter();
     @Output() public filterSelected = new EventEmitter();
+    @Output() public noMatchFoundAction = new EventEmitter();
 
     @ViewChild('autoCompleteInput') public autoCompleteInput: ElementRef;
     @ViewChild('autoCompleteContainer') public autoCompleteContainer: ElementRef;
+
+    public noMatchFoundMessage: NguiAutoCompleteNoMatchFoundMessage;
 
     public dropdownVisible: boolean = false;
     public isLoading: boolean = false;
@@ -410,6 +431,11 @@ export class NguiAutoCompleteComponent implements OnInit {
         this.zone.run(() => filter.enabled = !filter.enabled);
         this.filterSelected.emit();
         this.reloadList(this.keyword);
+    }
+
+    public onNoMatchFoundAction(event) {
+        this.noMatchFoundAction.emit(this.keyword);
+        this.selectOne('');
     }
 
     get emptyList(): boolean {

@@ -64,7 +64,7 @@ You can look at different show cases for it here as [Component](https://rawgit.c
   * **`display-property-name`**, string, key name of text to show. default is `value`
   * **`select-value-of`**, string, when selected, return the value of this key as a selected item
   * **`blank-option-text`**, string, guide text to allow empty value to be selected as in empty value of `option` tag.
-  * **`no-match-found-text`**, string, guide text to show no result found.
+  * **`no-match-found-text`**, string | `NguiAutoCompleteNoMatchFoundMessage`, guide text to show no result found with optional CTA link.
   * **`valueChanged`** / **`ngModelChange`**, callback function that is executed when a new drop-down is selected.
      e.g. `(valueChanged)="myCallback($event)"`  
   * **`customSelected`** callback function that is executed when a value selected not included in drop-down, so it will return the keyword used.
@@ -83,6 +83,7 @@ You can look at different show cases for it here as [Component](https://rawgit.c
   * **`autocomplete`**, boolean, default `false`, if `true` remove the attribute `autocomplete="off"` of the input.
   * **`header-item-template`**, html markup to optionally create a non-selectable header row above the list of results. Default, null
   * **`ignore-accents`**, boolean, default `true`, if `false` user input must match exactly with source given, including accents or diacritics
+  * **`noMatchFoundAction`**, callback function that is executed when 'No Match Found' CTA is clicked
 
 ## Below are plunks for different scenarios:
 

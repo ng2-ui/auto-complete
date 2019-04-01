@@ -5,6 +5,7 @@ import {
 import { NguiAutoCompleteComponent } from './auto-complete.component';
 import { AbstractControl, ControlContainer, FormGroup, FormGroupName } from '@angular/forms';
 import { AutoCompleteFilter } from './auto-complete.filter';
+import { NguiAutoCompleteNoMatchFoundMessage } from './model/no-match-found-message.model';
 
 /**
  * display auto-complete section with input and dropdown list when it is clicked
@@ -27,7 +28,6 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
     @Input('list-formatter') public listFormatter;
     @Input('loading-text') public loadingText: string = 'Loading';
     @Input('blank-option-text') public blankOptionText: string;
-    @Input('no-match-found-text') public noMatchFoundText: string;
     @Input('value-formatter') public valueFormatter: any;
     @Input('tab-to-select') public tabToSelect: boolean = true;
     @Input('select-on-blur') public selectOnBlur: boolean = false;
@@ -50,9 +50,21 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
     @Input('z-index') public zIndex: string = '1';
     @Input('is-rtl') public isRtl: boolean = false;
 
+    @Input('no-match-found-text')
+    public set noMatchFoundText(noMatchFoundMessage: string | NguiAutoCompleteNoMatchFoundMessage) {
+        if (typeof noMatchFoundMessage === 'string') {
+            this.noMatchFoundMessage = {text: noMatchFoundMessage};
+        } else {
+            this.noMatchFoundMessage = noMatchFoundMessage;
+        }
+    }
+
     @Output() public ngModelChange = new EventEmitter();
     @Output() public valueChanged = new EventEmitter();
     @Output() public customSelected = new EventEmitter();
+    @Output() public noMatchFoundAction = new EventEmitter();
+
+    public noMatchFoundMessage: NguiAutoCompleteNoMatchFoundMessage;
 
     private componentRef: ComponentRef<NguiAutoCompleteComponent>;
     private wrapperEl: HTMLElement;
@@ -195,7 +207,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
         component.loadingTemplate = this.loadingTemplate;
         component.listFormatter = this.listFormatter;
         component.blankOptionText = this.blankOptionText;
-        component.noMatchFoundText = this.noMatchFoundText;
+        component.noMatchFoundMessage = this.noMatchFoundMessage;
         component.tabToSelect = this.tabToSelect;
         component.selectOnBlur = this.selectOnBlur;
         component.matchFormatted = this.matchFormatted;
@@ -208,6 +220,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
         component.textEntered.subscribe(this.enterNewText);
         component.customSelected.subscribe(this.selectCustomValue);
         component.filterSelected.subscribe(this.filterSelected);
+        component.noMatchFoundAction.subscribe(this.emitNoMatchFoundAction);
 
         this.acDropdownEl = this.componentRef.location.nativeElement;
         this.acDropdownEl.style.display = 'none';
@@ -353,6 +366,12 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
         this.ngModelChange.emit(value);
         this.valueChanged.emit(value);
         this.hideAutoCompleteDropdown();
+    }
+
+    public emitNoMatchFoundAction = (value: any) => {
+        this.noMatchFoundAction.emit(value);
+
+        return false;
     }
 
     private keydownEventHandler = (evt: any) => {

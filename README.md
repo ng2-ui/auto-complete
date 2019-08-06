@@ -64,6 +64,7 @@ You can look at different show cases for it here as [Component](https://rawgit.c
   * **`display-property-name`**, string, key name of text to show. default is `value`
   * **`select-value-of`**, string, when selected, return the value of this key as a selected item
   * **`blank-option-text`**, string, guide text to allow empty value to be selected as in empty value of `option` tag.
+  * **`hide-on-no-match-found`**, if set to true, results dropdown will not be shown on empty autocomplete result
   * **`no-match-found-text`**, string | `NguiAutoCompleteNoMatchFoundMessage`, guide text to show no result found with optional CTA link.
   * **`valueChanged`** / **`ngModelChange`**, callback function that is executed when a new drop-down is selected.
      e.g. `(valueChanged)="myCallback($event)"`  

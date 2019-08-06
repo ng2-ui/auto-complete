@@ -173,6 +173,7 @@ export class NguiAutoCompleteComponent implements OnInit {
     @Input('ignore-accents') public ignoreAccents: boolean = true;
     @Input('filters') public filters: AutoCompleteFilter[] = [];
 
+    @Input('hide-on-no-match-found') public hideOnNoMatchFound: boolean = false;
     @Input('no-match-found-text')
     public set noMatchFoundText(noMatchFoundMessage: string | NguiAutoCompleteNoMatchFoundMessage) {
         if (typeof noMatchFoundMessage === 'string') {
@@ -441,7 +442,7 @@ export class NguiAutoCompleteComponent implements OnInit {
     get emptyList(): boolean {
         return !(
             this.isLoading ||
-            (this.minCharsEntered && !this.isLoading && !this.filteredList.length) ||
+            (this.minCharsEntered && !this.isLoading && !this.filteredList.length && !this.hideOnNoMatchFound) ||
             (this.filteredList.length)
         );
     }

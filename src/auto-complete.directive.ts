@@ -49,6 +49,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
     @Input('extFormControl') public extFormControl: AbstractControl;
     @Input('z-index') public zIndex: string = '1';
     @Input('is-rtl') public isRtl: boolean = false;
+    @Input('hide-on-no-match-found') public hideOnNoMatchFound: boolean = false;
 
     @Input('no-match-found-text')
     public set noMatchFoundText(noMatchFoundMessage: string | NguiAutoCompleteNoMatchFoundMessage) {
@@ -207,6 +208,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
         component.loadingTemplate = this.loadingTemplate;
         component.listFormatter = this.listFormatter;
         component.blankOptionText = this.blankOptionText;
+        component.hideOnNoMatchFound = this.hideOnNoMatchFound;
         component.noMatchFoundMessage = this.noMatchFoundMessage;
         component.tabToSelect = this.tabToSelect;
         component.selectOnBlur = this.selectOnBlur;

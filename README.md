@@ -104,48 +104,28 @@ You can look at different show cases for it here as [Component](https://rawgit.c
 
 **Observable Source**
 
-* _Example_ http://plnkr.co/edit/ExzNSh?p=preview
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.1.
 
-**List Formatter Example**
+## Development server
 
-* _Example 1_ http://plnkr.co/edit/F9nrWp?p=preview  
-* _Example 2 (With custom css)_ http://plnkr.co/edit/0QFYFHMmCAFmhbYAGQl7?p=preview
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Contributors are welcomed
+## Code scaffolding
 
-This module is only improved and maintained by contributors like you;
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-As a contributor, it's NOT required to be skilled in Javascript nor Angular.
-You can contribute to the following;
+## Build
 
-  * Updating README.md
-  * Making more and clearer comments
-  * Answering issues and building FAQ
-  * Documentation
-  * Translation
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-In result of your active contribution, you will be listed as a core contributor
-on https://ng2-ui.github.io, and a member of ng2-ui too.
+## Running unit tests
 
-If you are interested in becoming a contributor and/or a member of ng-ui,
-please send me email to `allenhwkim AT gmail.com` with your github id.
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## For Developers
+## Running end-to-end tests
 
-### To start
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
-    $ git clone https://github.com/ng2-ui/auto-complete.git
-    $ cd auto-complete
-    $ npm install
-    $ npm start
+## Further help
 
-### List of available npm tasks
-
-  * `npm run` : List all available tasks
-  * `npm start`: Run `app` directory for development using `webpack-dev-server` with port 9001
-  * `npm run clean`: Remove dist folder
-  * `npm run lint`: Lint TypeScript code
-  * `npm run build:ngc`: build ES module
-  * `npm run build:umd`: Build UMD module `ng2-map.umd.js`
-  * `npm run build:app`: Build `app/build/app.js` for runnable examples
-  * `npm run build`: Build all(clean, build:ngc, build:umc, and build:app)
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).

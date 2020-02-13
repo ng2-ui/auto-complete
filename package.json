@@ -4,10 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "build-lib:watch": "ng build auto-complete --watch",
+    "build-lib:prod": "ng build auto-complete --prod"
   },
   "private": true,
   "dependencies": {

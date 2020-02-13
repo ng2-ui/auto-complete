@@ -104,28 +104,55 @@ You can look at different show cases for it here as [Component](https://rawgit.c
 
 **Observable Source**
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.1.
+* _Example_ http://plnkr.co/edit/ExzNSh?p=preview
 
-## Development server
+**List Formatter Example**
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+* _Example 1_ http://plnkr.co/edit/F9nrWp?p=preview  
+* _Example 2 (With custom css)_ http://plnkr.co/edit/0QFYFHMmCAFmhbYAGQl7?p=preview
 
-## Code scaffolding
+## Contributors are welcomed
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+This module is only improved and maintained by contributors like you;
 
-## Build
+As a contributor, it's NOT required to be skilled in Javascript nor Angular.
+You can contribute to the following;
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+  * Updating README.md
+  * Making more and clearer comments
+  * Answering issues and building FAQ
+  * Documentation
+  * Translation
 
-## Running unit tests
+In result of your active contribution, you will be listed as a core contributor
+on https://ng2-ui.github.io, and a member of ng2-ui too.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+If you are interested in becoming a contributor and/or a member of ng-ui,
+please send me email to `allenhwkim AT gmail.com` with your github id.
 
-## Running end-to-end tests
+## For Developers
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+### To start
 
-## Further help
+    $ git clone https://github.com/ng2-ui/auto-complete.git
+    $ cd auto-complete
+    $ npm install
+    $ npm build-lib:watch
+    
+    $ # On different instance
+    
+    $ npm start
+    
+### To publish
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+    $ npm build-lib:prod
+    $ cd dist
+    $ npm publish
+
+### List of available npm tasks
+
+  * `npm run` : List all available tasks
+  * `npm start`: Run `demo` directory for development using `@angular/cli` with port 4200
+  * `npm run lint`: Lint TypeScript code
+  * `npm run build-lib:watch`: Build library in live watch mode for development
+  * `npm run build-lib:prod`: Build library for publish using view engine (not Ivy renderer)

@@ -1,21 +1,28 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-import { AppComponent } from './app.component';
 import { NguiAutoCompleteModule } from 'auto-complete';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { ComponentTestComponent } from './component-test/component-test.component';
+import { DirectiveTestComponent } from './directive-test/directive-test.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    ComponentTestComponent,
+    DirectiveTestComponent,
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     HttpClientModule,
-    NguiAutoCompleteModule
+    NguiAutoCompleteModule,
+    AppRoutingModule
   ],
   providers: [],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -298,6 +298,10 @@ export class NguiAutoCompleteComponent implements OnInit {
     public inputElKeyHandler = (evt: any) => {
         const totalNumItem = this.filteredList.length;
 
+        if (!this.selectOnEnter && this.autoSelectFirstItem && (0 !== totalNumItem)){
+            this.selectOnEnter = true;
+        }
+
         switch (evt.keyCode) {
             case 27: // ESC, hide auto complete
                 this.selectOnEnter = false;

@@ -59,6 +59,7 @@
       true,
       "single"
     ],
+    "no-string-literal": false,
     "trailing-comma": false,
     "component-class-suffix": true,
     "contextual-lifecycle": true,

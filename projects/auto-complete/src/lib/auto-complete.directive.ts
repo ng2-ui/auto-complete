@@ -10,7 +10,7 @@ import {
   Output, SimpleChanges, SkipSelf, ViewContainerRef
 } from '@angular/core';
 import { AbstractControl, ControlContainer, FormControl, FormGroup, FormGroupName } from '@angular/forms';
-import { NguiAutoCompleteComponent } from 'auto-complete';
+import { NguiAutoCompleteComponent } from './auto-complete.component';
 
 @Directive({
   // tslint:disable-next-line:directive-selector

@@ -199,9 +199,14 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 
     // if this element is not an input tag, move dropdown after input tag
     // so that it displays correctly
-    if (this.el.tagName !== 'INPUT' && this.acDropdownEl) {
-      this.inputEl.parentElement.insertBefore(this.acDropdownEl, this.inputEl.nextSibling);
-    }
+
+    // TODO: confirm with owners
+    // with some reason, viewContainerRef.createComponent is creating element
+    // to parent div which is created by us on ngOnInit, please try this with demo
+
+    // if (this.el.tagName !== 'INPUT' && this.acDropdownEl) {
+    this.inputEl.parentElement.insertBefore(this.acDropdownEl, this.inputEl.nextSibling);
+    // }
     this.revertValue = typeof this.ngModel !== 'undefined' ? this.ngModel : this.inputEl.value;
 
     setTimeout(() => {

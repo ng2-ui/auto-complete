@@ -1,6 +1,8 @@
 {
   "name": "auto-complete",
   "version": "0.0.0",
+  "description": "Angular Input Autocomplete",
+  "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -8,7 +10,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "build-lib:watch": "ng build auto-complete --watch",
-    "build-lib:prod": "ng build auto-complete --prod"
+    "build-lib:prod": "ng build auto-complete --prod && npm run copy-lib",
+    "copy-lib": "copyfiles -f LICENSE.md README.md dist/auto-complete"
   },
   "private": true,
   "dependencies": {
@@ -32,10 +35,11 @@
     "@angular/cli": "~9.0.1",
     "@angular/compiler-cli": "~9.0.0",
     "@angular/language-service": "~9.0.0",
-    "@types/node": "^12.11.1",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
+    "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
+    "copyfiles": "^2.2.0",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.3.0",

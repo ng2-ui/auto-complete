@@ -1,8 +1,0 @@
-language: node_js
-node_js:
-  - "6"
-# To start firefox, xvfb(X virtual framebuffer)
-before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-  - sleep 5

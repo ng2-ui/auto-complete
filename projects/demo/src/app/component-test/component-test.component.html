@@ -1,0 +1,47 @@
+<br/>
+<fieldset class="demo-1">
+  <legend><h2>Component test - multi autocomplete</h2></legend>
+  <div class="wrapper" (click)="showAutocomplete=true">
+    <li class="addr" *ngFor="let addr of addrs; let i = index;">
+      <span>{{addr.formatted_address}}</span>
+      <span class="remove" (click)="removeFromAddrs($event, i)">x</span>
+    </li>
+
+    <ngui-auto-complete
+      *ngIf="showAutocomplete"
+      (valueSelected)="addToAddrs($event)"
+      [accept-user-input]="true"
+      [source]="googleGeoCode"
+      display-property-name="formatted_address"
+      [list-formatter]="myListFormatter"
+      loading-text="Google Is Thinking..."
+      [loading-template]="loadingTemplate"
+      max-num-list="5"
+      min-chars="2"
+      no-match-found-text="No Match Found"
+      path-to-data="results"
+      placeholder="Enter Address"
+    ></ngui-auto-complete>
+  </div>
+
+  <pre>
+    {{ templateStr1 }}
+  </pre>
+</fieldset>
+
+<fieldset class="demo-2">
+  <input [(ngModel)]="myModel"
+         (focus)="showMe = true"
+         (blur)="showMe = false"/>
+  <ngui-auto-complete
+    *ngIf="showMe"
+    [show-dropdown-on-init]="true"
+    (valueSelected)="myModel = $event"
+    [show-input-tag]="false"
+    [source]="[1, 2, 3, 4, 5]">
+  </ngui-auto-complete>
+
+  <pre>
+    {{ templateStr2 }}
+  </pre>
+</fieldset>

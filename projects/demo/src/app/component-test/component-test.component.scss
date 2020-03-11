@@ -1,0 +1,58 @@
+fieldset {
+  display: inline-block;
+  vertical-align: top;
+  margin: 10px;
+  padding: 20px
+}
+.demo-1 {
+  ngui-auto-complete {
+    display: inline-block
+  }
+}
+
+.demo-2 {
+  ngui-auto-complete {
+    display: block;
+    width: 300px;
+  }
+
+  input {
+    width: 300px;
+  }
+}
+
+li.addr {
+  margin: 5px;
+  padding: 5px;
+  list-style: none;
+  border: 1px solid #ccc;
+  display: inline-block;
+}
+
+.wrapper {
+  padding: 10px;
+  border: 1px solid #ccc
+}
+
+span.remove {
+  color: red
+}
+
+::ng-deep ngui-auto-complete {
+
+  display: block;
+  width: 300px;
+
+  input {
+    border: 1px solid #ccc !important;
+    width: 300px;
+  }
+
+  .ngui-auto-complete ul {
+    position: absolute
+  }
+
+  .ngui-auto-complete > ul {
+    width: 300px
+  }
+}

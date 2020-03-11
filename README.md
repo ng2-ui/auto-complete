@@ -137,15 +137,22 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
     $ git clone https://github.com/ng2-ui/auto-complete.git
     $ cd auto-complete
     $ npm install
+    $ npm build-lib:watch
+    
+    $ # On different instance
+    
     $ npm start
+    
+### To publish
+
+    $ npm build-lib:prod
+    $ cd dist
+    $ npm publish
 
 ### List of available npm tasks
 
   * `npm run` : List all available tasks
-  * `npm start`: Run `app` directory for development using `webpack-dev-server` with port 9001
-  * `npm run clean`: Remove dist folder
+  * `npm start`: Run `demo` directory for development using `@angular/cli` with port 4200
   * `npm run lint`: Lint TypeScript code
-  * `npm run build:ngc`: build ES module
-  * `npm run build:umd`: Build UMD module `ng2-map.umd.js`
-  * `npm run build:app`: Build `app/build/app.js` for runnable examples
-  * `npm run build`: Build all(clean, build:ngc, build:umc, and build:app)
+  * `npm run build-lib:watch`: Build library in live watch mode for development
+  * `npm run build-lib:prod`: Build library for publish using view engine (not Ivy renderer)

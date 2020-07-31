@@ -142,6 +142,10 @@ import { NguiAutoCompleteNoMatchFoundMessage } from './model/no-match-found-mess
         .ngui-auto-complete-filter-item input {
             width: auto;
         }
+
+        .limit-top {
+            overflow: hidden auto;
+        }
     `
     ],
     encapsulation: ViewEncapsulation.None
@@ -201,6 +205,9 @@ export class NguiAutoCompleteComponent implements OnInit {
     public minCharsEntered: boolean = false;
     public itemIndex: number = null;
     public keyword: string;
+    public itemHeight: number = 0;
+    public triggerInputHeight: number = 0;
+    public maxHeightTopGap: number = 0;
 
     private el: HTMLElement;           // this component  element `<ngui-auto-complete>`
     private timer = 0;
@@ -290,6 +297,7 @@ export class NguiAutoCompleteComponent implements OnInit {
             if (this.maxNumList) {
                 this.filteredList = this.filteredList.slice(0, this.maxNumList);
             }
+            this.calculateHeightFits();
 
         } else {                 // remote source
             this.isLoading = true;
@@ -308,6 +316,7 @@ export class NguiAutoCompleteComponent implements OnInit {
                         if (this.maxNumList) {
                             this.filteredList = this.filteredList.slice(0, this.maxNumList);
                         }
+                        this.calculateHeightFits();
                     },
                     (error) => null,
                     () =>  this.zone.run(() => this.isLoading = false) // complete
@@ -320,6 +329,7 @@ export class NguiAutoCompleteComponent implements OnInit {
                         if (this.maxNumList) {
                             this.filteredList = this.filteredList.slice(0, this.maxNumList);
                         }
+                        this.calculateHeightFits();
                     },
                     (error) => null,
                     () => this.zone.run(() => this.isLoading = false) // complete
@@ -447,4 +457,26 @@ export class NguiAutoCompleteComponent implements OnInit {
         );
     }
 
+    private calculateHeightFits() {
+        // Filter items height = 50px;
+        const heightByFilter = this.filters.length > 0 ? 50 : 0;
+        const heightByResultItems = this.filteredList.length * this.itemHeight;
+
+        const elBottom = this.el.getBoundingClientRect().bottom;
+        const listHeight = heightByResultItems + heightByFilter;
+        const fitsInPage =  elBottom + listHeight < window.innerHeight;
+
+        if (!fitsInPage) {
+            this.el.style.top = 'auto';
+            this.el.style.bottom = `${this.triggerInputHeight}px`;
+            const topOverflowedSectionHeight = elBottom - listHeight + this.triggerInputHeight - this.maxHeightTopGap;
+            // check if it fits based on the top of window
+            if (topOverflowedSectionHeight < 0) {
+                // reduce 20 for a small visual gap from top.
+                const maxListHeight = elBottom - this.maxHeightTopGap - this.triggerInputHeight - 20;
+                this.el.classList.add('limit-top');
+                this.el.style.height = `${maxListHeight}px`;
+            }
+        }
+    }
 }

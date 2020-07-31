@@ -39,6 +39,8 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
     @Input('header-item-template') public headerItemTemplate = null;
     @Input('ignore-accents') public ignoreAccents: boolean = true;
     @Input('filters') public filters: AutoCompleteFilter[];
+    @Input('item-height') public itemHeight = 37;
+    @Input('max-height-top-gap') public maxHeightTopGap = 0;
 
     @Input() public ngModel: string;
     @Input('form') public form: FormGroup;
@@ -217,6 +219,9 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
         component.headerItemTemplate = this.headerItemTemplate;
         component.ignoreAccents = this.ignoreAccents;
         component.filters = this.filters || [];
+        component.itemHeight = this.itemHeight;
+        component.triggerInputHeight = this.inputEl.getBoundingClientRect().height;
+        component.maxHeightTopGap = this.maxHeightTopGap;
 
         component.valueSelected.subscribe(this.selectNewValue);
         component.textEntered.subscribe(this.enterNewText);
@@ -235,8 +240,8 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
         this.revertValue = typeof this.ngModel !== 'undefined' ? this.ngModel : this.inputEl.value;
 
         setTimeout(() => {
-            component.reloadList(this.inputEl.value);
             this.styleAutoCompleteDropdown();
+            component.reloadList(this.inputEl.value);
             component.dropdownVisible = true;
         });
     }

@@ -1,6 +1,6 @@
 {
   "name": "@ngui/auto-complete",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Angular Input Autocomplete",
   "license": "MIT",
   "main": "dist/auto-complete.umd.js",
@@ -15,7 +15,8 @@
     "build:umd": "webpack --mode development",
     "build:app": "webpack --mode production --config app/webpack.config",
     "build-and-publish": "npm run build && npm version patch && npm publish --access=public",
-    "tslint": "tslint"
+    "tslint": "tslint",
+    "pushLocal": "npm run build:ngc && yalc push"
   },
   "dependencies": {
     "@ngui/utils": "^0.8.1"
@@ -36,6 +37,7 @@
     "@ngtools/webpack": "~6.0.8",
     "@types/hammerjs": "^2.0.35",
     "@types/node": "^10.5.2",
+    "@types/tapable": "1.0.0",
     "@types/uglify-js": "^3.0.2",
     "@types/webpack": "^4.4.5",
     "angular2-template-loader": "^0.6.2",

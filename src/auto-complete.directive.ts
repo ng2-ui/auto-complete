@@ -39,7 +39,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
     @Input('header-item-template') public headerItemTemplate = null;
     @Input('ignore-accents') public ignoreAccents: boolean = true;
     @Input('filters') public filters: AutoCompleteFilter[];
-    @Input('itemHeight') public itemHeight = 37;
+    @Input('item-height') public itemHeight = 37;
     @Input('max-height-top-gap') public maxHeightTopGap = 0;
 
     @Input() public ngModel: string;

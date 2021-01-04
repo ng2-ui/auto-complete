@@ -467,13 +467,12 @@ export class NguiAutoCompleteComponent implements OnInit {
         const fitsInPage =  elBottom + listHeight < window.innerHeight;
 
         if (!fitsInPage) {
+            const elTop = this.el.getBoundingClientRect().top;
             this.el.style.top = 'auto';
             this.el.style.bottom = `${this.triggerInputHeight}px`;
-            const topOverflowedSectionHeight = elBottom - listHeight + this.triggerInputHeight - this.maxHeightTopGap;
             // check if it fits based on the top of window
-            if (topOverflowedSectionHeight < 0) {
-                // reduce 20 for a small visual gap from top.
-                const maxListHeight = elBottom - this.maxHeightTopGap - this.triggerInputHeight - 20;
+            if (elTop - listHeight < this.maxHeightTopGap) {
+                const maxListHeight = elTop - this.maxHeightTopGap;
                 this.el.classList.add('limit-top');
                 this.el.style.height = `${maxListHeight}px`;
             }

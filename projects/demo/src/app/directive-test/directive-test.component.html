@@ -1,0 +1,168 @@
+<h1> Autocomplete Directive Test - Local Source </h1>
+
+<fieldset class="demo-1"><legend><h2>Source as Array of Strings</h2></legend>
+  <div ngui-auto-complete
+       [source]="arrayOfStrings"
+       [accept-user-input]="true"
+       [auto-select-first-item]="false"
+       [select-on-blur]="true"
+       (ngModelChange)="myCallback1($event)"
+       (customSelected)="customCallback($event)"
+       placeholder="enter text">
+    <input id="model1" [ngModel]="model1" autofocus />
+  </div>
+  <br/>selected model1: {{json(model1)}}<br/><br/>
+  <pre>{{template1}}</pre>
+  <pre> arrayOfStrings: {{json(arrayOfStrings)}}</pre>
+</fieldset>
+
+<fieldset class="demo-1"><legend><h2>Source as Array of Strings. Drop-down on focus disable</h2></legend>
+  <div ngui-auto-complete
+       [source]="arrayOfStrings"
+       [accept-user-input]="true"
+       [open-on-focus]="false"
+       [auto-select-first-item]="false"
+       [select-on-blur]="true"
+       (ngModelChange)="myCallback1($event)"
+       (customSelected)="customCallback($event)"
+       placeholder="enter text">
+    <input id="model1-1" [ngModel]="model1" autofocus />
+  </div>
+  <br/>selected model1: {{json(model1)}}<br/><br/>
+  <pre>{{template2}}</pre>
+  <pre> arrayOfStrings: {{json(arrayOfStrings)}}</pre>
+</fieldset>
+
+<fieldset class="demo-1"><legend><h2>Source as Array of id/value</h2></legend>
+  <input
+    id="model2"
+    ngui-auto-complete
+    blank-option-text="Select One"
+    [(ngModel)]="model2"
+    [source]="arrayOfKeyValues"
+    placeholder="enter text"
+    z-index="4"/>
+  <a href="javascript:void(0)" (click)="model2={id:100, value: 'it'}">Change It</a>
+  <br/>selected model2: {{model2 | json}}<br/><br/>
+  <pre>{{template3}}</pre>
+  <pre>arrayOfKeyValues: {{json(arrayOfKeyValues)}}</pre>
+</fieldset>
+
+<fieldset><legend><h2>Source as Array of Key/Name</h2></legend>
+  <input ngui-auto-complete [source]="arrayOfKeyValues2"
+         id="model3"
+         [(ngModel)]="model3"
+         placeholder="enter text"
+         value-formatter="(key) name"
+         list-formatter="(key) name"
+         [match-formatted]="true" />
+  <br/>selected model3: {{model3 | json}}<br/><br/>
+  <pre>{{template4}}</pre>
+  <pre>arrayOfKeyValues2: {{json(arrayOfKeyValues2)}}</pre>
+</fieldset>
+
+<fieldset><legend><h2>Source as HTTP URI String</h2></legend>
+  <input ngui-auto-complete
+         id="model4"
+         [(ngModel)]="model4"
+         placeholder="Enter Address(min. 2 chars)"
+         [source]="googleGeoCode"
+         no-match-found-text="No Match Found"
+         list-formatter="formatted_address"
+         path-to-data="results"
+         loading-text="Google Is Thinking..."
+         [loading-template]="loadingTemplate"
+         max-num-list="5"
+         min-chars="2" />
+  <br/>selected model4: {{model4 | json}}<br/><br/>
+  <pre>{{template5}}</pre>
+  <pre> source: {{googleGeoCode}}</pre>
+</fieldset>
+
+<fieldset><legend><h2>Source as Observable "Marvel API"</h2></legend>
+  <input ngui-auto-complete
+         id="model5"
+         placeholder="Start typing a hero name (min. 2 chars) ... for example: Hulk"
+         [(ngModel)]="model5"
+         [source]="appSvc.findHeroes"
+         path-to-data="data.results"
+         [list-formatter]="renderHero"
+         min-chars="2"
+  />
+  <br/>selected model5: {{model5 | json}}<br/><br/>
+  <pre>{{template6}}</pre>
+</fieldset>
+
+<fieldset><legend><h2>With Material Design</h2></legend>
+  <mat-form-field>
+    <span matPrefix>$&nbsp;</span>
+    <input matInput ngui-auto-complete style="border: 1px solid #ccc"
+           id="model6"
+           [(ngModel)]="myModel"
+           [source]="arrayOfNumbers"
+           [list-formatter]="rightAligned.bind(this)"
+           placeholder="amount" align="end"/>
+    <span matSuffix>.00</span>
+  </mat-form-field>
+  <pre>{{template7}}</pre>
+  <pre>arrayOfNumbers: {{json(arrayOfNumbers)}}</pre>
+</fieldset>
+
+<fieldset><legend><h2>Source as Array of Strings (with auto-select-first-item)</h2></legend>
+  <div ngui-auto-complete
+       [source]="arrayOfStrings"
+       (ngModelChange)="myCallback7($event)"
+       placeholder="enter text">
+    <input id="model7" [ngModel]="model7"/>
+  </div>
+  <br/>selected model7: {{json(model7)}}<br/><br/>
+  <pre>{{template8}}</pre>
+  <pre> arrayOfStrings: {{json(arrayOfStrings)}}</pre>
+</fieldset>
+
+<fieldset style="direction:rtl;text-align:right"><legend><h2>RTL support</h2></legend>
+  <div ngui-auto-complete
+       [source]="arrayOfStrings"
+       [accept-user-input]="false"
+       (ngModelChange)="myCallback8($event)"
+       [is-rtl]="true"
+       placeholder="enter text">
+    <input id="model8" [ngModel]="model8" autofocus />
+  </div>
+  <br/>selected model8: {{json(model8)}}<br/><br/>
+  <pre>{{template9}}</pre>
+  <pre> arrayOfStrings: {{json(arrayOfStrings)}}</pre>
+</fieldset>
+
+<fieldset><legend><h2>Grid-Style Results with Header Row</h2></legend>
+  <input ngui-auto-complete
+         style="width: 650px"
+         [(ngModel)]="model9"
+         [source]="arrayOfCities"
+         [accept-user-input]="false"
+         [list-formatter]="renderCity"
+         placeholder="Search for a city"
+         display-property-name="city"
+         [header-item-template]="cityHeaderTemplate"
+  />
+  <br />selected model9: {{json(model9)}}<br /><br />
+  <pre>{{template10}}</pre>
+  <pre> arrayOfCities: {{json(arrayOfCities)}}</pre>
+</fieldset>
+
+<fieldset><legend><h2>Exact Match Including Accents</h2></legend>
+  <div ngui-auto-complete
+       [ignore-accents] = "false"
+       [source]="arrayOfAccentedStrings"
+       [accept-user-input]="true"
+       [auto-select-first-item]="false"
+       [select-on-blur]="true"
+       (ngModelChange)="myCallback10($event)"
+       (customSelected)="customCallback($event)"
+       placeholder="enter text">
+    <input id="model10" [ngModel]="model10" autofocus />
+  </div>
+  <br/>selected model10: {{json(model10)}}<br/><br/>
+  <pre>{{template11}}</pre>
+  <pre> arrayOfStrings: {{json(arrayOfAccentedStrings)}}</pre>
+</fieldset>

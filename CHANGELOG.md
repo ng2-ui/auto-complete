@@ -1,3 +1,5 @@
+## [3.0.0] Major Update
+- Upgraded to support Angular 9 and migrate boilerplate to `@angular/cli`
 ## [2.0.0] Major Update
 - Upgraded to Angular 6 and RxJS 6
 - Added new property `ignore-accents`, default is `true`

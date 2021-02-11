@@ -2,6 +2,7 @@ import { Injectable, Optional } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AutoCompleteFilter } from './model/auto-complete.filter';
 
 @Injectable({
   providedIn: 'root'
@@ -16,24 +17,33 @@ export class NguiAutoComplete {
     // ...
   }
 
-  public filter(list: any[], keyword: string, matchFormatted: boolean, accentInsensitive: boolean) {
-    return accentInsensitive
-      ? list.filter(
-        (el) => {
-          const objStr = matchFormatted ? this.getFormattedListItem(el).toLowerCase() : JSON.stringify(el).toLowerCase();
-          keyword = keyword.toLowerCase();
+  public filter(list: any[], keyword: string, matchFormatted: boolean, accentInsensitive: boolean, filters: AutoCompleteFilter[]) {
+    return list.filter(
+      (el) => {
+        const objStr = matchFormatted ? this.getFormattedListItem(el).toLowerCase() : JSON.stringify(el).toLowerCase();
+        keyword = keyword.toLowerCase();
 
-          return objStr.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-            .indexOf(keyword.normalize('NFD').replace(/[\u0300-\u036f]/g, '')) !== -1;
-        })
-      : list.filter(
-        (el) => {
-          const objStr = matchFormatted ? this.getFormattedListItem(el).toLowerCase() : JSON.stringify(el).toLowerCase();
-          keyword = keyword.toLowerCase();
-
-          return objStr.indexOf(keyword) !== -1;
+        let filtered = true;
+        if (filters) {
+          for (const filter of filters) {
+            if (filter.enabled) {
+              filtered = filtered
+                && (filter.filterBy instanceof Function)
+                && filter.filterBy(el);
+            }
+          }
         }
-      );
+
+        if (accentInsensitive) {
+          return objStr.normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .indexOf(keyword.normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')) !== -1 && filtered;
+        } else {
+          return objStr.indexOf(keyword) !== -1 && filtered;
+        }
+      }
+    );
   }
 
   public getFormattedListItem(data: any) {

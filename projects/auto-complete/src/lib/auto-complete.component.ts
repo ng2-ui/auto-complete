@@ -1,5 +1,17 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  NgZone,
+  OnInit,
+  Output,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { NguiAutoComplete } from './auto-complete.service';
+import { AutoCompleteFilter } from './model/auto-complete.filter';
+import { NguiAutoCompleteNoMatchFoundMessage } from './model/no-match-found-message.model';
 
 @Component({
   selector: 'ngui-auto-complete',
@@ -18,15 +30,34 @@ import { NguiAutoComplete } from './auto-complete.service';
 
       <!-- dropdown that user can select -->
       <ul *ngIf="dropdownVisible" [class.empty]="emptyList">
+        <li *ngIf="headerItemTemplate && filteredList.length" class="header-item"
+            [innerHTML]="headerItemTemplate"></li>
+        <li *ngFor="let filter of filters; let i=index; trackBy: trackByIndex"
+            class="ngui-auto-complete-filter-item"
+            [ngClass]="{selected: i === itemIndex}"
+            (mousedown)="onFilterClicked(filter)">
+          <input type="checkbox"
+                 class="ngui-auto-complete-filter-checkbox"
+                 (click)="onFilterChange()"
+                 [checked]="filter.enabled"/>
+          <span class="ngui-auto-complete-filter-label">{{filter.label}}</span>
+        </li>
         <li *ngIf="isLoading && loadingTemplate" class="loading"
             [innerHTML]="loadingTemplate"></li>
         <li *ngIf="isLoading && !loadingTemplate" class="loading">{{loadingText}}</li>
         <li *ngIf="minCharsEntered && !isLoading && !filteredList.length"
-            (mousedown)="selectOne('')"
-            class="no-match-found">{{noMatchFoundText || 'No Result Found'}}
+            class="no-match-found">
+          <ng-container *ngIf="noMatchFoundMessage; else defaultNoMatchFoundText">
+            <span>{{noMatchFoundMessage.text}}</span>&nbsp;
+            <a *ngIf="noMatchFoundMessage.linkText"
+               (mousedown)="onNoMatchFoundAction($event)"
+               class="no-match-found-action-link"
+               href="javascript:;">{{noMatchFoundMessage.linkText}}</a>
+          </ng-container>
+          <ng-template #defaultNoMatchFoundText>
+            <div (mousedown)="selectOne('')">No Result Found</div>
+          </ng-template>
         </li>
-        <li *ngIf="headerItemTemplate && filteredList.length" class="header-item"
-            [innerHTML]="headerItemTemplate"></li>
         <li *ngIf="blankOptionText && filteredList.length"
             (mousedown)="selectOne('')"
             class="blank-item">{{blankOptionText}}
@@ -34,7 +65,7 @@ import { NguiAutoComplete } from './auto-complete.service';
         <li class="item"
             *ngFor="let item of filteredList; let i=index; trackBy: trackByIndex"
             (mousedown)="selectOne(item)"
-            [ngClass]="{selected: i === itemIndex}"
+            [ngClass]="{selected: i + filters.length === itemIndex}"
             [innerHtml]="autoComplete.getFormattedListItem(item)">
         </li>
       </ul>
@@ -94,7 +125,22 @@ import { NguiAutoComplete } from './auto-complete.service';
 
     .ngui-auto-complete > ul li:not(.header-item):hover {
       background-color: #ccc;
-    }`
+    }
+
+    .ngui-auto-complete-filter-item {
+      display: flex;
+      flex-direction: row;
+      cursor: pointer;
+    }
+
+    .ngui-auto-complete-filter-item input {
+      width: auto;
+    }
+
+    .limit-top {
+      overflow: hidden auto;
+    }
+  `
   ],
   encapsulation: ViewEncapsulation.None
 })
@@ -110,7 +156,6 @@ export class NguiAutoCompleteComponent implements OnInit {
   @Input('min-chars') public minChars = 0;
   @Input('placeholder') public placeholder: string;
   @Input('blank-option-text') public blankOptionText: string;
-  @Input('no-match-found-text') public noMatchFoundText: string;
   @Input('accept-user-input') public acceptUserInput = true;
   @Input('loading-text') public loadingText = 'Loading';
   @Input('loading-template') public loadingTemplate = null;
@@ -124,13 +169,28 @@ export class NguiAutoCompleteComponent implements OnInit {
   @Input('re-focus-after-select') public reFocusAfterSelect = true;
   @Input('header-item-template') public headerItemTemplate = null;
   @Input('ignore-accents') public ignoreAccents = true;
+  @Input('filters') public filters: AutoCompleteFilter[] = [];
+
+  @Input('hide-on-no-match-found') public hideOnNoMatchFound: boolean = false;
+  @Input('no-match-found-text')
+  public set noMatchFoundText(noMatchFoundMessage: string | NguiAutoCompleteNoMatchFoundMessage) {
+    if (typeof noMatchFoundMessage === 'string') {
+      this.noMatchFoundMessage = {text: noMatchFoundMessage};
+    } else {
+      this.noMatchFoundMessage = noMatchFoundMessage;
+    }
+  }
 
   @Output() public valueSelected = new EventEmitter();
   @Output() public customSelected = new EventEmitter();
   @Output() public textEntered = new EventEmitter();
+  @Output() public filterSelected = new EventEmitter();
+  @Output() public noMatchFoundAction = new EventEmitter();
 
   @ViewChild('autoCompleteInput') public autoCompleteInput: ElementRef;
   @ViewChild('autoCompleteContainer') public autoCompleteContainer: ElementRef;
+
+  public noMatchFoundMessage: NguiAutoCompleteNoMatchFoundMessage;
 
   public dropdownVisible = false;
   public isLoading = false;
@@ -139,6 +199,10 @@ export class NguiAutoCompleteComponent implements OnInit {
   public minCharsEntered = false;
   public itemIndex: number = null;
   public keyword: string;
+  // (changes below were added by Leo Diaz)
+  public itemHeight: number = 0;
+  public triggerInputHeight: number = 0;
+  public maxHeightTopGap: number = 0;
 
   private el: HTMLElement;           // this component  element `<ngui-auto-complete>`
   private timer = 0;
@@ -155,7 +219,9 @@ export class NguiAutoCompleteComponent implements OnInit {
   /**
    * constructor
    */
-  constructor(elementRef: ElementRef, public autoComplete: NguiAutoComplete) {
+  constructor(elementRef: ElementRef,
+              public autoComplete: NguiAutoComplete,
+              private zone: NgZone) {
     this.el = elementRef.nativeElement;
   }
 
@@ -218,10 +284,16 @@ export class NguiAutoCompleteComponent implements OnInit {
 
     if (this.isSrcArr()) {    // local source
       this.isLoading = false;
-      this.filteredList = this.autoComplete.filter(this.source, keyword, this.matchFormatted, this.ignoreAccents);
+      this.filteredList = this.autoComplete.filter(
+        this.source,
+        keyword,
+        this.matchFormatted,
+        this.ignoreAccents,
+        this.filters);
       if (this.maxNumList) {
         this.filteredList = this.filteredList.slice(0, this.maxNumList);
       }
+      this.calculateHeightFits(); // (added by Leo Diaz)
 
     } else {                 // remote source
       this.isLoading = true;
@@ -240,9 +312,10 @@ export class NguiAutoCompleteComponent implements OnInit {
             if (this.maxNumList) {
               this.filteredList = this.filteredList.slice(0, this.maxNumList);
             }
+            this.calculateHeightFits(); // (added by Leo Diaz)
           },
           (error) => null,
-          () => this.isLoading = false // complete
+          () =>  this.zone.run(() => this.isLoading = false) // complete
         );
       } else {
         // remote source
@@ -252,9 +325,10 @@ export class NguiAutoCompleteComponent implements OnInit {
             if (this.maxNumList) {
               this.filteredList = this.filteredList.slice(0, this.maxNumList);
             }
+            this.calculateHeightFits(); // (added by Leo Diaz)
           },
           (error) => null,
-          () => this.isLoading = false // complete
+          () =>  this.zone.run(() => this.isLoading = false) // complete
         );
       }
     }
@@ -281,7 +355,7 @@ export class NguiAutoCompleteComponent implements OnInit {
   }
 
   public inputElKeyHandler = (evt: any) => {
-    const totalNumItem = this.filteredList.length;
+    const totalNumItem = this.filteredList.length + this.filters.length;
 
     if (!this.selectOnEnter && this.autoSelectFirstItem && (0 !== totalNumItem)) {
       this.selectOnEnter = true;
@@ -316,16 +390,30 @@ export class NguiAutoCompleteComponent implements OnInit {
 
       case 13: // ENTER, choose it!!
         if (this.selectOnEnter) {
-          this.selectOne(this.filteredList[this.itemIndex]);
+          this.onEnterPressed();
         }
         evt.preventDefault();
         break;
 
       case 9: // TAB, choose if tab-to-select is enabled
+        if (this.itemIndex === null || this.itemIndex === undefined) {
+          this.hideDropdownList();
+          break;
+        }
+
         if (this.tabToSelect) {
-          this.selectOne(this.filteredList[this.itemIndex]);
+          this.onEnterPressed();
         }
         break;
+    }
+  }
+
+  public onEnterPressed() {
+    if (this.itemIndex < this.filters.length) {
+      this.filters[this.itemIndex].enabled = !this.filters[this.itemIndex].enabled;
+      this.reloadList(this.keyword);
+    } else {
+      this.selectOne(this.filteredList[this.itemIndex - this.filters.length]);
     }
   }
 
@@ -346,12 +434,50 @@ export class NguiAutoCompleteComponent implements OnInit {
     return index;
   }
 
+  public onFilterChange() {
+    return false;
+  }
+
+  public onFilterClicked(filter: AutoCompleteFilter) {
+    this.zone.run(() => filter.enabled = !filter.enabled);
+    this.filterSelected.emit();
+    this.reloadList(this.keyword);
+  }
+
+  public onNoMatchFoundAction(event) {
+    this.noMatchFoundAction.emit(this.keyword);
+    this.selectOne('');
+  }
+
   get emptyList(): boolean {
     return !(
       this.isLoading ||
-      (this.minCharsEntered && !this.isLoading && !this.filteredList.length) ||
+      (this.minCharsEntered && !this.isLoading && !this.filteredList.length && !this.hideOnNoMatchFound) ||
       (this.filteredList.length)
     );
+  }
+
+  // (implemented by Leo Diaz, updated by Igor Naumov)
+  private calculateHeightFits() {
+    // Filter items height = 50px;
+    const heightByFilter = this.filters.length > 0 ? 50 : 0;
+    const heightByResultItems = this.filteredList.length * this.itemHeight;
+
+    const elBottom = this.el.getBoundingClientRect().bottom;
+    const listHeight = heightByResultItems + heightByFilter;
+    const fitsInPage =  elBottom + listHeight < window.innerHeight;
+
+    if (!fitsInPage) {
+      const elTop = this.el.getBoundingClientRect().top;
+      this.el.style.top = 'auto';
+      this.el.style.bottom = `${this.triggerInputHeight}px`;
+      // check if it fits based on the top of window
+      if (elTop - listHeight < this.maxHeightTopGap) {
+        const maxListHeight = elTop - this.maxHeightTopGap;
+        this.el.classList.add('limit-top');
+        this.el.style.height = `${maxListHeight}px`;
+      }
+    }
   }
 
 }

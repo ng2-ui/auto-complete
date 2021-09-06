@@ -306,7 +306,6 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
       this.acDropdownEl.style.position = 'absolute';
       this.acDropdownEl.style.zIndex = this.zIndex;
       this.acDropdownEl.style[directionOfStyle] = '0';
-      this.acDropdownEl.style.display = 'inline-block';
 
       if (!this.outerInputElement) {
         if (closeToBottom) {

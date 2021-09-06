@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostBinding,
   Input,
   NgZone,
   OnInit,
@@ -29,7 +30,7 @@ import { NguiAutoCompleteNoMatchFoundMessage } from './model/no-match-found-mess
              [(ngModel)]="keyword"/>
 
       <!-- dropdown that user can select -->
-      <ul *ngIf="dropdownVisible" [class.empty]="emptyList">
+      <ul *ngIf="dropdownVisible">
         <li *ngIf="headerItemTemplate && filteredList.length" class="header-item"
             [innerHTML]="headerItemTemplate"></li>
         <li *ngFor="let filter of filters; let i=index; trackBy: trackByIndex"
@@ -104,10 +105,6 @@ import { NguiAutoCompleteNoMatchFoundMessage } from './model/no-match-found-mess
       border: 1px solid #ccc;
       box-sizing: border-box;
       animation: slideDown 0.1s;
-    }
-
-    .ngui-auto-complete > ul.empty {
-      display: none;
     }
 
     .ngui-auto-complete > ul li {
@@ -186,6 +183,8 @@ export class NguiAutoCompleteComponent implements OnInit {
   @Output() public textEntered = new EventEmitter();
   @Output() public filterSelected = new EventEmitter();
   @Output() public noMatchFoundAction = new EventEmitter();
+
+  @HostBinding('style.display') get display() { return !this.emptyList ? 'inline-block' : 'none' ; }
 
   @ViewChild('autoCompleteInput') public autoCompleteInput: ElementRef;
   @ViewChild('autoCompleteContainer') public autoCompleteContainer: ElementRef;

@@ -32,14 +32,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/auto-complete/tsconfig.lib.json",
-              "projects/auto-complete/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "projects/auto-complete/**/*.ts",
+              "projects/auto-complete/**/*.html"
             ]
           }
         }
@@ -113,8 +110,7 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-          },
+          "options": {},
           "configurations": {
             "production": {
               "browserTarget": "demo:build:production"
@@ -149,15 +145,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/demo/tsconfig.app.json",
-              "projects/demo/tsconfig.spec.json",
-              "projects/demo/e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "projects/demo/**/*.ts",
+              "projects/demo/**/*.html"
             ]
           }
         },
@@ -177,5 +169,9 @@
           "defaultConfiguration": "development"
         }
       }
-    }}
+    }
+  },
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }

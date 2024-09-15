@@ -17,42 +17,40 @@ export class NguiAutoComplete {
   }
 
   public filter(list: any[], keyword: string, matchFormatted: boolean, accentInsensitive: boolean) {
+    const objectString = (el) => matchFormatted ? this.getFormattedListItem(el).toLowerCase() : JSON.stringify(el).toLowerCase();
+    const loweredKeyword = keyword.toLowerCase();
+
     return accentInsensitive
       ? list.filter(
         (el) => {
-          const objStr = matchFormatted ? this.getFormattedListItem(el).toLowerCase() : JSON.stringify(el).toLowerCase();
-          keyword = keyword.toLowerCase();
-
-          return objStr.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-            .indexOf(keyword.normalize('NFD').replace(/[\u0300-\u036f]/g, '')) !== -1;
+          return objectString(el).normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .indexOf(loweredKeyword.normalize('NFD').replace(/[\u0300-\u036f]/g, '')) !== -1;
         })
       : list.filter(
         (el) => {
-          const objStr = matchFormatted ? this.getFormattedListItem(el).toLowerCase() : JSON.stringify(el).toLowerCase();
-          keyword = keyword.toLowerCase();
-
-          return objStr.indexOf(keyword) !== -1;
+          return objectString(el).indexOf(loweredKeyword) !== -1;
         }
       );
   }
 
   public getFormattedListItem(data: any) {
-    let formatted;
     const formatter = this.listFormatter || '(id) value';
     if (typeof formatter === 'function') {
-      formatted = formatter.apply(this, [data]);
+      return formatter.apply(this, [data]);
     } else if (typeof data !== 'object') {
-      formatted = data;
+      return data;
     } else if (typeof formatter === 'string') {
-      formatted = formatter;
+      let formatted = formatter;
       const matches = formatter.match(/[a-zA-Z0-9_\$]+/g);
       if (matches && typeof data !== 'string') {
         matches.forEach((key) => {
           formatted = formatted.replace(key, data[key]);
         });
       }
+      return formatted;
     }
-    return formatted;
+
+    return JSON.stringify(data);
   }
 
   /**

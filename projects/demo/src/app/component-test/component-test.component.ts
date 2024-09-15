@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-component-test',
   templateUrl: './component-test.component.html',
   styleUrls: ['./component-test.component.scss']
 })
-export class ComponentTestComponent implements OnInit {
+export class ComponentTestComponent {
 
   public googleGeoCode = 'https://maps.googleapis.com/maps/api/geocode/json?address=:my_own_keyword';
   public showAutocomplete = true;
@@ -54,7 +54,8 @@ export class ComponentTestComponent implements OnInit {
     </ngui-auto-complete>
   `;
 
-  constructor() { }
+  constructor() {
+  }
 
   public addToAddrs(addr: any): void {
     this.addrs.push(addr);
@@ -68,9 +69,6 @@ export class ComponentTestComponent implements OnInit {
 
   public myListFormatter(data: any): string {
     return data['formatted_address'];
-  }
-
-  ngOnInit(): void {
   }
 
 }

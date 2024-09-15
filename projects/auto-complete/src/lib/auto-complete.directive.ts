@@ -13,7 +13,7 @@ import { AbstractControl, ControlContainer, FormControl, FormGroup, FormGroupNam
 import { NguiAutoCompleteComponent } from './auto-complete.component';
 
 @Directive({
-  // tslint:disable-next-line:directive-selector
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[auto-complete], [ngui-auto-complete]'
 })
 export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewInit, OnDestroy {

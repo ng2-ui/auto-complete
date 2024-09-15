@@ -20,8 +20,8 @@
     ],
     "paths": {
       "auto-complete": [
-        "dist/auto-complete/auto-complete",
-        "dist/auto-complete"
+        "dist/auto-complete",
+        "dist/"
       ]
     }
   },

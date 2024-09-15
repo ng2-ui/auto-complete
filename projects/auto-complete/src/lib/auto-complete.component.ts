@@ -20,16 +20,16 @@ import { NguiAutoComplete } from './auto-complete.service';
       <ul *ngIf="dropdownVisible" [class.empty]="emptyList">
         <li *ngIf="isLoading && loadingTemplate" class="loading"
             [innerHTML]="loadingTemplate"></li>
-        <li *ngIf="isLoading && !loadingTemplate" class="loading">{{loadingText}}</li>
+        <li *ngIf="isLoading && !loadingTemplate" class="loading">{{ loadingText }}</li>
         <li *ngIf="minCharsEntered && !isLoading && !filteredList.length"
             (mousedown)="selectOne('')"
-            class="no-match-found">{{noMatchFoundText || 'No Result Found'}}
+            class="no-match-found">{{ noMatchFoundText || 'No Result Found' }}
         </li>
         <li *ngIf="headerItemTemplate && filteredList.length" class="header-item"
             [innerHTML]="headerItemTemplate"></li>
         <li *ngIf="blankOptionText && filteredList.length"
             (mousedown)="selectOne('')"
-            class="blank-item">{{blankOptionText}}
+            class="blank-item">{{ blankOptionText }}
         </li>
         <li class="item"
             *ngFor="let item of filteredList; let i=index; trackBy: trackByIndex"
@@ -189,7 +189,7 @@ export class NguiAutoCompleteComponent implements OnInit {
 
     // executing after user stopped typing
     this.delay(() => this.reloadList(keyword), delayMs);
-  }
+  };
 
   public showDropdownList(event: any): void {
     this.dropdownVisible = true;
@@ -241,7 +241,7 @@ export class NguiAutoCompleteComponent implements OnInit {
               this.filteredList = this.filteredList.slice(0, this.maxNumList);
             }
           },
-          (error) => null,
+          (error) => console.warn(error),
           () => this.isLoading = false // complete
         );
       } else {
@@ -253,7 +253,7 @@ export class NguiAutoCompleteComponent implements OnInit {
               this.filteredList = this.filteredList.slice(0, this.maxNumList);
             }
           },
-          (error) => null,
+          (error) => console.warn(error),
           () => this.isLoading = false // complete
         );
       }
@@ -327,7 +327,7 @@ export class NguiAutoCompleteComponent implements OnInit {
         }
         break;
     }
-  }
+  };
 
   public scrollToView(index) {
     const container = this.autoCompleteContainer.nativeElement;

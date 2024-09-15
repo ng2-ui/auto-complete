@@ -11,12 +11,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ComponentTestComponent } from './component-test/component-test.component';
 import { DirectiveTestComponent } from './directive-test/directive-test.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
     AppComponent,
     ComponentTestComponent,
-    DirectiveTestComponent,
+    DirectiveTestComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +27,8 @@ import { DirectiveTestComponent } from './directive-test/directive-test.componen
     NguiAutoCompleteModule,
     MatFormFieldModule,
     MatInputModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatTabsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

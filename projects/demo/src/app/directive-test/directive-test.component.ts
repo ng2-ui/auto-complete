@@ -1,6 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { AppService } from '../app.service';
 
 @Component({
@@ -197,9 +196,9 @@ export class DirectiveTestComponent {
 
   constructor(
     public appSvc: AppService,
-    private sanitizer: DomSanitizer,
     public http: HttpClient
-  ) { }
+  ) {
+  }
 
   public customCallback(text) {
     console.log('keyword ', text);
@@ -225,12 +224,12 @@ export class DirectiveTestComponent {
     this.model10 = newVal10;
   }
 
-  public renderHero(data: any): SafeHtml {
-    const html = `<b style='float:left;width:100%'>${data.name}</b>
-                <img style="float: left;padding: 5px;" src="${data.thumbnail.path}/portrait_small.${data.thumbnail.extension}">
-                <span>${data.description}</span>`;
+  public renderHero(data: any): string {
+    const imgSrc = () => `${data.thumbnail.path}/portrait_small.${data.thumbnail.extension}`;
 
-    return this.sanitizer.bypassSecurityTrustHtml(html);
+    return `<b style='float:left;width:100%'>${data.name}</b>
+                <img style="float: left;padding: 5px;" src="${imgSrc()}" alt="${data.name}">
+                <span>${data.description}</span>`;
   }
 
   public renderCity(data: any): string {
@@ -245,9 +244,8 @@ export class DirectiveTestComponent {
     return html;
   }
 
-  public rightAligned(data: any): SafeHtml {
-    const html = `<div style="text-align:right">${data}.00</div>`;
-    return this.sanitizer.bypassSecurityTrustHtml(html);
+  public rightAligned(data: any): string {
+    return `<div style="text-align:right">${data}.00</div>`;
   }
 
   public json(obj) {

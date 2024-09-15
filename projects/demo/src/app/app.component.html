@@ -1,3 +1,11 @@
-<a href="" routerLink="/directive-test">Directive</a>&nbsp;
-<a href="" routerLink="/component-test">Component</a>
-<router-outlet></router-outlet>
+<nav mat-tab-nav-bar [tabPanel]="tabPanel">
+  <a mat-tab-link *ngFor="let link of links"
+     [routerLink]="link.url"
+     routerLinkActive #rla="routerLinkActive"
+     [active]="this.router.url.endsWith(link.url)"> {{ link.name }} </a>
+</nav>
+<mat-tab-nav-panel #tabPanel>
+  <router-outlet></router-outlet>
+</mat-tab-nav-panel>
+
+

@@ -14,13 +14,12 @@ export class AppService {
   }
 
   /**
-   * Find heroe by name
+   * Find heroes by name
    *
-   * @param {string} startsWith, the starting characters of the heroe name
-   *
-   * @memberOf AppSvc
+   * @memberOf AppService
+   * @param startsWith the starting characters of the hero name
    */
   public findHeroes = (startsWith: string): Observable<any[]> => {
     return this.http.get<any>(`${this.marvelBase}characters?nameStartsWith=${startsWith}&apikey=${this.marvelPublicKey}`);
-  }
+  };
 }

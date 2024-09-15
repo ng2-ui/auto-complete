@@ -22,6 +22,9 @@
       "auto-complete": [
         "dist/auto-complete",
         "dist/"
+      ],
+      "demo": [
+        "docs"
       ]
     }
   },

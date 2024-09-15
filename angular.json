@@ -51,12 +51,13 @@
       },
       "root": "projects/demo",
       "sourceRoot": "projects/demo/src",
-      "prefix": "app",
+      "prefix": "docs",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "docs",
+            "baseHref": "/auto-complete",
             "index": "projects/demo/src/index.html",
             "main": "projects/demo/src/main.ts",
             "polyfills": "projects/demo/src/polyfills.ts",

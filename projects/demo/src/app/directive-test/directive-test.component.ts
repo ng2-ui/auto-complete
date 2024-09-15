@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { AppService } from '../app.service';
@@ -9,7 +9,7 @@ import { AppService } from '../app.service';
   styleUrls: ['./directive-test.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class DirectiveTestComponent implements OnInit {
+export class DirectiveTestComponent {
 
   public loadingTemplate = `<h1>Loading</h1>`;
   public cityHeaderTemplate = `
@@ -200,9 +200,6 @@ export class DirectiveTestComponent implements OnInit {
     private sanitizer: DomSanitizer,
     public http: HttpClient
   ) { }
-
-  ngOnInit(): void {
-  }
 
   public customCallback(text) {
     console.log('keyword ', text);

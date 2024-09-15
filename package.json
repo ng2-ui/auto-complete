@@ -11,6 +11,7 @@
     "e2e": "ng e2e",
     "build-lib:watch": "ng build auto-complete --watch",
     "build-lib:prod": "ng build auto-complete --configuration production && npm run copy-lib",
+    "build-docs": "ng build demo --configuration production",
     "copy-lib": "copyfiles -f LICENSE.md README.md CHANGELOG.md dist/"
   },
   "private": true,

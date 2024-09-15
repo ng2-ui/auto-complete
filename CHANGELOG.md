@@ -6,6 +6,7 @@
 - Versioning now match the latest supported Angular version
 - TSLint to ESLint migration
 - ES version now is ES2020
+- Demo fix for observable (still not perfect)
 
 ## [4.0.0] Major Update
 

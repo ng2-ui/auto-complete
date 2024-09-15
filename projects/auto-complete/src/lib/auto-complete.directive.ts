@@ -1,13 +1,19 @@
 import {
-  AfterViewInit, ComponentFactoryResolver,
+  AfterViewInit,
+  ComponentFactoryResolver,
   ComponentRef,
   Directive,
-  EventEmitter, Host,
+  EventEmitter,
+  Host,
   Input,
   OnChanges,
   OnDestroy,
-  OnInit, Optional,
-  Output, SimpleChanges, SkipSelf, ViewContainerRef
+  OnInit,
+  Optional,
+  Output,
+  SimpleChanges,
+  SkipSelf,
+  ViewContainerRef
 } from '@angular/core';
 import { AbstractControl, ControlContainer, FormControl, FormGroup, FormGroupName } from '@angular/forms';
 import { NguiAutoCompleteComponent } from './auto-complete.component';
@@ -67,7 +73,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
   private documentClickListener: (e: MouseEvent) => any;
 
   constructor(private resolver: ComponentFactoryResolver,
-              public  viewContainerRef: ViewContainerRef,
+              public viewContainerRef: ViewContainerRef,
               @Optional() @Host() @SkipSelf() private parentForm: ControlContainer) {
     this.el = this.viewContainerRef.element.nativeElement;
   }
@@ -207,14 +213,14 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
     // if (this.el.tagName !== 'INPUT' && this.acDropdownEl) {
     this.inputEl.parentElement.insertBefore(this.acDropdownEl, this.inputEl.nextSibling);
     // }
-    this.revertValue = typeof this.ngModel !== 'undefined' ? this.ngModel : this.inputEl.value;
+    this.revertValue = typeof this.revertValue !== 'undefined' ? this.revertValue : '';
 
     setTimeout(() => {
       component.reloadList(this.inputEl.value);
       this.styleAutoCompleteDropdown();
       component.dropdownVisible = true;
     });
-  }
+  };
 
   public blurHandler(event: any) {
     if (this.componentRef) {
@@ -240,15 +246,17 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
       this.componentRef.destroy();
       this.componentRef = undefined;
 
-      if (this.inputEl && hasRevertValue && this.acceptUserInput === false && currentItem === null) {
+      if (this.inputEl && hasRevertValue && this.acceptUserInput === false && currentItem === null && this.inputEl.value !== '') {
         this.selectNewValue(this.revertValue);
+        currentItem = this.revertValue;
       } else if (this.inputEl && this.acceptUserInput === true && typeof currentItem === 'undefined' && event && event.target.value) {
         this.enterNewText(event.target.value);
       }
+      this.revertValue = currentItem;
     }
     this.dropdownJustHidden = true;
     setTimeout(() => this.dropdownJustHidden = false, 100);
-  }
+  };
 
   public styleAutoCompleteDropdown = () => {
     if (this.componentRef) {
@@ -272,7 +280,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
         this.acDropdownEl.style.top = `${thisInputElBCR.height}px`;
       }
     }
-  }
+  };
 
   public setToStringFunction(item: any): any {
     if (item && typeof item === 'object') {
@@ -331,7 +339,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 
       return this.inputEl;
     });
-  }
+  };
 
   public selectCustomValue = (text: string) => {
     this.customSelected.emit(text);
@@ -343,21 +351,21 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 
       return this.inputEl;
     });
-  }
+  };
 
   public enterNewText = (value: any) => {
     this.renderValue(value);
     this.ngModelChange.emit(value);
     this.valueChanged.emit(value);
     this.hideAutoCompleteDropdown();
-  }
+  };
 
   private keydownEventHandler = (evt: any) => {
     if (this.componentRef) {
       const component = this.componentRef.instance;
       component.inputElKeyHandler(evt);
     }
-  }
+  };
 
   private inputEventHandler = (evt: any) => {
     if (this.componentRef) {
@@ -368,7 +376,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
     } else {
       this.showAutoCompleteDropdown();
     }
-  }
+  };
 
   private renderValue(item: any) {
     if (!!this.inputEl) {

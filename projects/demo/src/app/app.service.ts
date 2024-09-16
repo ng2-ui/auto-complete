@@ -8,7 +8,7 @@ export class AppService {
   private marvelBase = 'http://gateway.marvel.com:80/v1/public/';
   private marvelPublicKey = 'b9ced31de3874eb2c065a5bce26f8c59';
 
-  private googleMapsPublicKey = 'AIzaSyBjCWwFwEjaClobsRcY7mAlGSfCsRmD0Vg';
+  private googleMapsPublicKey = 'YOUR_KEY';
 
   constructor(private _http: HttpClient) {
   }

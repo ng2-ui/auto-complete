@@ -15,7 +15,7 @@ import {
   SkipSelf,
   ViewContainerRef
 } from '@angular/core';
-import { AbstractControl, ControlContainer, FormControl, FormGroup, FormGroupName } from '@angular/forms';
+import { AbstractControl, ControlContainer, UntypedFormControl, UntypedFormGroup, FormGroupName } from '@angular/forms';
 import { NguiAutoCompleteComponent } from './auto-complete.component';
 
 @Directive({
@@ -53,7 +53,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
   @Input('formControlName') public formControlName: string;
   // if [formControl] is used on the anchor where our directive is sitting
   // a form is not necessary to use a formControl we should also support this
-  @Input('formControl') public extFormControl: FormControl;
+  @Input('formControl') public extFormControl: UntypedFormControl;
   @Input('z-index') public zIndex = '1';
   @Input('is-rtl') public isRtl = false;
 
@@ -102,7 +102,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
     // else check if we are supplied with a [FormControl] regardless if it is inside a [form] tag
     if (this.parentForm && this.formControlName) {
       if (this.parentForm['form']) {
-        this.formControl = (this.parentForm['form'] as FormGroup).get(this.formControlName);
+        this.formControl = (this.parentForm['form'] as UntypedFormGroup).get(this.formControlName);
       } else if (this.parentForm instanceof FormGroupName) {
         this.formControl = (this.parentForm as FormGroupName).control.controls[this.formControlName];
       }

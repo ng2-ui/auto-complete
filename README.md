@@ -1,25 +1,24 @@
-# auto-complete
+# Angular UI auto-complete
 
-[![npm](https://img.shields.io/npm/dt/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)  [![npm](https://img.shields.io/npm/v/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete) [![npm](https://img.shields.io/npm/l/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)
+[![npm downloads](https://img.shields.io/npm/dt/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)
+[![npm version](https://img.shields.io/npm/v/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)
+[![npm license](https://img.shields.io/npm/l/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)
+[![GitHub issues](https://img.shields.io/github/issues/ng2-ui/auto-complete.svg)](https://github.com/ng2-ui/auto-complete/issues)
 
-##### IMPORTANT: HELP NEEDED
+### IMPORTANT: HELP NEEDED
 
-The project need your help, any help for fixing bugs and improvements are welcome! [![GitHub issues](https://img.shields.io/github/issues/ng2-ui/auto-complete.svg)](https://github.com/ng2-ui/auto-complete/issues)
+The project need your help, any help for fixing bugs and improvements are welcome!
 
 ## Install
 
-1. install @ngui/auto-complete
+1. install `@ngui/auto-complete`
 
         $ npm install @ngui/auto-complete --save
 
-2. add `map` and `packages` to your `systemjs.config.js` unless you are using `webpack`
-
-        map['@ngui/auto-complete'] = 'node_modules/@ngui/auto-complete/dist/auto-complete.umd.js';
-
-3. import NguiAutoCompleteModule to your AppModule
+2. import NguiAutoCompleteModule to your AppModule
 
         import { NguiAutoCompleteModule } from '@ngui/auto-complete';
-
+        
         @NgModule({
           imports: [BrowserModule, FormsModule, NguiAutoCompleteModule],
           declarations: [AppComponent],
@@ -30,33 +29,37 @@ The project need your help, any help for fixing bugs and improvements are welcom
 
 ## Usage it in your code
 
-        <input auto-complete [(ngModel)]="myData" [source]="mySource" />
+1. As a component
 
-For full example, please check `test` directory to see the example of;
+       <ngui-auto-complete [(ngModel)]="myData" [source]="mySource"></ngui-auto-complete>
 
-  - `systemjs.config.js`
-  - `app.module.ts`
-  -  and `app.component.ts`.
+2. As a directive
 
-## Demo 
-You can look at different show cases for it here as [Component](https://rawgit.com/ng2-ui/auto-complete/master/app/index.html#/component-test) or [Directive](https://rawgit.com/ng2-ui/auto-complete/master/app/index.html#/directive-test). 
+       <input auto-complete [(ngModel)]="myData" [source]="mySource" />
+
+For full example, please check `demo` directory to see the example of `app.module.ts` and `app.component.ts`.
+
+## Demo
+
+You can look at different showcases for it here as [Component](https://ng2-ui.github.io/auto-complete/component-test) or [Directive](https://ng2-ui.github.io/auto-complete/directive-test).
 
 ## attributes
-  All options are optional except ngModel and source
 
-  * **`ngModel`**, any, variable that autocomplete result is assigned to
-  * **`source`**, array or string, required. data source for dropdown list
-  * **`auto-complete-placeholder`**,  string, autocomplete input guide text
-  * **`value-formatter`**, string or function variable name, custom value formatting function. e.g. `(id) value`, '`myValueFormatter`.
+All options are optional except `ngModel` and `source`
 
-           myValueFormatter(data: any): string {
-              return `(${data[id]}) ${data[value]}`;
-            }
-  * **`list-formatter`**, string or function variable name, custom list formatting function. e.g.  `(key) name`, `myListFormatter`.
+* **`ngModel`**, any, variable that autocomplete result is assigned to
+* **`source`**, array or string, required. data source for dropdown list
+* **`auto-complete-placeholder`**, string, autocomplete input guide text
+* **`value-formatter`**, string or function variable name, custom value formatting function. e.g. `(id) value`, '`myValueFormatter`.
 
-           myListFormatter(data: any): string {
-              return `(${data[key]}) ${data[name]}`;
-            }
+       myValueFormatter(data: any): string {
+          return `(${data[id]}) ${data[value]}`;
+        }
+* **`list-formatter`**, string or function variable name, custom list formatting function. e.g.  `(key) name`, `myListFormatter`.
+
+       myListFormatter(data: any): string {
+          return `(${data[key]}) ${data[name]}`;
+       }
 
   * **`path-to-data`**, string, e.g., `data.myList`, path to array data in http response
   * **`min-chars, number`**, when source is remote data, the number of character to see drop-down list
@@ -65,9 +68,9 @@ You can look at different show cases for it here as [Component](https://rawgit.c
   * **`blank-option-text`**, string, guide text to allow empty value to be selected as in empty value of `option` tag.
   * **`no-match-found-text`**, string, guide text to show no result found.
   * **`valueChanged`** / **`ngModelChange`**, callback function that is executed when a new drop-down is selected.
-     e.g. `(valueChanged)="myCallback($event)"`  
+    e.g. `(valueChanged)="myCallback($event)"`
   * **`customSelected`** callback function that is executed when a value selected not included in drop-down, so it will return the keyword used.
-     e.g. `(customSelected)="customCallback($event)"`
+    e.g. `(customSelected)="customCallback($event)"`
   * **`loading-text`**, text to be displayed when loading. Default, "Loading"
   * **`loading-template`**, html markup that is to be rendered when loading. Default, null
   * **`accept-user-input`** boolean, if `false` and does not match to source given, it goes back to the original value selected., If you don't event want user to type any, please use `readonly="readonly"` to force user to select only from list. Default is `true`
@@ -91,12 +94,11 @@ You can look at different show cases for it here as [Component](https://rawgit.c
 
 **Reactive Forms**
 
-*  _FormGroup_  http://plnkr.co/edit/2osUq6?p=preview
+* _FormGroup_  http://plnkr.co/edit/2osUq6?p=preview
   [issue #49](https://github.com/ng2-ui/auto-complete/issues/49)
 
 * _FormControl_ http://plnkr.co/edit/A5CW2e?p=preview
   [issue #100](https://github.com/ng2-ui/auto-complete/issues/100)
-
 
 **Material Design**
 
@@ -108,7 +110,7 @@ You can look at different show cases for it here as [Component](https://rawgit.c
 
 **List Formatter Example**
 
-* _Example 1_ http://plnkr.co/edit/F9nrWp?p=preview  
+* _Example 1_ http://plnkr.co/edit/F9nrWp?p=preview
 * _Example 2 (With custom css)_ http://plnkr.co/edit/0QFYFHMmCAFmhbYAGQl7?p=preview
 
 ## Contributors are welcomed
@@ -118,17 +120,17 @@ This module is only improved and maintained by contributors like you;
 As a contributor, it's NOT required to be skilled in Javascript nor Angular.
 You can contribute to the following;
 
-  * Updating README.md
-  * Making more and clearer comments
-  * Answering issues and building FAQ
-  * Documentation
-  * Translation
+* Updating README.md
+* Making more and clearer comments
+* Answering issues and building FAQ
+* Documentation
+* Translation
 
 In result of your active contribution, you will be listed as a core contributor
 on https://ng2-ui.github.io, and a member of ng2-ui too.
 
 If you are interested in becoming a contributor and/or a member of ng-ui,
-please send me email to `allenhwkim AT gmail.com` with your github id.
+please send me email to `allenhwkim AT gmail.com` with your GitHub id.
 
 ## For Developers
 
@@ -142,17 +144,22 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
     $ # On different instance
     
     $ npm start
-    
+
 ### To publish
 
     $ npm build-lib:prod
     $ cd dist
     $ npm publish
 
+### To build new docs version
+
+    $ npm build-docs
+
 ### List of available npm tasks
 
-  * `npm run` : List all available tasks
-  * `npm start`: Run `demo` directory for development using `@angular/cli` with port 4200
-  * `npm run lint`: Lint TypeScript code
-  * `npm run build-lib:watch`: Build library in live watch mode for development
-  * `npm run build-lib:prod`: Build library for publish using view engine (not Ivy renderer)
+* `npm run` : List all available tasks
+* `npm start`: Run `demo` directory for development using `@angular/cli` with port 4200
+* `npm run lint`: Lint TypeScript code
+* `npm run build-lib:watch`: Build library in live watch mode for development
+* `npm run build-lib:prod`: Build library for publish using view engine (not Ivy renderer)
+* `npm run build-docs`: Build a new version for life demo got GitHub pages

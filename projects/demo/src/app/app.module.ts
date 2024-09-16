@@ -3,15 +3,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 
 import { NguiAutoCompleteModule } from 'auto-complete';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ComponentTestComponent } from './component-test/component-test.component';
 import { DirectiveTestComponent } from './directive-test/directive-test.component';
-import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
+import { AppService } from './app.service';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -28,9 +30,14 @@ import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-t
     MatFormFieldModule,
     MatInputModule,
     AppRoutingModule,
-    MatTabsModule
+    MatTabsModule,
+    MatFormFieldModule,
+    MatIconModule,
   ],
-  providers: [],
+  providers: [
+    AppService
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

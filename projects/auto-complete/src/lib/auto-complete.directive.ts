@@ -1,6 +1,5 @@
 import {
   AfterViewInit,
-  ComponentFactoryResolver,
   ComponentRef,
   Directive,
   EventEmitter,
@@ -15,7 +14,7 @@ import {
   SkipSelf,
   ViewContainerRef
 } from '@angular/core';
-import { AbstractControl, ControlContainer, UntypedFormControl, UntypedFormGroup, FormGroupName } from '@angular/forms';
+import { AbstractControl, ControlContainer, FormGroupName, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { NguiAutoCompleteComponent } from './auto-complete.component';
 
 @Directive({
@@ -72,8 +71,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
   private scheduledBlurHandler: any;
   private documentClickListener: (e: MouseEvent) => any;
 
-  constructor(private resolver: ComponentFactoryResolver,
-              public viewContainerRef: ViewContainerRef,
+  constructor(public viewContainerRef: ViewContainerRef,
               @Optional() @Host() @SkipSelf() private parentForm: ControlContainer) {
     this.el = this.viewContainerRef.element.nativeElement;
   }
@@ -169,9 +167,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
     this.hideAutoCompleteDropdown();
     this.scheduledBlurHandler = null;
 
-    const factory = this.resolver.resolveComponentFactory(NguiAutoCompleteComponent);
-
-    this.componentRef = this.viewContainerRef.createComponent(factory);
+    this.componentRef = this.viewContainerRef.createComponent(NguiAutoCompleteComponent);
 
     const component = this.componentRef.instance;
     component.keyword = this.inputEl.value;

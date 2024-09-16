@@ -15,23 +15,25 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 
-@NgModule({ declarations: [
-        AppComponent,
-        ComponentTestComponent,
-        DirectiveTestComponent
-    ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
-        BrowserAnimationsModule,
-        FormsModule,
-        NguiAutoCompleteModule,
-        MatFormFieldModule,
-        MatInputModule,
-        AppRoutingModule,
-        MatTabsModule,
-        MatFormFieldModule,
-        MatIconModule], providers: [
-        AppService,
-        provideHttpClient(withInterceptorsFromDi())
-    ] })
+@NgModule({
+  declarations: [
+    AppComponent,
+    ComponentTestComponent,
+    DirectiveTestComponent
+  ],
+  bootstrap: [AppComponent], imports: [BrowserModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    NguiAutoCompleteModule,
+    MatFormFieldModule,
+    MatInputModule,
+    AppRoutingModule,
+    MatTabsModule,
+    MatFormFieldModule,
+    MatIconModule], providers: [
+    AppService,
+    provideHttpClient(withInterceptorsFromDi())
+  ]
+})
 export class AppModule {
 }

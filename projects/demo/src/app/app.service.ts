@@ -24,6 +24,6 @@ export class AppService {
   };
 
   public getMapsUrl = () => {
-    return `https://maps.googleapis.com/maps/api/geocode/json?address=:my_own_keyword&key=${this.googleMapsPublicKey}`
-  }
+    return `https://maps.googleapis.com/maps/api/geocode/json?address=:my_own_keyword&key=${this.googleMapsPublicKey}`;
+  };
 }

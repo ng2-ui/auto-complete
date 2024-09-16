@@ -8,9 +8,9 @@ describe('DirectiveTestComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ DirectiveTestComponent ]
+      declarations: [DirectiveTestComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

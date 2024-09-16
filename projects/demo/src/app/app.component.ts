@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  public links = [{name: 'Directive', url: '/directive-test'}, {name: 'Component', url: '/component-test'}]
+  public links = [{name: 'Directive', url: '/directive-test'}, {name: 'Component', url: '/component-test'}];
   public activeLink: string = '/directive-test';
 
   constructor(public router: Router) {

@@ -22,4 +22,5 @@ import { NguiAutoCompleteService } from './auto-complete.service';
     NguiAutoCompleteDirective
   ]
 })
-export class NguiAutoCompleteModule { }
+export class NguiAutoCompleteModule {
+}

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'app-component-test',
@@ -7,7 +8,6 @@ import { Component } from '@angular/core';
 })
 export class ComponentTestComponent {
 
-  public googleGeoCode = 'https://maps.googleapis.com/maps/api/geocode/json?address=:my_own_keyword';
   public showAutocomplete = true;
   public loadingTemplate = '<h1>Loading h1</h1>';
   public addrs: any[] = [
@@ -28,7 +28,7 @@ export class ComponentTestComponent {
         *ngIf="showAutocomplete"
         (valueSelected)="addToAddrs($event)"
         [accept-user-input]="true"
-        [source]="googleGeoCode"
+        [source]="appSvc.getMapsUrl()"
         display-property-name="formatted_address"
         [list-formatter]="myListFormatter"
         loading-text="Google Is Thinking..."
@@ -54,15 +54,15 @@ export class ComponentTestComponent {
     </ngui-auto-complete>
   `;
 
-  constructor() {
+  constructor(public appSvc: AppService) {
   }
 
-  public addToAddrs(addr: any): void {
+  public addToAddress(addr: any): void {
     this.addrs.push(addr);
     this.showAutocomplete = false;
   }
 
-  public removeFromAddrs(evt, index: number): void {
+  public removeFromAddress(event, index: number): void {
     this.addrs.splice(index, 1);
     event.stopPropagation();
   }

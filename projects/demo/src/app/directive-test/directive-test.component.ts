@@ -1,5 +1,4 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { AppService } from '../app.service';
 
 @Component({
@@ -46,8 +45,6 @@ export class DirectiveTestComponent {
       {city: 'San Diego', state: 'California', nickname: 'America\'s Finest City', population: '1,406,630'},
       {city: 'Dallas', state: 'Texas', nickname: 'The Big D', population: '1,317,929'},
       {city: 'San Jose', state: 'California', nickname: 'Capital of Silicon Valley', population: '1,025,350'}];
-
-  public googleGeoCode = 'https://maps.googleapis.com/maps/api/geocode/json?address=:my_own_keyword';
 
   public model1 = 'is';
   public model2 = {id: 1, value: 'One'};
@@ -194,10 +191,7 @@ export class DirectiveTestComponent {
   `;
 
 
-  constructor(
-    public appSvc: AppService,
-    public http: HttpClient
-  ) {
+  constructor(public appSvc: AppService) {
   }
 
   public customCallback(text) {

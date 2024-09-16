@@ -94,14 +94,14 @@
 </fieldset>
 
 <fieldset><legend><h2>With Material Design</h2></legend>
-  <mat-form-field>
-    <span matPrefix>$&nbsp;</span>
-    <input matInput ngui-auto-complete style="border: 1px solid #ccc"
+  <mat-form-field appearance="outline">
+    <mat-icon fontIcon="attach_money" matPrefix></mat-icon>
+    <input matInput ngui-auto-complete
            id="model6"
            [(ngModel)]="myModel"
            [source]="arrayOfNumbers"
            [list-formatter]="rightAligned"
-           placeholder="amount" align="end"/>
+           placeholder="amount"/>
     <span matSuffix>.00</span>
   </mat-form-field>
   <pre>{{template7}}</pre>

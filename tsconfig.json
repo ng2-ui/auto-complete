@@ -10,7 +10,7 @@
     "module": "ES2020",
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "ES2020",
+    "target": "ES2022",
     "typeRoots": [
       "node_modules/@types"
     ],
@@ -26,7 +26,8 @@
       "demo": [
         "docs"
       ]
-    }
+    },
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

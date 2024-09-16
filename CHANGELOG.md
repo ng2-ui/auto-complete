@@ -1,3 +1,10 @@
+## [15.0.0] Major Update
+
+- Upgraded to support Angular 15
+- Remove deprecated modules and services
+- Refactor code base splitting SCSS and HTML to seperated files
+- Fix Demo/Docs project
+
 ## [14.0.0] Major Update
 
 - Upgraded to support Angular 14

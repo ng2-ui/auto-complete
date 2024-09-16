@@ -1,0 +1,36 @@
+<div #autoCompleteContainer class="ngui-auto-complete">
+  <!-- keyword input -->
+  <input *ngIf="showInputTag"
+         #autoCompleteInput class="keyword"
+         [attr.autocomplete]="autocomplete ? 'null' : 'off'"
+         placeholder="{{placeholder}}"
+         (focus)="showDropdownList($event)"
+         (blur)="blurHandler($event)"
+         (keydown)="inputElKeyHandler($event)"
+         (input)="reloadListInDelay($event)"
+         [(ngModel)]="keyword"/>
+
+  <!-- dropdown that user can select -->
+  <ul *ngIf="dropdownVisible" [class.empty]="emptyList">
+    <li *ngIf="isLoading && loadingTemplate" class="loading"
+        [innerHTML]="loadingTemplate"></li>
+    <li *ngIf="isLoading && !loadingTemplate" class="loading">{{ loadingText }}</li>
+    <li *ngIf="minCharsEntered && !isLoading && !filteredList.length"
+        (mousedown)="selectOne('')"
+        class="no-match-found">{{ noMatchFoundText || 'No Result Found' }}
+    </li>
+    <li *ngIf="headerItemTemplate && filteredList.length" class="header-item"
+        [innerHTML]="headerItemTemplate"></li>
+    <li *ngIf="blankOptionText && filteredList.length"
+        (mousedown)="selectOne('')"
+        class="blank-item">{{ blankOptionText }}
+    </li>
+    <li class="item"
+        *ngFor="let item of filteredList; let i=index; trackBy: trackByIndex"
+        (mousedown)="selectOne(item)"
+        [ngClass]="{selected: i === itemIndex}"
+        [innerHtml]="autoComplete.getFormattedListItem(item)">
+    </li>
+  </ul>
+
+</div>

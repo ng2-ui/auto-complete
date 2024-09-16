@@ -1,101 +1,10 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
-import { NguiAutoComplete } from './auto-complete.service';
+import { NguiAutoCompleteService } from './auto-complete.service';
 
 @Component({
   selector: 'ngui-auto-complete',
-  template: `
-    <div #autoCompleteContainer class="ngui-auto-complete">
-      <!-- keyword input -->
-      <input *ngIf="showInputTag"
-             #autoCompleteInput class="keyword"
-             [attr.autocomplete]="autocomplete ? 'null' : 'off'"
-             placeholder="{{placeholder}}"
-             (focus)="showDropdownList($event)"
-             (blur)="blurHandler($event)"
-             (keydown)="inputElKeyHandler($event)"
-             (input)="reloadListInDelay($event)"
-             [(ngModel)]="keyword"/>
-
-      <!-- dropdown that user can select -->
-      <ul *ngIf="dropdownVisible" [class.empty]="emptyList">
-        <li *ngIf="isLoading && loadingTemplate" class="loading"
-            [innerHTML]="loadingTemplate"></li>
-        <li *ngIf="isLoading && !loadingTemplate" class="loading">{{ loadingText }}</li>
-        <li *ngIf="minCharsEntered && !isLoading && !filteredList.length"
-            (mousedown)="selectOne('')"
-            class="no-match-found">{{ noMatchFoundText || 'No Result Found' }}
-        </li>
-        <li *ngIf="headerItemTemplate && filteredList.length" class="header-item"
-            [innerHTML]="headerItemTemplate"></li>
-        <li *ngIf="blankOptionText && filteredList.length"
-            (mousedown)="selectOne('')"
-            class="blank-item">{{ blankOptionText }}
-        </li>
-        <li class="item"
-            *ngFor="let item of filteredList; let i=index; trackBy: trackByIndex"
-            (mousedown)="selectOne(item)"
-            [ngClass]="{selected: i === itemIndex}"
-            [innerHtml]="autoComplete.getFormattedListItem(item)">
-        </li>
-      </ul>
-
-    </div>
-  `,
-  styles: [`
-    @keyframes slideDown {
-      0% {
-        transform: translateY(-10px);
-      }
-      100% {
-        transform: translateY(0px);
-      }
-    }
-
-    .ngui-auto-complete {
-      background-color: transparent;
-    }
-
-    .ngui-auto-complete > input {
-      outline: none;
-      border: 0;
-      padding: 2px;
-      box-sizing: border-box;
-      background-clip: content-box;
-    }
-
-    .ngui-auto-complete > ul {
-      background-color: #fff;
-      margin: 0;
-      width: 100%;
-      overflow-y: auto;
-      list-style-type: none;
-      padding: 0;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-      animation: slideDown 0.1s;
-    }
-
-    .ngui-auto-complete > ul.empty {
-      display: none;
-    }
-
-    .ngui-auto-complete > ul li {
-      padding: 2px 5px;
-      border-bottom: 1px solid #eee;
-    }
-
-    .ngui-auto-complete > ul li.selected {
-      background-color: #ccc;
-    }
-
-    .ngui-auto-complete > ul li:last-child {
-      border-bottom: none;
-    }
-
-    .ngui-auto-complete > ul li:not(.header-item):hover {
-      background-color: #ccc;
-    }`
-  ],
+  templateUrl: './auto-complete.component.html',
+  styleUrls: ['./auto-complete.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class NguiAutoCompleteComponent implements OnInit {
@@ -155,7 +64,7 @@ export class NguiAutoCompleteComponent implements OnInit {
   /**
    * constructor
    */
-  constructor(elementRef: ElementRef, public autoComplete: NguiAutoComplete) {
+  constructor(elementRef: ElementRef, public autoComplete: NguiAutoCompleteService) {
     this.el = elementRef.nativeElement;
   }
 

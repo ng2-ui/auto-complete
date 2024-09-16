@@ -3,10 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class NguiAutoComplete {
+@Injectable()
+export class NguiAutoCompleteService {
 
   public source: string;
   public pathToData: string;

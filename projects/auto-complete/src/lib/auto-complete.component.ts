@@ -1,5 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { NguiAutoCompleteService } from './auto-complete.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'ngui-auto-complete',
@@ -132,39 +133,39 @@ export class NguiAutoCompleteComponent implements OnInit {
         this.filteredList = this.filteredList.slice(0, this.maxNumList);
       }
 
-    } else {                 // remote source
+    } else {// remote source
       this.isLoading = true;
 
       if (typeof this.source === 'function') {
         // custom function that returns observable
-        this.source(keyword).subscribe(
-          (resp) => {
+        (this.source(keyword) as Observable<any>).subscribe({
+            next: (resp) => {
+              if (this.pathToData) {
+                const paths = this.pathToData.split('.');
+                paths.forEach((prop) => resp = resp[prop]);
+              }
 
-            if (this.pathToData) {
-              const paths = this.pathToData.split('.');
-              paths.forEach((prop) => resp = resp[prop]);
-            }
-
-            this.filteredList = resp;
-            if (this.maxNumList) {
-              this.filteredList = this.filteredList.slice(0, this.maxNumList);
-            }
-          },
-          (error) => console.warn(error),
-          () => this.isLoading = false // complete
+              this.filteredList = resp;
+              if (this.maxNumList) {
+                this.filteredList = this.filteredList.slice(0, this.maxNumList);
+              }
+            },
+            error: (error) => console.warn(error),
+            complete: () => this.isLoading = false
+          }
         );
       } else {
         // remote source
-
-        this.autoComplete.getRemoteData(keyword).subscribe((resp) => {
+        this.autoComplete.getRemoteData(keyword).subscribe({
+          next: (resp) => {
             this.filteredList = resp ? resp : [];
             if (this.maxNumList) {
               this.filteredList = this.filteredList.slice(0, this.maxNumList);
             }
           },
-          (error) => console.warn(error),
-          () => this.isLoading = false // complete
-        );
+          error: (error) => console.warn(error),
+          complete: () => this.isLoading = false
+        });
       }
     }
   }

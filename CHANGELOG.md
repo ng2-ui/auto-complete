@@ -1,6 +1,7 @@
 ## [18.0.0] Major Update
 
 - Upgraded to support Angular 18
+- Migration for deprecated Observable<T> params
 - Adding e2e smock test for the project removing deprecated protractor adding cypress
 
 ## [17.0.0] Major Update

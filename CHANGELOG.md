@@ -1,4 +1,9 @@
-## [13.0.0] Major Update
+## [14.0.0] Major Update
+
+- Upgraded to support Angular 14
+- Adding Docs URL for GitHub Pages
+
+## [13.0.0] Major Update (new version system)
 
 - Upgraded to support Angular 13
 - Possible fix for issues in `accept-user-input` #372

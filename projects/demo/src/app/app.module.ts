@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { NguiAutoCompleteModule } from 'auto-complete';
 import { AppRoutingModule } from './app-routing.module';
@@ -15,29 +15,23 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    ComponentTestComponent,
-    DirectiveTestComponent
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    HttpClientModule,
-    NguiAutoCompleteModule,
-    MatFormFieldModule,
-    MatInputModule,
-    AppRoutingModule,
-    MatTabsModule,
-    MatFormFieldModule,
-    MatIconModule,
-  ],
-  providers: [
-    AppService
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        ComponentTestComponent,
+        DirectiveTestComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        NguiAutoCompleteModule,
+        MatFormFieldModule,
+        MatInputModule,
+        AppRoutingModule,
+        MatTabsModule,
+        MatFormFieldModule,
+        MatIconModule], providers: [
+        AppService,
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule {
 }

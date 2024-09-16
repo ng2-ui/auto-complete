@@ -1,3 +1,7 @@
+## [16.0.0] Major Update
+
+- Upgraded to support Angular 16
+
 ## [15.0.0] Major Update
 
 - Upgraded to support Angular 15

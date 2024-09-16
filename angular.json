@@ -39,6 +39,20 @@
               "projects/auto-complete/**/*.html"
             ]
           }
+        },
+        "ct": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "auto-complete:serve",
+            "watch": true,
+            "headless": false,
+            "testingType": "component"
+          },
+          "configurations": {
+            "development": {
+              "devServerTarget": "auto-complete:serve:development"
+            }
+          }
         }
       }
     },
@@ -154,27 +168,47 @@
             ]
           }
         },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
+        "cypress-run": {
+          "builder": "@cypress/schematic:cypress",
           "options": {
-            "protractorConfig": "projects/demo/e2e/protractor.conf.js"
+            "devServerTarget": "demo:serve",
+            "configFile": "projects/demo/cypress.config.ts"
           },
           "configurations": {
             "production": {
               "devServerTarget": "demo:serve:production"
-            },
-            "development": {
-              "devServerTarget": "demo:serve:development"
             }
+          }
+        },
+        "cypress-open": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "watch": true,
+            "headless": false,
+            "configFile": "projects/demo/cypress.config.ts"
+          }
+        },
+        "e2e": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "demo:serve",
+            "watch": true,
+            "headless": false
           },
-          "defaultConfiguration": "development"
+          "configurations": {
+            "production": {
+              "devServerTarget": "demo:serve:production"
+            }
+          }
         }
       }
     }
   },
   "cli": {
     "schematicCollections": [
-      "@angular-eslint/schematics"
+      "@cypress/schematic",
+      "@angular-eslint/schematics",
+      "@schematics/angular"
     ],
     "analytics": false
   }

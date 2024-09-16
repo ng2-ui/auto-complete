@@ -12,7 +12,9 @@
     "build-lib:watch": "ng build auto-complete --watch",
     "build-lib:prod": "ng build auto-complete --configuration production && npm run copy-lib",
     "build-docs": "ng build demo --configuration production",
-    "copy-lib": "copyfiles -f LICENSE.md README.md CHANGELOG.md dist/"
+    "copy-lib": "copyfiles -f LICENSE.md README.md CHANGELOG.md dist/",
+    "cypress:open": "cypress open",
+    "cypress:run": "ng run demo:cypress-run"
   },
   "private": true,
   "dependencies": {
@@ -40,13 +42,17 @@
     "@angular/cli": "^17.3.9",
     "@angular/compiler-cli": "^17.3.12",
     "@angular/language-service": "^17.3.12",
+    "@cypress/schematic": "^2.5.2",
+    "@types/cypress": "latest",
     "@types/jasmine": "~5.1.4",
     "@types/jasminewd2": "~2.0.13",
     "@types/node": "^22.5.5",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "copyfiles": "^2.4.1",
+    "cypress": "latest",
     "eslint": "^8.57.0",
+    "eslint-plugin-cypress": "^3.5.0",
     "jasmine-core": "~5.3.0",
     "jasmine-spec-reporter": "~7.0.0",
     "karma": "~6.4.4",
@@ -55,7 +61,6 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^2.1.0",
     "ng-packagr": "^17.3.0",
-    "protractor": "~7.0.0",
     "ts-node": "~10.9.2",
     "typescript": "~5.4.5"
   }

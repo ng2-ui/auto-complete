@@ -203,7 +203,7 @@ npm start
 npm run build-lib:prod
 
 # 3. Publish from the dist output
-cd dist/auto-complete
+cd dist
 npm publish --access public
 ```
 

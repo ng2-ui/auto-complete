@@ -7,29 +7,42 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 
 ---
 
-## [Unreleased]
+## [18.5.0] — 2026-06-03
+
+### Fixed
+- Scoped `NguiAutoCompleteService` per-component instance (was a module singleton — multiple simultaneous
+  `<ngui-auto-complete>` components overwrote each other's `source` property causing a runtime crash)
+- `isLoading` no longer stays stuck `true` after a failed HTTP request — `error` handler now resets it
+- `ngOnDestroy` subscription teardown: replaced invalid `EventEmitter.unsubscribe()` calls with proper
+  RxJS `Subscription` management via `dropdownSubs`
+- Replaced `UntypedFormControl` / `UntypedFormGroup` with typed `FormControl` / `FormGroup`
+- Root `.eslintrc.json` referenced non-existent `e2e/tsconfig.json` — removed
+- Project ESLint configs used file-relative tsconfig paths — changed to workspace-root-relative
+- `demo:prefix` in `angular.json` was `docs` instead of `app`
+- Removed broken `ct` Cypress component-test target from the library `angular.json` entry
+  (referenced non-existent `auto-complete:serve` target)
+- `auto-select-first-item` demo was missing `[auto-select-first-item]="true"` — feature was never active
 
 ### Changed
-- Replaced `UntypedFormControl` / `UntypedFormGroup` with typed `FormControl` / `FormGroup`
-- Fixed `ngOnDestroy` subscription teardown: replaced invalid `EventEmitter.unsubscribe()` calls with proper `Subscription` management
 - Replaced deprecated `karma-coverage-istanbul-reporter` with `karma-coverage`
-- Removed unused `@types/jasminewd2` (Protractor artefact)
-- Pinned `cypress` to a specific version instead of `"latest"`
-- Removed broken `ct` Cypress component-test target from the library `angular.json` entry
-- Fixed root `.eslintrc.json` referencing non-existent `e2e/tsconfig.json`
-- Fixed `angular.json` demo `prefix` from `docs` to `app`
+- Removed unused `@types/jasminewd2` (Protractor artefact, not needed with Cypress)
+- Pinned `cypress` to `^13.0.0` instead of `"latest"`
+- Demo Observable source example replaced from Marvel API (broken auth) to Open Library (free, no key)
+- Demo HTTP source examples replaced from Google Maps (requires key) to Nominatim/OpenStreetMap (free, no key)
+- RTL demo updated to use Arabic city names with `dir="rtl"` scoped to the demo area only
 
 ### Added
-- Angular Material toolbar in demo app with library title and links
-- Demo examples use `<mat-card>` layout in a responsive CSS grid
-- Collapsible "View Template" code panels (using `mat-expansion-panel`) per demo example
+- Angular Material toolbar in demo app with library title and links to GitHub / npm
+- Demo examples use `<mat-card>` layout in a responsive CSS grid (2-column desktop, 1-column mobile)
+- Collapsible "View Template" expansion panel per demo example
 - `MatToolbarModule`, `MatCardModule`, `MatExpansionModule`, `MatButtonModule` added to demo module
-- Revamped `styles.scss` with global typography, dark code-block theme, and responsive grid
-- Restructured README: badges, proper API reference table, version-compatibility table, updated dev instructions
+- Revamped `styles.scss`: indigo-pink Material theme, global typography, dark code-block styling
+- Descriptive subtitles and usage hints on all directive and component demo examples
+- Restructured README: badges, API reference table, version-compatibility table, updated dev instructions
 
 ---
 
-## [18.0.0] — 2024-09-xx
+## [18.0.0] — 2024-09-16
 
 ### Changed
 - Upgraded to Angular 18
@@ -38,21 +51,21 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 
 ---
 
-## [17.0.0] — 2023-11-xx
+## [17.0.0] — 2024-09-16
 
 ### Changed
 - Upgraded to Angular 17
 
 ---
 
-## [16.0.0] — 2023-05-xx
+## [16.0.0] — 2024-09-16
 
 ### Changed
 - Upgraded to Angular 16
 
 ---
 
-## [15.0.0] — 2022-11-xx
+## [15.0.0] — 2024-09-16
 
 ### Changed
 - Upgraded to Angular 15
@@ -61,7 +74,7 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 
 ---
 
-## [14.0.0] — 2022-06-xx
+## [14.0.0] — 2024-09-16
 
 ### Changed
 - Upgraded to Angular 14
@@ -69,7 +82,7 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 
 ---
 
-## [13.0.0] — 2021-11-xx
+## [13.0.0] — 2024-09-15
 
 ### Changed
 - Upgraded to Angular 13
@@ -83,14 +96,14 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 
 ---
 
-## [4.0.0]
+## [4.0.0] — 2024-09-15
 
 ### Changed
 - Upgraded to Angular 12
 
 ---
 
-## [3.0.0]
+## [3.0.0] — 2020-03-11
 
 ### Changed
 - Upgraded to Angular 9
@@ -98,7 +111,7 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 
 ---
 
-## [2.0.0]
+## [2.0.0] — 2018-07-08
 
 ### Changed
 - Upgraded to Angular 6 and RxJS 6
@@ -108,14 +121,14 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 
 ---
 
-## [1.0.2]
+## [1.0.2] — 2018-03-25
 
 ### Fixed
 - Build and publish issues
 
 ---
 
-## [1.0.0]
+## [1.0.0] — 2018-03-24
 
 ### Changed
 - Published latest changes from community PRs
@@ -123,35 +136,35 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 
 ---
 
-## [0.14.1]
+## [0.14.1] — 2017-09-08
 
 ### Added
 - New property `select-on-blur`
 
 ---
 
-## [0.14.0]
+## [0.14.0] — 2017-08-29
 
 ### Changed
 - Upgraded to Angular 4
 
 ---
 
-## [0.13.0]
+## [0.13.0] — 2017-03-29
 
 ### Changed
 - Renamed module to `@ngui/auto-complete`
 
 ---
 
-## [0.12.0]
+## [0.12.0] — 2017-03-22
 
 ### Added
 - New property `match-formatted`
 
 ---
 
-## [0.11.0]
+## [0.11.0] — 2017-03-08
 
 ### Added
 - New property `value-formatter`

@@ -5,25 +5,26 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class AppService {
 
-  private marvelBase = 'http://gateway.marvel.com:80/v1/public/';
-  private marvelPublicKey = 'b9ced31de3874eb2c065a5bce26f8c59';
-
-  private googleMapsPublicKey = 'YOUR_KEY';
-
   constructor(private _http: HttpClient) {
   }
 
   /**
-   * Find heroes by name
-   *
-   * @memberOf AppService
-   * @param startsWith the starting characters of the hero name
+   * Search books via Open Library (no API key required).
+   * Response shape: { docs: [{ title, author_name[] }] }
    */
-  public findHeroes = (startsWith: string): Observable<any[]> => {
-    return this._http.get<any>(`${this.marvelBase}characters?nameStartsWith=${startsWith}&apikey=${this.marvelPublicKey}`);
+  public findBooks = (keyword: string): Observable<any> => {
+    const q = encodeURIComponent(keyword);
+    return this._http.get<any>(
+      `https://openlibrary.org/search.json?q=${q}&fields=title,author_name&limit=8`
+    );
   };
 
-  public getMapsUrl = () => {
-    return `https://maps.googleapis.com/maps/api/geocode/json?address=:my_own_keyword&key=${this.googleMapsPublicKey}`;
+  /**
+   * Address search via Nominatim / OpenStreetMap (no API key required).
+   * URL string source — replace :my_own_keyword with the typed text.
+   * Response is a plain array; each item has a `display_name` field.
+   */
+  public getAddressUrl = () => {
+    return 'https://nominatim.openstreetmap.org/search?q=:my_own_keyword&format=json&addressdetails=0&limit=8';
   };
 }

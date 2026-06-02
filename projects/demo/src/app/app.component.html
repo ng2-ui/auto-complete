@@ -1,11 +1,23 @@
+<mat-toolbar color="primary">
+  <mat-icon>search</mat-icon>
+  <span class="toolbar-title">&#64;ngui/auto-complete</span>
+  <span class="toolbar-spacer"></span>
+  <a class="toolbar-link" href="https://github.com/almothafar/auto-complete"
+     target="_blank" rel="noopener" mat-icon-button aria-label="GitHub repository">
+    <mat-icon>code</mat-icon>
+  </a>
+  <a class="toolbar-link" href="https://www.npmjs.com/package/@ngui/auto-complete"
+     target="_blank" rel="noopener" mat-icon-button aria-label="npm package">
+    <mat-icon>cloud_download</mat-icon>
+  </a>
+</mat-toolbar>
+
 <nav mat-tab-nav-bar [tabPanel]="tabPanel">
   <a mat-tab-link *ngFor="let link of links"
      [routerLink]="link.url"
      routerLinkActive #rla="routerLinkActive"
-     [active]="this.router.url.endsWith(link.url)"> {{ link.name }} </a>
+     [active]="this.router.url.endsWith(link.url)">{{ link.name }}</a>
 </nav>
 <mat-tab-nav-panel #tabPanel>
   <router-outlet></router-outlet>
 </mat-tab-nav-panel>
-
-

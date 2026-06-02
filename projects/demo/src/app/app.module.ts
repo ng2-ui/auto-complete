@@ -10,10 +10,14 @@ import { AppComponent } from './app.component';
 import { ComponentTestComponent } from './component-test/component-test.component';
 import { DirectiveTestComponent } from './directive-test/directive-test.component';
 import { AppService } from './app.service';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
@@ -25,12 +29,15 @@ import { MatIconModule } from '@angular/material/icon';
     BrowserAnimationsModule,
     FormsModule,
     NguiAutoCompleteModule,
+    MatButtonModule,
+    MatCardModule,
+    MatExpansionModule,
     MatFormFieldModule,
+    MatIconModule,
     MatInputModule,
-    AppRoutingModule,
     MatTabsModule,
-    MatFormFieldModule,
-    MatIconModule], providers: [
+    MatToolbarModule,
+    AppRoutingModule], providers: [
     AppService,
     provideHttpClient(withInterceptorsFromDi())
   ]

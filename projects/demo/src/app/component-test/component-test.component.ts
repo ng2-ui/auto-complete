@@ -8,51 +8,49 @@ import { AppService } from '../app.service';
 })
 export class ComponentTestComponent {
 
-  public showAutocomplete = true;
-  public loadingTemplate = '<h1>Loading h1</h1>';
+  public showAutocomplete = false;
+  public loadingTemplate = '<span style="padding:8px;color:#888">Searching...</span>';
   public addrs: any[] = [
-    {formatted_address: 'my addr 1'},
-    {formatted_address: 'my addr 2'}
+    {display_name: 'Berlin, Germany'},
+    {display_name: 'London, United Kingdom'}
   ];
 
   myModel;
   showMe;
 
-  templateStr1 = `<div class="wrapper" (click)="showAutocomplete=true">
-      <li class="addr" *ngFor="let addr of addrs; let i = index;">
-        <span>{{addr.formatted_address}}</span>
-        <span class="remove" (click)="removeFromAddrs($event, i)">x</span>
-      </li>
+  templateStr1 = `<div class="addr-input-wrapper" (click)="showAutocomplete = true">
+  <span class="addr-chip" *ngFor="let addr of addrs; let i = index">
+    {{ addr.display_name }}
+    <span class="remove-btn" (click)="removeFromAddress($event, i)">✕</span>
+  </span>
 
-      <ngui-auto-complete
-        *ngIf="showAutocomplete"
-        (valueSelected)="addToAddrs($event)"
-        [accept-user-input]="true"
-        [source]="appSvc.getMapsUrl()"
-        display-property-name="formatted_address"
-        [list-formatter]="myListFormatter"
-        loading-text="Google Is Thinking..."
-        [loading-template]="loadingTemplate"
-        max-num-list="5"
-        min-chars="2"
-        no-match-found-text="No Match Found"
-        path-to-data="results"
-        placeholder="Enter Address"
-      ></ngui-auto-complete>
-    </div>`;
+  <ngui-auto-complete
+    *ngIf="showAutocomplete"
+    (valueSelected)="addToAddress($event)"
+    [accept-user-input]="true"
+    [source]="appSvc.getAddressUrl()"
+    display-property-name="display_name"
+    [list-formatter]="myListFormatter"
+    loading-text="Searching..."
+    max-num-list="5"
+    min-chars="2"
+    no-match-found-text="No Match Found"
+    placeholder="Enter a place name">
+  </ngui-auto-complete>
+</div>`;
 
   templateStr2 = `
-    <input [(ngModel)]="myModel"
-           (focus)="showMe = true"
-           (blur)="showMe = false"/>
-    <ngui-auto-complete
-      *ngIf="showMe"
-      [show-dropdown-on-init]="true"
-      (valueSelected)="myModel = $event"
-      [show-input-tag]="false"
-      [source]="[1, 2, 3, 4, 5]">
-    </ngui-auto-complete>
-  `;
+<input [(ngModel)]="myModel"
+       (focus)="showMe = true"
+       (blur)="showMe = false"
+       placeholder="click to open dropdown"/>
+<ngui-auto-complete
+  *ngIf="showMe"
+  [show-dropdown-on-init]="true"
+  (valueSelected)="myModel = $event"
+  [show-input-tag]="false"
+  [source]="[1, 2, 3, 4, 5]">
+</ngui-auto-complete>`;
 
   constructor(public appSvc: AppService) {
   }
@@ -62,13 +60,13 @@ export class ComponentTestComponent {
     this.showAutocomplete = false;
   }
 
-  public removeFromAddress(event, index: number): void {
+  public removeFromAddress(event: Event, index: number): void {
     this.addrs.splice(index, 1);
     event.stopPropagation();
   }
 
   public myListFormatter(data: any): string {
-    return data['formatted_address'];
+    return data['display_name'];
   }
 
 }

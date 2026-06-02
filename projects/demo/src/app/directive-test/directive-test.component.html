@@ -1,179 +1,339 @@
-<h1> Autocomplete Directive Test - Local Source </h1>
+<div class="page-header">
+  <h2>Directive Usage Examples</h2>
+  <p class="subtitle">
+    Apply <code>ngui-auto-complete</code> as an attribute on a wrapping <code>div</code> or directly on an <code>input</code> element.
+  </p>
+</div>
 
-<fieldset class="demo-1">
-  <legend><h2>Source as Array of Strings</h2></legend>
-  <div ngui-auto-complete
-       [source]="arrayOfStrings"
-       [accept-user-input]="true"
-       [auto-select-first-item]="false"
-       [select-on-blur]="true"
-       (ngModelChange)="myCallback1($event)"
-       (customSelected)="customCallback($event)"
-       placeholder="enter text">
-    <input id="model1" [ngModel]="model1" autofocus/>
-  </div>
-  <br/>selected model1: {{ json(model1) }}<br/><br/>
-  <pre>{{ template1 }}</pre>
-  <pre> arrayOfStrings: {{ json(arrayOfStrings) }}</pre>
-</fieldset>
+<div class="demo-grid">
 
-<fieldset class="demo-1">
-  <legend><h2>Source as Array of Strings. Drop-down on focus disable</h2></legend>
-  <div ngui-auto-complete
-       [source]="arrayOfStrings"
-       [accept-user-input]="true"
-       [open-on-focus]="false"
-       [auto-select-first-item]="false"
-       [select-on-blur]="true"
-       (ngModelChange)="myCallback1($event)"
-       (customSelected)="customCallback($event)"
-       placeholder="enter text">
-    <input id="model1-1" [ngModel]="model1" autofocus/>
-  </div>
-  <br/>selected model1: {{ json(model1) }}<br/><br/>
-  <pre>{{ template2 }}</pre>
-  <pre> arrayOfStrings: {{ json(arrayOfStrings) }}</pre>
-</fieldset>
+  <!-- 1. Array of Strings -->
+  <mat-card class="demo-card">
+    <mat-card-header>
+      <mat-card-title>Array of Strings</mat-card-title>
+      <mat-card-subtitle>Basic autocomplete from a local string array</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="demo-area">
+        <div ngui-auto-complete
+             [source]="arrayOfStrings"
+             [accept-user-input]="true"
+             [auto-select-first-item]="false"
+             [select-on-blur]="true"
+             (ngModelChange)="myCallback1($event)"
+             (customSelected)="customCallback($event)"
+             placeholder="enter text">
+          <input id="model1" [ngModel]="model1" autofocus/>
+        </div>
+      </div>
+      <p class="model-display">selected: <code>{{ json(model1) }}</code></p>
+      <mat-expansion-panel class="code-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>View Template</mat-panel-title>
+        </mat-expansion-panel-header>
+        <pre>{{ template1 }}</pre>
+      </mat-expansion-panel>
+    </mat-card-content>
+  </mat-card>
 
-<fieldset class="demo-1">
-  <legend><h2>Source as Array of id/value</h2></legend>
-  <input
-    id="model2"
-    ngui-auto-complete
-    blank-option-text="Select One"
-    [(ngModel)]="model2"
-    [source]="arrayOfKeyValues"
-    placeholder="enter text"
-    z-index="4"/>
-  <a href="javascript:void(0)" (click)="model2={id:100, value: 'it'}">Change It</a>
-  <br/>selected model2: {{ model2 | json }}<br/><br/>
-  <pre>{{ template3 }}</pre>
-  <pre>arrayOfKeyValues: {{ json(arrayOfKeyValues) }}</pre>
-</fieldset>
+  <!-- 2. Drop-down on focus disabled -->
+  <mat-card class="demo-card">
+    <mat-card-header>
+      <mat-card-title>Drop-down on Focus Disabled</mat-card-title>
+      <mat-card-subtitle>Dropdown only opens on type, not on focus</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="demo-area">
+        <div ngui-auto-complete
+             [source]="arrayOfStrings"
+             [accept-user-input]="true"
+             [open-on-focus]="false"
+             [auto-select-first-item]="false"
+             [select-on-blur]="true"
+             (ngModelChange)="myCallback1($event)"
+             (customSelected)="customCallback($event)"
+             placeholder="enter text">
+          <input id="model1-1" [ngModel]="model1" autofocus/>
+        </div>
+      </div>
+      <p class="model-display">selected: <code>{{ json(model1) }}</code></p>
+      <mat-expansion-panel class="code-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>View Template</mat-panel-title>
+        </mat-expansion-panel-header>
+        <pre>{{ template2 }}</pre>
+      </mat-expansion-panel>
+    </mat-card-content>
+  </mat-card>
 
-<fieldset>
-  <legend><h2>Source as Array of Key/Name</h2></legend>
-  <input ngui-auto-complete [source]="arrayOfKeyValues2"
-         id="model3"
-         [(ngModel)]="model3"
-         placeholder="enter text"
-         value-formatter="(key) name"
-         list-formatter="(key) name"
-         [match-formatted]="true"/>
-  <br/>selected model3: {{ model3 | json }}<br/><br/>
-  <pre>{{ template4 }}</pre>
-  <pre>arrayOfKeyValues2: {{ json(arrayOfKeyValues2) }}</pre>
-</fieldset>
+  <!-- 3. Array of id/value -->
+  <mat-card class="demo-card">
+    <mat-card-header>
+      <mat-card-title>Array of id/value</mat-card-title>
+      <mat-card-subtitle>Objects with id and value properties, with a blank option</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="demo-area">
+        <input
+          id="model2"
+          ngui-auto-complete
+          blank-option-text="Select One"
+          [(ngModel)]="model2"
+          [source]="arrayOfKeyValues"
+          placeholder="enter text"
+          z-index="4"/>
+        <a href="javascript:void(0)" (click)="model2={id:100, value: 'it'}">Change It</a>
+      </div>
+      <p class="model-display">selected: <code>{{ model2 | json }}</code></p>
+      <mat-expansion-panel class="code-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>View Template</mat-panel-title>
+        </mat-expansion-panel-header>
+        <pre>{{ template3 }}</pre>
+      </mat-expansion-panel>
+    </mat-card-content>
+  </mat-card>
 
-<fieldset>
-  <legend><h2>Source as HTTP URI String</h2></legend>
-  <input ngui-auto-complete
-         id="model4"
-         [(ngModel)]="model4"
-         placeholder="Enter Address(min. 2 chars)"
-         [source]="appSvc.getMapsUrl()"
-         no-match-found-text="No Match Found"
-         list-formatter="formatted_address"
-         path-to-data="results"
-         loading-text="Google Is Thinking..."
-         [loading-template]="loadingTemplate"
-         max-num-list="5"
-         min-chars="2"/>
-  <br/>selected model4: {{ model4 | json }}<br/><br/>
-  <pre>{{ template5 }}</pre>
-  <pre> source: https://maps.googleapis.com/maps/api/geocode/json?address=:my_own_keyword</pre>
-</fieldset>
+  <!-- 4. Array of Key/Name with formatting -->
+  <mat-card class="demo-card">
+    <mat-card-header>
+      <mat-card-title>Array of Key/Name</mat-card-title>
+      <mat-card-subtitle>Custom value-formatter and list-formatter expressions</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="demo-area">
+        <input ngui-auto-complete
+               [source]="arrayOfKeyValues2"
+               id="model3"
+               [(ngModel)]="model3"
+               placeholder="enter text"
+               value-formatter="(key) name"
+               list-formatter="(key) name"
+               [match-formatted]="true"/>
+      </div>
+      <p class="model-display">selected: <code>{{ model3 | json }}</code></p>
+      <mat-expansion-panel class="code-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>View Template</mat-panel-title>
+        </mat-expansion-panel-header>
+        <pre>{{ template4 }}</pre>
+      </mat-expansion-panel>
+    </mat-card-content>
+  </mat-card>
 
-<fieldset>
-  <legend><h2>Source as Observable "Marvel API"</h2></legend>
-  <input ngui-auto-complete
-         id="model5"
-         placeholder="Start typing a hero name (min. 2 chars) ... for example: Hulk"
-         [(ngModel)]="model5"
-         [source]="appSvc.findHeroes"
-         path-to-data="data.results"
-         [list-formatter]="renderHero"
-         min-chars="2"
-  />
-  <br/>selected model5: {{ model5 | json }}<br/><br/>
-  <pre>{{ template6 }}</pre>
-</fieldset>
+  <!-- 5. HTTP URI Source -->
+  <mat-card class="demo-card">
+    <mat-card-header>
+      <mat-card-title>HTTP URI Source</mat-card-title>
+      <mat-card-subtitle>
+        Remote data via a URL string — uses <strong>Nominatim / OpenStreetMap</strong> (free, no key).
+        Type at least 2 characters (e.g. <em>Berlin</em>, <em>London</em>).
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="demo-area">
+        <input ngui-auto-complete
+               id="model4"
+               [(ngModel)]="model4"
+               placeholder="Enter a place name (min. 2 chars)"
+               [source]="appSvc.getAddressUrl()"
+               no-match-found-text="No Match Found"
+               list-formatter="display_name"
+               display-property-name="display_name"
+               loading-text="Searching..."
+               max-num-list="5"
+               min-chars="2"/>
+      </div>
+      <p class="model-display">selected: <code>{{ model4 | json }}</code></p>
+      <mat-expansion-panel class="code-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>View Template</mat-panel-title>
+        </mat-expansion-panel-header>
+        <pre>{{ template5 }}</pre>
+      </mat-expansion-panel>
+    </mat-card-content>
+  </mat-card>
 
-<fieldset>
-  <legend><h2>With Material Design</h2></legend>
-  <mat-form-field appearance="outline">
-    <mat-icon fontIcon="attach_money" matPrefix></mat-icon>
-    <input matInput ngui-auto-complete
-           id="model6"
-           [(ngModel)]="myModel"
-           [source]="arrayOfNumbers"
-           [list-formatter]="rightAligned"
-           placeholder="amount"/>
-    <span matSuffix>.00</span>
-  </mat-form-field>
-  <pre>{{ template7 }}</pre>
-  <pre>arrayOfNumbers: {{ json(arrayOfNumbers) }}</pre>
-</fieldset>
+  <!-- 6. Observable Source -->
+  <mat-card class="demo-card">
+    <mat-card-header>
+      <mat-card-title>Observable Source — Open Library</mat-card-title>
+      <mat-card-subtitle>
+        Remote data via a function returning an <code>Observable</code> — uses the free Open Library API (no key needed).
+        Type at least 2 characters (e.g. <em>Dune</em>, <em>Foundation</em>, <em>Tolkien</em>).
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="demo-area">
+        <input ngui-auto-complete
+               id="model5"
+               placeholder="Search for a book (min. 2 chars)"
+               [(ngModel)]="model5"
+               [source]="appSvc.findBooks"
+               path-to-data="docs"
+               [list-formatter]="renderBook"
+               display-property-name="title"
+               min-chars="2"/>
+      </div>
+      <p class="model-display">selected: <code>{{ model5 | json }}</code></p>
+      <mat-expansion-panel class="code-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>View Template</mat-panel-title>
+        </mat-expansion-panel-header>
+        <pre>{{ template6 }}</pre>
+      </mat-expansion-panel>
+    </mat-card-content>
+  </mat-card>
 
-<fieldset>
-  <legend><h2>Source as Array of Strings (with auto-select-first-item)</h2></legend>
-  <div ngui-auto-complete
-       [source]="arrayOfStrings"
-       (ngModelChange)="myCallback7($event)"
-       placeholder="enter text">
-    <input id="model7" [ngModel]="model7"/>
-  </div>
-  <br/>selected model7: {{ json(model7) }}<br/><br/>
-  <pre>{{ template8 }}</pre>
-  <pre> arrayOfStrings: {{ json(arrayOfStrings) }}</pre>
-</fieldset>
+  <!-- 7. Material Design Integration -->
+  <mat-card class="demo-card">
+    <mat-card-header>
+      <mat-card-title>Angular Material Integration</mat-card-title>
+      <mat-card-subtitle>
+        Works inside <code>mat-form-field</code> with prefix/suffix icons.
+        Type a number (e.g. <em>1</em>, <em>2</em>, <em>3</em>…) to see suggestions.
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="demo-area">
+        <mat-form-field appearance="outline" style="width: 100%">
+          <mat-icon fontIcon="attach_money" matPrefix></mat-icon>
+          <input matInput ngui-auto-complete
+                 id="model6"
+                 [(ngModel)]="myModel"
+                 [source]="arrayOfNumbers"
+                 [list-formatter]="rightAligned"
+                 placeholder="amount"/>
+          <span matSuffix>.00</span>
+        </mat-form-field>
+      </div>
+      <mat-expansion-panel class="code-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>View Template</mat-panel-title>
+        </mat-expansion-panel-header>
+        <pre>{{ template7 }}</pre>
+      </mat-expansion-panel>
+    </mat-card-content>
+  </mat-card>
 
-<fieldset style="direction:rtl;text-align:right">
-  <legend><h2>RTL support</h2></legend>
-  <div ngui-auto-complete
-       [source]="arrayOfStrings"
-       [accept-user-input]="false"
-       (ngModelChange)="myCallback8($event)"
-       [is-rtl]="true"
-       placeholder="enter text">
-    <input id="model8" [ngModel]="model8" autofocus/>
-  </div>
-  <br/>selected model8: {{ json(model8) }}<br/><br/>
-  <pre>{{ template9 }}</pre>
-  <pre> arrayOfStrings: {{ json(arrayOfStrings) }}</pre>
-</fieldset>
+  <!-- 8. Auto-select first item -->
+  <mat-card class="demo-card">
+    <mat-card-header>
+      <mat-card-title>Auto-select First Item</mat-card-title>
+      <mat-card-subtitle>
+        The first suggestion is pre-highlighted. Press <kbd>Tab</kbd> or <kbd>Enter</kbd> to accept it without arrow-keying first.
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="demo-area">
+        <div ngui-auto-complete
+             [source]="arrayOfStrings"
+             [auto-select-first-item]="true"
+             (ngModelChange)="myCallback7($event)"
+             placeholder="enter text">
+          <input id="model7" [ngModel]="model7"/>
+        </div>
+      </div>
+      <p class="model-display">selected: <code>{{ json(model7) }}</code></p>
+      <mat-expansion-panel class="code-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>View Template</mat-panel-title>
+        </mat-expansion-panel-header>
+        <pre>{{ template8 }}</pre>
+      </mat-expansion-panel>
+    </mat-card-content>
+  </mat-card>
 
-<fieldset>
-  <legend><h2>Grid-Style Results with Header Row</h2></legend>
-  <input ngui-auto-complete
-         style="width: 650px"
-         [(ngModel)]="model9"
-         [source]="arrayOfCities"
-         [accept-user-input]="false"
-         [list-formatter]="renderCity"
-         placeholder="Search for a city"
-         display-property-name="city"
-         [header-item-template]="cityHeaderTemplate"
-  />
-  <br/>selected model9: {{ json(model9) }}<br/><br/>
-  <pre>{{ template10 }}</pre>
-  <pre> arrayOfCities: {{ json(arrayOfCities) }}</pre>
-</fieldset>
+  <!-- 9. RTL Support -->
+  <mat-card class="demo-card">
+    <mat-card-header>
+      <mat-card-title>RTL Support</mat-card-title>
+      <mat-card-subtitle>
+        Right-to-left layout with <code>[is-rtl]="true"</code>. Only items in the list are accepted (<code>accept-user-input="false"</code>).
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="demo-area" dir="rtl" style="text-align: right">
+        <div ngui-auto-complete
+             [source]="arrayOfArabicStrings"
+             [accept-user-input]="false"
+             (ngModelChange)="myCallback8($event)"
+             [is-rtl]="true"
+             placeholder="ابحث عن مدينة...">
+          <input id="model8" [ngModel]="model8"/>
+        </div>
+      </div>
+      <p class="model-display">selected: <code>{{ json(model8) }}</code></p>
+      <mat-expansion-panel class="code-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>View Template</mat-panel-title>
+        </mat-expansion-panel-header>
+        <pre>{{ template9 }}</pre>
+      </mat-expansion-panel>
+    </mat-card-content>
+  </mat-card>
 
-<fieldset>
-  <legend><h2>Exact Match Including Accents</h2></legend>
-  <div ngui-auto-complete
-       [ignore-accents]="false"
-       [source]="arrayOfAccentedStrings"
-       [accept-user-input]="true"
-       [auto-select-first-item]="false"
-       [select-on-blur]="true"
-       (ngModelChange)="myCallback10($event)"
-       (customSelected)="customCallback($event)"
-       placeholder="enter text">
-    <input id="model10" [ngModel]="model10" autofocus/>
-  </div>
-  <br/>selected model10: {{ json(model10) }}<br/><br/>
-  <pre>{{ template11 }}</pre>
-  <pre> arrayOfStrings: {{ json(arrayOfAccentedStrings) }}</pre>
-</fieldset>
+  <!-- 10. Grid-Style Results -->
+  <mat-card class="demo-card">
+    <mat-card-header>
+      <mat-card-title>Grid-Style Results with Header Row</mat-card-title>
+      <mat-card-subtitle>
+        Multi-column dropdown with a fixed header row. Start typing a US city name (e.g. <em>New</em>, <em>Los</em>, <em>San</em>).
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="demo-area">
+        <input ngui-auto-complete
+               style="width: 100%"
+               [(ngModel)]="model9"
+               [source]="arrayOfCities"
+               [accept-user-input]="false"
+               [list-formatter]="renderCity"
+               placeholder="Search for a city"
+               display-property-name="city"
+               [header-item-template]="cityHeaderTemplate"/>
+      </div>
+      <p class="model-display">selected: <code>{{ json(model9) }}</code></p>
+      <mat-expansion-panel class="code-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>View Template</mat-panel-title>
+        </mat-expansion-panel-header>
+        <pre>{{ template10 }}</pre>
+      </mat-expansion-panel>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- 11. Exact Accent Match -->
+  <mat-card class="demo-card">
+    <mat-card-header>
+      <mat-card-title>Accent-Sensitive Matching</mat-card-title>
+      <mat-card-subtitle>
+        With <code>[ignore-accents]="false"</code>, typing <em>Cad</em> won't match <em>Cádiz</em> — you must type the exact accented character.
+        Try typing <em>Cád</em> or <em>Mün</em>.
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="demo-area">
+        <div ngui-auto-complete
+             [ignore-accents]="false"
+             [source]="arrayOfAccentedStrings"
+             [accept-user-input]="true"
+             [auto-select-first-item]="false"
+             [select-on-blur]="true"
+             (ngModelChange)="myCallback10($event)"
+             (customSelected)="customCallback($event)"
+             placeholder="try: Cad or Mun">
+          <input id="model10" [ngModel]="model10" autofocus/>
+        </div>
+      </div>
+      <p class="model-display">selected: <code>{{ json(model10) }}</code></p>
+      <mat-expansion-panel class="code-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>View Template</mat-panel-title>
+        </mat-expansion-panel-header>
+        <pre>{{ template11 }}</pre>
+      </mat-expansion-panel>
+    </mat-card-content>
+  </mat-card>
+
+</div>

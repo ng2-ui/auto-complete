@@ -1,41 +1,12 @@
-fieldset {
-  display: inline-block;
-  vertical-align: top;
-  margin: 10px;
-  padding: 20px
-}
+// Component-specific overrides for the directive test demos
 
-ngui-auto-complete, input {
+ngui-auto-complete,
+input:not([mat-input]) {
   display: block;
-  border: 1px solid #ccc;
-  width: 300px;
 }
 
+// Limit max-height on the first two string examples
 .demo-1 .ngui-auto-complete > ul {
-  max-height: 100px;
+  max-height: 120px;
   overflow-y: auto;
-}
-
-.header-row {
-  background-color: #505050;
-  color: #ffffff;
-  margin: -2px -5px;
-}
-
-.data-row {
-  margin: -2px -5px;
-}
-
-.col-1 {
-  border-left: 1px solid #ccc;
-  padding-left: 5px;
-  display: inline-block;
-  width: 100px;
-}
-
-.col-2 {
-  border-left: 1px solid #ccc;
-  padding-left: 5px;
-  display: inline-block;
-  width: 200px;
 }

@@ -3,11 +3,11 @@
 [![npm version](https://img.shields.io/npm/v/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)
 [![npm downloads](https://img.shields.io/npm/dt/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)
 [![npm license](https://img.shields.io/npm/l/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)
-[![GitHub issues](https://img.shields.io/github/issues/almothafar/auto-complete.svg)](https://github.com/almothafar/auto-complete/issues)
+[![GitHub issues](https://img.shields.io/github/issues/ng2-ui/auto-complete.svg)](https://github.com/ng2-ui/auto-complete/issues)
 
 A versatile Angular autocomplete library that works as both a **directive** (attached to any input) and a **standalone component**.
 
-**[Live Demo](https://almothafar.github.io/auto-complete/)**
+**[Live Demo](https://ng2-ui.github.io/auto-complete/)**
 
 ---
 
@@ -173,7 +173,7 @@ All directive inputs are supported plus:
 ### Quick start
 
 ```bash
-git clone https://github.com/almothafar/auto-complete.git
+git clone https://github.com/ng2-ui/auto-complete.git
 cd auto-complete
 npm install
 
@@ -211,7 +211,7 @@ npm publish --access public
 
 ## Contributing
 
-Issues and pull requests are welcome at [github.com/almothafar/auto-complete](https://github.com/almothafar/auto-complete).
+Issues and pull requests are welcome at [github.com/ng2-ui/auto-complete](https://github.com/ng2-ui/auto-complete).
 
 ## Changelog
 

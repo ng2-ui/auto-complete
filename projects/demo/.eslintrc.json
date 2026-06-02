@@ -10,9 +10,9 @@
       ],
       "parserOptions": {
         "project": [
-          "./tsconfig.app.json",
-          "./tsconfig.spec.json",
-          "./cypress/tsconfig.json"
+          "projects/demo/tsconfig.app.json",
+          "projects/demo/tsconfig.spec.json",
+          "projects/demo/cypress/tsconfig.json"
         ],
         "createDefaultProgram": true
       },

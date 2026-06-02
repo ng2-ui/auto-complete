@@ -1,115 +1,157 @@
-## [18.0.0] Major Update
+# Changelog
 
-- Upgraded to support Angular 18
-- Migration for deprecated Observable<T> params
-- Adding e2e smock test for the project removing deprecated protractor adding cypress
+All notable changes to this project will be documented in this file.
 
-## [17.0.0] Major Update
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project follows [Angular version numbers](https://angular.dev/reference/releases) (major version = supported Angular major version).
 
-- Upgraded to support Angular 17
+---
 
-## [16.0.0] Major Update
+## [Unreleased]
 
-- Upgraded to support Angular 16
+### Changed
+- Replaced `UntypedFormControl` / `UntypedFormGroup` with typed `FormControl` / `FormGroup`
+- Fixed `ngOnDestroy` subscription teardown: replaced invalid `EventEmitter.unsubscribe()` calls with proper `Subscription` management
+- Replaced deprecated `karma-coverage-istanbul-reporter` with `karma-coverage`
+- Removed unused `@types/jasminewd2` (Protractor artefact)
+- Pinned `cypress` to a specific version instead of `"latest"`
+- Removed broken `ct` Cypress component-test target from the library `angular.json` entry
+- Fixed root `.eslintrc.json` referencing non-existent `e2e/tsconfig.json`
+- Fixed `angular.json` demo `prefix` from `docs` to `app`
 
-## [15.0.0] Major Update
+### Added
+- Angular Material toolbar in demo app with library title and links
+- Demo examples use `<mat-card>` layout in a responsive CSS grid
+- Collapsible "View Template" code panels (using `mat-expansion-panel`) per demo example
+- `MatToolbarModule`, `MatCardModule`, `MatExpansionModule`, `MatButtonModule` added to demo module
+- Revamped `styles.scss` with global typography, dark code-block theme, and responsive grid
+- Restructured README: badges, proper API reference table, version-compatibility table, updated dev instructions
 
-- Upgraded to support Angular 15
-- Remove deprecated modules and services
-- Refactor code base splitting SCSS and HTML to seperated files
-- Fix Demo/Docs project
+---
 
-## [14.0.0] Major Update
+## [18.0.0] — 2024-09-xx
 
-- Upgraded to support Angular 14
-- Adding Docs URL for GitHub Pages
+### Changed
+- Upgraded to Angular 18
+- Migrated deprecated `Observable<T>` constructor params to modern pipe-based patterns
+- Replaced deprecated Protractor e2e tests with Cypress
 
-## [13.0.0] Major Update (new version system)
+---
 
-- Upgraded to support Angular 13
-- Possible fix for issues in `accept-user-input` #372
-- Possible fix for getFormattedListItem(...).toLowerCase is not a function #375
-- Versioning now match the latest supported Angular version
-- TSLint to ESLint migration
-- ES version now is ES2020
-- Demo fix for observable (still not perfect)
+## [17.0.0] — 2023-11-xx
 
-## [4.0.0] Major Update
+### Changed
+- Upgraded to Angular 17
 
-- Upgraded to support Angular 12
+---
 
-## [3.0.0] Major Update
+## [16.0.0] — 2023-05-xx
 
-- Upgraded to support Angular 9 and migrate boilerplate to `@angular/cli`
+### Changed
+- Upgraded to Angular 16
 
-## [2.0.0] Major Update
+---
 
+## [15.0.0] — 2022-11-xx
+
+### Changed
+- Upgraded to Angular 15
+- Removed deprecated modules and services
+- Refactored: split SCSS and HTML into separate files for library component
+
+---
+
+## [14.0.0] — 2022-06-xx
+
+### Changed
+- Upgraded to Angular 14
+- Added GitHub Pages docs URL
+
+---
+
+## [13.0.0] — 2021-11-xx
+
+### Changed
+- Upgraded to Angular 13
+- Versioning now matches the supported Angular major version
+- Migrated from TSLint to ESLint
+- Target changed from ES5 to ES2020
+
+### Fixed
+- Possible fix for `accept-user-input` issues (#372)
+- Possible fix for `getFormattedListItem(...).toLowerCase is not a function` (#375)
+
+---
+
+## [4.0.0]
+
+### Changed
+- Upgraded to Angular 12
+
+---
+
+## [3.0.0]
+
+### Changed
+- Upgraded to Angular 9
+- Migrated boilerplate to `@angular/cli`
+
+---
+
+## [2.0.0]
+
+### Changed
 - Upgraded to Angular 6 and RxJS 6
-- Added new property `ignore-accents`, default is `true`
 
-### [1.0.2]
+### Added
+- New property `ignore-accents` (default `true`)
 
-- Fix build and publish issues.
+---
 
-###### [1.0.1] - _BROKEN!_
+## [1.0.2]
 
-- Fix bug of directive when select an item causes "cannot read property 'renderValue' of undefined"
+### Fixed
+- Build and publish issues
 
-## [1.0.0] Major Update
+---
 
-- This version publish latest changes from PRs and support Angular 5 and may have some breaking changes.
+## [1.0.0]
 
-### [0.14.2]
+### Changed
+- Published latest changes from community PRs
+- Supports Angular 5; may contain breaking changes
 
-- return keyword if no items were selected
+---
 
-### [0.14.1]
+## [0.14.1]
 
-- add a new property `select-on-blur`
+### Added
+- New property `select-on-blur`
 
-### [0.14.0]
+---
 
+## [0.14.0]
+
+### Changed
 - Upgraded to Angular 4
 
-### [0.13.4]
+---
 
-- now the first item on the suggestion dropdown will not be auto-selected until we press the arrow down key
+## [0.13.0]
 
-### [0.13.0]
+### Changed
+- Renamed module to `@ngui/auto-complete`
 
-- renamed module to @ngui/auto-complete
+---
 
-### [0.12.0]
+## [0.12.0]
 
-- added a new property `match-formatted`
+### Added
+- New property `match-formatted`
 
-### [0.11.0]
+---
 
-- added a new property `value-formatter`
+## [0.11.0]
 
-### [0.10.10]
-
-- fixed `accept-user-input`, fixed tests
-
-### [0.10.9]
-
-- bug fix on list formatter not applying and dropdown positioning
-- fixed (undefined) display when source is list of number or boolean
-
-### [0.10.8]
-
-- fixed (undefined) display when source is list of number or boolean
-
-### [0.10.7]
-
-- introduced `select-valule-of`
-- removed `value-property-name`
-- list-formatter now accepts string e.g. `(id) value`
-
-### [0.10.6]
-
-- testing with initial focus
-
-### [0.10.5]
-
-- more checking before set value
+### Added
+- New property `value-formatter`

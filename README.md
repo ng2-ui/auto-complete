@@ -199,10 +199,11 @@ npm start
 
 ```bash
 # 1. Update version in projects/auto-complete/package.json
-# 2. Build and copy supporting files
+# 2. Build the library and copy README/CHANGELOG/LICENSE into dist/
 npm run build-lib:prod
 
-# 3. Publish from the dist output
+# 3. Move into the built output — do NOT run npm publish from the project root
+#    (the root package.json is private and will fail)
 cd dist
 npm publish --access public
 ```

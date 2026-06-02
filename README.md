@@ -1,165 +1,222 @@
-# Angular UI auto-complete
+# @ngui/auto-complete
 
-[![npm downloads](https://img.shields.io/npm/dt/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)
 [![npm version](https://img.shields.io/npm/v/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)
+[![npm downloads](https://img.shields.io/npm/dt/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)
 [![npm license](https://img.shields.io/npm/l/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)
 [![GitHub issues](https://img.shields.io/github/issues/ng2-ui/auto-complete.svg)](https://github.com/ng2-ui/auto-complete/issues)
 
-### IMPORTANT: HELP NEEDED
+A versatile Angular autocomplete library that works as both a **directive** (attached to any input) and a **standalone component**.
 
-The project need your help, any help for fixing bugs and improvements are welcome!
+**[Live Demo](https://ng2-ui.github.io/auto-complete/)**
 
-## Install
+---
 
-1. install `@ngui/auto-complete`
+## Installation
 
-        $ npm install @ngui/auto-complete --save
+```bash
+npm install @ngui/auto-complete
+```
 
-2. import NguiAutoCompleteModule to your AppModule
+## Setup
 
-        import { NguiAutoCompleteModule } from '@ngui/auto-complete';
-        
-        @NgModule({
-          imports: [BrowserModule, FormsModule, NguiAutoCompleteModule],
-          declarations: [AppComponent],
-          providers: [HTTP_PROVIDERS],
-          bootstrap: [ AppComponent ]
-        })
-        export class AppModule { }
+### NgModule (Angular 18 and below)
 
-## Usage it in your code
+```typescript
+import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 
-1. As a component
+@NgModule({
+  imports: [BrowserModule, FormsModule, NguiAutoCompleteModule],
+})
+export class AppModule {}
+```
 
-       <ngui-auto-complete [(ngModel)]="myData" [source]="mySource"></ngui-auto-complete>
+### Standalone (Angular 19+)
 
-2. As a directive
+```typescript
+import { NguiAutoCompleteDirective, NguiAutoCompleteComponent } from '@ngui/auto-complete';
 
-       <input auto-complete [(ngModel)]="myData" [source]="mySource" />
+@Component({
+  standalone: true,
+  imports: [NguiAutoCompleteDirective, NguiAutoCompleteComponent],
+})
+export class MyComponent {}
+```
 
-For full example, please check `demo` directory to see the example of `app.module.ts` and `app.component.ts`.
+---
 
-## Demo
+## Usage
 
-You can look at different showcases for it here as [Component](https://ng2-ui.github.io/auto-complete/component-test) or [Directive](https://ng2-ui.github.io/auto-complete/directive-test).
+### As a Directive
 
-## attributes
+Attach to any element containing an `input`:
 
-All options are optional except `ngModel` and `source`
+```html
+<!-- On a wrapping div -->
+<div ngui-auto-complete [source]="myArray" (ngModelChange)="onSelect($event)">
+  <input [(ngModel)]="myValue" />
+</div>
 
-* **`ngModel`**, any, variable that autocomplete result is assigned to
-* **`source`**, array or string, required. data source for dropdown list
-* **`auto-complete-placeholder`**, string, autocomplete input guide text
-* **`value-formatter`**, string or function variable name, custom value formatting function. e.g. `(id) value`, '`myValueFormatter`.
+<!-- Directly on an input -->
+<input ngui-auto-complete [(ngModel)]="myValue" [source]="myArray" />
+```
 
-       myValueFormatter(data: any): string {
-          return `(${data[id]}) ${data[value]}`;
-        }
-* **`list-formatter`**, string or function variable name, custom list formatting function. e.g.  `(key) name`, `myListFormatter`.
+### As a Component
 
-       myListFormatter(data: any): string {
-          return `(${data[key]}) ${data[name]}`;
-       }
+Use `<ngui-auto-complete>` directly, control its visibility with `*ngIf`:
 
-  * **`path-to-data`**, string, e.g., `data.myList`, path to array data in http response
-  * **`min-chars, number`**, when source is remote data, the number of character to see drop-down list
-  * **`display-property-name`**, string, key name of text to show. default is `value`
-  * **`select-value-of`**, string, when selected, return the value of this key as a selected item
-  * **`blank-option-text`**, string, guide text to allow empty value to be selected as in empty value of `option` tag.
-  * **`no-match-found-text`**, string, guide text to show no result found.
-  * **`valueChanged`** / **`ngModelChange`**, callback function that is executed when a new drop-down is selected.
-    e.g. `(valueChanged)="myCallback($event)"`
-  * **`customSelected`** callback function that is executed when a value selected not included in drop-down, so it will return the keyword used.
-    e.g. `(customSelected)="customCallback($event)"`
-  * **`loading-text`**, text to be displayed when loading. Default, "Loading"
-  * **`loading-template`**, html markup that is to be rendered when loading. Default, null
-  * **`accept-user-input`** boolean, if `false` and does not match to source given, it goes back to the original value selected., If you don't event want user to type any, please use `readonly="readonly"` to force user to select only from list. Default is `true`
-  * **`max-num-list`** number, maximum number of drop down list items. Default, unlimited
-  * **`tab-to-select`** boolean, if `true`, pressing <kbd>Tab</kbd> will set the value from the selected item before focus leaves the control. Default is `true`
-  * **`select-on-blur`** boolean, if `true`, `blur` event will set the value from the selected item before focus leaves the control. Default is `false`
-  * **`match-formatted`** boolean, if `true`, keyword will be matched against list values formatted with `list-formatter`, instead of raw objects. Default is `false`
-  * **`auto-select-first-item`**, boolean, if `true`, the first item of the list is automatically selected, if `false`, user must select manually an item. Default is `false`
-  * **`open-on-focus`**, boolean, if `false` drop down won't open on a focus event, . Default is `true`
-  * **`close-on-focusout`**, boolean, if `false` drop down will close on a focusout event, . Default is `true`
-  * **`re-focus-after-select property`**, boolean, if `false` an auto focus behavior after select (example: custom value on blur event or issue #276) is disabled . Default is `true`
-  * **`autocomplete`**, boolean, default `false`, if `true` remove the attribute `autocomplete="off"` of the input.
-  * **`header-item-template`**, html markup to optionally create a non-selectable header row above the list of results. Default, null
-  * **`ignore-accents`**, boolean, default `true`, if `false` user input must match exactly with source given, including accents or diacritics
+```html
+<input [(ngModel)]="myValue" (focus)="show = true" (blur)="show = false" />
+<ngui-auto-complete
+  *ngIf="show"
+  [source]="myArray"
+  [show-input-tag]="false"
+  [show-dropdown-on-init]="true"
+  (valueSelected)="myValue = $event">
+</ngui-auto-complete>
+```
 
-## Below are plunks for different scenarios:
+### Remote / Observable Source
 
-**Template Driven Forms**
+```html
+<input ngui-auto-complete
+  [(ngModel)]="address"
+  [source]="searchFn"
+  path-to-data="results"
+  list-formatter="formatted_address"
+  min-chars="2" />
+```
 
-* _ngModel_ http://plnkr.co/edit/3pB1Gx?p=preview
+```typescript
+searchFn = (keyword: string): Observable<any> => {
+  return this.http.get(`https://api.example.com/search?q=${keyword}`);
+};
+```
 
-**Reactive Forms**
+---
 
-* _FormGroup_  http://plnkr.co/edit/2osUq6?p=preview
-  [issue #49](https://github.com/ng2-ui/auto-complete/issues/49)
+## API Reference
 
-* _FormControl_ http://plnkr.co/edit/A5CW2e?p=preview
-  [issue #100](https://github.com/ng2-ui/auto-complete/issues/100)
+### Directive Inputs (`[ngui-auto-complete]` or `[auto-complete]`)
 
-**Material Design**
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `source` | `any[] \| string \| Function` | — | **Required.** Array, URL string, or function returning `Observable` |
+| `ngModel` | `any` | — | Value binding |
+| `path-to-data` | `string` | — | Dot-path to array in HTTP response, e.g. `data.results` |
+| `min-chars` | `number` | `0` | Minimum characters before fetching remote data |
+| `max-num-list` | `number` | unlimited | Maximum suggestions to show |
+| `display-property-name` | `string` | `value` | Object key to display in the input after selection |
+| `select-value-of` | `string` | — | Return this key's value on selection instead of the full object |
+| `list-formatter` | `string \| Function` | — | Format each dropdown item. String pattern `(key) name` or function `(item) => string` |
+| `value-formatter` | `string \| Function` | — | Format the selected value shown in the input |
+| `blank-option-text` | `string` | — | Adds an empty first option with this label |
+| `no-match-found-text` | `string` | — | Text shown when no results match |
+| `loading-text` | `string` | `'Loading'` | Text shown while fetching remote data |
+| `loading-template` | `string` | — | HTML string shown while loading |
+| `header-item-template` | `string` | — | Non-selectable header row above results (HTML string) |
+| `accept-user-input` | `boolean` | `true` | Allow values not in the list |
+| `auto-select-first-item` | `boolean` | `false` | Pre-highlight the first suggestion |
+| `open-on-focus` | `boolean` | `true` | Open dropdown on input focus |
+| `close-on-focusout` | `boolean` | `true` | Close dropdown on focusout |
+| `select-on-blur` | `boolean` | `false` | Select highlighted item on blur |
+| `tab-to-select` | `boolean` | `true` | Select highlighted item on Tab key |
+| `re-focus-after-select` | `boolean` | `true` | Return focus to input after a selection |
+| `match-formatted` | `boolean` | `false` | Match keyword against formatted values instead of raw data |
+| `ignore-accents` | `boolean` | `true` | Treat accented characters as their base characters during matching |
+| `autocomplete` | `boolean` | `false` | Set `autocomplete="off"` on the input (`false` = off) |
+| `is-rtl` | `boolean` | `false` | Right-to-left dropdown positioning |
+| `z-index` | `string` | `'1'` | CSS z-index of the dropdown |
 
-* _Example_ http://plnkr.co/edit/2YLDjX?p=preview&open=app/app.component.ts
+### Directive Outputs
 
-**Observable Source**
+| Output | Payload | Description |
+|--------|---------|-------------|
+| `(ngModelChange)` | selected value | Fires when a list item or custom value is accepted |
+| `(valueChanged)` | selected value | Same as `ngModelChange` |
+| `(customSelected)` | keyword string | Fires when user accepts a value not in the list |
 
-* _Example_ http://plnkr.co/edit/ExzNSh?p=preview
+### Component Inputs (`<ngui-auto-complete>`)
 
-**List Formatter Example**
+All directive inputs are supported plus:
 
-* _Example 1_ http://plnkr.co/edit/F9nrWp?p=preview
-* _Example 2 (With custom css)_ http://plnkr.co/edit/0QFYFHMmCAFmhbYAGQl7?p=preview
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `show-input-tag` | `boolean` | `true` | Render an `<input>` inside the component |
+| `show-dropdown-on-init` | `boolean` | `false` | Open dropdown immediately when component appears |
+| `placeholder` | `string` | — | Placeholder text for the internal input |
 
-## Contributors are welcomed
+### Component Outputs
 
-This module is only improved and maintained by contributors like you;
+| Output | Payload | Description |
+|--------|---------|-------------|
+| `(valueSelected)` | selected value | Fires when a list item is selected |
+| `(customSelected)` | keyword string | Fires on custom (non-list) value entry |
+| `(textEntered)` | string | Fires when user enters text |
 
-As a contributor, it's NOT required to be skilled in Javascript nor Angular.
-You can contribute to the following;
+---
 
-* Updating README.md
-* Making more and clearer comments
-* Answering issues and building FAQ
-* Documentation
-* Translation
+## Angular Version Compatibility
 
-In result of your active contribution, you will be listed as a core contributor
-on https://ng2-ui.github.io, and a member of ng2-ui too.
+| Library version | Angular version |
+|-----------------|----------------|
+| 21.x | Angular 21 |
+| 20.x | Angular 20 |
+| 19.x | Angular 19 |
+| 18.x | Angular 18 |
+| 17.x | Angular 17 |
+| 16.x | Angular 16 |
 
-If you are interested in becoming a contributor and/or a member of ng-ui,
-please send me email to `allenhwkim AT gmail.com` with your GitHub id.
+---
 
-## For Developers
+## Development
 
-### To start
+### Quick start
 
-    $ git clone https://github.com/ng2-ui/auto-complete.git
-    $ cd auto-complete
-    $ npm install
-    $ npm build-lib:watch
-    
-    $ # On different instance
-    
-    $ npm start
+```bash
+git clone https://github.com/ng2-ui/auto-complete.git
+cd auto-complete
+npm install
 
-### To publish
+# Build library in watch mode, then in a second terminal start the demo app
+npm run build-lib:watch
+npm start
+```
 
-    $ npm build-lib:prod
-    $ cd dist
-    $ npm publish
+### Available scripts
 
-### To build new docs version
+| Script | Description |
+|--------|-------------|
+| `npm start` | Serve the demo app on port 4200 |
+| `npm test` | Run unit tests (Karma/Jasmine) |
+| `npm run lint` | Lint all TypeScript and HTML |
+| `npm run build-lib:watch` | Build library in watch mode (for demo development) |
+| `npm run build-lib:prod` | Production library build |
+| `npm run build-docs` | Build demo app for GitHub Pages deployment |
+| `npm run cypress:open` | Open Cypress e2e test runner |
+| `npm run cypress:run` | Run Cypress e2e tests headlessly |
 
-    $ npm build-docs
+### Publish a new version
 
-### List of available npm tasks
+```bash
+# 1. Update version in projects/auto-complete/package.json
+# 2. Build and copy supporting files
+npm run build-lib:prod
 
-* `npm run` : List all available tasks
-* `npm start`: Run `demo` directory for development using `@angular/cli` with port 4200
-* `npm run lint`: Lint TypeScript code
-* `npm run build-lib:watch`: Build library in live watch mode for development
-* `npm run build-lib:prod`: Build library for publish using view engine (not Ivy renderer)
-* `npm run build-docs`: Build a new version for life demo got GitHub pages
+# 3. Publish from the dist output
+cd dist/auto-complete
+npm publish --access public
+```
+
+---
+
+## Contributing
+
+Issues and pull requests are welcome at [github.com/ng2-ui/auto-complete](https://github.com/ng2-ui/auto-complete).
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for the full history of changes.
+
+## License
+
+[MIT](LICENSE.md)

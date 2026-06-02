@@ -14,9 +14,7 @@ import { NguiAutoCompleteService } from './auto-complete.service';
     CommonModule,
     FormsModule
   ],
-  providers: [
-    NguiAutoCompleteService
-  ],
+  providers: [],
   exports: [
     NguiAutoCompleteComponent,
     NguiAutoCompleteDirective

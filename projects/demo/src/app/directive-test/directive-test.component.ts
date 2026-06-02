@@ -20,6 +20,7 @@ export class DirectiveTestComponent {
   public arrayOfNumbers: number[] = [100, 200, 300, 400, 500];
   public arrayOfStrings: string[] = ['this', 'is', 'array', 'of', 'text', 'with', 'long', 'and long', 'and long', 'list'];
   public arrayOfAccentedStrings: string[] = ['Cádiz', 'München'];
+  public arrayOfArabicStrings: string[] = ['الرياض', 'مكة المكرمة', 'المدينة المنورة', 'جدة', 'الدمام', 'القاهرة', 'دبي', 'أبوظبي', 'الكويت', 'بيروت', 'عمان', 'بغداد'];
 
   public arrayOfKeyValues: any[] =
     [{id: 1, value: 'One'}, {id: 2, value: 'Two'}, {id: 3, value: 'Three'}, {
@@ -110,13 +111,12 @@ export class DirectiveTestComponent {
   <input ngui-auto-complete
          id="model4"
          [(ngModel)]="model4"
-         placeholder="Enter Address(min. 2 chars)"
-         [source]="googleGeoCode"
+         placeholder="Enter a place name (min. 2 chars)"
+         [source]="appSvc.getAddressUrl()"
          no-match-found-text="No Match Found"
-         list-formatter="formatted_address"
-         path-to-data="results"
-         loading-text="Google Is Thinking..."
-         [loading-template]="loadingTemplate"
+         list-formatter="display_name"
+         display-property-name="display_name"
+         loading-text="Searching..."
          max-num-list="5"
          min-chars="2" />
   `;
@@ -124,11 +124,12 @@ export class DirectiveTestComponent {
   template6 = `
   <input ngui-auto-complete
          id="model5"
-         placeholder="Start typing a hero name (min. 2 chars) ... for example: Hulk"
+         placeholder="Search for a book (min. 2 chars)"
          [(ngModel)]="model5"
-         [source]="appSvc.findHeroes"
-         path-to-data="data.results"
-         [list-formatter]="renderHero"
+         [source]="appSvc.findBooks"
+         path-to-data="docs"
+         [list-formatter]="renderBook"
+         display-property-name="title"
          min-chars="2"
   />
   `;
@@ -148,11 +149,12 @@ export class DirectiveTestComponent {
 
   template8 = `
   <div ngui-auto-complete
-        [source]="arrayOfStrings"
-        (ngModelChange)="myCallback7($event)"
-        placeholder="enter text">
-        <input id="model7" [ngModel]="model7"/>
-      </div>
+       [source]="arrayOfStrings"
+       [auto-select-first-item]="true"
+       (ngModelChange)="myCallback7($event)"
+       placeholder="enter text">
+    <input id="model7" [ngModel]="model7"/>
+  </div>
   `;
 
   template9 = `
@@ -218,12 +220,10 @@ export class DirectiveTestComponent {
     this.model10 = newVal10;
   }
 
-  public renderHero(data: any): string {
-    const imgSrc = () => `${data.thumbnail.path}/portrait_small.${data.thumbnail.extension}`;
-
-    return `<b style='float:left;width:100%'>${data.name}</b>
-                <img style="float: left;padding: 5px;" src="${imgSrc()}" alt="${data.name}">
-                <span>${data.description}</span>`;
+  public renderBook(data: any): string {
+    const author = data.author_name?.length ? data.author_name[0] : 'Unknown author';
+    return `<b style="display:block">${data.title}</b>
+            <small style="color:#888">${author}</small>`;
   }
 
   public renderCity(data: any): string {

@@ -6,7 +6,8 @@ import { Observable } from 'rxjs';
   selector: 'ngui-auto-complete',
   templateUrl: './auto-complete.component.html',
   styleUrls: ['./auto-complete.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  providers: [NguiAutoCompleteService]
 })
 export class NguiAutoCompleteComponent implements OnInit {
 
@@ -144,14 +145,16 @@ export class NguiAutoCompleteComponent implements OnInit {
                 const paths = this.pathToData.split('.');
                 paths.forEach((prop) => resp = resp[prop]);
               }
-
               this.filteredList = resp;
               if (this.maxNumList) {
                 this.filteredList = this.filteredList.slice(0, this.maxNumList);
               }
+              this.isLoading = false;
             },
-            error: (error) => console.warn(error),
-            complete: () => this.isLoading = false
+            error: (error) => {
+              console.warn(error);
+              this.isLoading = false;
+            }
           }
         );
       } else {
@@ -162,9 +165,12 @@ export class NguiAutoCompleteComponent implements OnInit {
             if (this.maxNumList) {
               this.filteredList = this.filteredList.slice(0, this.maxNumList);
             }
+            this.isLoading = false;
           },
-          error: (error) => console.warn(error),
-          complete: () => this.isLoading = false
+          error: (error) => {
+            console.warn(error);
+            this.isLoading = false;
+          }
         });
       }
     }

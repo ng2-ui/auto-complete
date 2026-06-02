@@ -14,7 +14,8 @@ import {
   SkipSelf,
   ViewContainerRef
 } from '@angular/core';
-import { AbstractControl, ControlContainer, FormGroupName, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { AbstractControl, ControlContainer, FormControl, FormGroup, FormGroupName } from '@angular/forms';
 import { NguiAutoCompleteComponent } from './auto-complete.component';
 
 @Directive({
@@ -52,7 +53,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
   @Input('formControlName') public formControlName: string;
   // if [formControl] is used on the anchor where our directive is sitting
   // a form is not necessary to use a formControl we should also support this
-  @Input('formControl') public extFormControl: UntypedFormControl;
+  @Input('formControl') public extFormControl: FormControl;
   @Input('z-index') public zIndex = '1';
   @Input('is-rtl') public isRtl = false;
 
@@ -62,14 +63,15 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 
   private componentRef: ComponentRef<NguiAutoCompleteComponent>;
   private wrapperEl: HTMLElement;
-  private el: HTMLElement;   // this element element, can be any
-  private acDropdownEl: HTMLElement; // auto complete element
-  private inputEl: HTMLInputElement;  // input element of this element
+  private el: HTMLElement;
+  private acDropdownEl: HTMLElement;
+  private inputEl: HTMLInputElement;
   private formControl: AbstractControl;
   private revertValue: any;
   private dropdownJustHidden: boolean;
   private scheduledBlurHandler: any;
   private documentClickListener: (e: MouseEvent) => any;
+  private dropdownSubs = new Subscription();
 
   constructor(public viewContainerRef: ViewContainerRef,
               @Optional() @Host() @SkipSelf() private parentForm: ControlContainer) {
@@ -100,7 +102,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
     // else check if we are supplied with a [FormControl] regardless if it is inside a [form] tag
     if (this.parentForm && this.formControlName) {
       if (this.parentForm['form']) {
-        this.formControl = (this.parentForm['form'] as UntypedFormGroup).get(this.formControlName);
+        this.formControl = (this.parentForm['form'] as FormGroup).get(this.formControlName);
       } else if (this.parentForm instanceof FormGroupName) {
         this.formControl = (this.parentForm as FormGroupName).control.controls[this.formControlName];
       }
@@ -143,9 +145,9 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
   }
 
   ngOnDestroy(): void {
+    this.dropdownSubs.unsubscribe();
     if (this.componentRef) {
-      this.componentRef.instance.valueSelected.unsubscribe();
-      this.componentRef.instance.textEntered.unsubscribe();
+      this.componentRef.destroy();
     }
     if (this.documentClickListener) {
       document.removeEventListener('click', this.documentClickListener);
@@ -192,9 +194,11 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
     component.headerItemTemplate = this.headerItemTemplate;
     component.ignoreAccents = this.ignoreAccents;
 
-    component.valueSelected.subscribe(this.selectNewValue);
-    component.textEntered.subscribe(this.enterNewText);
-    component.customSelected.subscribe(this.selectCustomValue);
+    this.dropdownSubs.unsubscribe();
+    this.dropdownSubs = new Subscription();
+    this.dropdownSubs.add(component.valueSelected.subscribe(this.selectNewValue));
+    this.dropdownSubs.add(component.textEntered.subscribe(this.enterNewText));
+    this.dropdownSubs.add(component.customSelected.subscribe(this.selectCustomValue));
 
     this.acDropdownEl = this.componentRef.location.nativeElement;
     this.acDropdownEl.style.display = 'none';
@@ -239,6 +243,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
       if (this.inputEl && hasRevertValue && this.acceptUserInput === false) {
         currentItem = this.componentRef.instance.findItemFromSelectValue(this.inputEl.value);
       }
+      this.dropdownSubs.unsubscribe();
       this.componentRef.destroy();
       this.componentRef = undefined;
 

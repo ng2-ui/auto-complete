@@ -20,7 +20,7 @@ npm install @ngui/auto-complete
 
 ## Setup
 
-### NgModule (Angular 18 and below)
+### NgModule (Angular 19 and below)
 
 ```typescript
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
@@ -51,17 +51,18 @@ Attach to any element containing an `input`:
 
 ### As a Component
 
-Use `<ngui-auto-complete>` directly, control its visibility with `*ngIf`:
+Use `<ngui-auto-complete>` directly, control its visibility with `@if`:
 
 ```html
 <input [(ngModel)]="myValue" (focus)="show = true" (blur)="show = false" />
-<ngui-auto-complete
-  *ngIf="show"
-  [source]="myArray"
-  [show-input-tag]="false"
-  [show-dropdown-on-init]="true"
-  (valueSelected)="myValue = $event">
-</ngui-auto-complete>
+@if (show) {
+  <ngui-auto-complete
+    [source]="myArray"
+    [show-input-tag]="false"
+    [show-dropdown-on-init]="true"
+    (valueSelected)="myValue = $event">
+  </ngui-auto-complete>
+}
 ```
 
 ### Remote / Observable Source
@@ -149,7 +150,7 @@ All directive inputs are supported plus:
 ## Angular Version Compatibility
 
 This library follows Angular's versioning: **`@ngui/auto-complete@N.x` supports Angular N**.
-Install the version matching your Angular major (e.g. Angular 18 → `npm install @ngui/auto-complete@18`).
+Install the version matching your Angular major (e.g. Angular 19 → `npm install @ngui/auto-complete@19`).
 
 ---
 

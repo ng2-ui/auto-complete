@@ -7,6 +7,20 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 
 ---
 
+## [19.0.0] — 2026-06-04
+
+### Changed
+- **Upgraded to Angular 19** (`@angular/*` 19.2.x). `peerDependencies` now require `@angular/common`
+  and `@angular/core` `^19.0.0`. Install `@ngui/auto-complete@19` for Angular 19 projects.
+- Migrated the library template to Angular's built-in control flow syntax (`@if` / `@for` in place of
+  `*ngIf` / `*ngFor`).
+
+### Notes
+- The library remains NgModule-based in this release; the standalone migration is planned for the
+  Angular 20 release.
+
+---
+
 ## [18.6.0] — 2026-06-04
 
 ### Fixed

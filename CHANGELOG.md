@@ -7,6 +7,22 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 
 ---
 
+## [18.6.0] — 2026-06-04
+
+### Fixed
+- `select-value-of` now correctly extracts falsy property values (`0`, `null`, `false`, `''`) from the
+  selected object — previously the truthiness check caused the raw item to be emitted instead of the
+  extracted property (fixes #373)
+
+### Added
+- `no-match-found-text=""` (empty string) now fully suppresses the "No Result Found" row — previously
+  the empty string fell through to the default text (fixes #307, #292, #198)
+- `(noMatchFound)` output on both `<ngui-auto-complete>` component and `[ngui-auto-complete]` directive —
+  fires whenever the filtered list is empty and `min-chars` threshold has been met, enabling consumers
+  to render an "Add new…" affordance
+
+---
+
 ## [18.5.0] — 2026-06-03
 
 ### Fixed

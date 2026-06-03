@@ -193,9 +193,16 @@ npm publish --access public
 
 ---
 
-## Contributing
+## Contributing — help wanted!
 
-Issues and pull requests are welcome at [github.com/ng2-ui/auto-complete](https://github.com/ng2-ui/auto-complete).
+This library is maintained by a small team with limited time — every contribution genuinely helps keep it alive and improving. If you use it and find it useful, here are easy ways to give back:
+
+- **Found a bug?** Open an issue with a clear description and a minimal reproduction
+- **Have an idea?** Check the [open issues](https://github.com/ng2-ui/auto-complete/issues) first, then open a new one if needed
+- **Want to fix something?** Pull requests are always welcome — small focused PRs are easiest to review
+- **Using it at work?** A GitHub star goes a long way for visibility
+
+Issues and pull requests: [github.com/ng2-ui/auto-complete](https://github.com/ng2-ui/auto-complete).
 
 ## Changelog
 

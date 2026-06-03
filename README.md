@@ -1,5 +1,6 @@
 # @ngui/auto-complete
 
+[![CI](https://github.com/ng2-ui/auto-complete/actions/workflows/ci.yml/badge.svg)](https://github.com/ng2-ui/auto-complete/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)
 [![npm downloads](https://img.shields.io/npm/dt/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)
 [![npm license](https://img.shields.io/npm/l/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)
@@ -28,18 +29,6 @@ import { NguiAutoCompleteModule } from '@ngui/auto-complete';
   imports: [BrowserModule, FormsModule, NguiAutoCompleteModule],
 })
 export class AppModule {}
-```
-
-### Standalone (Angular 19+)
-
-```typescript
-import { NguiAutoCompleteDirective, NguiAutoCompleteComponent } from '@ngui/auto-complete';
-
-@Component({
-  standalone: true,
-  imports: [NguiAutoCompleteDirective, NguiAutoCompleteComponent],
-})
-export class MyComponent {}
 ```
 
 ---
@@ -157,14 +146,8 @@ All directive inputs are supported plus:
 
 ## Angular Version Compatibility
 
-| Library version | Angular version |
-|-----------------|----------------|
-| 21.x | Angular 21 |
-| 20.x | Angular 20 |
-| 19.x | Angular 19 |
-| 18.x | Angular 18 |
-| 17.x | Angular 17 |
-| 16.x | Angular 16 |
+This library follows Angular's versioning: **`@ngui/auto-complete@N.x` supports Angular N**.
+Install the version matching your Angular major (e.g. Angular 18 → `npm install @ngui/auto-complete@18`).
 
 ---
 
@@ -210,9 +193,16 @@ npm publish --access public
 
 ---
 
-## Contributing
+## Contributing — help wanted!
 
-Issues and pull requests are welcome at [github.com/ng2-ui/auto-complete](https://github.com/ng2-ui/auto-complete).
+This library is maintained by a small team with limited time — every contribution genuinely helps keep it alive and improving. If you use it and find it useful, here are easy ways to give back:
+
+- **Found a bug?** Open an issue with a clear description and a minimal reproduction
+- **Have an idea?** Check the [open issues](https://github.com/ng2-ui/auto-complete/issues) first, then open a new one if needed
+- **Want to fix something?** Pull requests are always welcome — small focused PRs are easiest to review
+- **Using it at work?** A GitHub star goes a long way for visibility
+
+Issues and pull requests: [github.com/ng2-ui/auto-complete](https://github.com/ng2-ui/auto-complete).
 
 ## Changelog
 

@@ -1,1 +1,52 @@
-// Global font and icon imports are in styles.scss
+.hero {
+  background: linear-gradient(135deg, #3949ab 0%, #5c6bc0 100%);
+  color: white;
+  padding: 40px 24px 32px;
+
+  &-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  &-title {
+    margin: 0 0 10px;
+    font-size: 32px;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+
+  &-subtitle {
+    margin: 0 0 24px;
+    font-size: 16px;
+    opacity: 0.85;
+    line-height: 1.6;
+    max-width: 600px;
+  }
+
+  &-install {
+    margin-bottom: 20px;
+
+    .install-cmd {
+      display: inline-block;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      padding: 10px 18px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: #e8eaf6;
+      user-select: all;
+      cursor: text;
+    }
+  }
+
+  &-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+
+    img {
+      height: 20px;
+    }
+  }
+}

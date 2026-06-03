@@ -10,3 +10,19 @@ input:not([mat-input]) {
   max-height: 120px;
   overflow-y: auto;
 }
+
+.no-match-hint {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #666;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: #888;
+  }
+}

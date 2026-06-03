@@ -303,7 +303,72 @@
     </mat-card-content>
   </mat-card>
 
-  <!-- 11. Exact Accent Match -->
+  <!-- 11. (noMatchFound) output -->
+  <mat-card class="demo-card">
+    <mat-card-header>
+      <mat-card-title>(noMatchFound) Output</mat-card-title>
+      <mat-card-subtitle>
+        Fires whenever the filtered list is empty — use it to show an "Add new…" affordance.
+        Type something not in the list (e.g. <em>xyz</em>).
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="demo-area">
+        <input ngui-auto-complete
+               id="model11"
+               [(ngModel)]="model11"
+               [source]="arrayOfStrings"
+               [accept-user-input]="true"
+               (noMatchFound)="noMatchVisible11 = true"
+               (ngModelChange)="noMatchVisible11 = false"
+               (customSelected)="noMatchVisible11 = false"
+               placeholder="type something not in the list"/>
+        <div *ngIf="noMatchVisible11" class="no-match-hint">
+          <mat-icon>info_outline</mat-icon>
+          Not in the list —
+          <button mat-button color="primary" (click)="addToList11()">Add "{{ model11 }}"</button>
+        </div>
+      </div>
+      <p class="model-display">selected: <code>{{ json(model11) }}</code></p>
+      <mat-expansion-panel class="code-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>View Template</mat-panel-title>
+        </mat-expansion-panel-header>
+        <pre>{{ template11b }}</pre>
+      </mat-expansion-panel>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- 12. Suppress "No Result Found" -->
+  <mat-card class="demo-card">
+    <mat-card-header>
+      <mat-card-title>Suppress "No Result Found"</mat-card-title>
+      <mat-card-subtitle>
+        Set <code>no-match-found-text=""</code> to hide the row entirely when nothing matches.
+        Compare with the HTTP Source demo above which shows the message.
+        Type something that won't match (e.g. <em>xyz</em>).
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="demo-area">
+        <input ngui-auto-complete
+               id="model12"
+               [(ngModel)]="model12"
+               [source]="arrayOfStrings"
+               no-match-found-text=""
+               placeholder="type something not in the list"/>
+      </div>
+      <p class="model-display">selected: <code>{{ json(model12) }}</code></p>
+      <mat-expansion-panel class="code-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>View Template</mat-panel-title>
+        </mat-expansion-panel-header>
+        <pre>{{ template12 }}</pre>
+      </mat-expansion-panel>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- 13. Exact Accent Match -->
   <mat-card class="demo-card">
     <mat-card-header>
       <mat-card-title>Accent-Sensitive Matching</mat-card-title>

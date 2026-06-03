@@ -99,7 +99,7 @@ searchFn = (keyword: string): Observable<any> => {
 | `list-formatter` | `string \| Function` | — | Format each dropdown item. String pattern `(key) name` or function `(item) => string` |
 | `value-formatter` | `string \| Function` | — | Format the selected value shown in the input |
 | `blank-option-text` | `string` | — | Adds an empty first option with this label |
-| `no-match-found-text` | `string` | — | Text shown when no results match |
+| `no-match-found-text` | `string` | — | Text shown when no results match. Set to `""` to suppress the row entirely |
 | `loading-text` | `string` | `'Loading'` | Text shown while fetching remote data |
 | `loading-template` | `string` | — | HTML string shown while loading |
 | `header-item-template` | `string` | — | Non-selectable header row above results (HTML string) |
@@ -123,6 +123,7 @@ searchFn = (keyword: string): Observable<any> => {
 | `(ngModelChange)` | selected value | Fires when a list item or custom value is accepted |
 | `(valueChanged)` | selected value | Same as `ngModelChange` |
 | `(customSelected)` | keyword string | Fires when user accepts a value not in the list |
+| `(noMatchFound)` | `void` | Fires when the filtered list is empty and `min-chars` threshold is met — use it to show an "Add new…" affordance |
 
 ### Component Inputs (`<ngui-auto-complete>`)
 
@@ -141,6 +142,7 @@ All directive inputs are supported plus:
 | `(valueSelected)` | selected value | Fires when a list item is selected |
 | `(customSelected)` | keyword string | Fires on custom (non-list) value entry |
 | `(textEntered)` | string | Fires when user enters text |
+| `(noMatchFound)` | `void` | Fires when the filtered list is empty and `min-chars` threshold is met — use it to show an "Add new…" affordance |
 
 ---
 

@@ -56,6 +56,9 @@ export class DirectiveTestComponent {
   public model8 = '';
   public model9 = '';
   public model10 = '';
+  public model11 = '';
+  public model12 = '';
+  public noMatchVisible11 = false;
   public myModel;
 
   template1 = `
@@ -192,8 +195,40 @@ export class DirectiveTestComponent {
     </div>
   `;
 
+  template11b = `
+  <input ngui-auto-complete
+         [(ngModel)]="model11"
+         [source]="arrayOfStrings"
+         [accept-user-input]="true"
+         (noMatchFound)="noMatchVisible11 = true"
+         (ngModelChange)="noMatchVisible11 = false"
+         (customSelected)="noMatchVisible11 = false"
+         placeholder="type something not in the list" />
+  <div *ngIf="noMatchVisible11" class="no-match-hint">
+    <mat-icon>info_outline</mat-icon>
+    Not in the list —
+    <button mat-button color="primary" (click)="addToList11()">
+      Add "{{ model11 }}"
+    </button>
+  </div>
+  `;
+
+  template12 = `
+  <input ngui-auto-complete
+         [(ngModel)]="model12"
+         [source]="arrayOfStrings"
+         no-match-found-text=""
+         placeholder="type something not in the list" />
+  `;
 
   constructor(public appSvc: AppService) {
+  }
+
+  public addToList11() {
+    if (this.model11 && !this.arrayOfStrings.includes(this.model11)) {
+      this.arrayOfStrings = [...this.arrayOfStrings, this.model11];
+    }
+    this.noMatchVisible11 = false;
   }
 
   public customCallback(text) {

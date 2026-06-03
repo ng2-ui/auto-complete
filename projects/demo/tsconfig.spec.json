@@ -9,12 +9,10 @@
   },
   "files": [
     "src/test.ts",
-    "src/polyfills.ts",
-    "cypress.config.ts"
+    "src/polyfills.ts"
   ],
   "include": [
     "src/**/*.spec.ts",
-    "src/**/*.cy.ts",
     "src/**/*.d.ts"
   ],
   "exclude": [

@@ -3,11 +3,12 @@ import { NguiAutoCompleteService } from './auto-complete.service';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'ngui-auto-complete',
-  templateUrl: './auto-complete.component.html',
-  styleUrls: ['./auto-complete.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  providers: [NguiAutoCompleteService]
+    selector: 'ngui-auto-complete',
+    templateUrl: './auto-complete.component.html',
+    styleUrls: ['./auto-complete.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    providers: [NguiAutoCompleteService],
+    standalone: false
 })
 export class NguiAutoCompleteComponent implements OnInit {
 

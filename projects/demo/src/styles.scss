@@ -40,6 +40,10 @@ body {
   padding: 28px 24px 16px;
   background: white;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  width: 100%;
 
   h2 {
     margin: 0 0 6px;
@@ -70,6 +74,10 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
   gap: 20px;
   padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .demo-card {

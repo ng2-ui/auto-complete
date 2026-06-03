@@ -119,6 +119,11 @@ body {
         box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.15);
       }
     }
+
+    // Keep text suffixes (e.g. ".00") from sitting flush against the outline border
+    .mat-mdc-form-field-text-suffix {
+      padding-right: 8px;
+    }
   }
 
   .model-display {
@@ -232,7 +237,7 @@ body {
   min-height: 48px;
   cursor: text;
 
-  input:not([mat-input]) {
+  input:not(.mat-mdc-input-element) {
     flex: 1;
     min-width: 120px;
     border: none !important;

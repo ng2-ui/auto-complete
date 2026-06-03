@@ -120,9 +120,11 @@ body {
       }
     }
 
-    // Keep text suffixes (e.g. ".00") from sitting flush against the outline border
+    // Keep a [matSuffix] (e.g. ".00") off the outline border. Plain [matSuffix]
+    // text lands in the icon-suffix slot, so target both suffix wrappers.
+    .mat-mdc-form-field-icon-suffix,
     .mat-mdc-form-field-text-suffix {
-      padding-right: 8px;
+      padding-right: 12px;
     }
   }
 

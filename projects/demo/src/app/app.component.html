@@ -44,3 +44,8 @@
 <mat-tab-nav-panel #tabPanel>
   <router-outlet></router-outlet>
 </mat-tab-nav-panel>
+
+<footer class="app-footer">
+  <span *ngIf="buildTime">Demo last built: {{ buildTime | date:'yyyy-MM-dd HH:mm':'UTC' }} UTC</span>
+  <a href="https://github.com/ng2-ui/auto-complete" target="_blank" rel="noopener">ng2-ui/auto-complete</a>
+</footer>

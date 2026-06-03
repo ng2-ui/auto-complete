@@ -4,11 +4,9 @@ import { DirectiveTestComponent } from './directive-test/directive-test.componen
 import { ComponentTestComponent } from './component-test/component-test.component';
 
 const routes: Routes = [
-  {
-    path: 'directive-test', component: DirectiveTestComponent
-  }, {
-    path: 'component-test', component: ComponentTestComponent
-  }
+  { path: '', redirectTo: 'directive-test', pathMatch: 'full' },
+  { path: 'directive-test', component: DirectiveTestComponent },
+  { path: 'component-test', component: ComponentTestComponent }
 ];
 
 @NgModule({

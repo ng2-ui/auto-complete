@@ -200,6 +200,7 @@ export class DirectiveTestComponent {
          [(ngModel)]="model11"
          [source]="arrayOfStrings"
          [accept-user-input]="true"
+         no-match-found-text=""
          (noMatchFound)="noMatchVisible11 = true"
          (ngModelChange)="noMatchVisible11 = false"
          (customSelected)="noMatchVisible11 = false"

@@ -35,7 +35,7 @@ jobs:
 
       - name: Upload docs artifact
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: demo-docs
           path: docs/
@@ -51,7 +51,7 @@ jobs:
 
     steps:
       - name: Download docs artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: demo-docs
           path: docs/

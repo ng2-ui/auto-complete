@@ -69,11 +69,19 @@ body {
   }
 }
 
+// Constrain tab link labels to 1200px while keeping the nav bar's
+// bottom border/background full-width
+.mat-mdc-tab-links {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
 .demo-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
   gap: 20px;
-  padding: 24px;
+  padding: 24px 0;
   max-width: 1200px;
   margin: 0 auto;
   box-sizing: border-box;
@@ -95,7 +103,7 @@ body {
   .demo-area {
     padding: 12px 0;
 
-    input:not([mat-input]) {
+    input:not(.mat-mdc-input-element) {
       width: 100%;
       padding: 8px 12px;
       border: 1px solid rgba(0, 0, 0, 0.23);

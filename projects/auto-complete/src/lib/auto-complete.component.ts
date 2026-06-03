@@ -39,6 +39,7 @@ export class NguiAutoCompleteComponent implements OnInit {
   @Output() public valueSelected = new EventEmitter();
   @Output() public customSelected = new EventEmitter();
   @Output() public textEntered = new EventEmitter();
+  @Output() public noMatchFound = new EventEmitter<void>();
 
   @ViewChild('autoCompleteInput') public autoCompleteInput: ElementRef;
   @ViewChild('autoCompleteContainer') public autoCompleteContainer: ElementRef;
@@ -133,6 +134,9 @@ export class NguiAutoCompleteComponent implements OnInit {
       if (this.maxNumList) {
         this.filteredList = this.filteredList.slice(0, this.maxNumList);
       }
+      if (this.minCharsEntered && !this.filteredList.length) {
+        this.noMatchFound.emit();
+      }
 
     } else {// remote source
       this.isLoading = true;
@@ -150,6 +154,9 @@ export class NguiAutoCompleteComponent implements OnInit {
                 this.filteredList = this.filteredList.slice(0, this.maxNumList);
               }
               this.isLoading = false;
+              if (this.minCharsEntered && !this.filteredList.length) {
+                this.noMatchFound.emit();
+              }
             },
             error: (error) => {
               console.warn(error);
@@ -166,6 +173,9 @@ export class NguiAutoCompleteComponent implements OnInit {
               this.filteredList = this.filteredList.slice(0, this.maxNumList);
             }
             this.isLoading = false;
+            if (this.minCharsEntered && !this.filteredList.length) {
+              this.noMatchFound.emit();
+            }
           },
           error: (error) => {
             console.warn(error);

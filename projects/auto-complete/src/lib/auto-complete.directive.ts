@@ -60,6 +60,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
   @Output() public ngModelChange = new EventEmitter();
   @Output() public valueChanged = new EventEmitter();
   @Output() public customSelected = new EventEmitter();
+  @Output() public noMatchFound = new EventEmitter<void>();
 
   private componentRef: ComponentRef<NguiAutoCompleteComponent>;
   private wrapperEl: HTMLElement;
@@ -199,6 +200,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
     this.dropdownSubs.add(component.valueSelected.subscribe(this.selectNewValue));
     this.dropdownSubs.add(component.textEntered.subscribe(this.enterNewText));
     this.dropdownSubs.add(component.customSelected.subscribe(this.selectCustomValue));
+    this.dropdownSubs.add(component.noMatchFound.subscribe(() => this.noMatchFound.emit()));
 
     this.acDropdownEl = this.componentRef.location.nativeElement;
     this.acDropdownEl.style.display = 'none';
@@ -320,7 +322,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 
     // make return value
     let val = item;
-    if (this.selectValueOf && item[this.selectValueOf]) {
+    if (this.selectValueOf && item !== null && typeof item === 'object') {
       val = item[this.selectValueOf];
     }
     if ((this.parentForm && this.formControlName) || this.extFormControl) {

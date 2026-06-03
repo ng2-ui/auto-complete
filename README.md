@@ -1,5 +1,6 @@
 # @ngui/auto-complete
 
+[![CI](https://github.com/ng2-ui/auto-complete/actions/workflows/ci.yml/badge.svg)](https://github.com/ng2-ui/auto-complete/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)
 [![npm downloads](https://img.shields.io/npm/dt/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)
 [![npm license](https://img.shields.io/npm/l/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)
@@ -28,18 +29,6 @@ import { NguiAutoCompleteModule } from '@ngui/auto-complete';
   imports: [BrowserModule, FormsModule, NguiAutoCompleteModule],
 })
 export class AppModule {}
-```
-
-### Standalone (Angular 19+)
-
-```typescript
-import { NguiAutoCompleteDirective, NguiAutoCompleteComponent } from '@ngui/auto-complete';
-
-@Component({
-  standalone: true,
-  imports: [NguiAutoCompleteDirective, NguiAutoCompleteComponent],
-})
-export class MyComponent {}
 ```
 
 ---
@@ -157,14 +146,8 @@ All directive inputs are supported plus:
 
 ## Angular Version Compatibility
 
-| Library version | Angular version |
-|-----------------|----------------|
-| 21.x | Angular 21 |
-| 20.x | Angular 20 |
-| 19.x | Angular 19 |
-| 18.x | Angular 18 |
-| 17.x | Angular 17 |
-| 16.x | Angular 16 |
+This library follows Angular's versioning: **`@ngui/auto-complete@N.x` supports Angular N**.
+Install the version matching your Angular major (e.g. Angular 18 → `npm install @ngui/auto-complete@18`).
 
 ---
 

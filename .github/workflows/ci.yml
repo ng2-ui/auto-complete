@@ -33,6 +33,14 @@ jobs:
       - name: Build demo docs
         run: npm run build-docs
 
+      - name: Upload docs artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        uses: actions/upload-artifact@v4
+        with:
+          name: demo-docs
+          path: docs/
+          retention-days: 1
+
   deploy-docs:
     name: Deploy Docs
     needs: build
@@ -42,25 +50,15 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
+      - name: Download docs artifact
+        uses: actions/download-artifact@v4
         with:
-          node-version: '24'
-          cache: 'npm'
+          name: demo-docs
+          path: docs/
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build demo docs
-        run: npm run build-docs
-
-      - name: Commit and push docs
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/
-          git diff --staged --quiet || git commit -m "docs: auto-rebuild [skip ci]"
-          git push
+      - name: Deploy to gh-pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: docs
+          commit-message: 'docs: auto-rebuild [skip ci]'

@@ -4,6 +4,8 @@
 /dist
 /tmp
 /out-tsc
+# Demo app build output — managed by CI deploy-docs job, never commit manually
+/docs
 # Only exists if Bazel was run
 /bazel-out
 

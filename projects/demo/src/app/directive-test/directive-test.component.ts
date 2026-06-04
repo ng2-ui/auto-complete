@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation, inject } from '@angular/core';
 import { AppService } from '../app.service';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
-import { NguiAutoCompleteModule } from 'auto-complete';
+import { NguiAutoCompleteDirective } from 'auto-complete';
 import { FormsModule } from '@angular/forms';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import { MatFormField, MatPrefix, MatSuffix } from '@angular/material/form-field';
@@ -22,7 +22,7 @@ import { JsonPipe } from '@angular/common';
 		MatCardTitle,
 		MatCardSubtitle,
 		MatCardContent,
-		NguiAutoCompleteModule,
+		NguiAutoCompleteDirective,
 		FormsModule,
 		MatExpansionPanel,
 		MatExpansionPanelHeader,

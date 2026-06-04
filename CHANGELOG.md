@@ -7,6 +7,30 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 
 ---
 
+## [21.0.0] — 2026-06-04
+
+### ⚠️ BREAKING CHANGES
+- **Requires Angular 21.** `peerDependencies` now require `@angular/common` and `@angular/core`
+  `^21.0.0`. Angular 20 and older projects must stay on `@ngui/auto-complete@20` (or the matching major).
+- **Removed `NguiAutoCompleteModule`.** The library's last NgModule has been deleted. Import the
+  standalone `NguiAutoCompleteComponent` / `NguiAutoCompleteDirective` directly instead:
+  `imports: [NguiAutoCompleteComponent, NguiAutoCompleteDirective]`. Apps that still need the NgModule
+  can stay on `@ngui/auto-complete@20`, which retained it.
+
+### Changed
+- **Upgraded to Angular 21** (`@angular/*` 21.2.x, `@angular/material` + `@angular/cdk` 21.2.x).
+  Install `@ngui/auto-complete@21` for Angular 21 projects.
+
+### Internal (development tooling only — no impact on consumers)
+- `ng update` to Angular 21: `@angular/cli` + `@angular-devkit/build-angular` 21.2.x,
+  `ng-packagr` 21.2.5, TypeScript 5.9.3. The demo `bootstrapApplication` now provides
+  `provideZoneChangeDetection()` (Angular 21 defaults to zoneless; this preserves the existing
+  zone-based change detection).
+- **ESLint 10.** Bumped `eslint` and `@eslint/js` to 10 and `angular-eslint` to 21.4.0 (its ESLint peer
+  now allows `^10`), unblocking the upgrade deferred in 19.0.0 / 20.0.0.
+
+---
+
 ## [20.0.0] — 2026-06-04
 
 ### ⚠️ BREAKING CHANGES

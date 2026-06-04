@@ -101,6 +101,22 @@ searchFn = (keyword: string): Observable<any> => {
 };
 ```
 
+### Custom dropdown templates
+
+Instead of the string-based `list-formatter` / `header-item-template`, you can pass Angular
+`ng-template`s. `itemTemplate` receives the item as `$implicit` and the row index as `index`; it
+works on both the component and the directive:
+
+```html
+<input ngui-auto-complete [(ngModel)]="myValue" [source]="myArray"
+  [itemTemplate]="row" [headerTemplate]="head" />
+
+<ng-template #head>Suggestions</ng-template>
+<ng-template #row let-item let-i="index">
+  <strong>{{ i + 1 }}.</strong> {{ item.name }} — <em>{{ item.country }}</em>
+</ng-template>
+```
+
 ---
 
 ## API Reference
@@ -117,6 +133,8 @@ searchFn = (keyword: string): Observable<any> => {
 | `display-property-name` | `string` | `value` | Object key to display in the input after selection |
 | `select-value-of` | `string` | — | Return this key's value on selection instead of the full object |
 | `list-formatter` | `string \| Function` | — | Format each dropdown item. String pattern `(key) name` or function `(item) => string` |
+| `itemTemplate` | `TemplateRef` | — | `ng-template` for each dropdown row (context: `$implicit` = item, `index` = row index). Takes precedence over `list-formatter` |
+| `headerTemplate` | `TemplateRef` | — | `ng-template` for the non-selectable header row. Takes precedence over `header-item-template` |
 | `value-formatter` | `string \| Function` | — | Format the selected value shown in the input |
 | `blank-option-text` | `string` | — | Adds an empty first option with this label |
 | `no-match-found-text` | `string` | — | Text shown when no results match. Set to `""` to suppress the row entirely |

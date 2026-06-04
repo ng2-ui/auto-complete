@@ -28,7 +28,11 @@
           class="no-match-found">{{ noMatchFoundText ?? 'No Result Found' }}
         </li>
       }
-      @if (headerItemTemplate && filteredList.length) {
+      @if (headerTemplate && filteredList.length) {
+        <li class="header-item">
+          <ng-container [ngTemplateOutlet]="headerTemplate"></ng-container>
+        </li>
+      } @else if (headerItemTemplate && filteredList.length) {
         <li class="header-item"
         [innerHTML]="headerItemTemplate"></li>
       }
@@ -39,11 +43,20 @@
         </li>
       }
       @for (item of filteredList; track trackByIndex(i, item); let i = $index) {
-        <li class="item"
-          (mousedown)="selectOne(item)"
-          [ngClass]="{selected: i === itemIndex}"
-          [innerHtml]="autoComplete.getFormattedListItem(item)">
-        </li>
+        @if (itemTemplate) {
+          <li class="item"
+            (mousedown)="selectOne(item)"
+            [ngClass]="{selected: i === itemIndex}">
+            <ng-container [ngTemplateOutlet]="itemTemplate"
+              [ngTemplateOutletContext]="{ $implicit: item, index: i }"></ng-container>
+          </li>
+        } @else {
+          <li class="item"
+            (mousedown)="selectOne(item)"
+            [ngClass]="{selected: i === itemIndex}"
+            [innerHtml]="autoComplete.getFormattedListItem(item)">
+          </li>
+        }
       }
     </ul>
   }

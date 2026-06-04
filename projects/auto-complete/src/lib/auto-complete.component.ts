@@ -1,8 +1,8 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation, inject } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation, inject } from '@angular/core';
 import { NguiAutoCompleteService } from './auto-complete.service';
 import { Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { NgClass } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 
 @Component({
     selector: 'ngui-auto-complete',
@@ -10,7 +10,7 @@ import { NgClass } from '@angular/common';
     styleUrls: ['./auto-complete.component.scss'],
     encapsulation: ViewEncapsulation.None,
     providers: [NguiAutoCompleteService],
-    imports: [FormsModule, NgClass]
+    imports: [FormsModule, NgClass, NgTemplateOutlet]
 })
 export class NguiAutoCompleteComponent implements OnInit {
   autoComplete = inject(NguiAutoCompleteService);
@@ -39,6 +39,11 @@ export class NguiAutoCompleteComponent implements OnInit {
   @Input('re-focus-after-select') public reFocusAfterSelect = true;
   @Input('header-item-template') public headerItemTemplate = null;
   @Input('ignore-accents') public ignoreAccents = true;
+  // Angular template alternatives to the string `list-formatter` / `header-item-template`.
+  // When provided they take precedence; the item template receives the item as `$implicit`
+  // and the row index as `index`.
+  @Input() public itemTemplate: TemplateRef<{ $implicit: any; index: number }>;
+  @Input() public headerTemplate: TemplateRef<void>;
 
   @Output() public valueSelected = new EventEmitter();
   @Output() public customSelected = new EventEmitter();

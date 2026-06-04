@@ -20,10 +20,10 @@ npm install @ngui/auto-complete
 
 ## Setup
 
-### Standalone (Angular 20+)
+### Standalone (Angular 21+)
 
-As of v20 the component and directive are **standalone**. Import them directly into your
-standalone component (or NgModule) `imports`:
+The component and directive are **standalone**. Import them directly into your standalone component
+(or NgModule) `imports`:
 
 ```typescript
 import { NguiAutoCompleteComponent, NguiAutoCompleteDirective } from '@ngui/auto-complete';
@@ -35,20 +35,10 @@ import { NguiAutoCompleteComponent, NguiAutoCompleteDirective } from '@ngui/auto
 export class MyComponent {}
 ```
 
-### NgModule (Angular 19 and below — still supported in v20)
-
-For Angular 19 and older, install the matching major (`npm install @ngui/auto-complete@19`) and import
-the module. `NguiAutoCompleteModule` is still exported in v20 (it re-exports the standalone component and
-directive), so existing NgModule-based apps keep working unchanged:
-
-```typescript
-import { NguiAutoCompleteModule } from '@ngui/auto-complete';
-
-@NgModule({
-  imports: [BrowserModule, FormsModule, NguiAutoCompleteModule],
-})
-export class AppModule {}
-```
+> **Note:** `NguiAutoCompleteModule` was removed in v21. Import the standalone
+> `NguiAutoCompleteComponent` / `NguiAutoCompleteDirective` directly instead. If you still need the
+> NgModule (or Angular 19 and below), install the matching major — e.g. `@ngui/auto-complete@20` (which
+> retained the module) or `@ngui/auto-complete@19`.
 
 ---
 
@@ -191,7 +181,7 @@ All directive inputs are supported plus:
 ## Angular Version Compatibility
 
 This library follows Angular's versioning: **`@ngui/auto-complete@N.x` supports Angular N**.
-Install the version matching your Angular major (e.g. Angular 20 → `npm install @ngui/auto-complete@20`).
+Install the version matching your Angular major (e.g. Angular 21 → `npm install @ngui/auto-complete@21`).
 
 ---
 

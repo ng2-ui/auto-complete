@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { AppService } from '../app.service';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
-import { NguiAutoCompleteModule } from 'auto-complete';
+import { NguiAutoCompleteComponent } from 'auto-complete';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import { FormsModule } from '@angular/forms';
 
@@ -15,7 +15,7 @@ import { FormsModule } from '@angular/forms';
 		MatCardTitle,
 		MatCardSubtitle,
 		MatCardContent,
-		NguiAutoCompleteModule,
+		NguiAutoCompleteComponent,
 		MatExpansionPanel,
 		MatExpansionPanelHeader,
 		MatExpansionPanelTitle,

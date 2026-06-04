@@ -1,9 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NguiAutoCompleteComponent } from './auto-complete.component';
-import { NguiAutoCompleteModule } from './auto-complete.module';
 
 describe('NguiAutoCompleteComponent', () => {
 	let component: NguiAutoCompleteComponent;
@@ -11,7 +10,7 @@ describe('NguiAutoCompleteComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [NguiAutoCompleteModule],
+			imports: [NguiAutoCompleteComponent],
 		}).compileComponents();
 
 		fixture = TestBed.createComponent(NguiAutoCompleteComponent);
@@ -70,12 +69,18 @@ describe('NguiAutoCompleteComponent itemTemplate', () => {
 		const fixture = TestBed.createComponent(TemplateHostComponent);
 		fixture.detectChanges();
 
+		const acDebug = fixture.debugElement.query(By.directive(NguiAutoCompleteComponent));
 		const ac = fixture.componentInstance.autoComplete;
 		ac.filteredList = ['Alpha', 'Beta'];
 		ac.dropdownVisible = true;
+		// These fields are mutated out of band (not via an input or event), so Angular's
+		// change detection has no signal that the child view is dirty. Without marking it,
+		// Angular 21's apply pass skips the clean child while dev-mode checkNoChanges still
+		// re-evaluates it — surfacing a false ExpressionChangedAfterItHasBeenChecked (NG0100).
+		acDebug.injector.get(ChangeDetectorRef).markForCheck();
 		fixture.detectChanges();
 
-		const rows = fixture.debugElement.query(By.directive(NguiAutoCompleteComponent)).nativeElement.querySelectorAll('li.item');
+		const rows = acDebug.nativeElement.querySelectorAll('li.item');
 		expect(rows.length).toBe(2);
 		expect(rows[0].textContent.trim()).toBe('custom:Alpha:0');
 		expect(rows[1].textContent.trim()).toBe('custom:Beta:1');

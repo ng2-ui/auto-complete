@@ -15,9 +15,20 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 - Migrated the library template to Angular's built-in control flow syntax (`@if` / `@for` in place of
   `*ngIf` / `*ngFor`).
 
+### Internal (development tooling only — no impact on consumers)
+- Migrated ESLint from `.eslintrc.json` to flat config (`eslint.config.js`); upgraded ESLint 8 → 9 and
+  switched to the unified `angular-eslint` and `typescript-eslint` packages.
+- Bumped dev dependencies to the newest versions compatible with Angular 19: `cypress` 13 → 15,
+  `@cypress/schematic` 2 → 4.3, `eslint-plugin-cypress` 3 → 6, `jasmine-core` + `@types/jasmine` 5 → 6,
+  `@types/node` 22 → 24, `karma-jasmine-html-reporter` 2.1 → 2.2 (reduces `npm audit` from 52 to 9).
+- Added unit specs for the library component and service, and replaced the stale Angular CLI boilerplate
+  demo specs with working `TestBed` setups.
+
 ### Notes
 - The library remains NgModule-based in this release; the standalone migration is planned for the
   Angular 20 release.
+- ESLint 10, `@cypress/schematic` 5, and the standalone migration are deferred to the Angular 20 release
+  (they require Angular 20 / angular-eslint 20).
 
 ---
 

@@ -1,17 +1,9 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { DirectiveTestComponent } from './directive-test/directive-test.component';
 import { ComponentTestComponent } from './component-test/component-test.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: '', redirectTo: 'directive-test', pathMatch: 'full' },
   { path: 'directive-test', component: DirectiveTestComponent },
   { path: 'component-test', component: ComponentTestComponent }
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true })],
-  exports: [RouterModule]
-})
-export class AppRoutingModule {
-}

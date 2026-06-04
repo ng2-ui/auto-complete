@@ -1,12 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable()
 export class AppService {
+  private _http = inject(HttpClient);
 
-  constructor(private _http: HttpClient) {
-  }
 
   /**
    * Search books via Open Library (no API key required).

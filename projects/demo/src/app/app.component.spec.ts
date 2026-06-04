@@ -7,12 +7,9 @@ import { AppComponent } from './app.component';
 describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [CommonModule, RouterModule.forRoot([])],
-      declarations: [
-        AppComponent
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    imports: [CommonModule, RouterModule.forRoot([]), AppComponent],
+    schemas: [NO_ERRORS_SCHEMA],
+}).compileComponents();
   }));
 
   it('should create the app', () => {

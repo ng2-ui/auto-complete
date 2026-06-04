@@ -1,18 +1,15 @@
-import { Injectable, Optional } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable()
 export class NguiAutoCompleteService {
+  private http = inject(HttpClient, { optional: true });
 
   public source: string;
   public pathToData: string;
   public listFormatter: (arg: any) => string;
-
-  constructor(@Optional() private http: HttpClient) {
-    // ...
-  }
 
   public filter(list: any[], keyword: string, matchFormatted: boolean, accentInsensitive: boolean) {
     const objectString = (el) => matchFormatted ? this.getFormattedListItem(el).toLowerCase() : JSON.stringify(el).toLowerCase();

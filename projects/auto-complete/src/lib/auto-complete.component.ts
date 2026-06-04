@@ -1,6 +1,8 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation, inject } from '@angular/core';
 import { NguiAutoCompleteService } from './auto-complete.service';
 import { Observable } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { NgClass } from '@angular/common';
 
 @Component({
     selector: 'ngui-auto-complete',
@@ -8,9 +10,10 @@ import { Observable } from 'rxjs';
     styleUrls: ['./auto-complete.component.scss'],
     encapsulation: ViewEncapsulation.None,
     providers: [NguiAutoCompleteService],
-    standalone: false
+    imports: [FormsModule, NgClass]
 })
 export class NguiAutoCompleteComponent implements OnInit {
+  autoComplete = inject(NguiAutoCompleteService);
 
   /**
    * public input properties
@@ -68,7 +71,9 @@ export class NguiAutoCompleteComponent implements OnInit {
   /**
    * constructor
    */
-  constructor(elementRef: ElementRef, public autoComplete: NguiAutoCompleteService) {
+  constructor() {
+    const elementRef = inject(ElementRef);
+
     this.el = elementRef.nativeElement;
   }
 

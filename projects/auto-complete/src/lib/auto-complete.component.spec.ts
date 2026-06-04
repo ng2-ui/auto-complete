@@ -14,7 +14,15 @@ describe('NguiAutoCompleteComponent', () => {
 
     fixture = TestBed.createComponent(NguiAutoCompleteComponent);
     component = fixture.componentInstance;
+    // Provide a local array source so the focus-triggered dropdown reload (scheduled
+    // from ngOnInit) resolves against local data instead of calling getRemoteData,
+    // which throws on a non-string source.
+    component.source = ['Item 1', 'Item 2'];
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    fixture.destroy();
   });
 
   it('should create', () => {

@@ -14,15 +14,14 @@ describe('DirectiveTestComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, NguiAutoCompleteModule],
-      declarations: [DirectiveTestComponent],
-      providers: [
+    imports: [FormsModule, NguiAutoCompleteModule, DirectiveTestComponent],
+    providers: [
         AppService,
         provideHttpClient(),
         provideHttpClientTesting(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    })
+    ],
+    schemas: [NO_ERRORS_SCHEMA],
+})
       .compileComponents();
   }));
 

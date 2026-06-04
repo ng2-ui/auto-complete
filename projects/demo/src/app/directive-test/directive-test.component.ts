@@ -1,14 +1,25 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, inject } from '@angular/core';
 import { AppService } from '../app.service';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
+import { NguiAutoCompleteModule } from 'auto-complete';
+import { FormsModule } from '@angular/forms';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { MatFormField, MatPrefix, MatSuffix } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
+import { Dir } from '@angular/cdk/bidi';
+import { MatButton } from '@angular/material/button';
+import { JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'app-directive-test',
     templateUrl: './directive-test.component.html',
     styleUrls: ['./directive-test.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    standalone: false
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, NguiAutoCompleteModule, FormsModule, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatFormField, MatIcon, MatPrefix, MatInput, MatSuffix, Dir, MatButton, JsonPipe]
 })
 export class DirectiveTestComponent {
+  appSvc = inject(AppService);
 
   public loadingTemplate = `<h1>Loading</h1>`;
   public cityHeaderTemplate = `
@@ -224,9 +235,6 @@ export class DirectiveTestComponent {
          no-match-found-text=""
          placeholder="type something not in the list" />
   `;
-
-  constructor(public appSvc: AppService) {
-  }
 
   public addToList11() {
     if (this.model11 && !this.arrayOfStrings.includes(this.model11)) {

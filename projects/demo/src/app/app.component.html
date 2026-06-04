@@ -3,11 +3,11 @@
   <span class="toolbar-title">&#64;ngui/auto-complete</span>
   <span class="toolbar-spacer"></span>
   <a class="toolbar-link" href="https://github.com/ng2-ui/auto-complete"
-     target="_blank" rel="noopener" mat-button aria-label="GitHub repository">
+    target="_blank" rel="noopener" mat-button aria-label="GitHub repository">
     <mat-icon>code</mat-icon> GitHub
   </a>
   <a class="toolbar-link" href="https://www.npmjs.com/package/@ngui/auto-complete"
-     target="_blank" rel="noopener" mat-button aria-label="npm package">
+    target="_blank" rel="noopener" mat-button aria-label="npm package">
     <mat-icon>get_app</mat-icon> npm
   </a>
 </mat-toolbar>
@@ -36,16 +36,20 @@
 </div>
 
 <nav mat-tab-nav-bar [tabPanel]="tabPanel">
-  <a mat-tab-link *ngFor="let link of links"
-     [routerLink]="link.url"
-     routerLinkActive #rla="routerLinkActive"
-     [active]="this.router.url.endsWith(link.url)">{{ link.name }}</a>
+  @for (link of links; track link) {
+    <a mat-tab-link
+      [routerLink]="link.url"
+      routerLinkActive #rla="routerLinkActive"
+    [active]="this.router.url.endsWith(link.url)">{{ link.name }}</a>
+  }
 </nav>
 <mat-tab-nav-panel #tabPanel>
   <router-outlet></router-outlet>
 </mat-tab-nav-panel>
 
 <footer class="app-footer">
-  <span *ngIf="buildTime">Demo last built: {{ buildTime | date:'yyyy-MM-dd HH:mm':'UTC' }} UTC</span>
+  @if (buildTime) {
+    <span>Demo last built: {{ buildTime | date:'yyyy-MM-dd HH:mm':'UTC' }} UTC</span>
+  }
   <a href="https://github.com/ng2-ui/auto-complete" target="_blank" rel="noopener">ng2-ui/auto-complete</a>
 </footer>

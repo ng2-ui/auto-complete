@@ -16,13 +16,13 @@
     <mat-card-content>
       <div class="demo-area">
         <div ngui-auto-complete
-             [source]="arrayOfStrings"
-             [accept-user-input]="true"
-             [auto-select-first-item]="false"
-             [select-on-blur]="true"
-             (ngModelChange)="myCallback1($event)"
-             (customSelected)="customCallback($event)"
-             placeholder="enter text">
+          [source]="arrayOfStrings"
+          [accept-user-input]="true"
+          [auto-select-first-item]="false"
+          [select-on-blur]="true"
+          (ngModelChange)="myCallback1($event)"
+          (customSelected)="customCallback($event)"
+          placeholder="enter text">
           <input id="model1" [ngModel]="model1" autofocus/>
         </div>
       </div>
@@ -45,14 +45,14 @@
     <mat-card-content>
       <div class="demo-area">
         <div ngui-auto-complete
-             [source]="arrayOfStrings"
-             [accept-user-input]="true"
-             [open-on-focus]="false"
-             [auto-select-first-item]="false"
-             [select-on-blur]="true"
-             (ngModelChange)="myCallback1($event)"
-             (customSelected)="customCallback($event)"
-             placeholder="enter text">
+          [source]="arrayOfStrings"
+          [accept-user-input]="true"
+          [open-on-focus]="false"
+          [auto-select-first-item]="false"
+          [select-on-blur]="true"
+          (ngModelChange)="myCallback1($event)"
+          (customSelected)="customCallback($event)"
+          placeholder="enter text">
           <input id="model1-1" [ngModel]="model1" autofocus/>
         </div>
       </div>
@@ -103,13 +103,13 @@
     <mat-card-content>
       <div class="demo-area">
         <input ngui-auto-complete
-               [source]="arrayOfKeyValues2"
-               id="model3"
-               [(ngModel)]="model3"
-               placeholder="enter text"
-               value-formatter="(key) name"
-               list-formatter="(key) name"
-               [match-formatted]="true"/>
+          [source]="arrayOfKeyValues2"
+          id="model3"
+          [(ngModel)]="model3"
+          placeholder="enter text"
+          value-formatter="(key) name"
+          list-formatter="(key) name"
+          [match-formatted]="true"/>
       </div>
       <p class="model-display">selected: <code>{{ model3 | json }}</code></p>
       <mat-expansion-panel class="code-panel">
@@ -133,16 +133,16 @@
     <mat-card-content>
       <div class="demo-area">
         <input ngui-auto-complete
-               id="model4"
-               [(ngModel)]="model4"
-               placeholder="Enter a place name (min. 2 chars)"
-               [source]="appSvc.getAddressUrl()"
-               no-match-found-text="No Match Found"
-               list-formatter="display_name"
-               display-property-name="display_name"
-               loading-text="Searching..."
-               max-num-list="5"
-               min-chars="2"/>
+          id="model4"
+          [(ngModel)]="model4"
+          placeholder="Enter a place name (min. 2 chars)"
+          [source]="appSvc.getAddressUrl()"
+          no-match-found-text="No Match Found"
+          list-formatter="display_name"
+          display-property-name="display_name"
+          loading-text="Searching..."
+          max-num-list="5"
+          min-chars="2"/>
       </div>
       <p class="model-display">selected: <code>{{ model4 | json }}</code></p>
       <mat-expansion-panel class="code-panel">
@@ -166,14 +166,14 @@
     <mat-card-content>
       <div class="demo-area">
         <input ngui-auto-complete
-               id="model5"
-               placeholder="Search for a book (min. 2 chars)"
-               [(ngModel)]="model5"
-               [source]="appSvc.findBooks"
-               path-to-data="docs"
-               [list-formatter]="renderBook"
-               display-property-name="title"
-               min-chars="2"/>
+          id="model5"
+          placeholder="Search for a book (min. 2 chars)"
+          [(ngModel)]="model5"
+          [source]="appSvc.findBooks"
+          path-to-data="docs"
+          [list-formatter]="renderBook"
+          display-property-name="title"
+          min-chars="2"/>
       </div>
       <p class="model-display">selected: <code>{{ model5 | json }}</code></p>
       <mat-expansion-panel class="code-panel">
@@ -199,11 +199,11 @@
         <mat-form-field appearance="outline" style="width: 100%">
           <mat-icon fontIcon="attach_money" matPrefix></mat-icon>
           <input matInput ngui-auto-complete
-                 id="model6"
-                 [(ngModel)]="myModel"
-                 [source]="arrayOfNumbers"
-                 [list-formatter]="rightAligned"
-                 placeholder="amount"/>
+            id="model6"
+            [(ngModel)]="myModel"
+            [source]="arrayOfNumbers"
+            [list-formatter]="rightAligned"
+            placeholder="amount"/>
           <span matSuffix>.00</span>
         </mat-form-field>
       </div>
@@ -227,10 +227,10 @@
     <mat-card-content>
       <div class="demo-area">
         <div ngui-auto-complete
-             [source]="arrayOfStrings"
-             [auto-select-first-item]="true"
-             (ngModelChange)="myCallback7($event)"
-             placeholder="enter text">
+          [source]="arrayOfStrings"
+          [auto-select-first-item]="true"
+          (ngModelChange)="myCallback7($event)"
+          placeholder="enter text">
           <input id="model7" [ngModel]="model7"/>
         </div>
       </div>
@@ -255,11 +255,11 @@
     <mat-card-content>
       <div class="demo-area" dir="rtl" style="text-align: right">
         <div ngui-auto-complete
-             [source]="arrayOfArabicStrings"
-             [accept-user-input]="false"
-             (ngModelChange)="myCallback8($event)"
-             [is-rtl]="true"
-             placeholder="ابحث عن مدينة...">
+          [source]="arrayOfArabicStrings"
+          [accept-user-input]="false"
+          (ngModelChange)="myCallback8($event)"
+          [is-rtl]="true"
+          placeholder="ابحث عن مدينة...">
           <input id="model8" [ngModel]="model8"/>
         </div>
       </div>
@@ -284,14 +284,14 @@
     <mat-card-content>
       <div class="demo-area">
         <input ngui-auto-complete
-               style="width: 100%"
-               [(ngModel)]="model9"
-               [source]="arrayOfCities"
-               [accept-user-input]="false"
-               [list-formatter]="renderCity"
-               placeholder="Search for a city"
-               display-property-name="city"
-               [header-item-template]="cityHeaderTemplate"/>
+          style="width: 100%"
+          [(ngModel)]="model9"
+          [source]="arrayOfCities"
+          [accept-user-input]="false"
+          [list-formatter]="renderCity"
+          placeholder="Search for a city"
+          display-property-name="city"
+          [header-item-template]="cityHeaderTemplate"/>
       </div>
       <p class="model-display">selected: <code>{{ json(model9) }}</code></p>
       <mat-expansion-panel class="code-panel">
@@ -315,20 +315,22 @@
     <mat-card-content>
       <div class="demo-area">
         <input ngui-auto-complete
-               id="model11"
-               [(ngModel)]="model11"
-               [source]="arrayOfStrings"
-               [accept-user-input]="true"
-               no-match-found-text=""
-               (noMatchFound)="noMatchVisible11 = true"
-               (ngModelChange)="noMatchVisible11 = false"
-               (customSelected)="noMatchVisible11 = false"
-               placeholder="type something not in the list"/>
-        <div *ngIf="noMatchVisible11" class="no-match-hint">
-          <mat-icon>info_outline</mat-icon>
-          Not in the list —
-          <button mat-button color="primary" (click)="addToList11()">Add "{{ model11 }}"</button>
-        </div>
+          id="model11"
+          [(ngModel)]="model11"
+          [source]="arrayOfStrings"
+          [accept-user-input]="true"
+          no-match-found-text=""
+          (noMatchFound)="noMatchVisible11 = true"
+          (ngModelChange)="noMatchVisible11 = false"
+          (customSelected)="noMatchVisible11 = false"
+          placeholder="type something not in the list"/>
+        @if (noMatchVisible11) {
+          <div class="no-match-hint">
+            <mat-icon>info_outline</mat-icon>
+            Not in the list —
+            <button mat-button color="primary" (click)="addToList11()">Add "{{ model11 }}"</button>
+          </div>
+        }
       </div>
       <p class="model-display">selected: <code>{{ json(model11) }}</code></p>
       <mat-expansion-panel class="code-panel">
@@ -353,11 +355,11 @@
     <mat-card-content>
       <div class="demo-area">
         <input ngui-auto-complete
-               id="model12"
-               [(ngModel)]="model12"
-               [source]="arrayOfStrings"
-               no-match-found-text=""
-               placeholder="type something not in the list"/>
+          id="model12"
+          [(ngModel)]="model12"
+          [source]="arrayOfStrings"
+          no-match-found-text=""
+          placeholder="type something not in the list"/>
       </div>
       <p class="model-display">selected: <code>{{ json(model12) }}</code></p>
       <mat-expansion-panel class="code-panel">
@@ -381,14 +383,14 @@
     <mat-card-content>
       <div class="demo-area">
         <div ngui-auto-complete
-             [ignore-accents]="false"
-             [source]="arrayOfAccentedStrings"
-             [accept-user-input]="true"
-             [auto-select-first-item]="false"
-             [select-on-blur]="true"
-             (ngModelChange)="myCallback10($event)"
-             (customSelected)="customCallback($event)"
-             placeholder="try: Cad or Mun">
+          [ignore-accents]="false"
+          [source]="arrayOfAccentedStrings"
+          [accept-user-input]="true"
+          [auto-select-first-item]="false"
+          [select-on-blur]="true"
+          (ngModelChange)="myCallback10($event)"
+          (customSelected)="customCallback($event)"
+          placeholder="try: Cad or Mun">
           <input id="model10" [ngModel]="model10" autofocus/>
         </div>
       </div>

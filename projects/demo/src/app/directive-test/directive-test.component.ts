@@ -2,10 +2,11 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { AppService } from '../app.service';
 
 @Component({
-  selector: 'app-directive-test',
-  templateUrl: './directive-test.component.html',
-  styleUrls: ['./directive-test.component.scss'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-directive-test',
+    templateUrl: './directive-test.component.html',
+    styleUrls: ['./directive-test.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class DirectiveTestComponent {
 
@@ -205,13 +206,15 @@ export class DirectiveTestComponent {
          (ngModelChange)="noMatchVisible11 = false"
          (customSelected)="noMatchVisible11 = false"
          placeholder="type something not in the list" />
-  <div *ngIf="noMatchVisible11" class="no-match-hint">
-    <mat-icon>info_outline</mat-icon>
-    Not in the list —
-    <button mat-button color="primary" (click)="addToList11()">
-      Add "{{ model11 }}"
-    </button>
-  </div>
+  @if (noMatchVisible11) {
+    <div class="no-match-hint">
+      <mat-icon>info_outline</mat-icon>
+      Not in the list —
+      <button mat-button color="primary" (click)="addToList11()">
+        Add "{{ model11 }}"
+      </button>
+    </div>
+  }
   `;
 
   template12 = `

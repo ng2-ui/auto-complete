@@ -1,7 +1,7 @@
 <div class="page-header">
   <h2>Component Usage Examples</h2>
   <p class="subtitle">
-    Use <code>&lt;ngui-auto-complete&gt;</code> as a standalone component — position it yourself and control visibility via <code>*ngIf</code>.
+    Use <code>&lt;ngui-auto-complete&gt;</code> as a standalone component — position it yourself and control visibility via <code>&#64;if</code>.
   </p>
 </div>
 
@@ -18,23 +18,26 @@
     <mat-card-content>
       <div class="demo-area">
         <div class="addr-input-wrapper" (click)="showAutocomplete = true">
-          <span class="addr-chip" *ngFor="let addr of addrs; let i = index">
-            {{ addr.display_name }}
-            <span class="remove-btn" (click)="removeFromAddress($event, i)">✕</span>
-          </span>
-          <ngui-auto-complete
-            *ngIf="showAutocomplete"
-            (valueSelected)="addToAddress($event)"
-            [accept-user-input]="true"
-            [source]="appSvc.getAddressUrl()"
-            display-property-name="display_name"
-            [list-formatter]="myListFormatter"
-            [loading-template]="loadingTemplate"
-            max-num-list="5"
-            min-chars="2"
-            no-match-found-text="No Match Found"
-            placeholder="Enter a place name (min. 2 chars)">
-          </ngui-auto-complete>
+          @for (addr of addrs; track addr; let i = $index) {
+            <span class="addr-chip">
+              {{ addr.display_name }}
+              <span class="remove-btn" (click)="removeFromAddress($event, i)">✕</span>
+            </span>
+          }
+          @if (showAutocomplete) {
+            <ngui-auto-complete
+              (valueSelected)="addToAddress($event)"
+              [accept-user-input]="true"
+              [source]="appSvc.getAddressUrl()"
+              display-property-name="display_name"
+              [list-formatter]="myListFormatter"
+              [loading-template]="loadingTemplate"
+              max-num-list="5"
+              min-chars="2"
+              no-match-found-text="No Match Found"
+              placeholder="Enter a place name (min. 2 chars)">
+            </ngui-auto-complete>
+          }
         </div>
       </div>
       <mat-expansion-panel class="code-panel">
@@ -59,13 +62,14 @@
           (focus)="showMe = true"
           (blur)="showMe = false"
           placeholder="click to open dropdown"/>
-        <ngui-auto-complete
-          *ngIf="showMe"
-          [show-dropdown-on-init]="true"
-          (valueSelected)="myModel = $event"
-          [show-input-tag]="false"
-          [source]="[1, 2, 3, 4, 5]">
-        </ngui-auto-complete>
+        @if (showMe) {
+          <ngui-auto-complete
+            [show-dropdown-on-init]="true"
+            (valueSelected)="myModel = $event"
+            [show-input-tag]="false"
+            [source]="[1, 2, 3, 4, 5]">
+          </ngui-auto-complete>
+        }
       </div>
       <p class="model-display">selected: <code>{{ myModel }}</code></p>
       <mat-expansion-panel class="code-panel">

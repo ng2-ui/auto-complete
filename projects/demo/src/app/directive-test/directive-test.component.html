@@ -409,18 +409,19 @@
     <mat-card-header>
       <mat-card-title>Dropdown Open Direction</mat-card-title>
       <mat-card-subtitle>
-        Force the dropdown with <code>open-direction</code>. The picker is, ironically, another autocomplete.
+        Force the dropdown above or below the input with <code>open-direction</code>.
+        Pick a direction, then focus the input below.
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <div class="demo-area">
-        <label class="direction-picker">direction:
-          <input ngui-auto-complete
-            [(ngModel)]="openDir"
-            [source]="directionOptions"
-            [accept-user-input]="false"
-            [auto-select-first-item]="true"
-            placeholder="auto | up | down"/>
+        <label class="direction-picker">
+          direction:
+          <select [(ngModel)]="openDir">
+            <option value="auto">auto</option>
+            <option value="up">up</option>
+            <option value="down">down</option>
+          </select>
         </label>
         <div ngui-auto-complete
           [source]="arrayOfStrings"

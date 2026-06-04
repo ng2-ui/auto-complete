@@ -75,7 +75,6 @@ export class DirectiveTestComponent {
   public myModel;
 
   public openDir = 'auto';
-  public directionOptions = ['auto', 'up', 'down'];
 
   template1 = `
   <div ngui-auto-complete
@@ -241,19 +240,19 @@ export class DirectiveTestComponent {
   `;
 
   template13 = `
-  <!-- the direction picker is, ironically, another autocomplete -->
-  <input ngui-auto-complete
-         [(ngModel)]="openDir"
-         [source]="directionOptions"
-         [accept-user-input]="false"
-         [auto-select-first-item]="true"
-         placeholder="auto | up | down" />
+  <label>direction:
+    <select [(ngModel)]="openDir">
+      <option value="auto">auto</option>
+      <option value="up">up</option>
+      <option value="down">down</option>
+    </select>
+  </label>
 
-  <input ngui-auto-complete
-         [(ngModel)]="model13"
-         [source]="arrayOfStrings"
-         [open-direction]="openDir"
-         placeholder="opens {{ openDir }}" />
+  <div ngui-auto-complete
+       [source]="arrayOfStrings"
+       [open-direction]="openDir">
+    <input [ngModel]="model13" placeholder="opens {{ openDir }}" />
+  </div>
   `;
 
   public addToList11() {

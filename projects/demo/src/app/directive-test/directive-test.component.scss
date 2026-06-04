@@ -11,6 +11,19 @@ input:not([mat-input]) {
   overflow-y: auto;
 }
 
+.direction-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #666;
+
+  select {
+    padding: 4px 8px;
+  }
+}
+
 .no-match-hint {
   display: flex;
   align-items: center;

@@ -47,6 +47,9 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
   @Input('formControl') public extFormControl: FormControl;
   @Input('z-index') public zIndex = '1';
   @Input('is-rtl') public isRtl = false;
+  // 'down' / 'up' force the dropdown below / above the input; 'auto' (default) opens
+  // below unless the input sits near the bottom of the viewport.
+  @Input('open-direction') public openDirection: 'auto' | 'up' | 'down' = 'auto';
 
   @Output() public ngModelChange = new EventEmitter();
   @Output() public valueChanged = new EventEmitter();
@@ -255,12 +258,8 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 
   public styleAutoCompleteDropdown = () => {
     if (this.componentRef) {
-      const component = this.componentRef.instance;
-
       /* setting width/height auto complete */
-      const thisElBCR = this.el.getBoundingClientRect();
       const thisInputElBCR = this.inputEl.getBoundingClientRect();
-      const closeToBottom = thisInputElBCR.bottom + 100 > window.innerHeight;
       const directionOfStyle = this.isRtl ? 'right' : 'left';
 
       this.acDropdownEl.style.width = thisInputElBCR.width + 'px';
@@ -269,13 +268,30 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
       this.acDropdownEl.style[directionOfStyle] = '0';
       this.acDropdownEl.style.display = 'inline-block';
 
-      if (closeToBottom) {
+      // Reset any previous vertical anchor so re-styling is deterministic.
+      this.acDropdownEl.style.top = '';
+      this.acDropdownEl.style.bottom = '';
+
+      if (this.shouldOpenUp(thisInputElBCR)) {
         this.acDropdownEl.style.bottom = `${thisInputElBCR.height}px`;
       } else {
         this.acDropdownEl.style.top = `${thisInputElBCR.height}px`;
       }
     }
   };
+
+  // Resolve the vertical opening direction honouring the `open-direction` input.
+  // 'auto' keeps the historic heuristic: open above only when the input is within
+  // ~100px of the viewport bottom.
+  private shouldOpenUp(inputBCR: DOMRect): boolean {
+    if (this.openDirection === 'up') {
+      return true;
+    }
+    if (this.openDirection === 'down') {
+      return false;
+    }
+    return inputBCR.bottom + 100 > window.innerHeight;
+  }
 
   public setToStringFunction(item: any): any {
     if (item && typeof item === 'object') {

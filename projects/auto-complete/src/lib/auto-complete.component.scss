@@ -9,6 +9,7 @@
 
 .ngui-auto-complete {
   background-color: transparent;
+  position: relative;
 }
 
 .ngui-auto-complete > input {
@@ -33,6 +34,12 @@
 
 .ngui-auto-complete > ul.empty {
   display: none;
+}
+
+.ngui-auto-complete > ul.dropup {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
 }
 
 .ngui-auto-complete > ul li {

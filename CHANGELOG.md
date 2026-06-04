@@ -21,6 +21,9 @@ and this project follows [Angular version numbers](https://angular.dev/reference
   customize dropdown rows and the header row, as a typed alternative to the string-based `list-formatter`
   / `header-item-template`. The item template receives the item as `$implicit` and the row `index`; the
   string formatters remain supported and the templates take precedence when provided (fixes #357).
+- `open-direction` input (`auto` | `up` | `down`) on the directive and component to control whether the
+  dropdown opens above or below the input. `up`/`down` force the direction; `auto` (default) keeps the
+  previous behaviour of opening above only when the input is near the bottom of the viewport (fixes #386).
 
 ### Changed
 - **Upgraded to Angular 20** (`@angular/*` 20.3.x, `@angular/material` + `@angular/cdk` 20.2.x).

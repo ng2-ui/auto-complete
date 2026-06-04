@@ -44,6 +44,9 @@ export class NguiAutoCompleteComponent implements OnInit {
   // and the row index as `index`.
   @Input() public itemTemplate: TemplateRef<{ $implicit: any; index: number }>;
   @Input() public headerTemplate: TemplateRef<void>;
+  // When used as a standalone component (not via the directive), `up` renders the
+  // dropdown above the input; `down`/`auto` keep it below.
+  @Input('open-direction') public openDirection: 'auto' | 'up' | 'down' = 'auto';
 
   @Output() public valueSelected = new EventEmitter();
   @Output() public customSelected = new EventEmitter();

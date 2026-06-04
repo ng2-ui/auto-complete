@@ -35,6 +35,22 @@ describe('NguiAutoCompleteComponent', () => {
     expect(component.showInputTag).toBe(true);
     expect(component.acceptUserInput).toBe(true);
   });
+
+  it('should default open-direction to "auto" and not mark the dropdown as dropup', () => {
+    component.dropdownVisible = true;
+    fixture.detectChanges();
+    const dropdown: HTMLElement = fixture.nativeElement.querySelector('ul');
+    expect(component.openDirection).toBe('auto');
+    expect(dropdown.classList.contains('dropup')).toBe(false);
+  });
+
+  it('should add the "dropup" class when open-direction is "up"', () => {
+    component.openDirection = 'up';
+    component.dropdownVisible = true;
+    fixture.detectChanges();
+    const dropdown: HTMLElement = fixture.nativeElement.querySelector('ul');
+    expect(dropdown.classList.contains('dropup')).toBe(true);
+  });
 });
 
 @Component({

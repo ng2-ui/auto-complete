@@ -2,7 +2,7 @@
 // Flat ESLint config (ESLint 9+). Replaces the previous .eslintrc.json files.
 // Mirrors the original setup: angular-eslint recommended only (the eslintrc did
 // not enable eslint:recommended or typescript-eslint recommended), with the
-// per-project selector prefixes and the deferred prefer-standalone rule.
+// per-project selector prefixes.
 const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
 const cypress = require('eslint-plugin-cypress');
@@ -27,8 +27,6 @@ module.exports = tseslint.config(
         { type: 'element', prefix: 'ngui', style: 'kebab-case' },
       ],
       '@angular-eslint/no-input-rename': 'off',
-      // Re-enable in Phase 3 alongside the standalone migration.
-      '@angular-eslint/prefer-standalone': 'off',
     },
   },
 
@@ -46,8 +44,6 @@ module.exports = tseslint.config(
         'error',
         { type: 'element', prefix: 'app', style: 'kebab-case' },
       ],
-      // Re-enable in Phase 3 alongside the standalone migration.
-      '@angular-eslint/prefer-standalone': 'off',
     },
   },
 

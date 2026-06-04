@@ -1,13 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AppService } from '../app.service';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
+import { NguiAutoCompleteModule } from 'auto-complete';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-component-test',
     templateUrl: './component-test.component.html',
     styleUrls: ['./component-test.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, NguiAutoCompleteModule, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, FormsModule]
 })
 export class ComponentTestComponent {
+  appSvc = inject(AppService);
 
   public showAutocomplete = false;
   public loadingTemplate = '<span style="padding:8px;color:#888">Searching...</span>';
@@ -56,9 +61,6 @@ export class ComponentTestComponent {
     [source]="[1, 2, 3, 4, 5]">
   </ngui-auto-complete>
 }`;
-
-  constructor(public appSvc: AppService) {
-  }
 
   public addToAddress(addr: any): void {
     this.addrs.push(addr);

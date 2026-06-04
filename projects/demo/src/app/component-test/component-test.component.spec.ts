@@ -14,15 +14,14 @@ describe('ComponentTestComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, NguiAutoCompleteModule],
-      declarations: [ComponentTestComponent],
-      providers: [
+    imports: [FormsModule, NguiAutoCompleteModule, ComponentTestComponent],
+    providers: [
         AppService,
         provideHttpClient(),
         provideHttpClientTesting(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    })
+    ],
+    schemas: [NO_ERRORS_SCHEMA],
+})
       .compileComponents();
   }));
 

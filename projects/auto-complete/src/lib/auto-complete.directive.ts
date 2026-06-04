@@ -1,29 +1,14 @@
-import {
-  AfterViewInit,
-  ComponentRef,
-  Directive,
-  EventEmitter,
-  Host,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Optional,
-  Output,
-  SimpleChanges,
-  SkipSelf,
-  ViewContainerRef
-} from '@angular/core';
+import { AfterViewInit, ComponentRef, Directive, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewContainerRef, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AbstractControl, ControlContainer, FormControl, FormGroup, FormGroupName } from '@angular/forms';
 import { NguiAutoCompleteComponent } from './auto-complete.component';
 
-@Directive({
+@Directive({ 
     // eslint-disable-next-line @angular-eslint/directive-selector
-    selector: '[auto-complete], [ngui-auto-complete]',
-    standalone: false
-})
+    selector: '[auto-complete], [ngui-auto-complete]' })
 export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+  viewContainerRef = inject(ViewContainerRef);
+  private parentForm = inject(ControlContainer, { optional: true, host: true, skipSelf: true });
 
   @Input('autocomplete') public autocomplete = false;
   @Input('auto-complete-placeholder') public autoCompletePlaceholder: string;
@@ -75,8 +60,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
   private documentClickListener: (e: MouseEvent) => any;
   private dropdownSubs = new Subscription();
 
-  constructor(public viewContainerRef: ViewContainerRef,
-              @Optional() @Host() @SkipSelf() private parentForm: ControlContainer) {
+  constructor() {
     this.el = this.viewContainerRef.element.nativeElement;
   }
 

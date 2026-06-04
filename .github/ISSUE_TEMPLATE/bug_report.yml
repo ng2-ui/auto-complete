@@ -14,7 +14,7 @@ body:
       options:
         - label: I am running the latest version of `@ngui/auto-complete`
           required: true
-        - label: I checked the [README](https://github.com/ng2-ui/auto-complete#readme) and found no answer
+        - label: I checked the [README](https://github.com/ng2-ui/auto-complete#usage) and found no answer
           required: true
         - label: I searched existing issues and this has not already been reported
           required: true

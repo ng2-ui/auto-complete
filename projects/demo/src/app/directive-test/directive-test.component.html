@@ -404,4 +404,43 @@
     </mat-card-content>
   </mat-card>
 
+  <!-- Open direction (up / down / auto) -->
+  <mat-card class="demo-card">
+    <mat-card-header>
+      <mat-card-title>Dropdown Open Direction</mat-card-title>
+      <mat-card-subtitle>
+        Force the dropdown above or below the input with <code>open-direction</code>.
+        Pick a direction, then focus the input below.
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="demo-area">
+        <label class="direction-picker">
+          direction:
+          <select [(ngModel)]="openDir">
+            <option value="auto">auto</option>
+            <option value="up">up</option>
+            <option value="down">down</option>
+          </select>
+        </label>
+        <div ngui-auto-complete
+          [source]="arrayOfStrings"
+          [open-direction]="openDir"
+          [accept-user-input]="true"
+          [select-on-blur]="true"
+          (ngModelChange)="myCallback1($event)"
+          (customSelected)="customCallback($event)">
+          <input id="model13" [ngModel]="model13" placeholder="opens {{ openDir }}"/>
+        </div>
+      </div>
+      <p class="model-display">direction: <code>{{ openDir }}</code> · selected: <code>{{ json(model13) }}</code></p>
+      <mat-expansion-panel class="code-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>View Template</mat-panel-title>
+        </mat-expansion-panel-header>
+        <pre>{{ template13 }}</pre>
+      </mat-expansion-panel>
+    </mat-card-content>
+  </mat-card>
+
 </div>

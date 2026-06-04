@@ -70,8 +70,11 @@ export class DirectiveTestComponent {
   public model10 = '';
   public model11 = '';
   public model12 = '';
+  public model13 = '';
   public noMatchVisible11 = false;
   public myModel;
+
+  public openDir = 'auto';
 
   template1 = `
   <div ngui-auto-complete
@@ -234,6 +237,22 @@ export class DirectiveTestComponent {
          [source]="arrayOfStrings"
          no-match-found-text=""
          placeholder="type something not in the list" />
+  `;
+
+  template13 = `
+  <label>direction:
+    <select [(ngModel)]="openDir">
+      <option value="auto">auto</option>
+      <option value="up">up</option>
+      <option value="down">down</option>
+    </select>
+  </label>
+
+  <div ngui-auto-complete
+       [source]="arrayOfStrings"
+       [open-direction]="openDir">
+    <input [ngModel]="model13" placeholder="opens {{ openDir }}" />
+  </div>
   `;
 
   public addToList11() {

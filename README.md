@@ -152,6 +152,7 @@ works on both the component and the directive:
 | `ignore-accents` | `boolean` | `true` | Treat accented characters as their base characters during matching |
 | `autocomplete` | `boolean` | `false` | Set `autocomplete="off"` on the input (`false` = off) |
 | `is-rtl` | `boolean` | `false` | Right-to-left dropdown positioning |
+| `open-direction` | `'auto' \| 'up' \| 'down'` | `'auto'` | Force the dropdown above (`up`) or below (`down`) the input. `auto` opens below unless the input is near the bottom of the viewport |
 | `z-index` | `string` | `'1'` | CSS z-index of the dropdown |
 
 ### Directive Outputs
@@ -172,6 +173,9 @@ All directive inputs are supported plus:
 | `show-input-tag` | `boolean` | `true` | Render an `<input>` inside the component |
 | `show-dropdown-on-init` | `boolean` | `false` | Open dropdown immediately when component appears |
 | `placeholder` | `string` | — | Placeholder text for the internal input |
+
+> **Note:** for the standalone component, `open-direction="up"` renders the dropdown above the input via
+> CSS; `auto`/`down` keep it below. The viewport-aware `auto` flip applies to the directive usage.
 
 ### Component Outputs
 

@@ -14,7 +14,7 @@
 
   <!-- dropdown that user can select -->
   @if (dropdownVisible) {
-    <ul [class.empty]="emptyList">
+    <ul [class.empty]="emptyList" [class.dropup]="openDirection === 'up'">
       @if (isLoading && loadingTemplate) {
         <li class="loading"
         [innerHTML]="loadingTemplate"></li>

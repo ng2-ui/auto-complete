@@ -35,10 +35,24 @@ import { NguiAutoCompleteComponent, NguiAutoCompleteDirective } from '@ngui/auto
 export class MyComponent {}
 ```
 
-> **Note:** `NguiAutoCompleteModule` was removed in v21. Import the standalone
-> `NguiAutoCompleteComponent` / `NguiAutoCompleteDirective` directly instead. If you still need the
-> NgModule (or Angular 19 and below), install the matching major — e.g. `@ngui/auto-complete@20` (which
-> retained the module) or `@ngui/auto-complete@19`.
+### NgModule (Angular 20 and below)
+
+`NguiAutoCompleteModule` was **removed in v21** — import the standalone component/directive shown above
+instead. If your app still relies on the NgModule, install the matching major and import the module as
+before:
+
+- **Angular 20** → `npm install @ngui/auto-complete@20` (standalone, but `NguiAutoCompleteModule` is still
+  re-exported for back-compat).
+- **Angular 19 and older** → `npm install @ngui/auto-complete@19`.
+
+```typescript
+import { NguiAutoCompleteModule } from '@ngui/auto-complete';
+
+@NgModule({
+  imports: [BrowserModule, FormsModule, NguiAutoCompleteModule],
+})
+export class AppModule {}
+```
 
 ---
 

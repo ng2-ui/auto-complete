@@ -1,0 +1,75 @@
+name: Bug report
+description: Report a problem with @ngui/auto-complete
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug. Please fill out the form below.
+        **Issues without a minimal reproduction may be closed.**
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      options:
+        - label: I am running the latest version of `@ngui/auto-complete`
+          required: true
+        - label: I checked the [README](https://github.com/ng2-ui/auto-complete#readme) and found no answer
+          required: true
+        - label: I searched existing issues and this has not already been reported
+          required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Current behavior
+      description: What actually happens?
+    validations:
+      required: true
+  - type: input
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: A link to a minimal reproduction (e.g. StackBlitz). This is the fastest way to get your issue fixed.
+      placeholder: https://stackblitz.com/edit/...
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+  - type: input
+    id: lib-version
+    attributes:
+      label: '@ngui/auto-complete version'
+      placeholder: 20.0.0
+    validations:
+      required: true
+  - type: textarea
+    id: ng-version
+    attributes:
+      label: Angular version
+      description: Output of `ng version`.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Any console output or stack traces. Leave blank if not applicable.
+      render: shell
+    validations:
+      required: false

@@ -10,15 +10,9 @@ import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 
 if (environment.production) {
-  enableProdMode();
+	enableProdMode();
 }
 
 bootstrapApplication(AppComponent, {
-  providers: [
-    provideRouter(routes, withHashLocation()),
-    provideHttpClient(withInterceptorsFromDi()),
-    provideAnimations(),
-    AppService
-  ]
-})
-  .catch(err => console.error(err));
+	providers: [provideRouter(routes, withHashLocation()), provideHttpClient(withInterceptorsFromDi()), provideAnimations(), AppService],
+}).catch((err) => console.error(err));

@@ -9,29 +9,24 @@ import { ComponentTestComponent } from './component-test.component';
 import { AppService } from '../app.service';
 
 describe('ComponentTestComponent', () => {
-  let component: ComponentTestComponent;
-  let fixture: ComponentFixture<ComponentTestComponent>;
+	let component: ComponentTestComponent;
+	let fixture: ComponentFixture<ComponentTestComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-    imports: [FormsModule, NguiAutoCompleteModule, ComponentTestComponent],
-    providers: [
-        AppService,
-        provideHttpClient(),
-        provideHttpClientTesting(),
-    ],
-    schemas: [NO_ERRORS_SCHEMA],
-})
-      .compileComponents();
-  }));
+	beforeEach(waitForAsync(() => {
+		TestBed.configureTestingModule({
+			imports: [FormsModule, NguiAutoCompleteModule, ComponentTestComponent],
+			providers: [AppService, provideHttpClient(), provideHttpClientTesting()],
+			schemas: [NO_ERRORS_SCHEMA],
+		}).compileComponents();
+	}));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ComponentTestComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(ComponentTestComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

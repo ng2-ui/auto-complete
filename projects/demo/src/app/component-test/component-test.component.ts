@@ -6,33 +6,41 @@ import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } fr
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'app-component-test',
-    templateUrl: './component-test.component.html',
-    styleUrls: ['./component-test.component.scss'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, NguiAutoCompleteModule, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, FormsModule]
+	selector: 'app-component-test',
+	templateUrl: './component-test.component.html',
+	styleUrls: ['./component-test.component.scss'],
+	imports: [
+		MatCard,
+		MatCardHeader,
+		MatCardTitle,
+		MatCardSubtitle,
+		MatCardContent,
+		NguiAutoCompleteModule,
+		MatExpansionPanel,
+		MatExpansionPanelHeader,
+		MatExpansionPanelTitle,
+		FormsModule,
+	],
 })
 export class ComponentTestComponent {
-  appSvc = inject(AppService);
+	appSvc = inject(AppService);
 
-  public showAutocomplete = false;
-  public loadingTemplate = '<span style="padding:8px;color:#888">Searching...</span>';
-  public addrs: any[] = [
-    {display_name: 'Berlin, Germany'},
-    {display_name: 'London, United Kingdom'}
-  ];
+	public showAutocomplete = false;
+	public loadingTemplate = '<span style="padding:8px;color:#888">Searching...</span>';
+	public addrs: any[] = [{ display_name: 'Berlin, Germany' }, { display_name: 'London, United Kingdom' }];
 
-  myModel;
-  showMe;
-  tplModel;
-  showTpl = false;
-  public people: any[] = [
-    {name: 'Ada Lovelace', role: 'Mathematician', year: 1815},
-    {name: 'Alan Turing', role: 'Computer Scientist', year: 1912},
-    {name: 'Grace Hopper', role: 'Computer Scientist', year: 1906},
-    {name: 'Katherine Johnson', role: 'Mathematician', year: 1918}
-  ];
+	myModel;
+	showMe;
+	tplModel;
+	showTpl = false;
+	public people: any[] = [
+		{ name: 'Ada Lovelace', role: 'Mathematician', year: 1815 },
+		{ name: 'Alan Turing', role: 'Computer Scientist', year: 1912 },
+		{ name: 'Grace Hopper', role: 'Computer Scientist', year: 1906 },
+		{ name: 'Katherine Johnson', role: 'Mathematician', year: 1918 },
+	];
 
-  templateStr1 = `<div class="addr-input-wrapper" (click)="showAutocomplete = true">
+	templateStr1 = `<div class="addr-input-wrapper" (click)="showAutocomplete = true">
   @for (addr of addrs; track addr; let i = $index) {
     <span class="addr-chip">
       {{ addr.display_name }}
@@ -56,7 +64,7 @@ export class ComponentTestComponent {
   }
 </div>`;
 
-  templateStr2 = `
+	templateStr2 = `
 <input [(ngModel)]="myModel"
        (focus)="showMe = true"
        (blur)="showMe = false"
@@ -70,7 +78,7 @@ export class ComponentTestComponent {
   </ngui-auto-complete>
 }`;
 
-  templateStr3 = `
+	templateStr3 = `
 <input [ngModel]="tplModel?.name"
        (focus)="showTpl = true" (blur)="showTpl = false"
        readonly placeholder="focus to browse people"/>
@@ -90,18 +98,17 @@ export class ComponentTestComponent {
   <strong>{{ i + 1 }}. {{ person.name }}</strong> — {{ person.role }} ({{ person.year }})
 </ng-template>`;
 
-  public addToAddress(addr: any): void {
-    this.addrs.push(addr);
-    this.showAutocomplete = false;
-  }
+	public addToAddress(addr: any): void {
+		this.addrs.push(addr);
+		this.showAutocomplete = false;
+	}
 
-  public removeFromAddress(event: Event, index: number): void {
-    this.addrs.splice(index, 1);
-    event.stopPropagation();
-  }
+	public removeFromAddress(event: Event, index: number): void {
+		this.addrs.splice(index, 1);
+		event.stopPropagation();
+	}
 
-  public myListFormatter(data: any): string {
-    return data['display_name'];
-  }
-
+	public myListFormatter(data: any): string {
+		return data['display_name'];
+	}
 }

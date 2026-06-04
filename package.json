@@ -5,11 +5,14 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
+    "prepare": "husky",
     "generate-build-info": "node scripts/generate-build-info.mjs",
     "prestart": "npm run generate-build-info",
     "start": "ng serve",
     "test": "ng test",
     "lint": "ng lint",
+    "format": "prettier --write \"projects/**/*.{ts,html,scss}\"",
+    "format:check": "prettier --check \"projects/**/*.{ts,html,scss}\"",
     "e2e": "ng e2e",
     "build-lib:watch": "ng build auto-complete --watch",
     "build-lib:prod": "ng build auto-complete --configuration production && npm run copy-lib",
@@ -20,6 +23,9 @@
     "cypress:run": "ng run demo:cypress-run"
   },
   "private": true,
+  "lint-staged": {
+    "projects/**/*.{ts,html,scss}": "prettier --write"
+  },
   "dependencies": {
     "@angular/animations": "^20.3.24",
     "@angular/cdk": "^20.2.14",
@@ -49,6 +55,7 @@
     "cypress": "^15.16.0",
     "eslint": "^9.39.4",
     "eslint-plugin-cypress": "^6.4.1",
+    "husky": "^9.1.7",
     "jasmine-core": "~6.2.0",
     "jasmine-spec-reporter": "~7.0.0",
     "karma": "~6.4.4",
@@ -56,7 +63,9 @@
     "karma-coverage": "^2.2.1",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^2.2.0",
+    "lint-staged": "^17.0.7",
     "ng-packagr": "^20.3.2",
+    "prettier": "^3.8.3",
     "ts-node": "~10.9.2",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.60.1"

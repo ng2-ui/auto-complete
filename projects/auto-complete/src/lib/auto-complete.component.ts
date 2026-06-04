@@ -1,297 +1,302 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation, inject } from '@angular/core';
+import {
+	Component,
+	ElementRef,
+	EventEmitter,
+	Input,
+	OnInit,
+	Output,
+	TemplateRef,
+	ViewChild,
+	ViewEncapsulation,
+	inject,
+} from '@angular/core';
 import { NguiAutoCompleteService } from './auto-complete.service';
 import { Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 
 @Component({
-    selector: 'ngui-auto-complete',
-    templateUrl: './auto-complete.component.html',
-    styleUrls: ['./auto-complete.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    providers: [NguiAutoCompleteService],
-    imports: [FormsModule, NgClass, NgTemplateOutlet]
+	selector: 'ngui-auto-complete',
+	templateUrl: './auto-complete.component.html',
+	styleUrls: ['./auto-complete.component.scss'],
+	encapsulation: ViewEncapsulation.None,
+	providers: [NguiAutoCompleteService],
+	imports: [FormsModule, NgClass, NgTemplateOutlet],
 })
 export class NguiAutoCompleteComponent implements OnInit {
-  autoComplete = inject(NguiAutoCompleteService);
+	autoComplete = inject(NguiAutoCompleteService);
 
-  /**
-   * public input properties
-   */
-  @Input('autocomplete') public autocomplete = false;
-  @Input('list-formatter') public listFormatter: (arg: any) => string;
-  @Input('source') public source: any;
-  @Input('path-to-data') public pathToData: string;
-  @Input('min-chars') public minChars = 0;
-  @Input('placeholder') public placeholder: string;
-  @Input('blank-option-text') public blankOptionText: string;
-  @Input('no-match-found-text') public noMatchFoundText: string;
-  @Input('accept-user-input') public acceptUserInput = true;
-  @Input('loading-text') public loadingText = 'Loading';
-  @Input('loading-template') public loadingTemplate = null;
-  @Input('max-num-list') public maxNumList: number;
-  @Input('show-input-tag') public showInputTag = true;
-  @Input('show-dropdown-on-init') public showDropdownOnInit = false;
-  @Input('tab-to-select') public tabToSelect = true;
-  @Input('match-formatted') public matchFormatted = false;
-  @Input('auto-select-first-item') public autoSelectFirstItem = false;
-  @Input('select-on-blur') public selectOnBlur = false;
-  @Input('re-focus-after-select') public reFocusAfterSelect = true;
-  @Input('header-item-template') public headerItemTemplate = null;
-  @Input('ignore-accents') public ignoreAccents = true;
-  // Angular template alternatives to the string `list-formatter` / `header-item-template`.
-  // When provided they take precedence; the item template receives the item as `$implicit`
-  // and the row index as `index`.
-  @Input() public itemTemplate: TemplateRef<{ $implicit: any; index: number }>;
-  @Input() public headerTemplate: TemplateRef<void>;
-  // When used as a standalone component (not via the directive), `up` renders the
-  // dropdown above the input; `down`/`auto` keep it below.
-  @Input('open-direction') public openDirection: 'auto' | 'up' | 'down' = 'auto';
+	/**
+	 * public input properties
+	 */
+	@Input('autocomplete') public autocomplete = false;
+	@Input('list-formatter') public listFormatter: (arg: any) => string;
+	@Input('source') public source: any;
+	@Input('path-to-data') public pathToData: string;
+	@Input('min-chars') public minChars = 0;
+	@Input('placeholder') public placeholder: string;
+	@Input('blank-option-text') public blankOptionText: string;
+	@Input('no-match-found-text') public noMatchFoundText: string;
+	@Input('accept-user-input') public acceptUserInput = true;
+	@Input('loading-text') public loadingText = 'Loading';
+	@Input('loading-template') public loadingTemplate = null;
+	@Input('max-num-list') public maxNumList: number;
+	@Input('show-input-tag') public showInputTag = true;
+	@Input('show-dropdown-on-init') public showDropdownOnInit = false;
+	@Input('tab-to-select') public tabToSelect = true;
+	@Input('match-formatted') public matchFormatted = false;
+	@Input('auto-select-first-item') public autoSelectFirstItem = false;
+	@Input('select-on-blur') public selectOnBlur = false;
+	@Input('re-focus-after-select') public reFocusAfterSelect = true;
+	@Input('header-item-template') public headerItemTemplate = null;
+	@Input('ignore-accents') public ignoreAccents = true;
+	// Angular template alternatives to the string `list-formatter` / `header-item-template`.
+	// When provided they take precedence; the item template receives the item as `$implicit`
+	// and the row index as `index`.
+	@Input() public itemTemplate: TemplateRef<{ $implicit: any; index: number }>;
+	@Input() public headerTemplate: TemplateRef<void>;
+	// When used as a standalone component (not via the directive), `up` renders the
+	// dropdown above the input; `down`/`auto` keep it below.
+	@Input('open-direction') public openDirection: 'auto' | 'up' | 'down' = 'auto';
 
-  @Output() public valueSelected = new EventEmitter();
-  @Output() public customSelected = new EventEmitter();
-  @Output() public textEntered = new EventEmitter();
-  @Output() public noMatchFound = new EventEmitter<void>();
+	@Output() public valueSelected = new EventEmitter();
+	@Output() public customSelected = new EventEmitter();
+	@Output() public textEntered = new EventEmitter();
+	@Output() public noMatchFound = new EventEmitter<void>();
 
-  @ViewChild('autoCompleteInput') public autoCompleteInput: ElementRef;
-  @ViewChild('autoCompleteContainer') public autoCompleteContainer: ElementRef;
+	@ViewChild('autoCompleteInput') public autoCompleteInput: ElementRef;
+	@ViewChild('autoCompleteContainer') public autoCompleteContainer: ElementRef;
 
-  public dropdownVisible = false;
-  public isLoading = false;
+	public dropdownVisible = false;
+	public isLoading = false;
 
-  public filteredList: any[] = [];
-  public minCharsEntered = false;
-  public itemIndex: number = null;
-  public keyword: string;
+	public filteredList: any[] = [];
+	public minCharsEntered = false;
+	public itemIndex: number = null;
+	public keyword: string;
 
-  private el: HTMLElement;           // this component  element `<ngui-auto-complete>`
-  private timer = 0;
+	private el: HTMLElement; // this component  element `<ngui-auto-complete>`
+	private timer = 0;
 
-  private delay = (() => {
-    let timer = null;
-    return (callback: any, ms: number) => {
-      clearTimeout(timer);
-      timer = setTimeout(callback, ms);
-    };
-  })();
-  private selectOnEnter = false;
+	private delay = (() => {
+		let timer = null;
+		return (callback: any, ms: number) => {
+			clearTimeout(timer);
+			timer = setTimeout(callback, ms);
+		};
+	})();
+	private selectOnEnter = false;
 
-  /**
-   * constructor
-   */
-  constructor() {
-    const elementRef = inject(ElementRef);
+	/**
+	 * constructor
+	 */
+	constructor() {
+		const elementRef = inject(ElementRef);
 
-    this.el = elementRef.nativeElement;
-  }
+		this.el = elementRef.nativeElement;
+	}
 
-  /**
-   * user enters into input el, shows list to select, then select one
-   */
-  ngOnInit(): void {
-    this.autoComplete.source = this.source;
-    this.autoComplete.pathToData = this.pathToData;
-    this.autoComplete.listFormatter = this.listFormatter;
-    if (this.autoSelectFirstItem) {
-      this.itemIndex = 0;
-    }
-    setTimeout(() => {
-      if (this.autoCompleteInput && this.reFocusAfterSelect) {
-        this.autoCompleteInput.nativeElement.focus();
-      }
-      if (this.showDropdownOnInit) {
-        this.showDropdownList({target: {value: ''}});
-      }
-    });
-  }
+	/**
+	 * user enters into input el, shows list to select, then select one
+	 */
+	ngOnInit(): void {
+		this.autoComplete.source = this.source;
+		this.autoComplete.pathToData = this.pathToData;
+		this.autoComplete.listFormatter = this.listFormatter;
+		if (this.autoSelectFirstItem) {
+			this.itemIndex = 0;
+		}
+		setTimeout(() => {
+			if (this.autoCompleteInput && this.reFocusAfterSelect) {
+				this.autoCompleteInput.nativeElement.focus();
+			}
+			if (this.showDropdownOnInit) {
+				this.showDropdownList({ target: { value: '' } });
+			}
+		});
+	}
 
-  public isSrcArr(): boolean {
-    return Array.isArray(this.source);
-  }
+	public isSrcArr(): boolean {
+		return Array.isArray(this.source);
+	}
 
-  public reloadListInDelay = (evt: any): void => {
-    const delayMs = this.isSrcArr() ? 10 : 500;
-    const keyword = evt.target.value;
+	public reloadListInDelay = (evt: any): void => {
+		const delayMs = this.isSrcArr() ? 10 : 500;
+		const keyword = evt.target.value;
 
-    // executing after user stopped typing
-    this.delay(() => this.reloadList(keyword), delayMs);
-  };
+		// executing after user stopped typing
+		this.delay(() => this.reloadList(keyword), delayMs);
+	};
 
-  public showDropdownList(event: any): void {
-    this.dropdownVisible = true;
-    this.reloadList(event.target.value);
-  }
+	public showDropdownList(event: any): void {
+		this.dropdownVisible = true;
+		this.reloadList(event.target.value);
+	}
 
-  public hideDropdownList(): void {
-    this.selectOnEnter = false;
-    this.dropdownVisible = false;
-  }
+	public hideDropdownList(): void {
+		this.selectOnEnter = false;
+		this.dropdownVisible = false;
+	}
 
-  public findItemFromSelectValue(selectText: string): any {
-    const matchingItems = this.filteredList.filter((item) => ('' + item) === selectText);
-    return matchingItems.length ? matchingItems[0] : null;
-  }
+	public findItemFromSelectValue(selectText: string): any {
+		const matchingItems = this.filteredList.filter((item) => '' + item === selectText);
+		return matchingItems.length ? matchingItems[0] : null;
+	}
 
-  public reloadList(keyword: string): void {
+	public reloadList(keyword: string): void {
+		this.filteredList = [];
+		if (keyword.length < (this.minChars || 0)) {
+			this.minCharsEntered = false;
+			return;
+		} else {
+			this.minCharsEntered = true;
+		}
 
-    this.filteredList = [];
-    if (keyword.length < (this.minChars || 0)) {
-      this.minCharsEntered = false;
-      return;
-    } else {
-      this.minCharsEntered = true;
-    }
+		if (this.isSrcArr()) {
+			// local source
+			this.isLoading = false;
+			this.filteredList = this.autoComplete.filter(this.source, keyword, this.matchFormatted, this.ignoreAccents);
+			if (this.maxNumList) {
+				this.filteredList = this.filteredList.slice(0, this.maxNumList);
+			}
+			if (this.minCharsEntered && !this.filteredList.length) {
+				this.noMatchFound.emit();
+			}
+		} else {
+			// remote source
+			this.isLoading = true;
 
-    if (this.isSrcArr()) {    // local source
-      this.isLoading = false;
-      this.filteredList = this.autoComplete.filter(this.source, keyword, this.matchFormatted, this.ignoreAccents);
-      if (this.maxNumList) {
-        this.filteredList = this.filteredList.slice(0, this.maxNumList);
-      }
-      if (this.minCharsEntered && !this.filteredList.length) {
-        this.noMatchFound.emit();
-      }
+			if (typeof this.source === 'function') {
+				// custom function that returns observable
+				(this.source(keyword) as Observable<any>).subscribe({
+					next: (resp) => {
+						if (this.pathToData) {
+							const paths = this.pathToData.split('.');
+							paths.forEach((prop) => (resp = resp[prop]));
+						}
+						this.filteredList = resp;
+						if (this.maxNumList) {
+							this.filteredList = this.filteredList.slice(0, this.maxNumList);
+						}
+						this.isLoading = false;
+						if (this.minCharsEntered && !this.filteredList.length) {
+							this.noMatchFound.emit();
+						}
+					},
+					error: (error) => {
+						console.warn(error);
+						this.isLoading = false;
+					},
+				});
+			} else {
+				// remote source
+				this.autoComplete.getRemoteData(keyword).subscribe({
+					next: (resp) => {
+						this.filteredList = resp ? resp : [];
+						if (this.maxNumList) {
+							this.filteredList = this.filteredList.slice(0, this.maxNumList);
+						}
+						this.isLoading = false;
+						if (this.minCharsEntered && !this.filteredList.length) {
+							this.noMatchFound.emit();
+						}
+					},
+					error: (error) => {
+						console.warn(error);
+						this.isLoading = false;
+					},
+				});
+			}
+		}
+	}
 
-    } else {// remote source
-      this.isLoading = true;
+	public selectOne(data: any) {
+		if (!!data || data === '') {
+			this.valueSelected.emit(data);
+		} else {
+			this.customSelected.emit(this.keyword);
+		}
+	}
 
-      if (typeof this.source === 'function') {
-        // custom function that returns observable
-        (this.source(keyword) as Observable<any>).subscribe({
-            next: (resp) => {
-              if (this.pathToData) {
-                const paths = this.pathToData.split('.');
-                paths.forEach((prop) => resp = resp[prop]);
-              }
-              this.filteredList = resp;
-              if (this.maxNumList) {
-                this.filteredList = this.filteredList.slice(0, this.maxNumList);
-              }
-              this.isLoading = false;
-              if (this.minCharsEntered && !this.filteredList.length) {
-                this.noMatchFound.emit();
-              }
-            },
-            error: (error) => {
-              console.warn(error);
-              this.isLoading = false;
-            }
-          }
-        );
-      } else {
-        // remote source
-        this.autoComplete.getRemoteData(keyword).subscribe({
-          next: (resp) => {
-            this.filteredList = resp ? resp : [];
-            if (this.maxNumList) {
-              this.filteredList = this.filteredList.slice(0, this.maxNumList);
-            }
-            this.isLoading = false;
-            if (this.minCharsEntered && !this.filteredList.length) {
-              this.noMatchFound.emit();
-            }
-          },
-          error: (error) => {
-            console.warn(error);
-            this.isLoading = false;
-          }
-        });
-      }
-    }
-  }
+	public enterText(data: any) {
+		this.textEntered.emit(data);
+	}
 
-  public selectOne(data: any) {
-    if (!!data || data === '') {
-      this.valueSelected.emit(data);
-    } else {
-      this.customSelected.emit(this.keyword);
-    }
-  }
+	public blurHandler(evt: any) {
+		if (this.selectOnBlur) {
+			this.selectOne(this.filteredList[this.itemIndex]);
+		}
 
-  public enterText(data: any) {
-    this.textEntered.emit(data);
-  }
+		this.hideDropdownList();
+	}
 
-  public blurHandler(evt: any) {
-    if (this.selectOnBlur) {
-      this.selectOne(this.filteredList[this.itemIndex]);
-    }
+	public inputElKeyHandler = (evt: any) => {
+		const totalNumItem = this.filteredList.length;
 
-    this.hideDropdownList();
-  }
+		if (!this.selectOnEnter && this.autoSelectFirstItem && 0 !== totalNumItem) {
+			this.selectOnEnter = true;
+		}
 
-  public inputElKeyHandler = (evt: any) => {
-    const totalNumItem = this.filteredList.length;
+		switch (evt.keyCode) {
+			case 27: // ESC, hide auto complete
+				this.selectOnEnter = false;
+				this.selectOne(undefined);
+				break;
 
-    if (!this.selectOnEnter && this.autoSelectFirstItem && (0 !== totalNumItem)) {
-      this.selectOnEnter = true;
-    }
+			case 38: // UP, select the previous li el
+				if (0 === totalNumItem) {
+					return;
+				}
+				this.selectOnEnter = true;
+				this.itemIndex = (totalNumItem + this.itemIndex - 1) % totalNumItem;
+				this.scrollToView(this.itemIndex);
+				break;
 
-    switch (evt.keyCode) {
-      case 27: // ESC, hide auto complete
-        this.selectOnEnter = false;
-        this.selectOne(undefined);
-        break;
+			case 40: // DOWN, select the next li el or the first one
+				if (0 === totalNumItem) {
+					return;
+				}
+				this.selectOnEnter = true;
+				this.dropdownVisible = true;
+				let sum = this.itemIndex;
+				sum = this.itemIndex === null ? 0 : sum + 1;
+				this.itemIndex = (totalNumItem + sum) % totalNumItem;
+				this.scrollToView(this.itemIndex);
+				break;
 
-      case 38: // UP, select the previous li el
-        if (0 === totalNumItem) {
-          return;
-        }
-        this.selectOnEnter = true;
-        this.itemIndex = (totalNumItem + this.itemIndex - 1) % totalNumItem;
-        this.scrollToView(this.itemIndex);
-        break;
+			case 13: // ENTER, choose it!!
+				if (this.selectOnEnter) {
+					this.selectOne(this.filteredList[this.itemIndex]);
+				}
+				evt.preventDefault();
+				break;
 
-      case 40: // DOWN, select the next li el or the first one
-        if (0 === totalNumItem) {
-          return;
-        }
-        this.selectOnEnter = true;
-        this.dropdownVisible = true;
-        let sum = this.itemIndex;
-        sum = (this.itemIndex === null) ? 0 : sum + 1;
-        this.itemIndex = (totalNumItem + sum) % totalNumItem;
-        this.scrollToView(this.itemIndex);
-        break;
+			case 9: // TAB, choose if tab-to-select is enabled
+				if (this.tabToSelect) {
+					this.selectOne(this.filteredList[this.itemIndex]);
+				}
+				break;
+		}
+	};
 
-      case 13: // ENTER, choose it!!
-        if (this.selectOnEnter) {
-          this.selectOne(this.filteredList[this.itemIndex]);
-        }
-        evt.preventDefault();
-        break;
+	public scrollToView(index) {
+		const container = this.autoCompleteContainer.nativeElement;
+		const ul = container.querySelector('ul');
+		const li = ul.querySelector('li'); // just sample the first li to get height
+		const liHeight = li.offsetHeight;
+		const scrollTop = ul.scrollTop;
+		const viewport = scrollTop + ul.offsetHeight;
+		const scrollOffset = liHeight * index;
+		if (scrollOffset < scrollTop || scrollOffset + liHeight > viewport) {
+			ul.scrollTop = scrollOffset;
+		}
+	}
 
-      case 9: // TAB, choose if tab-to-select is enabled
-        if (this.tabToSelect) {
-          this.selectOne(this.filteredList[this.itemIndex]);
-        }
-        break;
-    }
-  };
+	public trackByIndex(index, item) {
+		return index;
+	}
 
-  public scrollToView(index) {
-    const container = this.autoCompleteContainer.nativeElement;
-    const ul = container.querySelector('ul');
-    const li = ul.querySelector('li');  // just sample the first li to get height
-    const liHeight = li.offsetHeight;
-    const scrollTop = ul.scrollTop;
-    const viewport = scrollTop + ul.offsetHeight;
-    const scrollOffset = liHeight * index;
-    if (scrollOffset < scrollTop || (scrollOffset + liHeight) > viewport) {
-      ul.scrollTop = scrollOffset;
-    }
-  }
-
-  public trackByIndex(index, item) {
-    return index;
-  }
-
-  get emptyList(): boolean {
-    return !(
-      this.isLoading ||
-      (this.minCharsEntered && !this.isLoading && !this.filteredList.length) ||
-      (this.filteredList.length)
-    );
-  }
-
+	get emptyList(): boolean {
+		return !(this.isLoading || (this.minCharsEntered && !this.isLoading && !this.filteredList.length) || this.filteredList.length);
+	}
 }

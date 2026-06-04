@@ -1,21 +1,21 @@
 // Component-specific overrides for the component test demos
 
 ngui-auto-complete {
-  display: block;
-  width: 100%;
+	display: block;
+	width: 100%;
 }
 
 input:not([mat-input]) {
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid rgba(0, 0, 0, 0.23);
-  border-radius: 4px;
-  font-size: 14px;
-  font-family: Roboto, sans-serif;
-  outline: none;
+	width: 100%;
+	padding: 8px 12px;
+	border: 1px solid rgba(0, 0, 0, 0.23);
+	border-radius: 4px;
+	font-size: 14px;
+	font-family: Roboto, sans-serif;
+	outline: none;
 
-  &:focus {
-    border-color: #3f51b5;
-    box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.15);
-  }
+	&:focus {
+		border-color: #3f51b5;
+		box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.15);
+	}
 }

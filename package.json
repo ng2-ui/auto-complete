@@ -10,6 +10,8 @@
     "start": "ng serve",
     "test": "ng test",
     "lint": "ng lint",
+    "format": "prettier --write \"projects/**/*.{ts,html,scss}\"",
+    "format:check": "prettier --check \"projects/**/*.{ts,html,scss}\"",
     "e2e": "ng e2e",
     "build-lib:watch": "ng build auto-complete --watch",
     "build-lib:prod": "ng build auto-complete --configuration production && npm run copy-lib",
@@ -57,6 +59,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^2.2.0",
     "ng-packagr": "^20.3.2",
+    "prettier": "^3.8.3",
     "ts-node": "~10.9.2",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.60.1"

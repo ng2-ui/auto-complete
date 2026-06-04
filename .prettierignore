@@ -1,0 +1,13 @@
+# build output & deps
+dist
+docs
+coverage
+out-tsc
+node_modules
+package-lock.json
+
+# generated
+projects/demo/src/app/build-info.ts
+
+# prose kept hand-wrapped
+*.md

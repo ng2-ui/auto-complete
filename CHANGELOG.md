@@ -16,6 +16,12 @@ and this project follows [Angular version numbers](https://angular.dev/reference
   (the directive now matches `[ngui-auto-complete]` only). Update any templates using the bare
   `auto-complete` attribute: `<input auto-complete …>` → `<input ngui-auto-complete …>`.
 
+### Added
+- `itemTemplate` and `headerTemplate` inputs (Angular `ng-template`s) on the component and directive to
+  customize dropdown rows and the header row, as a typed alternative to the string-based `list-formatter`
+  / `header-item-template`. The item template receives the item as `$implicit` and the row `index`; the
+  string formatters remain supported and the templates take precedence when provided (fixes #357).
+
 ### Changed
 - **Upgraded to Angular 20** (`@angular/*` 20.3.x, `@angular/material` + `@angular/cdk` 20.2.x).
   Install `@ngui/auto-complete@20` for Angular 20 projects.

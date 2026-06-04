@@ -1,4 +1,4 @@
-import { AfterViewInit, ComponentRef, Directive, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewContainerRef, inject } from '@angular/core';
+import { AfterViewInit, ComponentRef, Directive, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef, ViewContainerRef, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AbstractControl, ControlContainer, FormControl, FormGroup, FormGroupName } from '@angular/forms';
 import { NguiAutoCompleteComponent } from './auto-complete.component';
@@ -35,6 +35,10 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
   @Input('re-focus-after-select') public reFocusAfterSelect = true;
   @Input('header-item-template') public headerItemTemplate = null;
   @Input('ignore-accents') public ignoreAccents = true;
+  // Angular template alternatives to the string `list-formatter` / `header-item-template`,
+  // forwarded to the dropdown component (they take precedence when provided).
+  @Input() public itemTemplate: TemplateRef<{ $implicit: any; index: number }>;
+  @Input() public headerTemplate: TemplateRef<void>;
 
   @Input() public ngModel: string;
   @Input('formControlName') public formControlName: string;
@@ -179,6 +183,8 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
     component.matchFormatted = this.matchFormatted;
     component.autoSelectFirstItem = this.autoSelectFirstItem;
     component.headerItemTemplate = this.headerItemTemplate;
+    component.itemTemplate = this.itemTemplate;
+    component.headerTemplate = this.headerTemplate;
     component.ignoreAccents = this.ignoreAccents;
 
     this.dropdownSubs.unsubscribe();

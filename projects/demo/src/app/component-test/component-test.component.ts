@@ -71,9 +71,9 @@ export class ComponentTestComponent {
 }`;
 
   templateStr3 = `
-<input [(ngModel)]="tplModel"
+<input [ngModel]="tplModel?.name"
        (focus)="showTpl = true" (blur)="showTpl = false"
-       placeholder="focus to browse people"/>
+       readonly placeholder="focus to browse people"/>
 @if (showTpl) {
   <ngui-auto-complete
     [show-dropdown-on-init]="true"

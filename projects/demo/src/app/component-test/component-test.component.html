@@ -93,9 +93,10 @@
     <mat-card-content>
       <div class="demo-area">
         <input
-          [(ngModel)]="tplModel"
+          [ngModel]="tplModel?.name"
           (focus)="showTpl = true"
           (blur)="showTpl = false"
+          readonly
           placeholder="focus to browse people"/>
         @if (showTpl) {
           <ngui-auto-complete

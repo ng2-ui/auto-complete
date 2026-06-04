@@ -7,6 +7,36 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 
 ---
 
+## [20.0.0] — 2026-06-04
+
+### Changed
+- **Upgraded to Angular 20** (`@angular/*` 20.3.x, `@angular/material` + `@angular/cdk` 20.2.x).
+  `peerDependencies` now require `@angular/common` and `@angular/core` `^20.0.0`. Install
+  `@ngui/auto-complete@20` for Angular 20 projects.
+- **Standalone components.** `NguiAutoCompleteComponent` and `NguiAutoCompleteDirective` are now
+  standalone. `NguiAutoCompleteModule` is **retained** and re-exports both, so existing
+  `imports: [NguiAutoCompleteModule]` consumers keep working unchanged — you can now alternatively
+  import the standalone component/directive directly. (Full NgModule removal is planned for Angular 21.)
+- **`inject()` DI.** Constructor parameter injection across the library was migrated to the `inject()`
+  function (no public API change).
+
+### Internal (development tooling only — no impact on consumers)
+- `ng update` to Angular 20: `@angular/cli` + `@angular-devkit/build-angular` 20.3.x,
+  `ng-packagr` 20.3.2, `angular-eslint` 20.7.0. Workspace migrations applied (schematic `type`
+  defaults in `angular.json`, `tsconfig` `moduleResolution` → `bundler`).
+- Bumped `@cypress/schematic` 4.3 → 5 (now requires Angular 20).
+- Re-enabled the `@angular-eslint/prefer-standalone` lint rule (deferred in 19.0.0).
+- The demo app was migrated to a standalone `bootstrapApplication` setup (`AppModule` and the routing
+  NgModule removed in favour of `provideRouter` + `app.routes.ts`).
+- Hardened the library component spec so its focus-triggered dropdown reload resolves against a local
+  source array (Angular 20 / zone.js surfaces the previously-swallowed async error).
+
+### Notes
+- ESLint 10 remains deferred: `angular-eslint` 20 still peers on ESLint `^8.57 || ^9`. It is planned for
+  the Angular 21 release alongside full NgModule removal.
+
+---
+
 ## [19.0.0] — 2026-06-04
 
 ### Changed

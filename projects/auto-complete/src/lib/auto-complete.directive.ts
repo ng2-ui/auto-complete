@@ -3,9 +3,10 @@ import { Subscription } from 'rxjs';
 import { AbstractControl, ControlContainer, FormControl, FormGroup, FormGroupName } from '@angular/forms';
 import { NguiAutoCompleteComponent } from './auto-complete.component';
 
-@Directive({ 
-    // eslint-disable-next-line @angular-eslint/directive-selector
-    selector: '[auto-complete], [ngui-auto-complete]' })
+@Directive({
+    // eslint-disable-next-line @angular-eslint/directive-selector -- public API selector is kebab-case by design
+    selector: '[ngui-auto-complete]'
+})
 export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   viewContainerRef = inject(ViewContainerRef);
   private parentForm = inject(ControlContainer, { optional: true, host: true, skipSelf: true });

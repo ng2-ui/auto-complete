@@ -9,10 +9,16 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 
 ## [20.0.0] — 2026-06-04
 
+### ⚠️ BREAKING CHANGES
+- **Requires Angular 20.** `peerDependencies` now require `@angular/common` and `@angular/core`
+  `^20.0.0`. Angular 19 and older projects must stay on `@ngui/auto-complete@19`.
+- **Removed the unprefixed `[auto-complete]` directive selector.** Use `[ngui-auto-complete]` instead
+  (the directive now matches `[ngui-auto-complete]` only). Update any templates using the bare
+  `auto-complete` attribute: `<input auto-complete …>` → `<input ngui-auto-complete …>`.
+
 ### Changed
 - **Upgraded to Angular 20** (`@angular/*` 20.3.x, `@angular/material` + `@angular/cdk` 20.2.x).
-  `peerDependencies` now require `@angular/common` and `@angular/core` `^20.0.0`. Install
-  `@ngui/auto-complete@20` for Angular 20 projects.
+  Install `@ngui/auto-complete@20` for Angular 20 projects.
 - **Standalone components.** `NguiAutoCompleteComponent` and `NguiAutoCompleteDirective` are now
   standalone. `NguiAutoCompleteModule` is **retained** and re-exports both, so existing
   `imports: [NguiAutoCompleteModule]` consumers keep working unchanged — you can now alternatively

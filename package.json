@@ -40,14 +40,14 @@
     "@angular/cli": "^20.3.27",
     "@angular/compiler-cli": "^20.3.24",
     "@angular/language-service": "^20.3.24",
-    "@cypress/schematic": "^4.3.0",
+    "@cypress/schematic": "^5.0.0",
     "@eslint/js": "^9.39.4",
     "@types/jasmine": "~6.0.0",
     "@types/node": "^24.13.0",
-    "angular-eslint": "^19.8.1",
+    "angular-eslint": "^20.7.0",
     "copyfiles": "^2.4.1",
     "cypress": "^15.16.0",
-    "eslint": "^9.39.4",
+    "eslint": "^9.28.0",
     "eslint-plugin-cypress": "^6.4.1",
     "jasmine-core": "~6.2.0",
     "jasmine-spec-reporter": "~7.0.0",
@@ -59,6 +59,6 @@
     "ng-packagr": "^20.3.2",
     "ts-node": "~10.9.2",
     "typescript": "~5.8.3",
-    "typescript-eslint": "^8.60.1"
+    "typescript-eslint": "^8.33.1"
   }
 }

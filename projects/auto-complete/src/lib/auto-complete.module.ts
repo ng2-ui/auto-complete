@@ -6,17 +6,8 @@ import { NguiAutoCompleteDirective } from './auto-complete.directive';
 import { NguiAutoCompleteService } from './auto-complete.service';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        NguiAutoCompleteComponent,
-        NguiAutoCompleteDirective
-    ],
-    providers: [],
-    exports: [
-        NguiAutoCompleteComponent,
-        NguiAutoCompleteDirective
-    ]
+	imports: [CommonModule, FormsModule, NguiAutoCompleteComponent, NguiAutoCompleteDirective],
+	providers: [],
+	exports: [NguiAutoCompleteComponent, NguiAutoCompleteDirective],
 })
-export class NguiAutoCompleteModule {
-}
+export class NguiAutoCompleteModule {}

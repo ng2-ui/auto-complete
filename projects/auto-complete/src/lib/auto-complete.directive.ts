@@ -1,397 +1,410 @@
-import { AfterViewInit, ComponentRef, Directive, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef, ViewContainerRef, inject } from '@angular/core';
+import {
+	AfterViewInit,
+	ComponentRef,
+	Directive,
+	EventEmitter,
+	Input,
+	OnChanges,
+	OnDestroy,
+	OnInit,
+	Output,
+	SimpleChanges,
+	TemplateRef,
+	ViewContainerRef,
+	inject,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AbstractControl, ControlContainer, FormControl, FormGroup, FormGroupName } from '@angular/forms';
 import { NguiAutoCompleteComponent } from './auto-complete.component';
 
 @Directive({
-    // eslint-disable-next-line @angular-eslint/directive-selector -- public API selector is kebab-case by design
-    selector: '[ngui-auto-complete]'
+	// eslint-disable-next-line @angular-eslint/directive-selector -- public API selector is kebab-case by design
+	selector: '[ngui-auto-complete]',
 })
 export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewInit, OnDestroy {
-  viewContainerRef = inject(ViewContainerRef);
-  private parentForm = inject(ControlContainer, { optional: true, host: true, skipSelf: true });
+	viewContainerRef = inject(ViewContainerRef);
+	private parentForm = inject(ControlContainer, { optional: true, host: true, skipSelf: true });
 
-  @Input('autocomplete') public autocomplete = false;
-  @Input('auto-complete-placeholder') public autoCompletePlaceholder: string;
-  @Input('source') public source: any;
-  @Input('path-to-data') public pathToData: string;
-  @Input('min-chars') public minChars: number;
-  @Input('display-property-name') public displayPropertyName: string;
-  @Input('accept-user-input') public acceptUserInput = true;
-  @Input('max-num-list') public maxNumList: string;
-  @Input('select-value-of') public selectValueOf: string;
-  @Input('loading-template') public loadingTemplate = null;
-  @Input('list-formatter') public listFormatter;
-  @Input('loading-text') public loadingText = 'Loading';
-  @Input('blank-option-text') public blankOptionText: string;
-  @Input('no-match-found-text') public noMatchFoundText: string;
-  @Input('value-formatter') public valueFormatter: any;
-  @Input('tab-to-select') public tabToSelect = true;
-  @Input('select-on-blur') public selectOnBlur = false;
-  @Input('match-formatted') public matchFormatted = false;
-  @Input('auto-select-first-item') public autoSelectFirstItem = false;
-  @Input('open-on-focus') public openOnFocus = true;
-  @Input('close-on-focusout') public closeOnFocusOut = true;
-  @Input('re-focus-after-select') public reFocusAfterSelect = true;
-  @Input('header-item-template') public headerItemTemplate = null;
-  @Input('ignore-accents') public ignoreAccents = true;
-  // Angular template alternatives to the string `list-formatter` / `header-item-template`,
-  // forwarded to the dropdown component (they take precedence when provided).
-  @Input() public itemTemplate: TemplateRef<{ $implicit: any; index: number }>;
-  @Input() public headerTemplate: TemplateRef<void>;
+	@Input('autocomplete') public autocomplete = false;
+	@Input('auto-complete-placeholder') public autoCompletePlaceholder: string;
+	@Input('source') public source: any;
+	@Input('path-to-data') public pathToData: string;
+	@Input('min-chars') public minChars: number;
+	@Input('display-property-name') public displayPropertyName: string;
+	@Input('accept-user-input') public acceptUserInput = true;
+	@Input('max-num-list') public maxNumList: string;
+	@Input('select-value-of') public selectValueOf: string;
+	@Input('loading-template') public loadingTemplate = null;
+	@Input('list-formatter') public listFormatter;
+	@Input('loading-text') public loadingText = 'Loading';
+	@Input('blank-option-text') public blankOptionText: string;
+	@Input('no-match-found-text') public noMatchFoundText: string;
+	@Input('value-formatter') public valueFormatter: any;
+	@Input('tab-to-select') public tabToSelect = true;
+	@Input('select-on-blur') public selectOnBlur = false;
+	@Input('match-formatted') public matchFormatted = false;
+	@Input('auto-select-first-item') public autoSelectFirstItem = false;
+	@Input('open-on-focus') public openOnFocus = true;
+	@Input('close-on-focusout') public closeOnFocusOut = true;
+	@Input('re-focus-after-select') public reFocusAfterSelect = true;
+	@Input('header-item-template') public headerItemTemplate = null;
+	@Input('ignore-accents') public ignoreAccents = true;
+	// Angular template alternatives to the string `list-formatter` / `header-item-template`,
+	// forwarded to the dropdown component (they take precedence when provided).
+	@Input() public itemTemplate: TemplateRef<{ $implicit: any; index: number }>;
+	@Input() public headerTemplate: TemplateRef<void>;
 
-  @Input() public ngModel: string;
-  @Input('formControlName') public formControlName: string;
-  // if [formControl] is used on the anchor where our directive is sitting
-  // a form is not necessary to use a formControl we should also support this
-  @Input('formControl') public extFormControl: FormControl;
-  @Input('z-index') public zIndex = '1';
-  @Input('is-rtl') public isRtl = false;
-  // 'down' / 'up' force the dropdown below / above the input; 'auto' (default) opens
-  // below unless the input sits near the bottom of the viewport.
-  @Input('open-direction') public openDirection: 'auto' | 'up' | 'down' = 'auto';
+	@Input() public ngModel: string;
+	@Input('formControlName') public formControlName: string;
+	// if [formControl] is used on the anchor where our directive is sitting
+	// a form is not necessary to use a formControl we should also support this
+	@Input('formControl') public extFormControl: FormControl;
+	@Input('z-index') public zIndex = '1';
+	@Input('is-rtl') public isRtl = false;
+	// 'down' / 'up' force the dropdown below / above the input; 'auto' (default) opens
+	// below unless the input sits near the bottom of the viewport.
+	@Input('open-direction') public openDirection: 'auto' | 'up' | 'down' = 'auto';
 
-  @Output() public ngModelChange = new EventEmitter();
-  @Output() public valueChanged = new EventEmitter();
-  @Output() public customSelected = new EventEmitter();
-  @Output() public noMatchFound = new EventEmitter<void>();
+	@Output() public ngModelChange = new EventEmitter();
+	@Output() public valueChanged = new EventEmitter();
+	@Output() public customSelected = new EventEmitter();
+	@Output() public noMatchFound = new EventEmitter<void>();
 
-  private componentRef: ComponentRef<NguiAutoCompleteComponent>;
-  private wrapperEl: HTMLElement;
-  private el: HTMLElement;
-  private acDropdownEl: HTMLElement;
-  private inputEl: HTMLInputElement;
-  private formControl: AbstractControl;
-  private revertValue: any;
-  private dropdownJustHidden: boolean;
-  private scheduledBlurHandler: any;
-  private documentClickListener: (e: MouseEvent) => any;
-  private dropdownSubs = new Subscription();
+	private componentRef: ComponentRef<NguiAutoCompleteComponent>;
+	private wrapperEl: HTMLElement;
+	private el: HTMLElement;
+	private acDropdownEl: HTMLElement;
+	private inputEl: HTMLInputElement;
+	private formControl: AbstractControl;
+	private revertValue: any;
+	private dropdownJustHidden: boolean;
+	private scheduledBlurHandler: any;
+	private documentClickListener: (e: MouseEvent) => any;
+	private dropdownSubs = new Subscription();
 
-  constructor() {
-    this.el = this.viewContainerRef.element.nativeElement;
-  }
+	constructor() {
+		this.el = this.viewContainerRef.element.nativeElement;
+	}
 
-  ngOnInit(): void {
-    // Blur event is handled only after a click event.
-    // This is to prevent handling of blur events resulting from interacting with a scrollbar
-    // introduced by content overflow (Internet explorer issue).
-    // See issue description here: http://stackoverflow.com/questions/2023779/clicking-on-a-divs-scroll-bar-fires-the-blur-event-in-ie
-    this.documentClickListener = (e) => {
-      if (this.scheduledBlurHandler) {
-        this.scheduledBlurHandler();
-        this.scheduledBlurHandler = null;
-      }
-    };
+	ngOnInit(): void {
+		// Blur event is handled only after a click event.
+		// This is to prevent handling of blur events resulting from interacting with a scrollbar
+		// introduced by content overflow (Internet explorer issue).
+		// See issue description here: http://stackoverflow.com/questions/2023779/clicking-on-a-divs-scroll-bar-fires-the-blur-event-in-ie
+		this.documentClickListener = (e) => {
+			if (this.scheduledBlurHandler) {
+				this.scheduledBlurHandler();
+				this.scheduledBlurHandler = null;
+			}
+		};
 
-    document.addEventListener('click', this.documentClickListener);
-    // wrap this element with <div class="ngui-auto-complete">
-    this.wrapperEl = document.createElement('div');
-    this.wrapperEl.className = 'ngui-auto-complete-wrapper';
-    this.wrapperEl.style.position = 'relative';
-    this.el.parentElement.insertBefore(this.wrapperEl, this.el.nextSibling);
-    this.wrapperEl.appendChild(this.el);
+		document.addEventListener('click', this.documentClickListener);
+		// wrap this element with <div class="ngui-auto-complete">
+		this.wrapperEl = document.createElement('div');
+		this.wrapperEl.className = 'ngui-auto-complete-wrapper';
+		this.wrapperEl.style.position = 'relative';
+		this.el.parentElement.insertBefore(this.wrapperEl, this.el.nextSibling);
+		this.wrapperEl.appendChild(this.el);
 
-    // Check if we were supplied with a [formControlName] and it is inside a [form]
-    // else check if we are supplied with a [FormControl] regardless if it is inside a [form] tag
-    if (this.parentForm && this.formControlName) {
-      if (this.parentForm['form']) {
-        this.formControl = (this.parentForm['form'] as FormGroup).get(this.formControlName);
-      } else if (this.parentForm instanceof FormGroupName) {
-        this.formControl = (this.parentForm as FormGroupName).control.controls[this.formControlName];
-      }
-    } else if (this.extFormControl) {
-      this.formControl = this.extFormControl;
-    }
+		// Check if we were supplied with a [formControlName] and it is inside a [form]
+		// else check if we are supplied with a [FormControl] regardless if it is inside a [form] tag
+		if (this.parentForm && this.formControlName) {
+			if (this.parentForm['form']) {
+				this.formControl = (this.parentForm['form'] as FormGroup).get(this.formControlName);
+			} else if (this.parentForm instanceof FormGroupName) {
+				this.formControl = (this.parentForm as FormGroupName).control.controls[this.formControlName];
+			}
+		} else if (this.extFormControl) {
+			this.formControl = this.extFormControl;
+		}
 
-    // apply toString() method for the object
-    if (!!this.ngModel) {
-      this.selectNewValue(this.ngModel);
-    } else if (!!this.formControl && this.formControl.value) {
-      this.selectNewValue(this.formControl.value);
-    }
+		// apply toString() method for the object
+		if (!!this.ngModel) {
+			this.selectNewValue(this.ngModel);
+		} else if (!!this.formControl && this.formControl.value) {
+			this.selectNewValue(this.formControl.value);
+		}
+	}
 
-  }
+	ngAfterViewInit() {
+		// if this element is not an input tag, move dropdown after input tag
+		// so that it displays correctly
+		this.inputEl = this.el.tagName === 'INPUT' ? (this.el as HTMLInputElement) : this.el.querySelector('input');
 
-  ngAfterViewInit() {
-    // if this element is not an input tag, move dropdown after input tag
-    // so that it displays correctly
-    this.inputEl = this.el.tagName === 'INPUT' ? this.el as HTMLInputElement : this.el.querySelector('input');
+		if (this.openOnFocus) {
+			this.inputEl.addEventListener('focus', (e) => this.showAutoCompleteDropdown(e));
+		}
 
-    if (this.openOnFocus) {
-      this.inputEl.addEventListener('focus', (e) => this.showAutoCompleteDropdown(e));
-    }
+		if (this.closeOnFocusOut) {
+			this.inputEl.addEventListener('focusout', (e) => this.hideAutoCompleteDropdown(e));
+		}
 
-    if (this.closeOnFocusOut) {
-      this.inputEl.addEventListener('focusout', (e) => this.hideAutoCompleteDropdown(e));
-    }
+		if (!this.autocomplete) {
+			this.inputEl.setAttribute('autocomplete', 'off');
+		}
+		this.inputEl.addEventListener('blur', (e) => {
+			this.scheduledBlurHandler = () => {
+				return this.blurHandler(e);
+			};
+		});
+		this.inputEl.addEventListener('keydown', (e) => this.keydownEventHandler(e));
+		this.inputEl.addEventListener('input', (e) => this.inputEventHandler(e));
+	}
 
-    if (!this.autocomplete) {
-      this.inputEl.setAttribute('autocomplete', 'off');
-    }
-    this.inputEl.addEventListener('blur', (e) => {
-      this.scheduledBlurHandler = () => {
-        return this.blurHandler(e);
-      };
-    });
-    this.inputEl.addEventListener('keydown', (e) => this.keydownEventHandler(e));
-    this.inputEl.addEventListener('input', (e) => this.inputEventHandler(e));
-  }
+	ngOnDestroy(): void {
+		this.dropdownSubs.unsubscribe();
+		if (this.componentRef) {
+			this.componentRef.destroy();
+		}
+		if (this.documentClickListener) {
+			document.removeEventListener('click', this.documentClickListener);
+		}
+	}
 
-  ngOnDestroy(): void {
-    this.dropdownSubs.unsubscribe();
-    if (this.componentRef) {
-      this.componentRef.destroy();
-    }
-    if (this.documentClickListener) {
-      document.removeEventListener('click', this.documentClickListener);
-    }
-  }
+	ngOnChanges(changes: SimpleChanges): void {
+		if (changes['ngModel']) {
+			this.ngModel = this.setToStringFunction(changes['ngModel'].currentValue);
+			this.renderValue(this.ngModel);
+		}
+	}
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['ngModel']) {
-      this.ngModel = this.setToStringFunction(changes['ngModel'].currentValue);
-      this.renderValue(this.ngModel);
-    }
-  }
+	// show auto-complete list below the current element
+	public showAutoCompleteDropdown = (event?: any): void => {
+		if (this.dropdownJustHidden) {
+			return;
+		}
+		this.hideAutoCompleteDropdown();
+		this.scheduledBlurHandler = null;
 
-  // show auto-complete list below the current element
-  public showAutoCompleteDropdown = (event?: any): void => {
-    if (this.dropdownJustHidden) {
-      return;
-    }
-    this.hideAutoCompleteDropdown();
-    this.scheduledBlurHandler = null;
+		this.componentRef = this.viewContainerRef.createComponent(NguiAutoCompleteComponent);
 
-    this.componentRef = this.viewContainerRef.createComponent(NguiAutoCompleteComponent);
+		const component = this.componentRef.instance;
+		component.keyword = this.inputEl.value;
+		component.showInputTag = false; // Do NOT display autocomplete input tag separately
 
-    const component = this.componentRef.instance;
-    component.keyword = this.inputEl.value;
-    component.showInputTag = false; // Do NOT display autocomplete input tag separately
+		component.pathToData = this.pathToData;
+		component.minChars = this.minChars;
+		component.source = this.source;
+		component.placeholder = this.autoCompletePlaceholder;
+		component.acceptUserInput = this.acceptUserInput;
+		component.maxNumList = parseInt(this.maxNumList, 10);
 
-    component.pathToData = this.pathToData;
-    component.minChars = this.minChars;
-    component.source = this.source;
-    component.placeholder = this.autoCompletePlaceholder;
-    component.acceptUserInput = this.acceptUserInput;
-    component.maxNumList = parseInt(this.maxNumList, 10);
+		component.loadingText = this.loadingText;
+		component.loadingTemplate = this.loadingTemplate;
+		component.listFormatter = this.listFormatter;
+		component.blankOptionText = this.blankOptionText;
+		component.noMatchFoundText = this.noMatchFoundText;
+		component.tabToSelect = this.tabToSelect;
+		component.selectOnBlur = this.selectOnBlur;
+		component.matchFormatted = this.matchFormatted;
+		component.autoSelectFirstItem = this.autoSelectFirstItem;
+		component.headerItemTemplate = this.headerItemTemplate;
+		component.itemTemplate = this.itemTemplate;
+		component.headerTemplate = this.headerTemplate;
+		component.ignoreAccents = this.ignoreAccents;
 
-    component.loadingText = this.loadingText;
-    component.loadingTemplate = this.loadingTemplate;
-    component.listFormatter = this.listFormatter;
-    component.blankOptionText = this.blankOptionText;
-    component.noMatchFoundText = this.noMatchFoundText;
-    component.tabToSelect = this.tabToSelect;
-    component.selectOnBlur = this.selectOnBlur;
-    component.matchFormatted = this.matchFormatted;
-    component.autoSelectFirstItem = this.autoSelectFirstItem;
-    component.headerItemTemplate = this.headerItemTemplate;
-    component.itemTemplate = this.itemTemplate;
-    component.headerTemplate = this.headerTemplate;
-    component.ignoreAccents = this.ignoreAccents;
+		this.dropdownSubs.unsubscribe();
+		this.dropdownSubs = new Subscription();
+		this.dropdownSubs.add(component.valueSelected.subscribe(this.selectNewValue));
+		this.dropdownSubs.add(component.textEntered.subscribe(this.enterNewText));
+		this.dropdownSubs.add(component.customSelected.subscribe(this.selectCustomValue));
+		this.dropdownSubs.add(component.noMatchFound.subscribe(() => this.noMatchFound.emit()));
 
-    this.dropdownSubs.unsubscribe();
-    this.dropdownSubs = new Subscription();
-    this.dropdownSubs.add(component.valueSelected.subscribe(this.selectNewValue));
-    this.dropdownSubs.add(component.textEntered.subscribe(this.enterNewText));
-    this.dropdownSubs.add(component.customSelected.subscribe(this.selectCustomValue));
-    this.dropdownSubs.add(component.noMatchFound.subscribe(() => this.noMatchFound.emit()));
+		this.acDropdownEl = this.componentRef.location.nativeElement;
+		this.acDropdownEl.style.display = 'none';
 
-    this.acDropdownEl = this.componentRef.location.nativeElement;
-    this.acDropdownEl.style.display = 'none';
+		// if this element is not an input tag, move dropdown after input tag
+		// so that it displays correctly
 
-    // if this element is not an input tag, move dropdown after input tag
-    // so that it displays correctly
+		// TODO: confirm with owners
+		// with some reason, viewContainerRef.createComponent is creating element
+		// to parent div which is created by us on ngOnInit, please try this with demo
 
-    // TODO: confirm with owners
-    // with some reason, viewContainerRef.createComponent is creating element
-    // to parent div which is created by us on ngOnInit, please try this with demo
+		// if (this.el.tagName !== 'INPUT' && this.acDropdownEl) {
+		this.inputEl.parentElement.insertBefore(this.acDropdownEl, this.inputEl.nextSibling);
+		// }
+		this.revertValue = typeof this.revertValue !== 'undefined' ? this.revertValue : '';
 
-    // if (this.el.tagName !== 'INPUT' && this.acDropdownEl) {
-    this.inputEl.parentElement.insertBefore(this.acDropdownEl, this.inputEl.nextSibling);
-    // }
-    this.revertValue = typeof this.revertValue !== 'undefined' ? this.revertValue : '';
+		setTimeout(() => {
+			component.reloadList(this.inputEl.value);
+			this.styleAutoCompleteDropdown();
+			component.dropdownVisible = true;
+		});
+	};
 
-    setTimeout(() => {
-      component.reloadList(this.inputEl.value);
-      this.styleAutoCompleteDropdown();
-      component.dropdownVisible = true;
-    });
-  };
+	public blurHandler(event: any) {
+		if (this.componentRef) {
+			const component = this.componentRef.instance;
 
-  public blurHandler(event: any) {
-    if (this.componentRef) {
-      const component = this.componentRef.instance;
+			if (this.selectOnBlur) {
+				component.selectOne(component.filteredList[component.itemIndex]);
+			}
 
-      if (this.selectOnBlur) {
-        component.selectOne(component.filteredList[component.itemIndex]);
-      }
+			if (this.closeOnFocusOut) {
+				this.hideAutoCompleteDropdown(event);
+			}
+		}
+	}
 
-      if (this.closeOnFocusOut) {
-        this.hideAutoCompleteDropdown(event);
-      }
-    }
-  }
+	public hideAutoCompleteDropdown = (event?: any): void => {
+		if (this.componentRef) {
+			let currentItem: any;
+			const hasRevertValue = typeof this.revertValue !== 'undefined';
+			if (this.inputEl && hasRevertValue && this.acceptUserInput === false) {
+				currentItem = this.componentRef.instance.findItemFromSelectValue(this.inputEl.value);
+			}
+			this.dropdownSubs.unsubscribe();
+			this.componentRef.destroy();
+			this.componentRef = undefined;
 
-  public hideAutoCompleteDropdown = (event?: any): void => {
-    if (this.componentRef) {
-      let currentItem: any;
-      const hasRevertValue = (typeof this.revertValue !== 'undefined');
-      if (this.inputEl && hasRevertValue && this.acceptUserInput === false) {
-        currentItem = this.componentRef.instance.findItemFromSelectValue(this.inputEl.value);
-      }
-      this.dropdownSubs.unsubscribe();
-      this.componentRef.destroy();
-      this.componentRef = undefined;
+			if (this.inputEl && hasRevertValue && this.acceptUserInput === false && currentItem === null && this.inputEl.value !== '') {
+				this.selectNewValue(this.revertValue);
+				currentItem = this.revertValue;
+			} else if (this.inputEl && this.acceptUserInput === true && typeof currentItem === 'undefined' && event && event.target.value) {
+				this.enterNewText(event.target.value);
+			}
+			this.revertValue = currentItem;
+		}
+		this.dropdownJustHidden = true;
+		setTimeout(() => (this.dropdownJustHidden = false), 100);
+	};
 
-      if (this.inputEl && hasRevertValue && this.acceptUserInput === false && currentItem === null && this.inputEl.value !== '') {
-        this.selectNewValue(this.revertValue);
-        currentItem = this.revertValue;
-      } else if (this.inputEl && this.acceptUserInput === true && typeof currentItem === 'undefined' && event && event.target.value) {
-        this.enterNewText(event.target.value);
-      }
-      this.revertValue = currentItem;
-    }
-    this.dropdownJustHidden = true;
-    setTimeout(() => this.dropdownJustHidden = false, 100);
-  };
+	public styleAutoCompleteDropdown = () => {
+		if (this.componentRef) {
+			/* setting width/height auto complete */
+			const thisInputElBCR = this.inputEl.getBoundingClientRect();
+			const directionOfStyle = this.isRtl ? 'right' : 'left';
 
-  public styleAutoCompleteDropdown = () => {
-    if (this.componentRef) {
-      /* setting width/height auto complete */
-      const thisInputElBCR = this.inputEl.getBoundingClientRect();
-      const directionOfStyle = this.isRtl ? 'right' : 'left';
+			this.acDropdownEl.style.width = thisInputElBCR.width + 'px';
+			this.acDropdownEl.style.position = 'absolute';
+			this.acDropdownEl.style.zIndex = this.zIndex;
+			this.acDropdownEl.style[directionOfStyle] = '0';
+			this.acDropdownEl.style.display = 'inline-block';
 
-      this.acDropdownEl.style.width = thisInputElBCR.width + 'px';
-      this.acDropdownEl.style.position = 'absolute';
-      this.acDropdownEl.style.zIndex = this.zIndex;
-      this.acDropdownEl.style[directionOfStyle] = '0';
-      this.acDropdownEl.style.display = 'inline-block';
+			// Reset any previous vertical anchor so re-styling is deterministic.
+			this.acDropdownEl.style.top = '';
+			this.acDropdownEl.style.bottom = '';
 
-      // Reset any previous vertical anchor so re-styling is deterministic.
-      this.acDropdownEl.style.top = '';
-      this.acDropdownEl.style.bottom = '';
+			if (this.shouldOpenUp(thisInputElBCR)) {
+				this.acDropdownEl.style.bottom = `${thisInputElBCR.height}px`;
+			} else {
+				this.acDropdownEl.style.top = `${thisInputElBCR.height}px`;
+			}
+		}
+	};
 
-      if (this.shouldOpenUp(thisInputElBCR)) {
-        this.acDropdownEl.style.bottom = `${thisInputElBCR.height}px`;
-      } else {
-        this.acDropdownEl.style.top = `${thisInputElBCR.height}px`;
-      }
-    }
-  };
+	// Resolve the vertical opening direction honouring the `open-direction` input.
+	// 'auto' keeps the historic heuristic: open above only when the input is within
+	// ~100px of the viewport bottom.
+	private shouldOpenUp(inputBCR: DOMRect): boolean {
+		if (this.openDirection === 'up') {
+			return true;
+		}
+		if (this.openDirection === 'down') {
+			return false;
+		}
+		return inputBCR.bottom + 100 > window.innerHeight;
+	}
 
-  // Resolve the vertical opening direction honouring the `open-direction` input.
-  // 'auto' keeps the historic heuristic: open above only when the input is within
-  // ~100px of the viewport bottom.
-  private shouldOpenUp(inputBCR: DOMRect): boolean {
-    if (this.openDirection === 'up') {
-      return true;
-    }
-    if (this.openDirection === 'down') {
-      return false;
-    }
-    return inputBCR.bottom + 100 > window.innerHeight;
-  }
+	public setToStringFunction(item: any): any {
+		if (item && typeof item === 'object') {
+			let displayVal;
 
-  public setToStringFunction(item: any): any {
-    if (item && typeof item === 'object') {
-      let displayVal;
+			if (typeof this.valueFormatter === 'string') {
+				const matches = this.valueFormatter.match(/[a-zA-Z0-9_\$]+/g);
+				let formatted = this.valueFormatter;
+				if (matches && typeof item !== 'string') {
+					matches.forEach((key) => {
+						formatted = formatted.replace(key, item[key]);
+					});
+				}
+				displayVal = formatted;
+			} else if (typeof this.valueFormatter === 'function') {
+				displayVal = this.valueFormatter(item);
+			} else if (this.displayPropertyName) {
+				displayVal = item[this.displayPropertyName];
+			} else if (typeof this.listFormatter === 'string' && this.listFormatter.match(/^\w+$/)) {
+				displayVal = item[this.listFormatter];
+			} else {
+				displayVal = item.value;
+			}
+			item.toString = () => displayVal;
+		}
+		return item;
+	}
 
-      if (typeof this.valueFormatter === 'string') {
-        const matches = this.valueFormatter.match(/[a-zA-Z0-9_\$]+/g);
-        let formatted = this.valueFormatter;
-        if (matches && typeof item !== 'string') {
-          matches.forEach((key) => {
-            formatted = formatted.replace(key, item[key]);
-          });
-        }
-        displayVal = formatted;
-      } else if (typeof this.valueFormatter === 'function') {
-        displayVal = this.valueFormatter(item);
-      } else if (this.displayPropertyName) {
-        displayVal = item[this.displayPropertyName];
-      } else if (typeof this.listFormatter === 'string' && this.listFormatter.match(/^\w+$/)) {
-        displayVal = item[this.listFormatter];
-      } else {
-        displayVal = item.value;
-      }
-      item.toString = () => displayVal;
-    }
-    return item;
-  }
+	public selectNewValue = (item: any) => {
+		// make displayable value
+		if (item && typeof item === 'object') {
+			item = this.setToStringFunction(item);
+		}
 
-  public selectNewValue = (item: any) => {
-    // make displayable value
-    if (item && typeof item === 'object') {
-      item = this.setToStringFunction(item);
-    }
+		this.renderValue(item);
 
-    this.renderValue(item);
+		// make return value
+		let val = item;
+		if (this.selectValueOf && item !== null && typeof item === 'object') {
+			val = item[this.selectValueOf];
+		}
+		if ((this.parentForm && this.formControlName) || this.extFormControl) {
+			if (!!val) {
+				this.formControl.patchValue(val);
+			}
+		}
+		if (val !== this.ngModel) {
+			this.ngModelChange.emit(val);
+		}
+		this.valueChanged.emit(val);
+		this.hideAutoCompleteDropdown();
+		setTimeout(() => {
+			if (this.reFocusAfterSelect) {
+				this.inputEl.focus();
+			}
 
-    // make return value
-    let val = item;
-    if (this.selectValueOf && item !== null && typeof item === 'object') {
-      val = item[this.selectValueOf];
-    }
-    if ((this.parentForm && this.formControlName) || this.extFormControl) {
-      if (!!val) {
-        this.formControl.patchValue(val);
-      }
-    }
-    if (val !== this.ngModel) {
-      this.ngModelChange.emit(val);
-    }
-    this.valueChanged.emit(val);
-    this.hideAutoCompleteDropdown();
-    setTimeout(() => {
-      if (this.reFocusAfterSelect) {
-        this.inputEl.focus();
-      }
+			return this.inputEl;
+		});
+	};
 
-      return this.inputEl;
-    });
-  };
+	public selectCustomValue = (text: string) => {
+		this.customSelected.emit(text);
+		this.hideAutoCompleteDropdown();
+		setTimeout(() => {
+			if (this.reFocusAfterSelect) {
+				this.inputEl.focus();
+			}
 
-  public selectCustomValue = (text: string) => {
-    this.customSelected.emit(text);
-    this.hideAutoCompleteDropdown();
-    setTimeout(() => {
-      if (this.reFocusAfterSelect) {
-        this.inputEl.focus();
-      }
+			return this.inputEl;
+		});
+	};
 
-      return this.inputEl;
-    });
-  };
+	public enterNewText = (value: any) => {
+		this.renderValue(value);
+		this.ngModelChange.emit(value);
+		this.valueChanged.emit(value);
+		this.hideAutoCompleteDropdown();
+	};
 
-  public enterNewText = (value: any) => {
-    this.renderValue(value);
-    this.ngModelChange.emit(value);
-    this.valueChanged.emit(value);
-    this.hideAutoCompleteDropdown();
-  };
+	private keydownEventHandler = (evt: any) => {
+		if (this.componentRef) {
+			const component = this.componentRef.instance;
+			component.inputElKeyHandler(evt);
+		}
+	};
 
-  private keydownEventHandler = (evt: any) => {
-    if (this.componentRef) {
-      const component = this.componentRef.instance;
-      component.inputElKeyHandler(evt);
-    }
-  };
+	private inputEventHandler = (evt: any) => {
+		if (this.componentRef) {
+			const component = this.componentRef.instance;
+			component.dropdownVisible = true;
+			component.keyword = evt.target.value;
+			component.reloadListInDelay(evt);
+		} else {
+			this.showAutoCompleteDropdown();
+		}
+	};
 
-  private inputEventHandler = (evt: any) => {
-    if (this.componentRef) {
-      const component = this.componentRef.instance;
-      component.dropdownVisible = true;
-      component.keyword = evt.target.value;
-      component.reloadListInDelay(evt);
-    } else {
-      this.showAutoCompleteDropdown();
-    }
-  };
-
-  private renderValue(item: any) {
-    if (!!this.inputEl) {
-      this.inputEl.value = '' + item;
-    }
-  }
+	private renderValue(item: any) {
+		if (!!this.inputEl) {
+			this.inputEl.value = '' + item;
+		}
+	}
 }

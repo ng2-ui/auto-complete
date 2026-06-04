@@ -8,16 +8,18 @@ import { MatTabNav, MatTabLink, MatTabNavPanel } from '@angular/material/tabs';
 import { DatePipe } from '@angular/common';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
-    imports: [MatToolbar, MatIcon, MatButton, MatTabNav, MatTabLink, RouterLinkActive, RouterLink, MatTabNavPanel, RouterOutlet, DatePipe]
+	selector: 'app-root',
+	templateUrl: './app.component.html',
+	styleUrls: ['./app.component.scss'],
+	imports: [MatToolbar, MatIcon, MatButton, MatTabNav, MatTabLink, RouterLinkActive, RouterLink, MatTabNavPanel, RouterOutlet, DatePipe],
 })
 export class AppComponent {
-  router = inject(Router);
+	router = inject(Router);
 
-  public links = [{name: 'Directive', url: '/directive-test'}, {name: 'Component', url: '/component-test'}];
-  public activeLink: string = '/directive-test';
-  public readonly buildTime = BUILD_INFO.timestamp;
-
+	public links = [
+		{ name: 'Directive', url: '/directive-test' },
+		{ name: 'Component', url: '/component-test' },
+	];
+	public activeLink: string = '/directive-test';
+	public readonly buildTime = BUILD_INFO.timestamp;
 }

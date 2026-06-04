@@ -5,20 +5,16 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { AppService } from './app.service';
 
 describe('AppService', () => {
-  let service: AppService;
+	let service: AppService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        AppService,
-        provideHttpClient(),
-        provideHttpClientTesting(),
-      ],
-    });
-    service = TestBed.inject(AppService);
-  });
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			providers: [AppService, provideHttpClient(), provideHttpClientTesting()],
+		});
+		service = TestBed.inject(AppService);
+	});
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+	it('should be created', () => {
+		expect(service).toBeTruthy();
+	});
 });

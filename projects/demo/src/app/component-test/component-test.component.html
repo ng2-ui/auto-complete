@@ -81,4 +81,46 @@
     </mat-card-content>
   </mat-card>
 
+  <!-- Custom item / header templates -->
+  <mat-card class="demo-card">
+    <mat-card-header>
+      <mat-card-title>Custom Item Template</mat-card-title>
+      <mat-card-subtitle>
+        Render each row with an <code>ng-template</code> via <code>[itemTemplate]</code>, plus a header
+        row via <code>[headerTemplate]</code>.
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="demo-area">
+        <input
+          [(ngModel)]="tplModel"
+          (focus)="showTpl = true"
+          (blur)="showTpl = false"
+          placeholder="focus to browse people"/>
+        @if (showTpl) {
+          <ngui-auto-complete
+            [show-dropdown-on-init]="true"
+            [show-input-tag]="false"
+            [source]="people"
+            display-property-name="name"
+            (valueSelected)="tplModel = $event"
+            [headerTemplate]="peopleHead"
+            [itemTemplate]="peopleRow">
+          </ngui-auto-complete>
+        }
+        <ng-template #peopleHead>Pioneers of computing</ng-template>
+        <ng-template #peopleRow let-person let-i="index">
+          <strong>{{ i + 1 }}. {{ person.name }}</strong> — {{ person.role }} ({{ person.year }})
+        </ng-template>
+      </div>
+      <p class="model-display">selected: <code>{{ tplModel?.name }}</code></p>
+      <mat-expansion-panel class="code-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>View Template</mat-panel-title>
+        </mat-expansion-panel-header>
+        <pre>{{ templateStr3 }}</pre>
+      </mat-expansion-panel>
+    </mat-card-content>
+  </mat-card>
+
 </div>

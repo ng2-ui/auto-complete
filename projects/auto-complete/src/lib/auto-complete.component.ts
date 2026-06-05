@@ -1,5 +1,6 @@
 import {
 	booleanAttribute,
+	ChangeDetectionStrategy,
 	Component,
 	ElementRef,
 	numberAttribute,
@@ -9,6 +10,7 @@ import {
 	inject,
 	input,
 	output,
+	signal,
 	viewChild,
 } from '@angular/core';
 import { NguiAutoCompleteService } from './auto-complete.service';
@@ -21,6 +23,7 @@ import { NgClass, NgTemplateOutlet } from '@angular/common';
 	templateUrl: './auto-complete.component.html',
 	styleUrls: ['./auto-complete.component.scss'],
 	encapsulation: ViewEncapsulation.None,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [NguiAutoCompleteService],
 	imports: [FormsModule, NgClass, NgTemplateOutlet],
 })
@@ -71,12 +74,12 @@ export class NguiAutoCompleteComponent implements OnInit {
 	public autoCompleteInput = viewChild<ElementRef>('autoCompleteInput');
 	public autoCompleteContainer = viewChild<ElementRef>('autoCompleteContainer');
 
-	public dropdownVisible = false;
-	public isLoading = false;
+	public dropdownVisible = signal(false);
+	public isLoading = signal(false);
 
-	public filteredList: any[] = [];
-	public minCharsEntered = false;
-	public itemIndex: number = null;
+	public filteredList = signal<any[]>([]);
+	public minCharsEntered = signal(false);
+	public itemIndex = signal<number | null>(null);
 	public keyword: string;
 
 	private el: HTMLElement; // this component  element `<ngui-auto-complete>`
@@ -108,7 +111,7 @@ export class NguiAutoCompleteComponent implements OnInit {
 		this.autoComplete.pathToData = this.pathToData();
 		this.autoComplete.listFormatter = this.listFormatter();
 		if (this.autoSelectFirstItem()) {
-			this.itemIndex = 0;
+			this.itemIndex.set(0);
 		}
 		setTimeout(() => {
 			const input = this.autoCompleteInput();
@@ -134,27 +137,27 @@ export class NguiAutoCompleteComponent implements OnInit {
 	};
 
 	public showDropdownList(event: any): void {
-		this.dropdownVisible = true;
+		this.dropdownVisible.set(true);
 		this.reloadList(event.target.value);
 	}
 
 	public hideDropdownList(): void {
 		this.selectOnEnter = false;
-		this.dropdownVisible = false;
+		this.dropdownVisible.set(false);
 	}
 
 	public findItemFromSelectValue(selectText: string): any {
-		const matchingItems = this.filteredList.filter((item) => '' + item === selectText);
+		const matchingItems = this.filteredList().filter((item) => '' + item === selectText);
 		return matchingItems.length ? matchingItems[0] : null;
 	}
 
 	public reloadList(keyword: string): void {
-		this.filteredList = [];
+		this.filteredList.set([]);
 		if (keyword.length < (this.minChars() || 0)) {
-			this.minCharsEntered = false;
+			this.minCharsEntered.set(false);
 			return;
 		} else {
-			this.minCharsEntered = true;
+			this.minCharsEntered.set(true);
 		}
 
 		const maxNumList = this.maxNumList();
@@ -162,17 +165,18 @@ export class NguiAutoCompleteComponent implements OnInit {
 
 		if (this.isSrcArr()) {
 			// local source
-			this.isLoading = false;
-			this.filteredList = this.autoComplete.filter(source, keyword, this.matchFormatted(), this.ignoreAccents());
+			this.isLoading.set(false);
+			let list = this.autoComplete.filter(source, keyword, this.matchFormatted(), this.ignoreAccents());
 			if (maxNumList) {
-				this.filteredList = this.filteredList.slice(0, maxNumList);
+				list = list.slice(0, maxNumList);
 			}
-			if (this.minCharsEntered && !this.filteredList.length) {
+			this.filteredList.set(list);
+			if (this.minCharsEntered() && !this.filteredList().length) {
 				this.noMatchFound.emit();
 			}
 		} else {
 			// remote source
-			this.isLoading = true;
+			this.isLoading.set(true);
 
 			if (typeof source === 'function') {
 				// custom function that returns observable
@@ -182,36 +186,38 @@ export class NguiAutoCompleteComponent implements OnInit {
 							const paths = this.pathToData().split('.');
 							paths.forEach((prop) => (resp = resp[prop]));
 						}
-						this.filteredList = resp;
+						let list = resp;
 						if (maxNumList) {
-							this.filteredList = this.filteredList.slice(0, maxNumList);
+							list = list.slice(0, maxNumList);
 						}
-						this.isLoading = false;
-						if (this.minCharsEntered && !this.filteredList.length) {
+						this.filteredList.set(list);
+						this.isLoading.set(false);
+						if (this.minCharsEntered() && !this.filteredList().length) {
 							this.noMatchFound.emit();
 						}
 					},
 					error: (error) => {
 						console.warn(error);
-						this.isLoading = false;
+						this.isLoading.set(false);
 					},
 				});
 			} else {
 				// remote source
 				this.autoComplete.getRemoteData(keyword).subscribe({
 					next: (resp) => {
-						this.filteredList = resp ? resp : [];
+						let list = resp ? resp : [];
 						if (maxNumList) {
-							this.filteredList = this.filteredList.slice(0, maxNumList);
+							list = list.slice(0, maxNumList);
 						}
-						this.isLoading = false;
-						if (this.minCharsEntered && !this.filteredList.length) {
+						this.filteredList.set(list);
+						this.isLoading.set(false);
+						if (this.minCharsEntered() && !this.filteredList().length) {
 							this.noMatchFound.emit();
 						}
 					},
 					error: (error) => {
 						console.warn(error);
-						this.isLoading = false;
+						this.isLoading.set(false);
 					},
 				});
 			}
@@ -232,14 +238,14 @@ export class NguiAutoCompleteComponent implements OnInit {
 
 	public blurHandler(evt: any) {
 		if (this.selectOnBlur()) {
-			this.selectOne(this.filteredList[this.itemIndex]);
+			this.selectOne(this.filteredList()[this.itemIndex()]);
 		}
 
 		this.hideDropdownList();
 	}
 
 	public inputElKeyHandler = (evt: any) => {
-		const totalNumItem = this.filteredList.length;
+		const totalNumItem = this.filteredList().length;
 
 		if (!this.selectOnEnter && this.autoSelectFirstItem() && 0 !== totalNumItem) {
 			this.selectOnEnter = true;
@@ -256,8 +262,8 @@ export class NguiAutoCompleteComponent implements OnInit {
 					return;
 				}
 				this.selectOnEnter = true;
-				this.itemIndex = (totalNumItem + this.itemIndex - 1) % totalNumItem;
-				this.scrollToView(this.itemIndex);
+				this.itemIndex.set((totalNumItem + this.itemIndex() - 1) % totalNumItem);
+				this.scrollToView(this.itemIndex());
 				break;
 
 			case 40: // DOWN, select the next li el or the first one
@@ -265,23 +271,22 @@ export class NguiAutoCompleteComponent implements OnInit {
 					return;
 				}
 				this.selectOnEnter = true;
-				this.dropdownVisible = true;
-				let sum = this.itemIndex;
-				sum = this.itemIndex === null ? 0 : sum + 1;
-				this.itemIndex = (totalNumItem + sum) % totalNumItem;
-				this.scrollToView(this.itemIndex);
+				this.dropdownVisible.set(true);
+				const sum = this.itemIndex() === null ? 0 : this.itemIndex() + 1;
+				this.itemIndex.set((totalNumItem + sum) % totalNumItem);
+				this.scrollToView(this.itemIndex());
 				break;
 
 			case 13: // ENTER, choose it!!
 				if (this.selectOnEnter) {
-					this.selectOne(this.filteredList[this.itemIndex]);
+					this.selectOne(this.filteredList()[this.itemIndex()]);
 				}
 				evt.preventDefault();
 				break;
 
 			case 9: // TAB, choose if tab-to-select is enabled
 				if (this.tabToSelect()) {
-					this.selectOne(this.filteredList[this.itemIndex]);
+					this.selectOne(this.filteredList()[this.itemIndex()]);
 				}
 				break;
 		}
@@ -305,6 +310,10 @@ export class NguiAutoCompleteComponent implements OnInit {
 	}
 
 	get emptyList(): boolean {
-		return !(this.isLoading || (this.minCharsEntered && !this.isLoading && !this.filteredList.length) || this.filteredList.length);
+		return !(
+			this.isLoading() ||
+			(this.minCharsEntered() && !this.isLoading() && !this.filteredList().length) ||
+			this.filteredList().length
+		);
 	}
 }

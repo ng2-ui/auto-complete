@@ -239,7 +239,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 		setTimeout(() => {
 			component.reloadList(this.inputEl.value);
 			this.styleAutoCompleteDropdown();
-			component.dropdownVisible = true;
+			component.dropdownVisible.set(true);
 		});
 	};
 
@@ -248,7 +248,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 			const component = this.componentRef.instance;
 
 			if (this.selectOnBlur()) {
-				component.selectOne(component.filteredList[component.itemIndex]);
+				component.selectOne(component.filteredList()[component.itemIndex()]);
 			}
 
 			if (this.closeOnFocusOut()) {
@@ -408,7 +408,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 	private inputEventHandler = (evt: any) => {
 		if (this.componentRef) {
 			const component = this.componentRef.instance;
-			component.dropdownVisible = true;
+			component.dropdownVisible.set(true);
 			component.keyword = evt.target.value;
 			component.reloadListInDelay(evt);
 		} else {

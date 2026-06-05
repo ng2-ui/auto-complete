@@ -263,7 +263,7 @@
 		<mat-card-header>
 			<mat-card-title>RTL Support</mat-card-title>
 			<mat-card-subtitle>
-				Right-to-left layout with <code>[is-rtl]="true"</code>. Only items in the list are accepted
+				Right-to-left layout — the dropdown follows the ancestor <code>dir="rtl"</code> automatically. Only items in the list are accepted
 				(<code>accept-user-input="false"</code>).
 			</mat-card-subtitle>
 		</mat-card-header>
@@ -273,7 +273,6 @@
 					ngui-auto-complete
 					[source]="arrayOfArabicStrings"
 					[accept-user-input]="false"
-					[is-rtl]="true"
 					[(ngModel)]="rtlCity"
 					(valueSelected)="onSelection($event)">
 					<input placeholder="ابحث عن مدينة..." />

@@ -40,6 +40,9 @@ and this project follows [Angular version numbers](https://angular.dev/reference
   property name or a function: `display-with="name"` or `[display-with]="(item) => …"`. (`list-formatter`
   still formats the dropdown rows.) Migrate `display-property-name="name"` → `display-with="name"`, and
   `value-formatter="(key) name"` → `[display-with]="(item) => '(' + item.key + ') ' + item.name"`.
+- **Removed the `is-rtl` input.** Direction is now auto-detected from the input's computed direction, so
+  an ancestor `dir="rtl"` (or the document direction) positions the dropdown correctly on its own — no
+  input and no extra dependency. Replace `[is-rtl]="true"` with `dir="rtl"` on the element or an ancestor.
 
 ### Added
 - **`[(value)]` two-way binding on `NguiAutoCompleteComponent`.** The standalone component now exposes a

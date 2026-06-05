@@ -7,7 +7,6 @@ import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } fr
 import { MatFormField, MatPrefix, MatSuffix } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
-import { Dir } from '@angular/cdk/bidi';
 import { MatButton } from '@angular/material/button';
 import { JsonPipe } from '@angular/common';
 
@@ -32,7 +31,6 @@ import { JsonPipe } from '@angular/common';
 		MatPrefix,
 		MatInput,
 		MatSuffix,
-		Dir,
 		MatButton,
 		JsonPipe,
 	],
@@ -214,10 +212,10 @@ export class DirectiveTestComponent {
   `;
 
 	template9 = `
+  <!-- dropdown follows the ancestor dir="rtl" automatically -->
   <div ngui-auto-complete
         [source]="arrayOfArabicStrings"
         [accept-user-input]="false"
-        [is-rtl]="true"
         [(ngModel)]="rtlCity"
         (valueSelected)="onSelection($event)">
         <input autofocus placeholder="ابحث عن مدينة..." />

@@ -104,6 +104,18 @@ name or a function. (`list-formatter` still formats the dropdown rows.)
   // component: formatKeyName = (item) => `(${item.key}) ${item.name}`;
 ```
 
+### Removed: `is-rtl` input — RTL is auto-detected
+
+Direction now follows the input's computed direction, so put `dir="rtl"` on the element or any ancestor
+(or set the document direction) and the dropdown anchors correctly on its own.
+
+```diff
+- <input ngui-auto-complete [is-rtl]="true" [source]="s" [(ngModel)]="v" />
++ <div dir="rtl">
++   <input ngui-auto-complete [source]="s" [(ngModel)]="v" />
++ </div>
+```
+
 ### New: `[(value)]` on `NguiAutoCompleteComponent` (optional)
 
 The standalone component gained a two-way `value` model. `(valueSelected)` still fires, so this is opt-in:

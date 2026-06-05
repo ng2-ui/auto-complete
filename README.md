@@ -166,7 +166,6 @@ works on both the component and the directive:
 | `match-formatted` | `boolean` | `false` | Match keyword against formatted values instead of raw data |
 | `ignore-accents` | `boolean` | `true` | Treat accented characters as their base characters during matching |
 | `autocomplete` | `boolean` | `false` | Set `autocomplete="off"` on the input (`false` = off) |
-| `is-rtl` | `boolean` | `false` | Right-to-left dropdown positioning |
 | `open-direction` | `'auto' \| 'up' \| 'down'` | `'auto'` | Force the dropdown above (`up`) or below (`down`) the input. `auto` opens below unless the input is near the bottom of the viewport |
 | `z-index` | `string` | `'1'` | CSS z-index of the dropdown |
 

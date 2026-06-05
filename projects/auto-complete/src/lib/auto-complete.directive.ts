@@ -65,7 +65,6 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 	public headerTemplate = input<TemplateRef<void> | null>(null);
 
 	public zIndex = input(1, { alias: 'z-index', transform: numberAttribute });
-	public isRtl = input(false, { alias: 'is-rtl', transform: booleanAttribute });
 	// 'down' / 'up' force the dropdown below / above the input; 'auto' (default) opens
 	// below unless the input sits near the bottom of the viewport.
 	public openDirection = input<'auto' | 'up' | 'down'>('auto', { alias: 'open-direction' });
@@ -287,12 +286,13 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 		if (this.componentRef) {
 			/* setting width/height auto complete */
 			const thisInputElBCR = this.inputEl.getBoundingClientRect();
-			const directionOfStyle = this.isRtl() ? 'right' : 'left';
 
 			this.acDropdownEl.style.width = thisInputElBCR.width + 'px';
 			this.acDropdownEl.style.position = 'absolute';
 			this.acDropdownEl.style.zIndex = '' + this.zIndex();
-			this.acDropdownEl.style[directionOfStyle] = '0';
+			// Anchor on the leading edge; `inset-inline-start` follows the element's direction
+			// (LTR → left, RTL → right) automatically, so RTL needs no detection.
+			this.acDropdownEl.style.insetInlineStart = '0';
 			this.acDropdownEl.style.display = 'inline-block';
 
 			// Reset any previous vertical anchor so re-styling is deterministic.

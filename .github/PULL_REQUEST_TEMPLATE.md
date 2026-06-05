@@ -7,16 +7,15 @@ Keep PRs small and focused on a single concern — it makes review (and the chan
 
 <!-- One or two sentences: what does this PR do and why? -->
 
-## Type of change
+## Area
 
-<!-- Tick all that apply. -->
+<!-- Which part(s) of the project does this touch? Tick all that apply. -->
 
-- [ ] ✨ Feature (`feat`)
-- [ ] 🐛 Bug fix (`fix`)
-- [ ] ♻️ Refactor / internal (`refactor` / `chore`)
-- [ ] 📝 Documentation (`docs`)
-- [ ] ⬆️ Dependency / Angular upgrade (`build`)
-- [ ] ⚠️ **Breaking change** (requires a `MIGRATION.md` entry)
+- [ ] 📦 Library (`projects/auto-complete`)
+- [ ] 🎨 Demo app (`projects/demo`)
+- [ ] ⬆️ Dependencies / Angular upgrade
+- [ ] 🛠️ CI / tooling / repo config
+- [ ] 📝 Docs
 
 ## Changes
 
@@ -50,12 +49,12 @@ npm run format:check
 ## Checklist
 
 - [ ] Scope is small and single-concern
+- [ ] Conventional Commit title
 - [ ] `build-lib:prod`, `build-docs`, `lint`, unit tests (lib + demo) and `format:check` all pass
 - [ ] **CHANGELOG.md** updated (every user-facing change)
 - [ ] **README.md** updated (if the public API / usage changed)
-- [ ] **MIGRATION.md** updated (for breaking changes)
+- [ ] Breaking changes are documented — **CHANGELOG.md** + **MIGRATION.md**, title marked `!` / `BREAKING CHANGE:` (or: this PR has none)
 - [ ] No generated `projects/demo/src/app/build-info.ts` timestamp committed (it's a placeholder)
-- [ ] Conventional Commit title; breaking changes marked with `!` and a `BREAKING CHANGE:` footer
 
 ## Related issues
 

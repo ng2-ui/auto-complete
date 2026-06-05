@@ -123,10 +123,10 @@ export class DirectiveTestComponent {
        [accept-user-input]="true"
        [auto-select-first-item]="false"
        [select-on-blur]="true"
+       [ngModel]="model1"
        (ngModelChange)="myCallback1($event)"
-       (customSelected)="customCallback($event)"
-       placeholder="enter text">
-    <input id="model1" [ngModel]="model1" autofocus />
+       (customSelected)="customCallback($event)">
+    <input id="model1" autofocus placeholder="enter text" />
   </div>
   `;
 
@@ -137,10 +137,10 @@ export class DirectiveTestComponent {
        [open-on-focus]="false"
        [auto-select-first-item]="false"
        [select-on-blur]="true"
+       [ngModel]="model1"
        (ngModelChange)="myCallback1($event)"
-       (customSelected)="customCallback($event)"
-       placeholder="enter text">
-    <input id="model1-1" [ngModel]="model1" autofocus />
+       (customSelected)="customCallback($event)">
+    <input id="model1-1" autofocus placeholder="enter text" />
   </div>
   `;
 
@@ -210,9 +210,9 @@ export class DirectiveTestComponent {
   <div ngui-auto-complete
        [source]="arrayOfStrings"
        [auto-select-first-item]="true"
-       (ngModelChange)="myCallback7($event)"
-       placeholder="enter text">
-    <input id="model7" [ngModel]="model7"/>
+       [ngModel]="model7"
+       (ngModelChange)="myCallback7($event)">
+    <input id="model7" placeholder="enter text"/>
   </div>
   `;
 
@@ -220,10 +220,10 @@ export class DirectiveTestComponent {
   <div ngui-auto-complete
         [source]="arrayOfStrings"
         [accept-user-input]="false"
-        (ngModelChange)="myCallback8($event)"
         [is-rtl]="true"
-        placeholder="enter text">
-        <input id="model8" [ngModel]="model8" autofocus />
+        [ngModel]="model8"
+        (ngModelChange)="myCallback8($event)">
+        <input id="model8" autofocus placeholder="enter text" />
       </div>
   `;
 
@@ -244,10 +244,10 @@ export class DirectiveTestComponent {
        [accept-user-input]="true"
        [auto-select-first-item]="false"
        [select-on-blur]="true"
+       [ngModel]="model10"
        (ngModelChange)="myCallback10($event)"
-       (customSelected)="customCallback($event)"
-       placeholder="enter text">
-        <input id="model10" [ngModel]="model10" autofocus />
+       (customSelected)="customCallback($event)">
+        <input id="model10" autofocus placeholder="try: Cad or Mun" />
     </div>
   `;
 
@@ -291,8 +291,13 @@ export class DirectiveTestComponent {
 
   <div ngui-auto-complete
        [source]="arrayOfStrings"
-       [open-direction]="openDir">
-    <input [ngModel]="model13" placeholder="opens {{ openDir }}" />
+       [open-direction]="openDir"
+       [accept-user-input]="true"
+       [select-on-blur]="true"
+       [ngModel]="model13"
+       (ngModelChange)="myCallback1($event)"
+       (customSelected)="customCallback($event)">
+    <input id="model13" placeholder="opens {{ openDir }}" />
   </div>
   `;
 

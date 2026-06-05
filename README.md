@@ -60,16 +60,29 @@ export class AppModule {}
 
 ### As a Directive
 
-Attach to any element containing an `input`:
+Attach to any element containing an `input`. The directive is a `ControlValueAccessor`, so it binds with
+`[(ngModel)]` like any form control:
 
 ```html
-<!-- On a wrapping div -->
-<div ngui-auto-complete [source]="myArray" (ngModelChange)="onSelect($event)">
-  <input [(ngModel)]="myValue" />
-</div>
-
 <!-- Directly on an input -->
 <input ngui-auto-complete [(ngModel)]="myValue" [source]="myArray" />
+
+<!-- On a wrapping div: put the value binding on the host element -->
+<div ngui-auto-complete [(ngModel)]="myValue" [source]="myArray">
+  <input />
+</div>
+```
+
+### Reactive forms
+
+Because the directive is a `ControlValueAccessor`, `[formControl]` and `formControlName` work directly:
+
+```html
+<input ngui-auto-complete [formControl]="cityControl" [source]="cities" />
+
+<form [formGroup]="form">
+  <input ngui-auto-complete formControlName="city" [source]="cities" />
+</form>
 ```
 
 ### As a Component
@@ -83,7 +96,7 @@ Use `<ngui-auto-complete>` directly, control its visibility with `@if`:
     [source]="myArray"
     [show-input-tag]="false"
     [show-dropdown-on-init]="true"
-    (valueSelected)="myValue = $event">
+    [(value)]="myValue">
   </ngui-auto-complete>
 }
 ```
@@ -130,7 +143,6 @@ works on both the component and the directive:
 | Input | Type | Default | Description |
 |-------|------|---------|-------------|
 | `source` | `any[] \| string \| Function` | — | **Required.** Array, URL string, or function returning `Observable` |
-| `ngModel` | `any` | — | Value binding |
 | `path-to-data` | `string` | — | Dot-path to array in HTTP response, e.g. `data.results` |
 | `min-chars` | `number` | `0` | Minimum characters before fetching remote data |
 | `max-num-list` | `number` | unlimited | Maximum suggestions to show |
@@ -159,12 +171,14 @@ works on both the component and the directive:
 | `open-direction` | `'auto' \| 'up' \| 'down'` | `'auto'` | Force the dropdown above (`up`) or below (`down`) the input. `auto` opens below unless the input is near the bottom of the viewport |
 | `z-index` | `string` | `'1'` | CSS z-index of the dropdown |
 
-### Directive Outputs
+### Directive value binding & outputs
+
+The selected value flows through Angular forms (the directive is a `ControlValueAccessor`): bind it with
+`[(ngModel)]`, `[formControl]` or `formControlName`. `(ngModelChange)` / the control's `valueChanges` fire
+on every accepted value.
 
 | Output | Payload | Description |
 |--------|---------|-------------|
-| `(ngModelChange)` | selected value | Fires when a list item or custom value is accepted |
-| `(valueChanged)` | selected value | Same as `ngModelChange` |
 | `(customSelected)` | keyword string | Fires when user accepts a value not in the list |
 | `(noMatchFound)` | `void` | Fires when the filtered list is empty and `min-chars` threshold is met — use it to show an "Add new…" affordance |
 
@@ -174,6 +188,7 @@ All directive inputs are supported plus:
 
 | Input | Type | Default | Description |
 |-------|------|---------|-------------|
+| `value` | `any` | — | Two-way bindable selected value: `[(value)]="myValue"` |
 | `show-input-tag` | `boolean` | `true` | Render an `<input>` inside the component |
 | `show-dropdown-on-init` | `boolean` | `false` | Open dropdown immediately when component appears |
 | `placeholder` | `string` | — | Placeholder text for the internal input |
@@ -185,9 +200,8 @@ All directive inputs are supported plus:
 
 | Output | Payload | Description |
 |--------|---------|-------------|
-| `(valueSelected)` | selected value | Fires when a list item is selected |
+| `(valueSelected)` | selected value | Fires when a list item is selected (or use `[(value)]`) |
 | `(customSelected)` | keyword string | Fires on custom (non-list) value entry |
-| `(textEntered)` | string | Fires when user enters text |
 | `(noMatchFound)` | `void` | Fires when the filtered list is empty and `min-chars` threshold is met — use it to show an "Add new…" affordance |
 
 ---

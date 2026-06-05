@@ -20,10 +20,10 @@
 					[accept-user-input]="true"
 					[auto-select-first-item]="false"
 					[select-on-blur]="true"
+					[ngModel]="model1"
 					(ngModelChange)="myCallback1($event)"
-					(customSelected)="customCallback($event)"
-					placeholder="enter text">
-					<input id="model1" [ngModel]="model1" autofocus />
+					(customSelected)="customCallback($event)">
+					<input id="model1" autofocus placeholder="enter text" />
 				</div>
 			</div>
 			<p class="model-display">
@@ -53,10 +53,10 @@
 					[open-on-focus]="false"
 					[auto-select-first-item]="false"
 					[select-on-blur]="true"
+					[ngModel]="model1"
 					(ngModelChange)="myCallback1($event)"
-					(customSelected)="customCallback($event)"
-					placeholder="enter text">
-					<input id="model1-1" [ngModel]="model1" autofocus />
+					(customSelected)="customCallback($event)">
+					<input id="model1-1" autofocus placeholder="enter text" />
 				</div>
 			</div>
 			<p class="model-display">
@@ -248,9 +248,9 @@
 					ngui-auto-complete
 					[source]="arrayOfStrings"
 					[auto-select-first-item]="true"
-					(ngModelChange)="myCallback7($event)"
-					placeholder="enter text">
-					<input id="model7" [ngModel]="model7" />
+					[ngModel]="model7"
+					(ngModelChange)="myCallback7($event)">
+					<input id="model7" placeholder="enter text" />
 				</div>
 			</div>
 			<p class="model-display">
@@ -280,10 +280,10 @@
 					ngui-auto-complete
 					[source]="arrayOfArabicStrings"
 					[accept-user-input]="false"
-					(ngModelChange)="myCallback8($event)"
 					[is-rtl]="true"
-					placeholder="ابحث عن مدينة...">
-					<input id="model8" [ngModel]="model8" />
+					[ngModel]="model8"
+					(ngModelChange)="myCallback8($event)">
+					<input id="model8" placeholder="ابحث عن مدينة..." />
 				</div>
 			</div>
 			<p class="model-display">
@@ -422,10 +422,10 @@
 					[accept-user-input]="true"
 					[auto-select-first-item]="false"
 					[select-on-blur]="true"
+					[ngModel]="model10"
 					(ngModelChange)="myCallback10($event)"
-					(customSelected)="customCallback($event)"
-					placeholder="try: Cad or Mun">
-					<input id="model10" [ngModel]="model10" autofocus />
+					(customSelected)="customCallback($event)">
+					<input id="model10" autofocus placeholder="try: Cad or Mun" />
 				</div>
 			</div>
 			<p class="model-display">
@@ -464,9 +464,10 @@
 					[open-direction]="openDir"
 					[accept-user-input]="true"
 					[select-on-blur]="true"
+					[ngModel]="model13"
 					(ngModelChange)="myCallback1($event)"
 					(customSelected)="customCallback($event)">
-					<input id="model13" [ngModel]="model13" placeholder="opens {{ openDir }}" />
+					<input id="model13" placeholder="opens {{ openDir }}" />
 				</div>
 			</div>
 			<p class="model-display">

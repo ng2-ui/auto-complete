@@ -18,7 +18,7 @@
     "build-lib:prod": "ng build auto-complete --configuration production && npm run copy-lib",
     "prebuild-docs": "npm run generate-build-info",
     "build-docs": "ng build demo --configuration production",
-    "copy-lib": "copyfiles -f LICENSE.md README.md CHANGELOG.md dist/",
+    "copy-lib": "copyfiles -f LICENSE.md README.md CHANGELOG.md MIGRATION.md dist/",
     "cypress:open": "ng run demo:cypress-open",
     "cypress:run": "ng run demo:cypress-run"
   },

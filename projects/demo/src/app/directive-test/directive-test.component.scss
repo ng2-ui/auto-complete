@@ -1,8 +1,24 @@
 // Component-specific overrides for the directive test demos
 
 ngui-auto-complete,
-input:not([mat-input]) {
+input:not([mat-input]):not([type='checkbox']) {
 	display: block;
+}
+
+.accept-toggle {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin-bottom: 12px;
+	font-size: 13px;
+	color: #666;
+	white-space: nowrap;
+
+	input[type='checkbox'] {
+		flex: none;
+		width: auto;
+		margin: 0;
+	}
 }
 
 // Limit max-height on the first two string examples

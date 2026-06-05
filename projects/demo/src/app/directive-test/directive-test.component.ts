@@ -100,22 +100,27 @@ export class DirectiveTestComponent {
 		{ city: 'San Jose', state: 'California', nickname: 'Capital of Silicon Valley', population: '1,025,350' },
 	];
 
-	public model1 = 'is';
-	public model2 = { id: 1, value: 'One' };
-	public model3 = { key: 3, name: 'Key Three' };
-	public model4;
-	public model5;
-	public model7 = '';
-	public model8 = '';
-	public model9 = '';
-	public model10 = '';
-	public model11 = '';
-	public model12 = '';
-	public model13 = '';
-	public noMatchVisible11 = false;
-	public myModel;
+	// Models, named after what each example binds.
+	public word = 'is'; // basic string list (cards 1 & 2)
+	public idValue = { id: 1, value: 'One' }; // id/value objects
+	public keyName = { key: 3, name: 'Key Three' }; // key/name objects
+	public place; // remote address (HTTP source)
+	public book; // remote book (Observable source)
+	public amount; // Angular Material integration
+	public autoSelectWord = ''; // auto-select-first-item
+	public rtlCity = ''; // RTL
+	public city = ''; // grid-style cities
+	public accentWord = ''; // accent-sensitive matching
+	public tag = ''; // (noMatchFound) "add new"
+	public strictWord = ''; // suppress "no result found"
+	public directionWord = ''; // open-direction
 
+	public noMatchVisible = false;
 	public openDir = 'auto';
+
+	// Bound to the live "accept-user-input" toggles in two of the cards.
+	public tagAcceptInput = true;
+	public strictAcceptInput = false;
 
 	template1 = `
   <div ngui-auto-complete
@@ -123,10 +128,9 @@ export class DirectiveTestComponent {
        [accept-user-input]="true"
        [auto-select-first-item]="false"
        [select-on-blur]="true"
-       [ngModel]="model1"
-       (ngModelChange)="myCallback1($event)"
+       [(ngModel)]="word"
        (valueSelected)="onSelection($event)">
-    <input id="model1" autofocus placeholder="enter text" />
+    <input autofocus placeholder="enter text" />
   </div>
   `;
 
@@ -137,29 +141,26 @@ export class DirectiveTestComponent {
        [open-on-focus]="false"
        [auto-select-first-item]="false"
        [select-on-blur]="true"
-       [ngModel]="model1"
-       (ngModelChange)="myCallback1($event)"
+       [(ngModel)]="word"
        (valueSelected)="onSelection($event)">
-    <input id="model1-1" autofocus placeholder="enter text" />
+    <input autofocus placeholder="enter text" />
   </div>
   `;
 
 	template3 = `
   <input
-    id="model2"
     ngui-auto-complete
     blank-option-text="Select One"
-    [(ngModel)]="model2"
+    [(ngModel)]="idValue"
     [source]="arrayOfKeyValues"
     placeholder="enter text"
     z-index="4"/>
-  <a href="javascript:void(0)" (click)="model2={id:'change', value: 'it'}">Change It</a>
+  <a href="javascript:void(0)" (click)="idValue={id:100, value: 'it'}">Change It</a>
   `;
 
 	template4 = `
   <input ngui-auto-complete [source]="arrayOfKeyValues2"
-         id="model3"
-         [(ngModel)]="model3"
+         [(ngModel)]="keyName"
          placeholder="enter text"
          value-formatter="(key) name"
          list-formatter="(key) name"
@@ -168,8 +169,7 @@ export class DirectiveTestComponent {
 
 	template5 = `
   <input ngui-auto-complete
-         id="model4"
-         [(ngModel)]="model4"
+         [(ngModel)]="place"
          placeholder="Enter a place name (min. 2 chars)"
          [source]="appSvc.getAddressUrl()"
          no-match-found-text="No Match Found"
@@ -182,26 +182,23 @@ export class DirectiveTestComponent {
 
 	template6 = `
   <input ngui-auto-complete
-         id="model5"
          placeholder="Search for a book (min. 2 chars)"
-         [(ngModel)]="model5"
+         [(ngModel)]="book"
          [source]="appSvc.findBooks"
          path-to-data="docs"
          [list-formatter]="renderBook"
          display-property-name="title"
-         min-chars="2"
-  />
+         min-chars="2" />
   `;
 
 	template7 = `
   <mat-form-field>
       <span matPrefix>$&nbsp;</span>
-      <input matInput ngui-auto-complete style="border: 1px solid #ccc"
-             id="model6"
-             [(ngModel)]="myModel"
+      <input matInput ngui-auto-complete
+             [(ngModel)]="amount"
              [source]="arrayOfNumbers"
              [list-formatter]="rightAligned"
-             placeholder="amount" align="end"/>
+             placeholder="amount"/>
       <span matSuffix>.00</span>
    </mat-form-field>
   `;
@@ -210,73 +207,71 @@ export class DirectiveTestComponent {
   <div ngui-auto-complete
        [source]="arrayOfStrings"
        [auto-select-first-item]="true"
-       [ngModel]="model7"
-       (ngModelChange)="myCallback7($event)">
-    <input id="model7" placeholder="enter text"/>
+       [(ngModel)]="autoSelectWord"
+       (valueSelected)="onSelection($event)">
+    <input placeholder="enter text"/>
   </div>
   `;
 
 	template9 = `
   <div ngui-auto-complete
-        [source]="arrayOfStrings"
+        [source]="arrayOfArabicStrings"
         [accept-user-input]="false"
         [is-rtl]="true"
-        [ngModel]="model8"
-        (ngModelChange)="myCallback8($event)">
-        <input id="model8" autofocus placeholder="enter text" />
+        [(ngModel)]="rtlCity"
+        (valueSelected)="onSelection($event)">
+        <input autofocus placeholder="ابحث عن مدينة..." />
       </div>
   `;
 
 	template10 = `
-    <input ngui-auto-complete
-         style="width: 650px"
-         [(ngModel)]="model9"
+  <input ngui-auto-complete
+         [(ngModel)]="city"
          [source]="arrayOfCities"
          [accept-user-input]="false"
          [list-formatter]="renderCity"
-         placeholder="Search for a city"
+         display-property-name="city"
+         [header-item-template]="cityHeaderTemplate"
+         placeholder="Search for a city" />
   `;
 
 	template11 = `
     <div ngui-auto-complete
-       [ignore-accents] = "false"
+       [ignore-accents]="false"
        [source]="arrayOfAccentedStrings"
        [accept-user-input]="false"
        [auto-select-first-item]="false"
        [select-on-blur]="true"
-       [ngModel]="model10"
-       (ngModelChange)="myCallback10($event)"
+       [(ngModel)]="accentWord"
        (valueSelected)="onSelection($event)">
-        <input id="model10" autofocus placeholder="try: Cad or Mun" />
+        <input autofocus placeholder="try: Cad or Mun" />
     </div>
   `;
 
 	template11b = `
-  <input #model11Input ngui-auto-complete
-         [(ngModel)]="model11"
+  <label><input type="checkbox" [(ngModel)]="acceptInput" /> accept-user-input</label>
+  <input #tagInput ngui-auto-complete
+         [(ngModel)]="tag"
          [source]="arrayOfStrings"
-         [accept-user-input]="true"
+         [accept-user-input]="acceptInput"
          no-match-found-text=""
-         (noMatchFound)="noMatchVisible11 = true"
-         (input)="noMatchVisible11 = false"
-         (valueSelected)="noMatchVisible11 = false"
+         (noMatchFound)="noMatchVisible = true"
+         (input)="noMatchVisible = false"
+         (valueSelected)="noMatchVisible = false"
          placeholder="type something not in the list" />
-  @if (noMatchVisible11) {
-    <div class="no-match-hint">
-      <mat-icon>info_outline</mat-icon>
-      Not in the list —
-      <button mat-button color="primary" (click)="addToList11(model11Input.value)">
-        Add "{{ model11Input.value }}"
-      </button>
-    </div>
+  @if (noMatchVisible) {
+    <button mat-button color="primary" (click)="addToTag(tagInput.value)">
+      Add "{{ tagInput.value }}"
+    </button>
   }
   `;
 
 	template12 = `
+  <label><input type="checkbox" [(ngModel)]="acceptInput" /> accept-user-input</label>
   <input ngui-auto-complete
-         [(ngModel)]="model12"
+         [(ngModel)]="strictWord"
          [source]="arrayOfStrings"
-         [accept-user-input]="false"
+         [accept-user-input]="acceptInput"
          no-match-found-text=""
          placeholder="type something not in the list" />
   `;
@@ -295,41 +290,21 @@ export class DirectiveTestComponent {
        [open-direction]="openDir"
        [accept-user-input]="true"
        [select-on-blur]="true"
-       [(ngModel)]="model13"
+       [(ngModel)]="directionWord"
        (valueSelected)="onSelection($event)">
-    <input id="model13" placeholder="opens {{ openDir }}" />
+    <input placeholder="opens {{ openDir }}" />
   </div>
   `;
 
-	public addToList11(value: string) {
+	public addToTag(value: string) {
 		if (value && !this.arrayOfStrings.includes(value)) {
 			this.arrayOfStrings = [...this.arrayOfStrings, value];
 		}
-		this.noMatchVisible11 = false;
+		this.noMatchVisible = false;
 	}
 
 	public onSelection(selection: any) {
 		console.log('selected', selection);
-	}
-
-	public myCallback1(newVal1) {
-		console.log('value is changed to ', newVal1);
-		this.model1 = newVal1;
-	}
-
-	public myCallback7(newVal7) {
-		console.log('value is changed to ', newVal7);
-		this.model7 = newVal7;
-	}
-
-	public myCallback8(newVal8) {
-		console.log('value is changed to ', newVal8);
-		this.model8 = newVal8;
-	}
-
-	public myCallback10(newVal10) {
-		console.log('value is changed to ', newVal10);
-		this.model10 = newVal10;
 	}
 
 	public renderBook(data: any): string {

@@ -20,14 +20,13 @@
 					[accept-user-input]="true"
 					[auto-select-first-item]="false"
 					[select-on-blur]="true"
-					[ngModel]="model1"
-					(ngModelChange)="myCallback1($event)"
+					[(ngModel)]="word"
 					(valueSelected)="onSelection($event)">
-					<input id="model1" autofocus placeholder="enter text" />
+					<input autofocus placeholder="enter text" />
 				</div>
 			</div>
 			<p class="model-display">
-				selected: <code>{{ json(model1) }}</code>
+				selected: <code>{{ json(word) }}</code>
 			</p>
 			<mat-expansion-panel class="code-panel">
 				<mat-expansion-panel-header>
@@ -53,14 +52,13 @@
 					[open-on-focus]="false"
 					[auto-select-first-item]="false"
 					[select-on-blur]="true"
-					[ngModel]="model1"
-					(ngModelChange)="myCallback1($event)"
+					[(ngModel)]="word"
 					(valueSelected)="onSelection($event)">
-					<input id="model1-1" autofocus placeholder="enter text" />
+					<input autofocus placeholder="enter text" />
 				</div>
 			</div>
 			<p class="model-display">
-				selected: <code>{{ json(model1) }}</code>
+				selected: <code>{{ json(word) }}</code>
 			</p>
 			<mat-expansion-panel class="code-panel">
 				<mat-expansion-panel-header>
@@ -80,17 +78,16 @@
 		<mat-card-content>
 			<div class="demo-area">
 				<input
-					id="model2"
 					ngui-auto-complete
 					blank-option-text="Select One"
-					[(ngModel)]="model2"
+					[(ngModel)]="idValue"
 					[source]="arrayOfKeyValues"
 					placeholder="enter text"
 					z-index="4" />
-				<a href="javascript:void(0)" (click)="model2 = { id: 100, value: 'it' }">Change It</a>
+				<a href="javascript:void(0)" (click)="idValue = { id: 100, value: 'it' }">Change It</a>
 			</div>
 			<p class="model-display">
-				selected: <code>{{ model2 | json }}</code>
+				selected: <code>{{ idValue | json }}</code>
 			</p>
 			<mat-expansion-panel class="code-panel">
 				<mat-expansion-panel-header>
@@ -112,15 +109,14 @@
 				<input
 					ngui-auto-complete
 					[source]="arrayOfKeyValues2"
-					id="model3"
-					[(ngModel)]="model3"
+					[(ngModel)]="keyName"
 					placeholder="enter text"
 					value-formatter="(key) name"
 					list-formatter="(key) name"
 					[match-formatted]="true" />
 			</div>
 			<p class="model-display">
-				selected: <code>{{ model3 | json }}</code>
+				selected: <code>{{ keyName | json }}</code>
 			</p>
 			<mat-expansion-panel class="code-panel">
 				<mat-expansion-panel-header>
@@ -144,8 +140,7 @@
 			<div class="demo-area">
 				<input
 					ngui-auto-complete
-					id="model4"
-					[(ngModel)]="model4"
+					[(ngModel)]="place"
 					placeholder="Enter a place name (min. 2 chars)"
 					[source]="appSvc.getAddressUrl()"
 					no-match-found-text="No Match Found"
@@ -156,7 +151,7 @@
 					min-chars="2" />
 			</div>
 			<p class="model-display">
-				selected: <code>{{ model4 | json }}</code>
+				selected: <code>{{ place | json }}</code>
 			</p>
 			<mat-expansion-panel class="code-panel">
 				<mat-expansion-panel-header>
@@ -180,9 +175,8 @@
 			<div class="demo-area">
 				<input
 					ngui-auto-complete
-					id="model5"
 					placeholder="Search for a book (min. 2 chars)"
-					[(ngModel)]="model5"
+					[(ngModel)]="book"
 					[source]="appSvc.findBooks"
 					path-to-data="docs"
 					[list-formatter]="renderBook"
@@ -190,7 +184,7 @@
 					min-chars="2" />
 			</div>
 			<p class="model-display">
-				selected: <code>{{ model5 | json }}</code>
+				selected: <code>{{ book | json }}</code>
 			</p>
 			<mat-expansion-panel class="code-panel">
 				<mat-expansion-panel-header>
@@ -217,8 +211,7 @@
 					<input
 						matInput
 						ngui-auto-complete
-						id="model6"
-						[(ngModel)]="myModel"
+						[(ngModel)]="amount"
 						[source]="arrayOfNumbers"
 						[list-formatter]="rightAligned"
 						placeholder="amount" />
@@ -248,13 +241,13 @@
 					ngui-auto-complete
 					[source]="arrayOfStrings"
 					[auto-select-first-item]="true"
-					[ngModel]="model7"
-					(ngModelChange)="myCallback7($event)">
-					<input id="model7" placeholder="enter text" />
+					[(ngModel)]="autoSelectWord"
+					(valueSelected)="onSelection($event)">
+					<input placeholder="enter text" />
 				</div>
 			</div>
 			<p class="model-display">
-				selected: <code>{{ json(model7) }}</code>
+				selected: <code>{{ json(autoSelectWord) }}</code>
 			</p>
 			<mat-expansion-panel class="code-panel">
 				<mat-expansion-panel-header>
@@ -281,13 +274,13 @@
 					[source]="arrayOfArabicStrings"
 					[accept-user-input]="false"
 					[is-rtl]="true"
-					[ngModel]="model8"
-					(ngModelChange)="myCallback8($event)">
-					<input id="model8" placeholder="ابحث عن مدينة..." />
+					[(ngModel)]="rtlCity"
+					(valueSelected)="onSelection($event)">
+					<input placeholder="ابحث عن مدينة..." />
 				</div>
 			</div>
 			<p class="model-display">
-				selected: <code>{{ json(model8) }}</code>
+				selected: <code>{{ json(rtlCity) }}</code>
 			</p>
 			<mat-expansion-panel class="code-panel">
 				<mat-expansion-panel-header>
@@ -311,7 +304,7 @@
 				<input
 					ngui-auto-complete
 					style="width: 100%"
-					[(ngModel)]="model9"
+					[(ngModel)]="city"
 					[source]="arrayOfCities"
 					[accept-user-input]="false"
 					[list-formatter]="renderCity"
@@ -320,7 +313,7 @@
 					[header-item-template]="cityHeaderTemplate" />
 			</div>
 			<p class="model-display">
-				selected: <code>{{ json(model9) }}</code>
+				selected: <code>{{ json(city) }}</code>
 			</p>
 			<mat-expansion-panel class="code-panel">
 				<mat-expansion-panel-header>
@@ -337,33 +330,33 @@
 			<mat-card-title>(noMatchFound) Output</mat-card-title>
 			<mat-card-subtitle>
 				Fires whenever the filtered list is empty — use it to show an "Add new…" affordance. Type something not in the list (e.g.
-				<em>xyz</em>).
+				<em>xyz</em>). Toggle <code>accept-user-input</code> to see both behaviours.
 			</mat-card-subtitle>
 		</mat-card-header>
 		<mat-card-content>
 			<div class="demo-area">
+				<label class="accept-toggle"> <input type="checkbox" [(ngModel)]="tagAcceptInput" /> accept-user-input </label>
 				<input
-					#model11Input
+					#tagInput
 					ngui-auto-complete
-					id="model11"
-					[(ngModel)]="model11"
+					[(ngModel)]="tag"
 					[source]="arrayOfStrings"
-					[accept-user-input]="true"
+					[accept-user-input]="tagAcceptInput"
 					no-match-found-text=""
-					(noMatchFound)="noMatchVisible11 = true"
-					(input)="noMatchVisible11 = false"
-					(valueSelected)="noMatchVisible11 = false"
+					(noMatchFound)="noMatchVisible = true"
+					(input)="noMatchVisible = false"
+					(valueSelected)="noMatchVisible = false"
 					placeholder="type something not in the list" />
-				@if (noMatchVisible11) {
+				@if (noMatchVisible) {
 					<div class="no-match-hint">
 						<mat-icon>info_outline</mat-icon>
 						Not in the list —
-						<button mat-button color="primary" (click)="addToList11(model11Input.value)">Add "{{ model11Input.value }}"</button>
+						<button mat-button color="primary" (click)="addToTag(tagInput.value)">Add "{{ tagInput.value }}"</button>
 					</div>
 				}
 			</div>
 			<p class="model-display">
-				selected: <code>{{ json(model11) }}</code>
+				selected: <code>{{ json(tag) }}</code>
 			</p>
 			<mat-expansion-panel class="code-panel">
 				<mat-expansion-panel-header>
@@ -385,17 +378,17 @@
 		</mat-card-header>
 		<mat-card-content>
 			<div class="demo-area">
+				<label class="accept-toggle"> <input type="checkbox" [(ngModel)]="strictAcceptInput" /> accept-user-input </label>
 				<input
 					ngui-auto-complete
-					id="model12"
-					[(ngModel)]="model12"
+					[(ngModel)]="strictWord"
 					[source]="arrayOfStrings"
-					[accept-user-input]="false"
+					[accept-user-input]="strictAcceptInput"
 					no-match-found-text=""
 					placeholder="type something not in the list" />
 			</div>
 			<p class="model-display">
-				selected: <code>{{ json(model12) }}</code>
+				selected: <code>{{ json(strictWord) }}</code>
 			</p>
 			<mat-expansion-panel class="code-panel">
 				<mat-expansion-panel-header>
@@ -424,14 +417,13 @@
 					[accept-user-input]="false"
 					[auto-select-first-item]="false"
 					[select-on-blur]="true"
-					[ngModel]="model10"
-					(ngModelChange)="myCallback10($event)"
+					[(ngModel)]="accentWord"
 					(valueSelected)="onSelection($event)">
-					<input id="model10" autofocus placeholder="try: Cad or Mun" />
+					<input autofocus placeholder="try: Cad or Mun" />
 				</div>
 			</div>
 			<p class="model-display">
-				selected: <code>{{ json(model10) }}</code>
+				selected: <code>{{ json(accentWord) }}</code>
 			</p>
 			<mat-expansion-panel class="code-panel">
 				<mat-expansion-panel-header>
@@ -466,13 +458,13 @@
 					[open-direction]="openDir"
 					[accept-user-input]="true"
 					[select-on-blur]="true"
-					[(ngModel)]="model13"
+					[(ngModel)]="directionWord"
 					(valueSelected)="onSelection($event)">
-					<input id="model13" placeholder="opens {{ openDir }}" />
+					<input placeholder="opens {{ openDir }}" />
 				</div>
 			</div>
 			<p class="model-display">
-				direction: <code>{{ openDir }}</code> · selected: <code>{{ json(model13) }}</code>
+				direction: <code>{{ openDir }}</code> · selected: <code>{{ json(directionWord) }}</code>
 			</p>
 			<mat-expansion-panel class="code-panel">
 				<mat-expansion-panel-header>

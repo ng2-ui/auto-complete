@@ -241,7 +241,7 @@ export class DirectiveTestComponent {
     <div ngui-auto-complete
        [ignore-accents] = "false"
        [source]="arrayOfAccentedStrings"
-       [accept-user-input]="true"
+       [accept-user-input]="false"
        [auto-select-first-item]="false"
        [select-on-blur]="true"
        [ngModel]="model10"
@@ -252,21 +252,21 @@ export class DirectiveTestComponent {
   `;
 
 	template11b = `
-  <input ngui-auto-complete
+  <input #model11Input ngui-auto-complete
          [(ngModel)]="model11"
          [source]="arrayOfStrings"
          [accept-user-input]="true"
          no-match-found-text=""
          (noMatchFound)="noMatchVisible11 = true"
-         (ngModelChange)="noMatchVisible11 = false"
+         (input)="noMatchVisible11 = false"
          (valueSelected)="noMatchVisible11 = false"
          placeholder="type something not in the list" />
   @if (noMatchVisible11) {
     <div class="no-match-hint">
       <mat-icon>info_outline</mat-icon>
       Not in the list —
-      <button mat-button color="primary" (click)="addToList11()">
-        Add "{{ model11 }}"
+      <button mat-button color="primary" (click)="addToList11(model11Input.value)">
+        Add "{{ model11Input.value }}"
       </button>
     </div>
   }
@@ -276,6 +276,7 @@ export class DirectiveTestComponent {
   <input ngui-auto-complete
          [(ngModel)]="model12"
          [source]="arrayOfStrings"
+         [accept-user-input]="false"
          no-match-found-text=""
          placeholder="type something not in the list" />
   `;
@@ -294,16 +295,15 @@ export class DirectiveTestComponent {
        [open-direction]="openDir"
        [accept-user-input]="true"
        [select-on-blur]="true"
-       [ngModel]="model13"
-       (ngModelChange)="myCallback1($event)"
+       [(ngModel)]="model13"
        (valueSelected)="onSelection($event)">
     <input id="model13" placeholder="opens {{ openDir }}" />
   </div>
   `;
 
-	public addToList11() {
-		if (this.model11 && !this.arrayOfStrings.includes(this.model11)) {
-			this.arrayOfStrings = [...this.arrayOfStrings, this.model11];
+	public addToList11(value: string) {
+		if (value && !this.arrayOfStrings.includes(value)) {
+			this.arrayOfStrings = [...this.arrayOfStrings, value];
 		}
 		this.noMatchVisible11 = false;
 	}

@@ -18,7 +18,7 @@ describe('NguiAutoCompleteComponent', () => {
 		// Provide a local array source so the focus-triggered dropdown reload (scheduled
 		// from ngOnInit) resolves against local data instead of calling getRemoteData,
 		// which throws on a non-string source.
-		component.source = ['Item 1', 'Item 2'];
+		fixture.componentRef.setInput('source', ['Item 1', 'Item 2']);
 		fixture.detectChanges();
 	});
 
@@ -31,20 +31,20 @@ describe('NguiAutoCompleteComponent', () => {
 	});
 
 	it('should default to showing the input tag and accepting user input', () => {
-		expect(component.showInputTag).toBe(true);
-		expect(component.acceptUserInput).toBe(true);
+		expect(component.showInputTag()).toBe(true);
+		expect(component.acceptUserInput()).toBe(true);
 	});
 
 	it('should default open-direction to "auto" and not mark the dropdown as dropup', () => {
 		component.dropdownVisible = true;
 		fixture.detectChanges();
 		const dropdown: HTMLElement = fixture.nativeElement.querySelector('ul');
-		expect(component.openDirection).toBe('auto');
+		expect(component.openDirection()).toBe('auto');
 		expect(dropdown.classList.contains('dropup')).toBe(false);
 	});
 
 	it('should add the "dropup" class when open-direction is "up"', () => {
-		component.openDirection = 'up';
+		fixture.componentRef.setInput('open-direction', 'up');
 		component.dropdownVisible = true;
 		fixture.detectChanges();
 		const dropdown: HTMLElement = fixture.nativeElement.querySelector('ul');

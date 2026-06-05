@@ -1,11 +1,11 @@
 <div #autoCompleteContainer class="ngui-auto-complete">
 	<!-- keyword input -->
-	@if (showInputTag) {
+	@if (showInputTag()) {
 		<input
 			#autoCompleteInput
 			class="keyword"
-			[attr.autocomplete]="autocomplete ? 'null' : 'off'"
-			placeholder="{{ placeholder }}"
+			[attr.autocomplete]="autocomplete() ? 'null' : 'off'"
+			placeholder="{{ placeholder() }}"
 			(focus)="showDropdownList($event)"
 			(blur)="blurHandler($event)"
 			(keydown)="inputElKeyHandler($event)"
@@ -15,30 +15,30 @@
 
 	<!-- dropdown that user can select -->
 	@if (dropdownVisible) {
-		<ul [class.empty]="emptyList" [class.dropup]="openDirection === 'up'">
-			@if (isLoading && loadingTemplate) {
-				<li class="loading" [innerHTML]="loadingTemplate"></li>
+		<ul [class.empty]="emptyList" [class.dropup]="openDirection() === 'up'">
+			@if (isLoading && loadingTemplate()) {
+				<li class="loading" [innerHTML]="loadingTemplate()"></li>
 			}
-			@if (isLoading && !loadingTemplate) {
-				<li class="loading">{{ loadingText }}</li>
+			@if (isLoading && !loadingTemplate()) {
+				<li class="loading">{{ loadingText() }}</li>
 			}
-			@if (minCharsEntered && !isLoading && !filteredList.length && noMatchFoundText !== '') {
-				<li (mousedown)="selectOne('')" class="no-match-found">{{ noMatchFoundText ?? 'No Result Found' }}</li>
+			@if (minCharsEntered && !isLoading && !filteredList.length && noMatchFoundText() !== '') {
+				<li (mousedown)="selectOne('')" class="no-match-found">{{ noMatchFoundText() ?? 'No Result Found' }}</li>
 			}
-			@if (headerTemplate && filteredList.length) {
+			@if (headerTemplate() && filteredList.length) {
 				<li class="header-item">
-					<ng-container [ngTemplateOutlet]="headerTemplate"></ng-container>
+					<ng-container [ngTemplateOutlet]="headerTemplate()"></ng-container>
 				</li>
-			} @else if (headerItemTemplate && filteredList.length) {
-				<li class="header-item" [innerHTML]="headerItemTemplate"></li>
+			} @else if (headerItemTemplate() && filteredList.length) {
+				<li class="header-item" [innerHTML]="headerItemTemplate()"></li>
 			}
-			@if (blankOptionText && filteredList.length) {
-				<li (mousedown)="selectOne('')" class="blank-item">{{ blankOptionText }}</li>
+			@if (blankOptionText() && filteredList.length) {
+				<li (mousedown)="selectOne('')" class="blank-item">{{ blankOptionText() }}</li>
 			}
 			@for (item of filteredList; track trackByIndex(i, item); let i = $index) {
-				@if (itemTemplate) {
+				@if (itemTemplate()) {
 					<li class="item" (mousedown)="selectOne(item)" [ngClass]="{ selected: i === itemIndex }">
-						<ng-container [ngTemplateOutlet]="itemTemplate" [ngTemplateOutletContext]="{ $implicit: item, index: i }"></ng-container>
+						<ng-container [ngTemplateOutlet]="itemTemplate()" [ngTemplateOutletContext]="{ $implicit: item, index: i }"></ng-container>
 					</li>
 				} @else {
 					<li

@@ -33,18 +33,18 @@ export class NguiAutoCompleteComponent implements OnInit {
 	public autocomplete = input(false, { transform: booleanAttribute });
 	public listFormatter = input<((arg: any) => string) | undefined>(undefined, { alias: 'list-formatter' });
 	public source = input<any>();
-	public pathToData = input<string | undefined>(undefined, { alias: 'path-to-data' });
+	public pathToData = input('', { alias: 'path-to-data' });
 	public minChars = input(0, { alias: 'min-chars', transform: numberAttribute });
-	public placeholder = input<string | undefined>();
-	public blankOptionText = input<string | undefined>(undefined, { alias: 'blank-option-text' });
+	public placeholder = input('');
+	public blankOptionText = input('', { alias: 'blank-option-text' });
+	// Empty string and "unset" mean different things here: '' suppresses the no-match row,
+	// `undefined` shows the default text — so this input stays optional rather than defaulting.
 	public noMatchFoundText = input<string | undefined>(undefined, { alias: 'no-match-found-text' });
 	public acceptUserInput = input(true, { alias: 'accept-user-input', transform: booleanAttribute });
 	public loadingText = input('Loading', { alias: 'loading-text' });
 	public loadingTemplate = input<string | null>(null, { alias: 'loading-template' });
-	public maxNumList = input(undefined, {
-		alias: 'max-num-list',
-		transform: (value: string | number | undefined) => (value == null ? undefined : numberAttribute(value)),
-	});
+	// 0 means "no limit" (the `if (maxNumList())` guard treats 0 as falsy).
+	public maxNumList = input(0, { alias: 'max-num-list', transform: numberAttribute });
 	public showInputTag = input(true, { alias: 'show-input-tag', transform: booleanAttribute });
 	public showDropdownOnInit = input(false, { alias: 'show-dropdown-on-init', transform: booleanAttribute });
 	public tabToSelect = input(true, { alias: 'tab-to-select', transform: booleanAttribute });

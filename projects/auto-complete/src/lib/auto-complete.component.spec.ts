@@ -50,6 +50,14 @@ describe('NguiAutoCompleteComponent', () => {
 		const dropdown: HTMLElement = fixture.nativeElement.querySelector('ul');
 		expect(dropdown.classList.contains('dropup')).toBe(true);
 	});
+
+	it('should update the two-way value() and emit valueSelected when an item is selected', () => {
+		const emitted: any[] = [];
+		component.valueSelected.subscribe((v) => emitted.push(v));
+		component.selectOne('Item 1');
+		expect(component.value()).toBe('Item 1');
+		expect(emitted).toEqual(['Item 1']);
+	});
 });
 
 @Component({

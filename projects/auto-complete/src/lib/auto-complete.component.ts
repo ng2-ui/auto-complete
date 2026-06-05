@@ -9,6 +9,7 @@ import {
 	ViewEncapsulation,
 	inject,
 	input,
+	model,
 	output,
 	signal,
 	viewChild,
@@ -66,9 +67,11 @@ export class NguiAutoCompleteComponent implements OnInit {
 	// dropdown above the input; `down`/`auto` keep it below.
 	public openDirection = input<'auto' | 'up' | 'down'>('auto', { alias: 'open-direction' });
 
+	// Two-way bindable selected value: `[(value)]="myValue"`.
+	public value = model<any>();
+
 	public valueSelected = output<any>();
 	public customSelected = output<any>();
-	public textEntered = output<any>();
 	public noMatchFound = output<void>();
 
 	public autoCompleteInput = viewChild<ElementRef>('autoCompleteInput');
@@ -226,14 +229,11 @@ export class NguiAutoCompleteComponent implements OnInit {
 
 	public selectOne(data: any) {
 		if (!!data || data === '') {
+			this.value.set(data);
 			this.valueSelected.emit(data);
 		} else {
 			this.customSelected.emit(this.keyword);
 		}
-	}
-
-	public enterText(data: any) {
-		this.textEntered.emit(data);
 	}
 
 	public blurHandler(evt: any) {

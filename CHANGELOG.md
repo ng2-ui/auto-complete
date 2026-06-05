@@ -16,6 +16,23 @@ and this project follows [Angular version numbers](https://angular.dev/reference
   standalone `NguiAutoCompleteComponent` / `NguiAutoCompleteDirective` directly instead:
   `imports: [NguiAutoCompleteComponent, NguiAutoCompleteDirective]`. Apps that still need the NgModule
   can stay on `@ngui/auto-complete@20`, which retained it.
+- **The directive is now a `ControlValueAccessor`.** `NguiAutoCompleteDirective` implements
+  `ControlValueAccessor` and provides `NG_VALUE_ACCESSOR`, so `[(ngModel)]`, `[formControl]` and
+  `formControlName` integrate through Angular forms (with proper `valueChanges`, `touched`/`dirty` state).
+  Consequences (see [`MIGRATION.md`](./MIGRATION.md) for before/after):
+  - Removed the directive's bespoke **`ngModel` input** and its **`(ngModelChange)`** and
+    **`(valueChanged)`** outputs. Use `[(ngModel)]` (Angular still emits `(ngModelChange)`) or a reactive
+    form. `(valueChanged)` has no direct replacement — use `(ngModelChange)` or the control's `valueChanges`.
+  - Removed the directive's custom **`[formControl]` / `formControlName`** inputs. The standard Angular
+    directives now drive it directly — same template syntax, now with full form integration.
+  - **Wrapper-`<div>` usage:** bind the value on the host
+    (`<div ngui-auto-complete [(ngModel)]="x"><input></div>`) instead of on a separate inner `<input>`.
+    Direct `<input ngui-auto-complete [(ngModel)]="x">` is unchanged.
+- **Removed the unused `textEntered` output** from `NguiAutoCompleteComponent` (it was never emitted).
+
+### Added
+- **`[(value)]` two-way binding on `NguiAutoCompleteComponent`.** The standalone component now exposes a
+  `value` model — e.g. `<ngui-auto-complete [(value)]="myValue">`. `(valueSelected)` continues to fire.
 
 ### Changed
 - **Upgraded to Angular 21** (`@angular/*` 21.2.x, `@angular/material` + `@angular/cdk` 21.2.x).

@@ -59,11 +59,7 @@
 			<div class="demo-area">
 				<input [(ngModel)]="myModel" (focus)="showMe = true" (blur)="showMe = false" placeholder="click to open dropdown" />
 				@if (showMe) {
-					<ngui-auto-complete
-						[show-dropdown-on-init]="true"
-						(valueSelected)="myModel = $event"
-						[show-input-tag]="false"
-						[source]="[1, 2, 3, 4, 5]">
+					<ngui-auto-complete [show-dropdown-on-init]="true" [(value)]="myModel" [show-input-tag]="false" [source]="[1, 2, 3, 4, 5]">
 					</ngui-auto-complete>
 				}
 			</div>

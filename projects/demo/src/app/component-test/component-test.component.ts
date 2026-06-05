@@ -72,7 +72,7 @@ export class ComponentTestComponent {
 @if (showMe) {
   <ngui-auto-complete
     [show-dropdown-on-init]="true"
-    (valueSelected)="myModel = $event"
+    [(value)]="myModel"
     [show-input-tag]="false"
     [source]="[1, 2, 3, 4, 5]">
   </ngui-auto-complete>

@@ -3,12 +3,10 @@ import {
 	booleanAttribute,
 	ComponentRef,
 	Directive,
-	Input,
+	forwardRef,
 	numberAttribute,
-	OnChanges,
 	OnDestroy,
 	OnInit,
-	SimpleChanges,
 	TemplateRef,
 	ViewContainerRef,
 	inject,
@@ -16,16 +14,22 @@ import {
 	output,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AbstractControl, ControlContainer, FormControl, FormGroup, FormGroupName } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NguiAutoCompleteComponent } from './auto-complete.component';
 
 @Directive({
 	// eslint-disable-next-line @angular-eslint/directive-selector -- public API selector is kebab-case by design
 	selector: '[ngui-auto-complete]',
+	providers: [
+		{
+			provide: NG_VALUE_ACCESSOR,
+			useExisting: forwardRef(() => NguiAutoCompleteDirective),
+			multi: true,
+		},
+	],
 })
-export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor {
 	viewContainerRef = inject(ViewContainerRef);
-	private parentForm = inject(ControlContainer, { optional: true, host: true, skipSelf: true });
 
 	public autocomplete = input(false, { transform: booleanAttribute });
 	public autoCompletePlaceholder = input('', { alias: 'auto-complete-placeholder' });
@@ -59,23 +63,15 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 	public itemTemplate = input<TemplateRef<{ $implicit: any; index: number }> | null>(null);
 	public headerTemplate = input<TemplateRef<void> | null>(null);
 
-	// Value / forms bindings are still classic @Input()s: `ngModel` is reassigned internally
-	// (read-only signal inputs forbid that) and the whole group is slated to be replaced by a
-	// ControlValueAccessor in a later phase.
-	@Input() public ngModel: string;
-	@Input('formControlName') public formControlName: string;
-	// if [formControl] is used on the anchor where our directive is sitting
-	// a form is not necessary to use a formControl we should also support this
-	@Input('formControl') public extFormControl: FormControl;
-
 	public zIndex = input(1, { alias: 'z-index', transform: numberAttribute });
 	public isRtl = input(false, { alias: 'is-rtl', transform: booleanAttribute });
 	// 'down' / 'up' force the dropdown below / above the input; 'auto' (default) opens
 	// below unless the input sits near the bottom of the viewport.
 	public openDirection = input<'auto' | 'up' | 'down'>('auto', { alias: 'open-direction' });
 
-	public ngModelChange = output<any>();
-	public valueChanged = output<any>();
+	// Fired when a custom (not-in-list) value is committed. The value binding is handled by
+	// Angular forms through the ControlValueAccessor below (use `[(ngModel)]`, `[formControl]`
+	// or `formControlName`), so there is no separate value-change output.
 	public customSelected = output<any>();
 	public noMatchFound = output<void>();
 
@@ -84,12 +80,16 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 	private el: HTMLElement;
 	private acDropdownEl: HTMLElement;
 	private inputEl: HTMLInputElement;
-	private formControl: AbstractControl;
+	private value: any;
 	private revertValue: any;
 	private dropdownJustHidden: boolean;
 	private scheduledBlurHandler: any;
 	private documentClickListener: (e: MouseEvent) => any;
 	private dropdownSubs = new Subscription();
+
+	// ControlValueAccessor callbacks (registered by Angular forms).
+	private onChange: (value: any) => void = () => {};
+	private onTouched: () => void = () => {};
 
 	constructor() {
 		this.el = this.viewContainerRef.element.nativeElement;
@@ -114,31 +114,15 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 		this.wrapperEl.style.position = 'relative';
 		this.el.parentElement.insertBefore(this.wrapperEl, this.el.nextSibling);
 		this.wrapperEl.appendChild(this.el);
-
-		// Check if we were supplied with a [formControlName] and it is inside a [form]
-		// else check if we are supplied with a [FormControl] regardless if it is inside a [form] tag
-		if (this.parentForm && this.formControlName) {
-			if (this.parentForm['form']) {
-				this.formControl = (this.parentForm['form'] as FormGroup).get(this.formControlName);
-			} else if (this.parentForm instanceof FormGroupName) {
-				this.formControl = (this.parentForm as FormGroupName).control.controls[this.formControlName];
-			}
-		} else if (this.extFormControl) {
-			this.formControl = this.extFormControl;
-		}
-
-		// apply toString() method for the object
-		if (!!this.ngModel) {
-			this.selectNewValue(this.ngModel);
-		} else if (!!this.formControl && this.formControl.value) {
-			this.selectNewValue(this.formControl.value);
-		}
 	}
 
 	ngAfterViewInit() {
 		// if this element is not an input tag, move dropdown after input tag
 		// so that it displays correctly
 		this.inputEl = this.el.tagName === 'INPUT' ? (this.el as HTMLInputElement) : this.el.querySelector('input');
+
+		// Render any value Angular forms wrote before the input element was available.
+		this.renderInputValue(this.value);
 
 		if (this.openOnFocus()) {
 			this.inputEl.addEventListener('focus', (e) => this.showAutoCompleteDropdown(e));
@@ -170,11 +154,30 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 		}
 	}
 
-	ngOnChanges(changes: SimpleChanges): void {
-		if (changes['ngModel']) {
-			this.ngModel = this.setToStringFunction(changes['ngModel'].currentValue);
-			this.renderValue(this.ngModel);
+	// ----- ControlValueAccessor -----
+
+	writeValue(value: any): void {
+		this.value = value;
+		this.renderInputValue(value);
+	}
+
+	registerOnChange(fn: (value: any) => void): void {
+		this.onChange = fn;
+	}
+
+	registerOnTouched(fn: () => void): void {
+		this.onTouched = fn;
+	}
+
+	setDisabledState(isDisabled: boolean): void {
+		if (this.inputEl) {
+			this.inputEl.disabled = isDisabled;
 		}
+	}
+
+	private renderInputValue(value: any): void {
+		const item = value && typeof value === 'object' ? this.setToStringFunction(value) : value;
+		this.renderValue(item === null || item === undefined ? '' : item);
 	}
 
 	// show auto-complete list below the current element
@@ -217,7 +220,6 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 		this.dropdownSubs.unsubscribe();
 		this.dropdownSubs = new Subscription();
 		this.dropdownSubs.add(component.valueSelected.subscribe(this.selectNewValue));
-		this.dropdownSubs.add(component.textEntered.subscribe(this.enterNewText));
 		this.dropdownSubs.add(component.customSelected.subscribe(this.selectCustomValue));
 		this.dropdownSubs.add(component.noMatchFound.subscribe(() => this.noMatchFound.emit()));
 
@@ -246,6 +248,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 	public blurHandler(event: any) {
 		if (this.componentRef) {
 			const component = this.componentRef.instance;
+			this.onTouched();
 
 			if (this.selectOnBlur()) {
 				component.selectOne(component.filteredList()[component.itemIndex()]);
@@ -360,15 +363,9 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 		if (selectValueOf && item !== null && typeof item === 'object') {
 			val = item[selectValueOf];
 		}
-		if ((this.parentForm && this.formControlName) || this.extFormControl) {
-			if (!!val) {
-				this.formControl.patchValue(val);
-			}
-		}
-		if (val !== this.ngModel) {
-			this.ngModelChange.emit(val);
-		}
-		this.valueChanged.emit(val);
+		this.value = val;
+		this.onChange(val);
+		this.onTouched();
 		this.hideAutoCompleteDropdown();
 		setTimeout(() => {
 			if (this.reFocusAfterSelect()) {
@@ -393,8 +390,8 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 
 	public enterNewText = (value: any) => {
 		this.renderValue(value);
-		this.ngModelChange.emit(value);
-		this.valueChanged.emit(value);
+		this.value = value;
+		this.onChange(value);
 		this.hideAutoCompleteDropdown();
 	};
 

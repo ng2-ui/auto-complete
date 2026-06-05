@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -36,7 +36,7 @@ describe('NguiAutoCompleteComponent', () => {
 	});
 
 	it('should default open-direction to "auto" and not mark the dropdown as dropup', () => {
-		component.dropdownVisible = true;
+		component.dropdownVisible.set(true);
 		fixture.detectChanges();
 		const dropdown: HTMLElement = fixture.nativeElement.querySelector('ul');
 		expect(component.openDirection()).toBe('auto');
@@ -45,7 +45,7 @@ describe('NguiAutoCompleteComponent', () => {
 
 	it('should add the "dropup" class when open-direction is "up"', () => {
 		fixture.componentRef.setInput('open-direction', 'up');
-		component.dropdownVisible = true;
+		component.dropdownVisible.set(true);
 		fixture.detectChanges();
 		const dropdown: HTMLElement = fixture.nativeElement.querySelector('ul');
 		expect(dropdown.classList.contains('dropup')).toBe(true);
@@ -71,13 +71,10 @@ describe('NguiAutoCompleteComponent itemTemplate', () => {
 
 		const acDebug = fixture.debugElement.query(By.directive(NguiAutoCompleteComponent));
 		const ac = fixture.componentInstance.autoComplete;
-		ac.filteredList = ['Alpha', 'Beta'];
-		ac.dropdownVisible = true;
-		// These fields are mutated out of band (not via an input or event), so Angular's
-		// change detection has no signal that the child view is dirty. Without marking it,
-		// Angular 21's apply pass skips the clean child while dev-mode checkNoChanges still
-		// re-evaluates it — surfacing a false ExpressionChangedAfterItHasBeenChecked (NG0100).
-		acDebug.injector.get(ChangeDetectorRef).markForCheck();
+		// Writing these signals marks the OnPush view dirty, so a plain detectChanges() refreshes it
+		// (no manual markForCheck needed, unlike when these were plain fields).
+		ac.filteredList.set(['Alpha', 'Beta']);
+		ac.dropdownVisible.set(true);
 		fixture.detectChanges();
 
 		const rows = acDebug.nativeElement.querySelectorAll('li.item');

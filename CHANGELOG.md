@@ -29,6 +29,10 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 - **Typed attribute coercion.** Numeric inputs (`min-chars`, `max-num-list`, `z-index`) now use
   `numberAttribute` and boolean inputs use `booleanAttribute`, so string-attribute forms (`min-chars="2"`)
   and bound forms (`[min-chars]="2"`) are both correctly typed.
+- **`OnPush` dropdown component.** `NguiAutoCompleteComponent` now uses `ChangeDetectionStrategy.OnPush`
+  and its internal state (`dropdownVisible`, `isLoading`, `filteredList`, `minCharsEntered`, `itemIndex`)
+  is signal-based, so remote/async results and directive-driven updates refresh reliably with less change
+  detection work. No public API change.
 - Bumped the library's own `tslib` dependency floor to `^2.8.1`.
 
 ### Internal (development tooling only — no impact on consumers)

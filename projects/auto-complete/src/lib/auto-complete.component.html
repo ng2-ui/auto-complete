@@ -14,37 +14,37 @@
 	}
 
 	<!-- dropdown that user can select -->
-	@if (dropdownVisible) {
+	@if (dropdownVisible()) {
 		<ul [class.empty]="emptyList" [class.dropup]="openDirection() === 'up'">
-			@if (isLoading && loadingTemplate()) {
+			@if (isLoading() && loadingTemplate()) {
 				<li class="loading" [innerHTML]="loadingTemplate()"></li>
 			}
-			@if (isLoading && !loadingTemplate()) {
+			@if (isLoading() && !loadingTemplate()) {
 				<li class="loading">{{ loadingText() }}</li>
 			}
-			@if (minCharsEntered && !isLoading && !filteredList.length && noMatchFoundText() !== '') {
+			@if (minCharsEntered() && !isLoading() && !filteredList().length && noMatchFoundText() !== '') {
 				<li (mousedown)="selectOne('')" class="no-match-found">{{ noMatchFoundText() ?? 'No Result Found' }}</li>
 			}
-			@if (headerTemplate() && filteredList.length) {
+			@if (headerTemplate() && filteredList().length) {
 				<li class="header-item">
 					<ng-container [ngTemplateOutlet]="headerTemplate()"></ng-container>
 				</li>
-			} @else if (headerItemTemplate() && filteredList.length) {
+			} @else if (headerItemTemplate() && filteredList().length) {
 				<li class="header-item" [innerHTML]="headerItemTemplate()"></li>
 			}
-			@if (blankOptionText() && filteredList.length) {
+			@if (blankOptionText() && filteredList().length) {
 				<li (mousedown)="selectOne('')" class="blank-item">{{ blankOptionText() }}</li>
 			}
-			@for (item of filteredList; track trackByIndex(i, item); let i = $index) {
+			@for (item of filteredList(); track trackByIndex(i, item); let i = $index) {
 				@if (itemTemplate()) {
-					<li class="item" (mousedown)="selectOne(item)" [ngClass]="{ selected: i === itemIndex }">
+					<li class="item" (mousedown)="selectOne(item)" [ngClass]="{ selected: i === itemIndex() }">
 						<ng-container [ngTemplateOutlet]="itemTemplate()" [ngTemplateOutletContext]="{ $implicit: item, index: i }"></ng-container>
 					</li>
 				} @else {
 					<li
 						class="item"
 						(mousedown)="selectOne(item)"
-						[ngClass]="{ selected: i === itemIndex }"
+						[ngClass]="{ selected: i === itemIndex() }"
 						[innerHtml]="autoComplete.getFormattedListItem(item)"></li>
 				}
 			}

@@ -56,7 +56,12 @@
 		</mat-card-header>
 		<mat-card-content>
 			<div class="demo-area">
-				<input [(ngModel)]="myModel" (focus)="showMe = true" (blur)="showMe = false" placeholder="click to open dropdown" />
+				<input
+					name="focusValue"
+					[(ngModel)]="myModel"
+					(focus)="showMe = true"
+					(blur)="showMe = false"
+					placeholder="click to open dropdown" />
 				@if (showMe) {
 					<ngui-auto-complete [show-dropdown-on-init]="true" [(value)]="myModel" [show-input-tag]="false" [source]="[1, 2, 3, 4, 5]">
 					</ngui-auto-complete>
@@ -85,7 +90,13 @@
 		</mat-card-header>
 		<mat-card-content>
 			<div class="demo-area">
-				<input [ngModel]="tplModel?.name" (focus)="showTpl = true" (blur)="showTpl = false" readonly placeholder="focus to browse people" />
+				<input
+					name="tplName"
+					[ngModel]="tplModel?.name"
+					(focus)="showTpl = true"
+					(blur)="showTpl = false"
+					readonly
+					placeholder="focus to browse people" />
 				@if (showTpl) {
 					<ngui-auto-complete
 						[show-dropdown-on-init]="true"

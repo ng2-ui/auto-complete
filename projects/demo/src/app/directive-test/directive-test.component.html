@@ -22,7 +22,7 @@
 					[select-on-blur]="true"
 					[(ngModel)]="word"
 					(valueSelected)="onSelection($event)">
-					<input autofocus placeholder="enter text" />
+					<input name="word" autofocus placeholder="enter text" />
 				</div>
 			</div>
 			<p class="model-display">
@@ -54,7 +54,7 @@
 					[select-on-blur]="true"
 					[(ngModel)]="word"
 					(valueSelected)="onSelection($event)">
-					<input autofocus placeholder="enter text" />
+					<input name="word" autofocus placeholder="enter text" />
 				</div>
 			</div>
 			<p class="model-display">
@@ -80,6 +80,7 @@
 				<input
 					ngui-auto-complete
 					blank-option-text="Select One"
+					name="idValue"
 					[(ngModel)]="idValue"
 					[source]="arrayOfKeyValues"
 					placeholder="enter text"
@@ -109,6 +110,7 @@
 				<input
 					ngui-auto-complete
 					[source]="arrayOfKeyValues2"
+					name="keyName"
 					[(ngModel)]="keyName"
 					placeholder="enter text"
 					[display-with]="formatKeyName"
@@ -140,6 +142,7 @@
 			<div class="demo-area">
 				<input
 					ngui-auto-complete
+					name="place"
 					[(ngModel)]="place"
 					placeholder="Enter a place name (min. 2 chars)"
 					[source]="appSvc.getAddressUrl()"
@@ -176,6 +179,7 @@
 				<input
 					ngui-auto-complete
 					placeholder="Search for a book (min. 2 chars)"
+					name="book"
 					[(ngModel)]="book"
 					[source]="appSvc.findBooks"
 					path-to-data="docs"
@@ -211,6 +215,7 @@
 					<input
 						matInput
 						ngui-auto-complete
+						name="amount"
 						[(ngModel)]="amount"
 						[source]="arrayOfNumbers"
 						[list-formatter]="rightAligned"
@@ -243,7 +248,7 @@
 					[auto-select-first-item]="true"
 					[(ngModel)]="autoSelectWord"
 					(valueSelected)="onSelection($event)">
-					<input placeholder="enter text" />
+					<input name="autoSelectWord" placeholder="enter text" />
 				</div>
 			</div>
 			<p class="model-display">
@@ -275,7 +280,7 @@
 					[accept-user-input]="false"
 					[(ngModel)]="rtlCity"
 					(valueSelected)="onSelection($event)">
-					<input placeholder="ابحث عن مدينة..." />
+					<input name="rtlCity" placeholder="ابحث عن مدينة..." />
 				</div>
 			</div>
 			<p class="model-display">
@@ -303,6 +308,7 @@
 				<input
 					ngui-auto-complete
 					style="width: 100%"
+					name="city"
 					[(ngModel)]="city"
 					[source]="arrayOfCities"
 					[accept-user-input]="false"
@@ -334,10 +340,11 @@
 		</mat-card-header>
 		<mat-card-content>
 			<div class="demo-area">
-				<label class="accept-toggle"> <input type="checkbox" [(ngModel)]="tagAcceptInput" /> accept-user-input </label>
+				<label class="accept-toggle"> <input type="checkbox" name="tagAccept" [(ngModel)]="tagAcceptInput" /> accept-user-input </label>
 				<input
 					#tagInput
 					ngui-auto-complete
+					name="tag"
 					[(ngModel)]="tag"
 					[source]="arrayOfStrings"
 					[accept-user-input]="tagAcceptInput"
@@ -377,9 +384,12 @@
 		</mat-card-header>
 		<mat-card-content>
 			<div class="demo-area">
-				<label class="accept-toggle"> <input type="checkbox" [(ngModel)]="strictAcceptInput" /> accept-user-input </label>
+				<label class="accept-toggle">
+					<input type="checkbox" name="strictAccept" [(ngModel)]="strictAcceptInput" /> accept-user-input
+				</label>
 				<input
 					ngui-auto-complete
+					name="strictWord"
 					[(ngModel)]="strictWord"
 					[source]="arrayOfStrings"
 					[accept-user-input]="strictAcceptInput"
@@ -418,7 +428,7 @@
 					[select-on-blur]="true"
 					[(ngModel)]="accentWord"
 					(valueSelected)="onSelection($event)">
-					<input autofocus placeholder="try: Cad or Mun" />
+					<input name="accentWord" autofocus placeholder="try: Cad or Mun" />
 				</div>
 			</div>
 			<p class="model-display">
@@ -445,7 +455,7 @@
 			<div class="demo-area">
 				<label class="direction-picker">
 					direction:
-					<select [(ngModel)]="openDir">
+					<select name="openDir" [(ngModel)]="openDir">
 						<option value="auto">auto</option>
 						<option value="up">up</option>
 						<option value="down">down</option>
@@ -459,7 +469,7 @@
 					[select-on-blur]="true"
 					[(ngModel)]="directionWord"
 					(valueSelected)="onSelection($event)">
-					<input placeholder="opens {{ openDir }}" />
+					<input name="directionWord" placeholder="opens {{ openDir }}" />
 				</div>
 			</div>
 			<p class="model-display">

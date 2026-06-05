@@ -162,7 +162,7 @@ export class DirectiveTestComponent {
   <input ngui-auto-complete [source]="arrayOfKeyValues2"
          [(ngModel)]="keyName"
          placeholder="enter text"
-         value-formatter="(key) name"
+         [display-with]="formatKeyName"
          list-formatter="(key) name"
          [match-formatted]="true" />
   `;
@@ -174,7 +174,7 @@ export class DirectiveTestComponent {
          [source]="appSvc.getAddressUrl()"
          no-match-found-text="No Match Found"
          list-formatter="display_name"
-         display-property-name="display_name"
+         display-with="display_name"
          loading-text="Searching..."
          max-num-list="5"
          min-chars="2" />
@@ -187,7 +187,7 @@ export class DirectiveTestComponent {
          [source]="appSvc.findBooks"
          path-to-data="docs"
          [list-formatter]="renderBook"
-         display-property-name="title"
+         display-with="title"
          min-chars="2" />
   `;
 
@@ -230,7 +230,7 @@ export class DirectiveTestComponent {
          [source]="arrayOfCities"
          [accept-user-input]="false"
          [list-formatter]="renderCity"
-         display-property-name="city"
+         display-with="city"
          [header-item-template]="cityHeaderTemplate"
          placeholder="Search for a city" />
   `;
@@ -306,6 +306,8 @@ export class DirectiveTestComponent {
 	public onSelection(selection: any) {
 		console.log('selected', selection);
 	}
+
+	public formatKeyName = (item: any): string => `(${item.key}) ${item.name}`;
 
 	public renderBook(data: any): string {
 		const author = data.author_name?.length ? data.author_name[0] : 'Unknown author';

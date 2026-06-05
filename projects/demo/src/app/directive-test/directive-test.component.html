@@ -111,7 +111,7 @@
 					[source]="arrayOfKeyValues2"
 					[(ngModel)]="keyName"
 					placeholder="enter text"
-					value-formatter="(key) name"
+					[display-with]="formatKeyName"
 					list-formatter="(key) name"
 					[match-formatted]="true" />
 			</div>
@@ -145,7 +145,7 @@
 					[source]="appSvc.getAddressUrl()"
 					no-match-found-text="No Match Found"
 					list-formatter="display_name"
-					display-property-name="display_name"
+					display-with="display_name"
 					loading-text="Searching..."
 					max-num-list="5"
 					min-chars="2" />
@@ -180,7 +180,7 @@
 					[source]="appSvc.findBooks"
 					path-to-data="docs"
 					[list-formatter]="renderBook"
-					display-property-name="title"
+					display-with="title"
 					min-chars="2" />
 			</div>
 			<p class="model-display">
@@ -309,7 +309,7 @@
 					[accept-user-input]="false"
 					[list-formatter]="renderCity"
 					placeholder="Search for a city"
-					display-property-name="city"
+					display-with="city"
 					[header-item-template]="cityHeaderTemplate" />
 			</div>
 			<p class="model-display">

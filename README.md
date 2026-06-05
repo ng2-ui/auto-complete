@@ -146,12 +146,11 @@ works on both the component and the directive:
 | `path-to-data` | `string` | — | Dot-path to array in HTTP response, e.g. `data.results` |
 | `min-chars` | `number` | `0` | Minimum characters before fetching remote data |
 | `max-num-list` | `number` | unlimited | Maximum suggestions to show |
-| `display-property-name` | `string` | `value` | Object key to display in the input after selection |
+| `display-with` | `string \| ((item) => string)` | `value` | Text to show in the input after selecting an object — a property name (`display-with="name"`) or a function (`[display-with]="fn"`) |
 | `select-value-of` | `string` | — | Return this key's value on selection instead of the full object |
 | `list-formatter` | `string \| Function` | — | Format each dropdown item. String pattern `(key) name` or function `(item) => string` |
 | `itemTemplate` | `TemplateRef` | — | `ng-template` for each dropdown row (context: `$implicit` = item, `index` = row index). Takes precedence over `list-formatter` |
 | `headerTemplate` | `TemplateRef` | — | `ng-template` for the non-selectable header row. Takes precedence over `header-item-template` |
-| `value-formatter` | `string \| Function` | — | Format the selected value shown in the input |
 | `blank-option-text` | `string` | — | Adds an empty first option with this label |
 | `no-match-found-text` | `string` | — | Text shown when no results match. Set to `""` to suppress the row entirely |
 | `loading-text` | `string` | `'Loading'` | Text shown while fetching remote data |

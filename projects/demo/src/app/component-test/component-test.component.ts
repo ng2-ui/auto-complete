@@ -53,7 +53,6 @@ export class ComponentTestComponent {
       (valueSelected)="addToAddress($event.value)"
       [accept-user-input]="true"
       [source]="appSvc.getAddressUrl()"
-      display-property-name="display_name"
       [list-formatter]="myListFormatter"
       loading-text="Searching..."
       max-num-list="5"
@@ -87,7 +86,6 @@ export class ComponentTestComponent {
     [show-dropdown-on-init]="true"
     [show-input-tag]="false"
     [source]="people"
-    display-property-name="name"
     (valueSelected)="tplModel = $event.value"
     [headerTemplate]="peopleHead"
     [itemTemplate]="peopleRow">

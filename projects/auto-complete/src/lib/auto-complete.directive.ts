@@ -36,7 +36,9 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 	public source = input<any>();
 	public pathToData = input('', { alias: 'path-to-data' });
 	public minChars = input(0, { alias: 'min-chars', transform: numberAttribute });
-	public displayPropertyName = input('', { alias: 'display-property-name' });
+	// Controls the text shown in the input after selecting an object: a property name
+	// (e.g. `display-with="name"`) or a function (`[display-with]="(item) => …"`).
+	public displayWith = input<string | ((item: any) => string) | undefined>(undefined, { alias: 'display-with' });
 	public acceptUserInput = input(true, { alias: 'accept-user-input', transform: booleanAttribute });
 	// 0 means "no limit" (the `if (maxNumList())` guard treats 0 as falsy).
 	public maxNumList = input(0, { alias: 'max-num-list', transform: numberAttribute });
@@ -48,7 +50,6 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 	// Empty string and "unset" mean different things here: '' suppresses the no-match row,
 	// `undefined` shows the default text — so this input stays optional rather than defaulting.
 	public noMatchFoundText = input<string | undefined>(undefined, { alias: 'no-match-found-text' });
-	public valueFormatter = input<string | ((item: any) => string) | undefined>(undefined, { alias: 'value-formatter' });
 	public tabToSelect = input(true, { alias: 'tab-to-select', transform: booleanAttribute });
 	public selectOnBlur = input(false, { alias: 'select-on-blur', transform: booleanAttribute });
 	public matchFormatted = input(false, { alias: 'match-formatted', transform: booleanAttribute });
@@ -322,24 +323,12 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 	public setToStringFunction(item: any): any {
 		if (item && typeof item === 'object') {
 			let displayVal;
-			const valueFormatter = this.valueFormatter();
-			const listFormatter = this.listFormatter();
+			const displayWith = this.displayWith();
 
-			if (typeof valueFormatter === 'string') {
-				const matches = valueFormatter.match(/[a-zA-Z0-9_\$]+/g);
-				let formatted = valueFormatter;
-				if (matches && typeof item !== 'string') {
-					matches.forEach((key) => {
-						formatted = formatted.replace(key, item[key]);
-					});
-				}
-				displayVal = formatted;
-			} else if (typeof valueFormatter === 'function') {
-				displayVal = valueFormatter(item);
-			} else if (this.displayPropertyName()) {
-				displayVal = item[this.displayPropertyName()];
-			} else if (typeof listFormatter === 'string' && listFormatter.match(/^\w+$/)) {
-				displayVal = item[listFormatter];
+			if (typeof displayWith === 'function') {
+				displayVal = displayWith(item);
+			} else if (typeof displayWith === 'string' && displayWith) {
+				displayVal = item[displayWith];
 			} else {
 				displayVal = item.value;
 			}

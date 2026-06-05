@@ -35,6 +35,11 @@ and this project follows [Angular version numbers](https://angular.dev/reference
   from the bare value to this object, so `(valueSelected)="x = $event"` → `(valueSelected)="x = $event.value"`
   (or use `[(ngModel)]` / `[(value)]` for the value). The never-emitted `textEntered` output is also
   removed. `(noMatchFound)` is unchanged.
+- **Consolidated value display into one `display-with` input.** `display-property-name` and the
+  string-template `value-formatter` are replaced by a single **`display-with`** that accepts either a
+  property name or a function: `display-with="name"` or `[display-with]="(item) => …"`. (`list-formatter`
+  still formats the dropdown rows.) Migrate `display-property-name="name"` → `display-with="name"`, and
+  `value-formatter="(key) name"` → `[display-with]="(item) => '(' + item.key + ') ' + item.name"`.
 
 ### Added
 - **`[(value)]` two-way binding on `NguiAutoCompleteComponent`.** The standalone component now exposes a

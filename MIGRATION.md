@@ -88,6 +88,22 @@ onSelect(e: NguiAutoCompleteSelection) {
 The payload of `(valueSelected)` also changed from the bare value to that object, so a plain
 `(valueSelected)="x = $event"` becomes `(valueSelected)="x = $event.value"` (or use `[(ngModel)]` / `[(value)]`).
 
+### Display formatting: `display-property-name` + `value-formatter` → `display-with`
+
+The selected-value display is now controlled by one input, `display-with`, which takes either a property
+name or a function. (`list-formatter` still formats the dropdown rows.)
+
+```diff
+- <input ngui-auto-complete display-property-name="name" [source]="s" [(ngModel)]="v" />
++ <input ngui-auto-complete display-with="name" [source]="s" [(ngModel)]="v" />
+```
+
+```diff
+- <input ngui-auto-complete value-formatter="(key) name" [source]="s" [(ngModel)]="v" />
++ <input ngui-auto-complete [display-with]="formatKeyName" [source]="s" [(ngModel)]="v" />
+  // component: formatKeyName = (item) => `(${item.key}) ${item.name}`;
+```
+
 ### New: `[(value)]` on `NguiAutoCompleteComponent` (optional)
 
 The standalone component gained a two-way `value` model. `(valueSelected)` still fires, so this is opt-in:

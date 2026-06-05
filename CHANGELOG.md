@@ -28,11 +28,19 @@ and this project follows [Angular version numbers](https://angular.dev/reference
   - **Wrapper-`<div>` usage:** bind the value on the host
     (`<div ngui-auto-complete [(ngModel)]="x"><input></div>`) instead of on a separate inner `<input>`.
     Direct `<input ngui-auto-complete [(ngModel)]="x">` is unchanged.
-- **Removed the unused `textEntered` output** from `NguiAutoCompleteComponent` (it was never emitted).
+- **Unified the selection outputs into one `(valueSelected)` event.** `valueSelected` + `customSelected`
+  are merged into a single `(valueSelected)` (on both the component and directive) carrying
+  `NguiAutoCompleteSelection { value, item, index, fromSource }` — `fromSource` is `true` for a list pick,
+  `false` for a typed value. `(customSelected)` is removed (check `fromSource: false`). The payload changed
+  from the bare value to this object, so `(valueSelected)="x = $event"` → `(valueSelected)="x = $event.value"`
+  (or use `[(ngModel)]` / `[(value)]` for the value). The never-emitted `textEntered` output is also
+  removed. `(noMatchFound)` is unchanged.
 
 ### Added
 - **`[(value)]` two-way binding on `NguiAutoCompleteComponent`.** The standalone component now exposes a
   `value` model — e.g. `<ngui-auto-complete [(value)]="myValue">`. `(valueSelected)` continues to fire.
+- **`NguiAutoCompleteSelection<T>`** interface exported for the `(valueSelected)` payload
+  (`{ value, item, index, fromSource }`).
 
 ### Changed
 - **Upgraded to Angular 21** (`@angular/*` 21.2.x, `@angular/material` + `@angular/cdk` 21.2.x).

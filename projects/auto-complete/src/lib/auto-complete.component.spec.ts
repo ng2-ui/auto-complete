@@ -51,12 +51,20 @@ describe('NguiAutoCompleteComponent', () => {
 		expect(dropdown.classList.contains('dropup')).toBe(true);
 	});
 
-	it('should update the two-way value() and emit valueSelected when an item is selected', () => {
+	it('should update value() and emit a fromSource selection when a list item is picked', () => {
 		const emitted: any[] = [];
-		component.valueSelected.subscribe((v) => emitted.push(v));
-		component.selectOne('Item 1');
+		component.valueSelected.subscribe((s) => emitted.push(s));
+		component.selectOne('Item 1', 2);
 		expect(component.value()).toBe('Item 1');
-		expect(emitted).toEqual(['Item 1']);
+		expect(emitted).toEqual([{ value: 'Item 1', item: 'Item 1', index: 2, fromSource: true }]);
+	});
+
+	it('should emit a custom (fromSource:false) selection for a typed value not in the list', () => {
+		const emitted: any[] = [];
+		component.valueSelected.subscribe((s) => emitted.push(s));
+		component.keyword = 'typed text';
+		component.selectOne(undefined);
+		expect(emitted).toEqual([{ value: 'typed text', item: 'typed text', index: -1, fromSource: false }]);
 	});
 });
 

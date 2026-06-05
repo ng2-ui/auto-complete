@@ -179,8 +179,19 @@ on every accepted value.
 
 | Output | Payload | Description |
 |--------|---------|-------------|
-| `(customSelected)` | keyword string | Fires when user accepts a value not in the list |
+| `(valueSelected)` | `NguiAutoCompleteSelection` | Fires when a value is committed — see the payload below. Use `fromSource` to tell a list pick from a typed value |
 | `(noMatchFound)` | `void` | Fires when the filtered list is empty and `min-chars` threshold is met — use it to show an "Add new…" affordance |
+
+The `(valueSelected)` payload:
+
+```typescript
+interface NguiAutoCompleteSelection<T = any> {
+  value: T;          // the committed value (same as [(ngModel)] / [(value)])
+  item: T;           // the full picked object (or the typed text)
+  index: number;     // row in the shown list; -1 when typed (fromSource = false)
+  fromSource: boolean; // true = picked from [source]; false = typed by the user
+}
+```
 
 ### Component Inputs (`<ngui-auto-complete>`)
 
@@ -198,11 +209,8 @@ All directive inputs are supported plus:
 
 ### Component Outputs
 
-| Output | Payload | Description |
-|--------|---------|-------------|
-| `(valueSelected)` | selected value | Fires when a list item is selected (or use `[(value)]`) |
-| `(customSelected)` | keyword string | Fires on custom (non-list) value entry |
-| `(noMatchFound)` | `void` | Fires when the filtered list is empty and `min-chars` threshold is met — use it to show an "Add new…" affordance |
+Same as the directive: `(valueSelected)` emits `NguiAutoCompleteSelection` (see above) and `(noMatchFound)`
+emits `void`. For just the value, prefer `[(value)]`.
 
 ---
 

@@ -64,12 +64,29 @@ It duplicated `(ngModelChange)`. Use `(ngModelChange)` or, for reactive forms, t
 + <input ngui-auto-complete [(ngModel)]="v" (ngModelChange)="onChange($event)" [source]="s" />
 ```
 
-`(customSelected)` (custom, not-in-list value) and `(noMatchFound)` are unchanged.
+### Outputs merged: `valueSelected` + `customSelected` → one `(valueSelected)`
 
-### Removed: `(textEntered)` output on `NguiAutoCompleteComponent`
+The two selection outputs are now a single `(valueSelected)` carrying
+`NguiAutoCompleteSelection { value, item, index, fromSource }`. `(customSelected)` and the never-emitted
+`(textEntered)` are removed; `(noMatchFound)` is unchanged.
 
-It was never emitted, so it had no effect. Use `(valueSelected)` / `[(value)]` (see below) and
-`(customSelected)`.
+```diff
+- <input ngui-auto-complete (valueSelected)="onPick($event)" (customSelected)="onCustom($event)" [source]="s" [(ngModel)]="v" />
++ <input ngui-auto-complete (valueSelected)="onSelect($event)" [source]="s" [(ngModel)]="v" />
+```
+
+```ts
+onSelect(e: NguiAutoCompleteSelection) {
+  if (e.fromSource) {
+    // picked e.item from the list
+  } else {
+    // user typed a custom value: e.value
+  }
+}
+```
+
+The payload of `(valueSelected)` also changed from the bare value to that object, so a plain
+`(valueSelected)="x = $event"` becomes `(valueSelected)="x = $event.value"` (or use `[(ngModel)]` / `[(value)]`).
 
 ### New: `[(value)]` on `NguiAutoCompleteComponent` (optional)
 

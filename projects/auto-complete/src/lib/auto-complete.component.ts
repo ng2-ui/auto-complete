@@ -16,6 +16,18 @@ import {
 } from '@angular/core';
 import { NguiAutoCompleteService } from './auto-complete.service';
 import { Observable } from 'rxjs';
+
+/** Payload emitted by `(valueSelected)` when the user commits a value. */
+export interface NguiAutoCompleteSelection<T = any> {
+	/** The committed value — the same value `[(ngModel)]` / `[(value)]` receives. */
+	value: T;
+	/** The full picked object (or the typed text for a custom value). */
+	item: T;
+	/** Row position in the shown list; `-1` when the value was typed (`fromSource: false`). */
+	index: number;
+	/** `true` when the user picked a value from `[source]`; `false` when they typed their own. */
+	fromSource: boolean;
+}
 import { FormsModule } from '@angular/forms';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 
@@ -70,8 +82,9 @@ export class NguiAutoCompleteComponent implements OnInit {
 	// Two-way bindable selected value: `[(value)]="myValue"`.
 	public value = model<any>();
 
-	public valueSelected = output<any>();
-	public customSelected = output<any>();
+	// Fires when the user commits a value (a list pick or an accepted custom value); `fromSource`
+	// distinguishes the two. The bare value is also available via `[(value)]`.
+	public valueSelected = output<NguiAutoCompleteSelection>();
 	public noMatchFound = output<void>();
 
 	public autoCompleteInput = viewChild<ElementRef>('autoCompleteInput');
@@ -227,18 +240,18 @@ export class NguiAutoCompleteComponent implements OnInit {
 		}
 	}
 
-	public selectOne(data: any) {
+	public selectOne(data: any, index = -1) {
 		if (!!data || data === '') {
 			this.value.set(data);
-			this.valueSelected.emit(data);
+			this.valueSelected.emit({ value: data, item: data, index, fromSource: true });
 		} else {
-			this.customSelected.emit(this.keyword);
+			this.valueSelected.emit({ value: this.keyword, item: this.keyword, index: -1, fromSource: false });
 		}
 	}
 
 	public blurHandler(evt: any) {
 		if (this.selectOnBlur()) {
-			this.selectOne(this.filteredList()[this.itemIndex()]);
+			this.selectOne(this.filteredList()[this.itemIndex()], this.itemIndex() ?? -1);
 		}
 
 		this.hideDropdownList();
@@ -279,14 +292,14 @@ export class NguiAutoCompleteComponent implements OnInit {
 
 			case 13: // ENTER, choose it!!
 				if (this.selectOnEnter) {
-					this.selectOne(this.filteredList()[this.itemIndex()]);
+					this.selectOne(this.filteredList()[this.itemIndex()], this.itemIndex() ?? -1);
 				}
 				evt.preventDefault();
 				break;
 
 			case 9: // TAB, choose if tab-to-select is enabled
 				if (this.tabToSelect()) {
-					this.selectOne(this.filteredList()[this.itemIndex()]);
+					this.selectOne(this.filteredList()[this.itemIndex()], this.itemIndex() ?? -1);
 				}
 				break;
 		}

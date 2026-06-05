@@ -37,13 +37,13 @@
 			}
 			@for (item of filteredList(); track trackByIndex(i, item); let i = $index) {
 				@if (itemTemplate()) {
-					<li class="item" (mousedown)="selectOne(item)" [ngClass]="{ selected: i === itemIndex() }">
+					<li class="item" (mousedown)="selectOne(item, i)" [ngClass]="{ selected: i === itemIndex() }">
 						<ng-container [ngTemplateOutlet]="itemTemplate()" [ngTemplateOutletContext]="{ $implicit: item, index: i }"></ng-container>
 					</li>
 				} @else {
 					<li
 						class="item"
-						(mousedown)="selectOne(item)"
+						(mousedown)="selectOne(item, i)"
 						[ngClass]="{ selected: i === itemIndex() }"
 						[innerHtml]="autoComplete.getFormattedListItem(item)"></li>
 				}

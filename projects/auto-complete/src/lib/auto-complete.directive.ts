@@ -15,7 +15,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NguiAutoCompleteComponent } from './auto-complete.component';
+import { NguiAutoCompleteComponent, NguiAutoCompleteSelection } from './auto-complete.component';
 
 @Directive({
 	// eslint-disable-next-line @angular-eslint/directive-selector -- public API selector is kebab-case by design
@@ -69,10 +69,10 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 	// below unless the input sits near the bottom of the viewport.
 	public openDirection = input<'auto' | 'up' | 'down'>('auto', { alias: 'open-direction' });
 
-	// Fired when a custom (not-in-list) value is committed. The value binding is handled by
-	// Angular forms through the ControlValueAccessor below (use `[(ngModel)]`, `[formControl]`
-	// or `formControlName`), so there is no separate value-change output.
-	public customSelected = output<any>();
+	// Fires when the user commits a value (a list pick or an accepted custom value); `fromSource`
+	// distinguishes the two. The value itself also flows through Angular forms via the
+	// ControlValueAccessor below (`[(ngModel)]`, `[formControl]` or `formControlName`).
+	public valueSelected = output<NguiAutoCompleteSelection>();
 	public noMatchFound = output<void>();
 
 	private componentRef: ComponentRef<NguiAutoCompleteComponent>;
@@ -219,8 +219,7 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 
 		this.dropdownSubs.unsubscribe();
 		this.dropdownSubs = new Subscription();
-		this.dropdownSubs.add(component.valueSelected.subscribe(this.selectNewValue));
-		this.dropdownSubs.add(component.customSelected.subscribe(this.selectCustomValue));
+		this.dropdownSubs.add(component.valueSelected.subscribe(this.onSelection));
 		this.dropdownSubs.add(component.noMatchFound.subscribe(() => this.noMatchFound.emit()));
 
 		this.acDropdownEl = this.componentRef.location.nativeElement;
@@ -251,7 +250,7 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 			this.onTouched();
 
 			if (this.selectOnBlur()) {
-				component.selectOne(component.filteredList()[component.itemIndex()]);
+				component.selectOne(component.filteredList()[component.itemIndex()], component.itemIndex() ?? -1);
 			}
 
 			if (this.closeOnFocusOut()) {
@@ -349,7 +348,16 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 		return item;
 	}
 
-	public selectNewValue = (item: any) => {
+	// Route the dropdown's unified selection event to the matching handler.
+	private onSelection = (selection: NguiAutoCompleteSelection) => {
+		if (selection.fromSource) {
+			this.selectNewValue(selection.item, selection.index);
+		} else {
+			this.selectCustomValue(selection.value);
+		}
+	};
+
+	public selectNewValue = (item: any, index = -1) => {
 		// make displayable value
 		if (item && typeof item === 'object') {
 			item = this.setToStringFunction(item);
@@ -366,6 +374,7 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 		this.value = val;
 		this.onChange(val);
 		this.onTouched();
+		this.valueSelected.emit({ value: val, item, index, fromSource: true });
 		this.hideAutoCompleteDropdown();
 		setTimeout(() => {
 			if (this.reFocusAfterSelect()) {
@@ -377,7 +386,7 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 	};
 
 	public selectCustomValue = (text: string) => {
-		this.customSelected.emit(text);
+		this.valueSelected.emit({ value: text, item: text, index: -1, fromSource: false });
 		this.hideAutoCompleteDropdown();
 		setTimeout(() => {
 			if (this.reFocusAfterSelect()) {

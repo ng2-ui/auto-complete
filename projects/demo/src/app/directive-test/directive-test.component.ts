@@ -125,7 +125,7 @@ export class DirectiveTestComponent {
        [select-on-blur]="true"
        [ngModel]="model1"
        (ngModelChange)="myCallback1($event)"
-       (customSelected)="customCallback($event)">
+       (valueSelected)="onSelection($event)">
     <input id="model1" autofocus placeholder="enter text" />
   </div>
   `;
@@ -139,7 +139,7 @@ export class DirectiveTestComponent {
        [select-on-blur]="true"
        [ngModel]="model1"
        (ngModelChange)="myCallback1($event)"
-       (customSelected)="customCallback($event)">
+       (valueSelected)="onSelection($event)">
     <input id="model1-1" autofocus placeholder="enter text" />
   </div>
   `;
@@ -246,7 +246,7 @@ export class DirectiveTestComponent {
        [select-on-blur]="true"
        [ngModel]="model10"
        (ngModelChange)="myCallback10($event)"
-       (customSelected)="customCallback($event)">
+       (valueSelected)="onSelection($event)">
         <input id="model10" autofocus placeholder="try: Cad or Mun" />
     </div>
   `;
@@ -259,7 +259,7 @@ export class DirectiveTestComponent {
          no-match-found-text=""
          (noMatchFound)="noMatchVisible11 = true"
          (ngModelChange)="noMatchVisible11 = false"
-         (customSelected)="noMatchVisible11 = false"
+         (valueSelected)="noMatchVisible11 = false"
          placeholder="type something not in the list" />
   @if (noMatchVisible11) {
     <div class="no-match-hint">
@@ -296,7 +296,7 @@ export class DirectiveTestComponent {
        [select-on-blur]="true"
        [ngModel]="model13"
        (ngModelChange)="myCallback1($event)"
-       (customSelected)="customCallback($event)">
+       (valueSelected)="onSelection($event)">
     <input id="model13" placeholder="opens {{ openDir }}" />
   </div>
   `;
@@ -308,8 +308,8 @@ export class DirectiveTestComponent {
 		this.noMatchVisible11 = false;
 	}
 
-	public customCallback(text) {
-		console.log('keyword ', text);
+	public onSelection(selection: any) {
+		console.log('selected', selection);
 	}
 
 	public myCallback1(newVal1) {

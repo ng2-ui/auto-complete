@@ -50,7 +50,7 @@ export class ComponentTestComponent {
 
   @if (showAutocomplete) {
     <ngui-auto-complete
-      (valueSelected)="addToAddress($event)"
+      (valueSelected)="addToAddress($event.value)"
       [accept-user-input]="true"
       [source]="appSvc.getAddressUrl()"
       display-property-name="display_name"
@@ -88,7 +88,7 @@ export class ComponentTestComponent {
     [show-input-tag]="false"
     [source]="people"
     display-property-name="name"
-    (valueSelected)="tplModel = $event"
+    (valueSelected)="tplModel = $event.value"
     [headerTemplate]="peopleHead"
     [itemTemplate]="peopleRow">
   </ngui-auto-complete>

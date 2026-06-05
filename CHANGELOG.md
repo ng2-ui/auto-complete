@@ -43,6 +43,10 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 - **Removed the `is-rtl` input.** Direction is now auto-detected from the input's computed direction, so
   an ancestor `dir="rtl"` (or the document direction) positions the dropdown correctly on its own — no
   input and no extra dependency. Replace `[is-rtl]="true"` with `dir="rtl"` on the element or an ancestor.
+- **Replaced the `innerHTML` string templates with `TemplateRef`s.** The string `loading-template` and
+  `header-item-template` inputs are removed. Use the `headerTemplate` `TemplateRef` (already available) and
+  the new `loadingTemplate` `TemplateRef` (`loading-text` remains for the simple case). This also removes
+  an `innerHTML` sink.
 
 ### Added
 - **`[(value)]` two-way binding on `NguiAutoCompleteComponent`.** The standalone component now exposes a

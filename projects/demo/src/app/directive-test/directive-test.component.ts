@@ -38,14 +38,6 @@ import { JsonPipe } from '@angular/common';
 export class DirectiveTestComponent {
 	appSvc = inject(AppService);
 
-	public loadingTemplate = `<h1>Loading</h1>`;
-	public cityHeaderTemplate = `
-      <div class="header-row">
-        <div class="col-2">City</div>
-        <div class="col-1">State</div>
-        <div class="col-2">Nickname</div>
-        <div class="col-1">Population</div>
-      </div>`;
 	public arrayOfNumbers: number[] = [100, 200, 300, 400, 500];
 	public arrayOfStrings: string[] = ['this', 'is', 'array', 'of', 'text', 'with', 'long', 'and long', 'and long', 'list'];
 	public arrayOfAccentedStrings: string[] = ['Cádiz', 'München'];
@@ -229,8 +221,11 @@ export class DirectiveTestComponent {
          [accept-user-input]="false"
          [list-formatter]="renderCity"
          display-with="city"
-         [header-item-template]="cityHeaderTemplate"
+         [headerTemplate]="cityHeaderTpl"
          placeholder="Search for a city" />
+  <ng-template #cityHeaderTpl>
+    <div class="header-row">…</div>
+  </ng-template>
   `;
 
 	template11 = `

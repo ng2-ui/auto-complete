@@ -315,7 +315,15 @@
 					[list-formatter]="renderCity"
 					placeholder="Search for a city"
 					display-with="city"
-					[header-item-template]="cityHeaderTemplate" />
+					[headerTemplate]="cityHeaderTpl" />
+				<ng-template #cityHeaderTpl>
+					<div class="header-row">
+						<div class="col-2">City</div>
+						<div class="col-1">State</div>
+						<div class="col-2">Nickname</div>
+						<div class="col-1">Population</div>
+					</div>
+				</ng-template>
 			</div>
 			<p class="model-display">
 				selected: <code>{{ json(city) }}</code>

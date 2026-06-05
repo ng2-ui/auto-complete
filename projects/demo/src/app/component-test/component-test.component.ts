@@ -26,7 +26,6 @@ export class ComponentTestComponent {
 	appSvc = inject(AppService);
 
 	public showAutocomplete = false;
-	public loadingTemplate = '<span style="padding:8px;color:#888">Searching...</span>';
 	public addrs: any[] = [{ display_name: 'Berlin, Germany' }, { display_name: 'London, United Kingdom' }];
 
 	myModel;

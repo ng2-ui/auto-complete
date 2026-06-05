@@ -58,7 +58,7 @@ export class NguiAutoCompleteComponent implements OnInit {
 	public noMatchFoundText = input<string | undefined>(undefined, { alias: 'no-match-found-text' });
 	public acceptUserInput = input(true, { alias: 'accept-user-input', transform: booleanAttribute });
 	public loadingText = input('Loading', { alias: 'loading-text' });
-	public loadingTemplate = input<string | null>(null, { alias: 'loading-template' });
+	public loadingTemplate = input<TemplateRef<void> | null>(null);
 	// 0 means "no limit" (the `if (maxNumList())` guard treats 0 as falsy).
 	public maxNumList = input(0, { alias: 'max-num-list', transform: numberAttribute });
 	public showInputTag = input(true, { alias: 'show-input-tag', transform: booleanAttribute });
@@ -68,11 +68,10 @@ export class NguiAutoCompleteComponent implements OnInit {
 	public autoSelectFirstItem = input(false, { alias: 'auto-select-first-item', transform: booleanAttribute });
 	public selectOnBlur = input(false, { alias: 'select-on-blur', transform: booleanAttribute });
 	public reFocusAfterSelect = input(true, { alias: 're-focus-after-select', transform: booleanAttribute });
-	public headerItemTemplate = input<string | null>(null, { alias: 'header-item-template' });
 	public ignoreAccents = input(true, { alias: 'ignore-accents', transform: booleanAttribute });
-	// Angular template alternatives to the string `list-formatter` / `header-item-template`.
-	// When provided they take precedence; the item template receives the item as `$implicit`
-	// and the row index as `index`.
+	// `ng-template`s for custom rendering. `itemTemplate` (takes precedence over the string
+	// `list-formatter`) receives the item as `$implicit` and the row index as `index`;
+	// `headerTemplate` renders a non-selectable header row.
 	public itemTemplate = input<TemplateRef<{ $implicit: any; index: number }> | null>(null);
 	public headerTemplate = input<TemplateRef<void> | null>(null);
 	// When used as a standalone component (not via the directive), `up` renders the

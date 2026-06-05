@@ -16,11 +16,14 @@
 	<!-- dropdown that user can select -->
 	@if (dropdownVisible()) {
 		<ul [class.empty]="emptyList" [class.dropup]="openDirection() === 'up'">
-			@if (isLoading() && loadingTemplate()) {
-				<li class="loading" [innerHTML]="loadingTemplate()"></li>
-			}
-			@if (isLoading() && !loadingTemplate()) {
-				<li class="loading">{{ loadingText() }}</li>
+			@if (isLoading()) {
+				<li class="loading">
+					@if (loadingTemplate()) {
+						<ng-container [ngTemplateOutlet]="loadingTemplate()"></ng-container>
+					} @else {
+						{{ loadingText() }}
+					}
+				</li>
 			}
 			@if (minCharsEntered() && !isLoading() && !filteredList().length && noMatchFoundText() !== '') {
 				<li (mousedown)="selectOne('')" class="no-match-found">{{ noMatchFoundText() ?? 'No Result Found' }}</li>
@@ -29,8 +32,6 @@
 				<li class="header-item">
 					<ng-container [ngTemplateOutlet]="headerTemplate()"></ng-container>
 				</li>
-			} @else if (headerItemTemplate() && filteredList().length) {
-				<li class="header-item" [innerHTML]="headerItemTemplate()"></li>
 			}
 			@if (blankOptionText() && filteredList().length) {
 				<li (mousedown)="selectOne('')" class="blank-item">{{ blankOptionText() }}</li>

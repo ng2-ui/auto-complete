@@ -120,9 +120,9 @@ searchFn = (keyword: string): Observable<any> => {
 
 ### Custom dropdown templates
 
-Instead of the string-based `list-formatter` / `header-item-template`, you can pass Angular
-`ng-template`s. `itemTemplate` receives the item as `$implicit` and the row index as `index`; it
-works on both the component and the directive:
+Pass Angular `ng-template`s for custom rendering: `itemTemplate` (each row — receives the item as
+`$implicit` and the row index as `index`), `headerTemplate` (a header row), and `loadingTemplate` (shown
+while remote data loads). They work on both the component and the directive:
 
 ```html
 <input ngui-auto-complete [(ngModel)]="myValue" [source]="myArray"
@@ -150,12 +150,11 @@ works on both the component and the directive:
 | `select-value-of` | `string` | — | Return this key's value on selection instead of the full object |
 | `list-formatter` | `string \| Function` | — | Format each dropdown item. String pattern `(key) name` or function `(item) => string` |
 | `itemTemplate` | `TemplateRef` | — | `ng-template` for each dropdown row (context: `$implicit` = item, `index` = row index). Takes precedence over `list-formatter` |
-| `headerTemplate` | `TemplateRef` | — | `ng-template` for the non-selectable header row. Takes precedence over `header-item-template` |
+| `headerTemplate` | `TemplateRef` | — | `ng-template` for the non-selectable header row |
+| `loadingTemplate` | `TemplateRef` | — | `ng-template` shown while remote data loads (falls back to `loading-text`) |
 | `blank-option-text` | `string` | — | Adds an empty first option with this label |
 | `no-match-found-text` | `string` | — | Text shown when no results match. Set to `""` to suppress the row entirely |
 | `loading-text` | `string` | `'Loading'` | Text shown while fetching remote data |
-| `loading-template` | `string` | — | HTML string shown while loading |
-| `header-item-template` | `string` | — | Non-selectable header row above results (HTML string) |
 | `accept-user-input` | `boolean` | `true` | Allow values not in the list |
 | `auto-select-first-item` | `boolean` | `false` | Pre-highlight the first suggestion |
 | `open-on-focus` | `boolean` | `true` | Open dropdown on input focus |

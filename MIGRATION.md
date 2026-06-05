@@ -116,6 +116,18 @@ Direction now follows the input's computed direction, so put `dir="rtl"` on the 
 + </div>
 ```
 
+### String templates → `TemplateRef`s: `loading-template` & `header-item-template`
+
+The `innerHTML` string inputs are replaced by `ng-template`s: use the existing `headerTemplate` and the
+new `loadingTemplate`. (`loading-text` still covers the plain-text loading case.)
+
+```diff
+- <input ngui-auto-complete loading-template="<i>Loading…</i>" header-item-template="<b>Results</b>" [source]="s" [(ngModel)]="v" />
++ <input ngui-auto-complete [loadingTemplate]="loadingTpl" [headerTemplate]="headerTpl" [source]="s" [(ngModel)]="v" />
++ <ng-template #loadingTpl><i>Loading…</i></ng-template>
++ <ng-template #headerTpl><b>Results</b></ng-template>
+```
+
 ### New: `[(value)]` on `NguiAutoCompleteComponent` (optional)
 
 The standalone component gained a two-way `value` model. `(valueSelected)` still fires, so this is opt-in:

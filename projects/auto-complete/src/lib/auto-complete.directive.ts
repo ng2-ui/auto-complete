@@ -43,7 +43,7 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 	// 0 means "no limit" (the `if (maxNumList())` guard treats 0 as falsy).
 	public maxNumList = input(0, { alias: 'max-num-list', transform: numberAttribute });
 	public selectValueOf = input('', { alias: 'select-value-of' });
-	public loadingTemplate = input<string | null>(null, { alias: 'loading-template' });
+	public loadingTemplate = input<TemplateRef<void> | null>(null);
 	public listFormatter = input<((arg: any) => string) | string | undefined>(undefined, { alias: 'list-formatter' });
 	public loadingText = input('Loading', { alias: 'loading-text' });
 	public blankOptionText = input('', { alias: 'blank-option-text' });
@@ -57,10 +57,9 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 	public openOnFocus = input(true, { alias: 'open-on-focus', transform: booleanAttribute });
 	public closeOnFocusOut = input(true, { alias: 'close-on-focusout', transform: booleanAttribute });
 	public reFocusAfterSelect = input(true, { alias: 're-focus-after-select', transform: booleanAttribute });
-	public headerItemTemplate = input<string | null>(null, { alias: 'header-item-template' });
 	public ignoreAccents = input(true, { alias: 'ignore-accents', transform: booleanAttribute });
-	// Angular template alternatives to the string `list-formatter` / `header-item-template`,
-	// forwarded to the dropdown component (they take precedence when provided).
+	// `ng-template`s forwarded to the dropdown component (itemTemplate takes precedence over the
+	// string `list-formatter`; headerTemplate renders a non-selectable header row).
 	public itemTemplate = input<TemplateRef<{ $implicit: any; index: number }> | null>(null);
 	public headerTemplate = input<TemplateRef<void> | null>(null);
 
@@ -204,7 +203,7 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 		this.componentRef.setInput('max-num-list', this.maxNumList());
 
 		this.componentRef.setInput('loading-text', this.loadingText());
-		this.componentRef.setInput('loading-template', this.loadingTemplate());
+		this.componentRef.setInput('loadingTemplate', this.loadingTemplate());
 		this.componentRef.setInput('list-formatter', this.listFormatter());
 		this.componentRef.setInput('blank-option-text', this.blankOptionText());
 		this.componentRef.setInput('no-match-found-text', this.noMatchFoundText());
@@ -212,7 +211,6 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 		this.componentRef.setInput('select-on-blur', this.selectOnBlur());
 		this.componentRef.setInput('match-formatted', this.matchFormatted());
 		this.componentRef.setInput('auto-select-first-item', this.autoSelectFirstItem());
-		this.componentRef.setInput('header-item-template', this.headerItemTemplate());
 		this.componentRef.setInput('itemTemplate', this.itemTemplate());
 		this.componentRef.setInput('headerTemplate', this.headerTemplate());
 		this.componentRef.setInput('ignore-accents', this.ignoreAccents());

@@ -9,7 +9,7 @@ export class NguiAutoCompleteService {
 
 	public source: string;
 	public pathToData: string;
-	public listFormatter: (arg: any) => string;
+	public listFormatter: ((arg: any) => string) | undefined;
 
 	public filter(list: any[], keyword: string, matchFormatted: boolean, accentInsensitive: boolean) {
 		const objectString = (el) => (matchFormatted ? this.getFormattedListItem(el).toLowerCase() : JSON.stringify(el).toLowerCase());

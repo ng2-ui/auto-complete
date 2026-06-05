@@ -1,14 +1,15 @@
 import {
+	booleanAttribute,
 	Component,
 	ElementRef,
-	EventEmitter,
-	Input,
+	numberAttribute,
 	OnInit,
-	Output,
 	TemplateRef,
-	ViewChild,
 	ViewEncapsulation,
 	inject,
+	input,
+	output,
+	viewChild,
 } from '@angular/core';
 import { NguiAutoCompleteService } from './auto-complete.service';
 import { Observable } from 'rxjs';
@@ -29,43 +30,46 @@ export class NguiAutoCompleteComponent implements OnInit {
 	/**
 	 * public input properties
 	 */
-	@Input('autocomplete') public autocomplete = false;
-	@Input('list-formatter') public listFormatter: (arg: any) => string;
-	@Input('source') public source: any;
-	@Input('path-to-data') public pathToData: string;
-	@Input('min-chars') public minChars = 0;
-	@Input('placeholder') public placeholder: string;
-	@Input('blank-option-text') public blankOptionText: string;
-	@Input('no-match-found-text') public noMatchFoundText: string;
-	@Input('accept-user-input') public acceptUserInput = true;
-	@Input('loading-text') public loadingText = 'Loading';
-	@Input('loading-template') public loadingTemplate = null;
-	@Input('max-num-list') public maxNumList: number;
-	@Input('show-input-tag') public showInputTag = true;
-	@Input('show-dropdown-on-init') public showDropdownOnInit = false;
-	@Input('tab-to-select') public tabToSelect = true;
-	@Input('match-formatted') public matchFormatted = false;
-	@Input('auto-select-first-item') public autoSelectFirstItem = false;
-	@Input('select-on-blur') public selectOnBlur = false;
-	@Input('re-focus-after-select') public reFocusAfterSelect = true;
-	@Input('header-item-template') public headerItemTemplate = null;
-	@Input('ignore-accents') public ignoreAccents = true;
+	public autocomplete = input(false, { transform: booleanAttribute });
+	public listFormatter = input<((arg: any) => string) | undefined>(undefined, { alias: 'list-formatter' });
+	public source = input<any>();
+	public pathToData = input('', { alias: 'path-to-data' });
+	public minChars = input(0, { alias: 'min-chars', transform: numberAttribute });
+	public placeholder = input('');
+	public blankOptionText = input('', { alias: 'blank-option-text' });
+	// Empty string and "unset" mean different things here: '' suppresses the no-match row,
+	// `undefined` shows the default text — so this input stays optional rather than defaulting.
+	public noMatchFoundText = input<string | undefined>(undefined, { alias: 'no-match-found-text' });
+	public acceptUserInput = input(true, { alias: 'accept-user-input', transform: booleanAttribute });
+	public loadingText = input('Loading', { alias: 'loading-text' });
+	public loadingTemplate = input<string | null>(null, { alias: 'loading-template' });
+	// 0 means "no limit" (the `if (maxNumList())` guard treats 0 as falsy).
+	public maxNumList = input(0, { alias: 'max-num-list', transform: numberAttribute });
+	public showInputTag = input(true, { alias: 'show-input-tag', transform: booleanAttribute });
+	public showDropdownOnInit = input(false, { alias: 'show-dropdown-on-init', transform: booleanAttribute });
+	public tabToSelect = input(true, { alias: 'tab-to-select', transform: booleanAttribute });
+	public matchFormatted = input(false, { alias: 'match-formatted', transform: booleanAttribute });
+	public autoSelectFirstItem = input(false, { alias: 'auto-select-first-item', transform: booleanAttribute });
+	public selectOnBlur = input(false, { alias: 'select-on-blur', transform: booleanAttribute });
+	public reFocusAfterSelect = input(true, { alias: 're-focus-after-select', transform: booleanAttribute });
+	public headerItemTemplate = input<string | null>(null, { alias: 'header-item-template' });
+	public ignoreAccents = input(true, { alias: 'ignore-accents', transform: booleanAttribute });
 	// Angular template alternatives to the string `list-formatter` / `header-item-template`.
 	// When provided they take precedence; the item template receives the item as `$implicit`
 	// and the row index as `index`.
-	@Input() public itemTemplate: TemplateRef<{ $implicit: any; index: number }>;
-	@Input() public headerTemplate: TemplateRef<void>;
+	public itemTemplate = input<TemplateRef<{ $implicit: any; index: number }> | null>(null);
+	public headerTemplate = input<TemplateRef<void> | null>(null);
 	// When used as a standalone component (not via the directive), `up` renders the
 	// dropdown above the input; `down`/`auto` keep it below.
-	@Input('open-direction') public openDirection: 'auto' | 'up' | 'down' = 'auto';
+	public openDirection = input<'auto' | 'up' | 'down'>('auto', { alias: 'open-direction' });
 
-	@Output() public valueSelected = new EventEmitter();
-	@Output() public customSelected = new EventEmitter();
-	@Output() public textEntered = new EventEmitter();
-	@Output() public noMatchFound = new EventEmitter<void>();
+	public valueSelected = output<any>();
+	public customSelected = output<any>();
+	public textEntered = output<any>();
+	public noMatchFound = output<void>();
 
-	@ViewChild('autoCompleteInput') public autoCompleteInput: ElementRef;
-	@ViewChild('autoCompleteContainer') public autoCompleteContainer: ElementRef;
+	public autoCompleteInput = viewChild<ElementRef>('autoCompleteInput');
+	public autoCompleteContainer = viewChild<ElementRef>('autoCompleteContainer');
 
 	public dropdownVisible = false;
 	public isLoading = false;
@@ -100,24 +104,25 @@ export class NguiAutoCompleteComponent implements OnInit {
 	 * user enters into input el, shows list to select, then select one
 	 */
 	ngOnInit(): void {
-		this.autoComplete.source = this.source;
-		this.autoComplete.pathToData = this.pathToData;
-		this.autoComplete.listFormatter = this.listFormatter;
-		if (this.autoSelectFirstItem) {
+		this.autoComplete.source = this.source();
+		this.autoComplete.pathToData = this.pathToData();
+		this.autoComplete.listFormatter = this.listFormatter();
+		if (this.autoSelectFirstItem()) {
 			this.itemIndex = 0;
 		}
 		setTimeout(() => {
-			if (this.autoCompleteInput && this.reFocusAfterSelect) {
-				this.autoCompleteInput.nativeElement.focus();
+			const input = this.autoCompleteInput();
+			if (input && this.reFocusAfterSelect()) {
+				input.nativeElement.focus();
 			}
-			if (this.showDropdownOnInit) {
+			if (this.showDropdownOnInit()) {
 				this.showDropdownList({ target: { value: '' } });
 			}
 		});
 	}
 
 	public isSrcArr(): boolean {
-		return Array.isArray(this.source);
+		return Array.isArray(this.source());
 	}
 
 	public reloadListInDelay = (evt: any): void => {
@@ -145,19 +150,22 @@ export class NguiAutoCompleteComponent implements OnInit {
 
 	public reloadList(keyword: string): void {
 		this.filteredList = [];
-		if (keyword.length < (this.minChars || 0)) {
+		if (keyword.length < (this.minChars() || 0)) {
 			this.minCharsEntered = false;
 			return;
 		} else {
 			this.minCharsEntered = true;
 		}
 
+		const maxNumList = this.maxNumList();
+		const source = this.source();
+
 		if (this.isSrcArr()) {
 			// local source
 			this.isLoading = false;
-			this.filteredList = this.autoComplete.filter(this.source, keyword, this.matchFormatted, this.ignoreAccents);
-			if (this.maxNumList) {
-				this.filteredList = this.filteredList.slice(0, this.maxNumList);
+			this.filteredList = this.autoComplete.filter(source, keyword, this.matchFormatted(), this.ignoreAccents());
+			if (maxNumList) {
+				this.filteredList = this.filteredList.slice(0, maxNumList);
 			}
 			if (this.minCharsEntered && !this.filteredList.length) {
 				this.noMatchFound.emit();
@@ -166,17 +174,17 @@ export class NguiAutoCompleteComponent implements OnInit {
 			// remote source
 			this.isLoading = true;
 
-			if (typeof this.source === 'function') {
+			if (typeof source === 'function') {
 				// custom function that returns observable
-				(this.source(keyword) as Observable<any>).subscribe({
+				(source(keyword) as Observable<any>).subscribe({
 					next: (resp) => {
-						if (this.pathToData) {
-							const paths = this.pathToData.split('.');
+						if (this.pathToData()) {
+							const paths = this.pathToData().split('.');
 							paths.forEach((prop) => (resp = resp[prop]));
 						}
 						this.filteredList = resp;
-						if (this.maxNumList) {
-							this.filteredList = this.filteredList.slice(0, this.maxNumList);
+						if (maxNumList) {
+							this.filteredList = this.filteredList.slice(0, maxNumList);
 						}
 						this.isLoading = false;
 						if (this.minCharsEntered && !this.filteredList.length) {
@@ -193,8 +201,8 @@ export class NguiAutoCompleteComponent implements OnInit {
 				this.autoComplete.getRemoteData(keyword).subscribe({
 					next: (resp) => {
 						this.filteredList = resp ? resp : [];
-						if (this.maxNumList) {
-							this.filteredList = this.filteredList.slice(0, this.maxNumList);
+						if (maxNumList) {
+							this.filteredList = this.filteredList.slice(0, maxNumList);
 						}
 						this.isLoading = false;
 						if (this.minCharsEntered && !this.filteredList.length) {
@@ -223,7 +231,7 @@ export class NguiAutoCompleteComponent implements OnInit {
 	}
 
 	public blurHandler(evt: any) {
-		if (this.selectOnBlur) {
+		if (this.selectOnBlur()) {
 			this.selectOne(this.filteredList[this.itemIndex]);
 		}
 
@@ -233,7 +241,7 @@ export class NguiAutoCompleteComponent implements OnInit {
 	public inputElKeyHandler = (evt: any) => {
 		const totalNumItem = this.filteredList.length;
 
-		if (!this.selectOnEnter && this.autoSelectFirstItem && 0 !== totalNumItem) {
+		if (!this.selectOnEnter && this.autoSelectFirstItem() && 0 !== totalNumItem) {
 			this.selectOnEnter = true;
 		}
 
@@ -272,7 +280,7 @@ export class NguiAutoCompleteComponent implements OnInit {
 				break;
 
 			case 9: // TAB, choose if tab-to-select is enabled
-				if (this.tabToSelect) {
+				if (this.tabToSelect()) {
 					this.selectOne(this.filteredList[this.itemIndex]);
 				}
 				break;
@@ -280,7 +288,7 @@ export class NguiAutoCompleteComponent implements OnInit {
 	};
 
 	public scrollToView(index) {
-		const container = this.autoCompleteContainer.nativeElement;
+		const container = this.autoCompleteContainer().nativeElement;
 		const ul = container.querySelector('ul');
 		const li = ul.querySelector('li'); // just sample the first li to get height
 		const liHeight = li.offsetHeight;

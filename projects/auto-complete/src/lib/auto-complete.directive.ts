@@ -1,17 +1,19 @@
 import {
 	AfterViewInit,
+	booleanAttribute,
 	ComponentRef,
 	Directive,
-	EventEmitter,
 	Input,
+	numberAttribute,
 	OnChanges,
 	OnDestroy,
 	OnInit,
-	Output,
 	SimpleChanges,
 	TemplateRef,
 	ViewContainerRef,
 	inject,
+	input,
+	output,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AbstractControl, ControlContainer, FormControl, FormGroup, FormGroupName } from '@angular/forms';
@@ -25,50 +27,57 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 	viewContainerRef = inject(ViewContainerRef);
 	private parentForm = inject(ControlContainer, { optional: true, host: true, skipSelf: true });
 
-	@Input('autocomplete') public autocomplete = false;
-	@Input('auto-complete-placeholder') public autoCompletePlaceholder: string;
-	@Input('source') public source: any;
-	@Input('path-to-data') public pathToData: string;
-	@Input('min-chars') public minChars: number;
-	@Input('display-property-name') public displayPropertyName: string;
-	@Input('accept-user-input') public acceptUserInput = true;
-	@Input('max-num-list') public maxNumList: string;
-	@Input('select-value-of') public selectValueOf: string;
-	@Input('loading-template') public loadingTemplate = null;
-	@Input('list-formatter') public listFormatter;
-	@Input('loading-text') public loadingText = 'Loading';
-	@Input('blank-option-text') public blankOptionText: string;
-	@Input('no-match-found-text') public noMatchFoundText: string;
-	@Input('value-formatter') public valueFormatter: any;
-	@Input('tab-to-select') public tabToSelect = true;
-	@Input('select-on-blur') public selectOnBlur = false;
-	@Input('match-formatted') public matchFormatted = false;
-	@Input('auto-select-first-item') public autoSelectFirstItem = false;
-	@Input('open-on-focus') public openOnFocus = true;
-	@Input('close-on-focusout') public closeOnFocusOut = true;
-	@Input('re-focus-after-select') public reFocusAfterSelect = true;
-	@Input('header-item-template') public headerItemTemplate = null;
-	@Input('ignore-accents') public ignoreAccents = true;
+	public autocomplete = input(false, { transform: booleanAttribute });
+	public autoCompletePlaceholder = input('', { alias: 'auto-complete-placeholder' });
+	public source = input<any>();
+	public pathToData = input('', { alias: 'path-to-data' });
+	public minChars = input(0, { alias: 'min-chars', transform: numberAttribute });
+	public displayPropertyName = input('', { alias: 'display-property-name' });
+	public acceptUserInput = input(true, { alias: 'accept-user-input', transform: booleanAttribute });
+	// 0 means "no limit" (the `if (maxNumList())` guard treats 0 as falsy).
+	public maxNumList = input(0, { alias: 'max-num-list', transform: numberAttribute });
+	public selectValueOf = input('', { alias: 'select-value-of' });
+	public loadingTemplate = input<string | null>(null, { alias: 'loading-template' });
+	public listFormatter = input<((arg: any) => string) | string | undefined>(undefined, { alias: 'list-formatter' });
+	public loadingText = input('Loading', { alias: 'loading-text' });
+	public blankOptionText = input('', { alias: 'blank-option-text' });
+	// Empty string and "unset" mean different things here: '' suppresses the no-match row,
+	// `undefined` shows the default text — so this input stays optional rather than defaulting.
+	public noMatchFoundText = input<string | undefined>(undefined, { alias: 'no-match-found-text' });
+	public valueFormatter = input<string | ((item: any) => string) | undefined>(undefined, { alias: 'value-formatter' });
+	public tabToSelect = input(true, { alias: 'tab-to-select', transform: booleanAttribute });
+	public selectOnBlur = input(false, { alias: 'select-on-blur', transform: booleanAttribute });
+	public matchFormatted = input(false, { alias: 'match-formatted', transform: booleanAttribute });
+	public autoSelectFirstItem = input(false, { alias: 'auto-select-first-item', transform: booleanAttribute });
+	public openOnFocus = input(true, { alias: 'open-on-focus', transform: booleanAttribute });
+	public closeOnFocusOut = input(true, { alias: 'close-on-focusout', transform: booleanAttribute });
+	public reFocusAfterSelect = input(true, { alias: 're-focus-after-select', transform: booleanAttribute });
+	public headerItemTemplate = input<string | null>(null, { alias: 'header-item-template' });
+	public ignoreAccents = input(true, { alias: 'ignore-accents', transform: booleanAttribute });
 	// Angular template alternatives to the string `list-formatter` / `header-item-template`,
 	// forwarded to the dropdown component (they take precedence when provided).
-	@Input() public itemTemplate: TemplateRef<{ $implicit: any; index: number }>;
-	@Input() public headerTemplate: TemplateRef<void>;
+	public itemTemplate = input<TemplateRef<{ $implicit: any; index: number }> | null>(null);
+	public headerTemplate = input<TemplateRef<void> | null>(null);
 
+	// Value / forms bindings are still classic @Input()s: `ngModel` is reassigned internally
+	// (read-only signal inputs forbid that) and the whole group is slated to be replaced by a
+	// ControlValueAccessor in a later phase.
 	@Input() public ngModel: string;
 	@Input('formControlName') public formControlName: string;
 	// if [formControl] is used on the anchor where our directive is sitting
 	// a form is not necessary to use a formControl we should also support this
 	@Input('formControl') public extFormControl: FormControl;
-	@Input('z-index') public zIndex = '1';
-	@Input('is-rtl') public isRtl = false;
+
+	public zIndex = input(1, { alias: 'z-index', transform: numberAttribute });
+	public isRtl = input(false, { alias: 'is-rtl', transform: booleanAttribute });
 	// 'down' / 'up' force the dropdown below / above the input; 'auto' (default) opens
 	// below unless the input sits near the bottom of the viewport.
-	@Input('open-direction') public openDirection: 'auto' | 'up' | 'down' = 'auto';
+	public openDirection = input<'auto' | 'up' | 'down'>('auto', { alias: 'open-direction' });
 
-	@Output() public ngModelChange = new EventEmitter();
-	@Output() public valueChanged = new EventEmitter();
-	@Output() public customSelected = new EventEmitter();
-	@Output() public noMatchFound = new EventEmitter<void>();
+	public ngModelChange = output<any>();
+	public valueChanged = output<any>();
+	public customSelected = output<any>();
+	public noMatchFound = output<void>();
 
 	private componentRef: ComponentRef<NguiAutoCompleteComponent>;
 	private wrapperEl: HTMLElement;
@@ -131,15 +140,15 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 		// so that it displays correctly
 		this.inputEl = this.el.tagName === 'INPUT' ? (this.el as HTMLInputElement) : this.el.querySelector('input');
 
-		if (this.openOnFocus) {
+		if (this.openOnFocus()) {
 			this.inputEl.addEventListener('focus', (e) => this.showAutoCompleteDropdown(e));
 		}
 
-		if (this.closeOnFocusOut) {
+		if (this.closeOnFocusOut()) {
 			this.inputEl.addEventListener('focusout', (e) => this.hideAutoCompleteDropdown(e));
 		}
 
-		if (!this.autocomplete) {
+		if (!this.autocomplete()) {
 			this.inputEl.setAttribute('autocomplete', 'off');
 		}
 		this.inputEl.addEventListener('blur', (e) => {
@@ -180,28 +189,30 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 
 		const component = this.componentRef.instance;
 		component.keyword = this.inputEl.value;
-		component.showInputTag = false; // Do NOT display autocomplete input tag separately
 
-		component.pathToData = this.pathToData;
-		component.minChars = this.minChars;
-		component.source = this.source;
-		component.placeholder = this.autoCompletePlaceholder;
-		component.acceptUserInput = this.acceptUserInput;
-		component.maxNumList = parseInt(this.maxNumList, 10);
+		// Forward inputs to the dynamically created dropdown component. Signal inputs are
+		// read-only from outside, so we set them through the ComponentRef.
+		this.componentRef.setInput('show-input-tag', false); // Do NOT display autocomplete input tag separately
+		this.componentRef.setInput('path-to-data', this.pathToData());
+		this.componentRef.setInput('min-chars', this.minChars());
+		this.componentRef.setInput('source', this.source());
+		this.componentRef.setInput('placeholder', this.autoCompletePlaceholder());
+		this.componentRef.setInput('accept-user-input', this.acceptUserInput());
+		this.componentRef.setInput('max-num-list', this.maxNumList());
 
-		component.loadingText = this.loadingText;
-		component.loadingTemplate = this.loadingTemplate;
-		component.listFormatter = this.listFormatter;
-		component.blankOptionText = this.blankOptionText;
-		component.noMatchFoundText = this.noMatchFoundText;
-		component.tabToSelect = this.tabToSelect;
-		component.selectOnBlur = this.selectOnBlur;
-		component.matchFormatted = this.matchFormatted;
-		component.autoSelectFirstItem = this.autoSelectFirstItem;
-		component.headerItemTemplate = this.headerItemTemplate;
-		component.itemTemplate = this.itemTemplate;
-		component.headerTemplate = this.headerTemplate;
-		component.ignoreAccents = this.ignoreAccents;
+		this.componentRef.setInput('loading-text', this.loadingText());
+		this.componentRef.setInput('loading-template', this.loadingTemplate());
+		this.componentRef.setInput('list-formatter', this.listFormatter());
+		this.componentRef.setInput('blank-option-text', this.blankOptionText());
+		this.componentRef.setInput('no-match-found-text', this.noMatchFoundText());
+		this.componentRef.setInput('tab-to-select', this.tabToSelect());
+		this.componentRef.setInput('select-on-blur', this.selectOnBlur());
+		this.componentRef.setInput('match-formatted', this.matchFormatted());
+		this.componentRef.setInput('auto-select-first-item', this.autoSelectFirstItem());
+		this.componentRef.setInput('header-item-template', this.headerItemTemplate());
+		this.componentRef.setInput('itemTemplate', this.itemTemplate());
+		this.componentRef.setInput('headerTemplate', this.headerTemplate());
+		this.componentRef.setInput('ignore-accents', this.ignoreAccents());
 
 		this.dropdownSubs.unsubscribe();
 		this.dropdownSubs = new Subscription();
@@ -236,11 +247,11 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 		if (this.componentRef) {
 			const component = this.componentRef.instance;
 
-			if (this.selectOnBlur) {
+			if (this.selectOnBlur()) {
 				component.selectOne(component.filteredList[component.itemIndex]);
 			}
 
-			if (this.closeOnFocusOut) {
+			if (this.closeOnFocusOut()) {
 				this.hideAutoCompleteDropdown(event);
 			}
 		}
@@ -250,17 +261,17 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 		if (this.componentRef) {
 			let currentItem: any;
 			const hasRevertValue = typeof this.revertValue !== 'undefined';
-			if (this.inputEl && hasRevertValue && this.acceptUserInput === false) {
+			if (this.inputEl && hasRevertValue && this.acceptUserInput() === false) {
 				currentItem = this.componentRef.instance.findItemFromSelectValue(this.inputEl.value);
 			}
 			this.dropdownSubs.unsubscribe();
 			this.componentRef.destroy();
 			this.componentRef = undefined;
 
-			if (this.inputEl && hasRevertValue && this.acceptUserInput === false && currentItem === null && this.inputEl.value !== '') {
+			if (this.inputEl && hasRevertValue && this.acceptUserInput() === false && currentItem === null && this.inputEl.value !== '') {
 				this.selectNewValue(this.revertValue);
 				currentItem = this.revertValue;
-			} else if (this.inputEl && this.acceptUserInput === true && typeof currentItem === 'undefined' && event && event.target.value) {
+			} else if (this.inputEl && this.acceptUserInput() === true && typeof currentItem === 'undefined' && event && event.target.value) {
 				this.enterNewText(event.target.value);
 			}
 			this.revertValue = currentItem;
@@ -273,11 +284,11 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 		if (this.componentRef) {
 			/* setting width/height auto complete */
 			const thisInputElBCR = this.inputEl.getBoundingClientRect();
-			const directionOfStyle = this.isRtl ? 'right' : 'left';
+			const directionOfStyle = this.isRtl() ? 'right' : 'left';
 
 			this.acDropdownEl.style.width = thisInputElBCR.width + 'px';
 			this.acDropdownEl.style.position = 'absolute';
-			this.acDropdownEl.style.zIndex = this.zIndex;
+			this.acDropdownEl.style.zIndex = '' + this.zIndex();
 			this.acDropdownEl.style[directionOfStyle] = '0';
 			this.acDropdownEl.style.display = 'inline-block';
 
@@ -297,10 +308,10 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 	// 'auto' keeps the historic heuristic: open above only when the input is within
 	// ~100px of the viewport bottom.
 	private shouldOpenUp(inputBCR: DOMRect): boolean {
-		if (this.openDirection === 'up') {
+		if (this.openDirection() === 'up') {
 			return true;
 		}
-		if (this.openDirection === 'down') {
+		if (this.openDirection() === 'down') {
 			return false;
 		}
 		return inputBCR.bottom + 100 > window.innerHeight;
@@ -309,22 +320,24 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 	public setToStringFunction(item: any): any {
 		if (item && typeof item === 'object') {
 			let displayVal;
+			const valueFormatter = this.valueFormatter();
+			const listFormatter = this.listFormatter();
 
-			if (typeof this.valueFormatter === 'string') {
-				const matches = this.valueFormatter.match(/[a-zA-Z0-9_\$]+/g);
-				let formatted = this.valueFormatter;
+			if (typeof valueFormatter === 'string') {
+				const matches = valueFormatter.match(/[a-zA-Z0-9_\$]+/g);
+				let formatted = valueFormatter;
 				if (matches && typeof item !== 'string') {
 					matches.forEach((key) => {
 						formatted = formatted.replace(key, item[key]);
 					});
 				}
 				displayVal = formatted;
-			} else if (typeof this.valueFormatter === 'function') {
-				displayVal = this.valueFormatter(item);
-			} else if (this.displayPropertyName) {
-				displayVal = item[this.displayPropertyName];
-			} else if (typeof this.listFormatter === 'string' && this.listFormatter.match(/^\w+$/)) {
-				displayVal = item[this.listFormatter];
+			} else if (typeof valueFormatter === 'function') {
+				displayVal = valueFormatter(item);
+			} else if (this.displayPropertyName()) {
+				displayVal = item[this.displayPropertyName()];
+			} else if (typeof listFormatter === 'string' && listFormatter.match(/^\w+$/)) {
+				displayVal = item[listFormatter];
 			} else {
 				displayVal = item.value;
 			}
@@ -343,8 +356,9 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 
 		// make return value
 		let val = item;
-		if (this.selectValueOf && item !== null && typeof item === 'object') {
-			val = item[this.selectValueOf];
+		const selectValueOf = this.selectValueOf();
+		if (selectValueOf && item !== null && typeof item === 'object') {
+			val = item[selectValueOf];
 		}
 		if ((this.parentForm && this.formControlName) || this.extFormControl) {
 			if (!!val) {
@@ -357,7 +371,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 		this.valueChanged.emit(val);
 		this.hideAutoCompleteDropdown();
 		setTimeout(() => {
-			if (this.reFocusAfterSelect) {
+			if (this.reFocusAfterSelect()) {
 				this.inputEl.focus();
 			}
 
@@ -369,7 +383,7 @@ export class NguiAutoCompleteDirective implements OnInit, OnChanges, AfterViewIn
 		this.customSelected.emit(text);
 		this.hideAutoCompleteDropdown();
 		setTimeout(() => {
-			if (this.reFocusAfterSelect) {
+			if (this.reFocusAfterSelect()) {
 				this.inputEl.focus();
 			}
 

@@ -20,6 +20,16 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 ### Changed
 - **Upgraded to Angular 21** (`@angular/*` 21.2.x, `@angular/material` + `@angular/cdk` 21.2.x).
   Install `@ngui/auto-complete@21` for Angular 21 projects.
+- **Signal-based inputs/outputs.** All `@Input()`s are now signal `input()`s and all `@Output()`s are
+  `output()`s on both the component and directive (the component's `@ViewChild`s became `viewChild()`
+  queries). Template bindings are unchanged — every input keeps its existing name/alias (e.g.
+  `min-chars`, `list-formatter`). The only consumer-visible effect is for code that reaches into a
+  component/directive **instance** programmatically: those input properties are now read-only signals
+  (call them, e.g. `cmp.minChars()`), not plain fields.
+- **Typed attribute coercion.** Numeric inputs (`min-chars`, `max-num-list`, `z-index`) now use
+  `numberAttribute` and boolean inputs use `booleanAttribute`, so string-attribute forms (`min-chars="2"`)
+  and bound forms (`[min-chars]="2"`) are both correctly typed.
+- Bumped the library's own `tslib` dependency floor to `^2.8.1`.
 
 ### Internal (development tooling only — no impact on consumers)
 - `ng update` to Angular 21: `@angular/cli` + `@angular-devkit/build-angular` 21.2.x,
@@ -28,6 +38,8 @@ and this project follows [Angular version numbers](https://angular.dev/reference
   zone-based change detection).
 - **ESLint 10.** Bumped `eslint` and `@eslint/js` to 10 and `angular-eslint` to 21.4.0 (its ESLint peer
   now allows `^10`), unblocking the upgrade deferred in 19.0.0 / 20.0.0.
+- The directive now forwards inputs to the dynamically created dropdown via `ComponentRef.setInput()`
+  (required now that the component's inputs are read-only signals).
 
 ---
 

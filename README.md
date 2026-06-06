@@ -138,46 +138,86 @@ while remote data loads). They work on both the component and the directive:
 
 ## API Reference
 
-### Directive Inputs (`[ngui-auto-complete]`)
+One reference for both surfaces. The **Applies to** column says whether each option works on the directive
+(`[ngui-auto-complete]`), the component (`<ngui-auto-complete>`), or both. Every option keeps its
+kebab-case attribute name; numeric/boolean inputs accept both the attribute form (`min-chars="2"`) and the
+bound form (`[min-chars]="2"`).
 
-| Input | Type | Default | Description |
-|-------|------|---------|-------------|
-| `source` | `any[] \| string \| Function` | — | **Required.** Array, URL string, or function returning `Observable` |
-| `path-to-data` | `string` | — | Dot-path to array in HTTP response, e.g. `data.results` |
-| `min-chars` | `number` | `0` | Minimum characters before fetching remote data |
-| `max-num-list` | `number` | unlimited | Maximum suggestions to show |
-| `display-with` | `string \| ((item) => string)` | `value` | Text to show in the input after selecting an object — a property name (`display-with="name"`) or a function (`[display-with]="fn"`) |
-| `select-value-of` | `string` | — | Return this key's value on selection instead of the full object |
-| `list-formatter` | `string \| Function` | — | Format each dropdown item. String pattern `(key) name` or function `(item) => string` |
-| `itemTemplate` | `TemplateRef` | — | `ng-template` for each dropdown row (context: `$implicit` = item, `index` = row index). Takes precedence over `list-formatter` |
-| `headerTemplate` | `TemplateRef` | — | `ng-template` for the non-selectable header row |
-| `loadingTemplate` | `TemplateRef` | — | `ng-template` shown while remote data loads (falls back to `loading-text`) |
-| `blank-option-text` | `string` | — | Adds an empty first option with this label |
-| `no-match-found-text` | `string` | — | Text shown when no results match. Set to `""` to suppress the row entirely |
-| `loading-text` | `string` | `'Loading'` | Text shown while fetching remote data |
-| `accept-user-input` | `boolean` | `true` | Allow values not in the list |
-| `auto-select-first-item` | `boolean` | `false` | Pre-highlight the first suggestion |
-| `open-on-focus` | `boolean` | `true` | Open dropdown on input focus |
-| `close-on-focusout` | `boolean` | `true` | Close dropdown on focusout |
-| `select-on-blur` | `boolean` | `false` | Select highlighted item on blur |
-| `tab-to-select` | `boolean` | `true` | Select highlighted item on Tab key |
-| `re-focus-after-select` | `boolean` | `true` | Return focus to input after a selection |
-| `match-formatted` | `boolean` | `false` | Match keyword against formatted values instead of raw data |
-| `ignore-accents` | `boolean` | `true` | Treat accented characters as their base characters during matching |
-| `autocomplete` | `boolean` | `false` | Set `autocomplete="off"` on the input (`false` = off) |
-| `open-direction` | `'auto' \| 'up' \| 'down'` | `'auto'` | Force the dropdown above (`up`) or below (`down`) the input. `auto` opens below unless the input is near the bottom of the viewport |
-| `z-index` | `string` | `'1'` | CSS z-index of the dropdown |
+### Value & forms
 
-### Directive value binding & outputs
+How the selected value is read and written.
 
-The selected value flows through Angular forms (the directive is a `ControlValueAccessor`): bind it with
-`[(ngModel)]`, `[formControl]` or `formControlName`. `(ngModelChange)` / the control's `valueChanges` fire
-on every accepted value.
+| Option | Type | Default | Applies to | Description |
+|--------|------|---------|------------|-------------|
+| `[(ngModel)]` / `[formControl]` / `formControlName` | `T` | — | Directive | The directive is a `ControlValueAccessor`, so the value flows through Angular forms. `(ngModelChange)` / the control's `valueChanges` fire on every accepted value |
+| `[(value)]` | `T` | — | Component | Two-way bindable selected value on the standalone component |
+| `select-value-of` | `string` | — | Directive | Commit this property's value on selection instead of the whole object |
 
-| Output | Payload | Description |
-|--------|---------|-------------|
-| `(valueSelected)` | `NguiAutoCompleteSelection` | Fires when a value is committed — see the payload below. Use `fromSource` to tell a list pick from a typed value |
-| `(noMatchFound)` | `void` | Fires when the filtered list is empty and `min-chars` threshold is met — use it to show an "Add new…" affordance |
+### Data & filtering
+
+Where suggestions come from and how the keyword is matched.
+
+| Option | Type | Default | Applies to | Description |
+|--------|------|---------|------------|-------------|
+| `source` | `T[] \| string \| ((keyword) => Observable<T[]>)` | — | Both | **Required.** Local array, URL string, or a function returning an `Observable` |
+| `path-to-data` | `string` | — | Both | Dot-path to the array in an HTTP response, e.g. `data.results` |
+| `min-chars` | `number` | `0` | Both | Minimum characters before fetching/filtering |
+| `max-num-list` | `number` | unlimited | Both | Maximum number of suggestions to show |
+| `match-formatted` | `boolean` | `false` | Both | Match the keyword against formatted values instead of the raw data |
+| `ignore-accents` | `boolean` | `true` | Both | Treat accented characters as their base characters when matching |
+
+### Display & formatting
+
+How rows and the selected value are rendered.
+
+| Option | Type | Default | Applies to | Description |
+|--------|------|---------|------------|-------------|
+| `display-with` | `string \| ((item) => string)` | item's `value` | Directive | Text shown in the input after selecting an object — a property name (`display-with="name"`) or a function (`[display-with]="fn"`) |
+| `list-formatter` | `string \| ((item) => string)` | — | Both | Format each dropdown row. String pattern `(key) name` or a function |
+| `itemTemplate` | `TemplateRef` | — | Both | `ng-template` for each dropdown row (context: `$implicit` = item, `index` = row index). Takes precedence over `list-formatter` |
+| `headerTemplate` | `TemplateRef` | — | Both | `ng-template` for a non-selectable header row |
+| `loadingTemplate` | `TemplateRef` | — | Both | `ng-template` shown while remote data loads (falls back to `loading-text`) |
+| `loading-text` | `string` | `'Loading'` | Both | Text shown while fetching remote data |
+| `blank-option-text` | `string` | — | Both | Adds an empty first option with this label |
+| `no-match-found-text` | `string` | — | Both | Text shown when nothing matches. Set to `""` to suppress the row entirely |
+| `placeholder` | `string` | — | Component | Placeholder for the component's internal input |
+| `auto-complete-placeholder` | `string` | — | Directive | Placeholder for the dropdown's (normally hidden) internal input |
+
+### Behavior
+
+Interaction and selection behavior.
+
+| Option | Type | Default | Applies to | Description |
+|--------|------|---------|------------|-------------|
+| `accept-user-input` | `boolean` | `true` | Both | Allow values that are not in the list |
+| `auto-select-first-item` | `boolean` | `false` | Both | Pre-highlight the first suggestion |
+| `select-on-blur` | `boolean` | `false` | Both | Select the highlighted item on blur |
+| `tab-to-select` | `boolean` | `true` | Both | Select the highlighted item on the Tab key |
+| `re-focus-after-select` | `boolean` | `true` | Both | Return focus to the input after a selection |
+| `autocomplete` | `boolean` | `false` | Both | When `false`, sets the native `autocomplete="off"` on the input |
+| `open-on-focus` | `boolean` | `true` | Directive | Open the dropdown when the input gains focus |
+| `close-on-focusout` | `boolean` | `true` | Directive | Close the dropdown on focusout |
+| `show-input-tag` | `boolean` | `true` | Component | Render an `<input>` inside the component |
+| `show-dropdown-on-init` | `boolean` | `false` | Component | Open the dropdown as soon as the component appears |
+
+### Layout & positioning
+
+| Option | Type | Default | Applies to | Description |
+|--------|------|---------|------------|-------------|
+| `open-direction` | `'auto' \| 'up' \| 'down'` | `'auto'` | Both | Force the dropdown above (`up`) or below (`down`). For the directive, `auto` opens below unless the input is near the bottom of the viewport; for the component, `up` renders above via CSS and `auto`/`down` keep it below |
+| `z-index` | `number` | `1` | Directive | CSS `z-index` of the dropdown |
+
+> **RTL:** there is no RTL input — the dropdown anchors via logical CSS (`inset-inline-start`), so an
+> ancestor `dir="rtl"` (or the document direction) positions it correctly on its own.
+
+### Events
+
+Both surfaces emit the same two outputs.
+
+| Output | Payload | Applies to | Description |
+|--------|---------|------------|-------------|
+| `(valueSelected)` | `NguiAutoCompleteSelection` | Both | Fires when a value is committed. Use `fromSource` to tell a list pick from a typed value |
+| `(noMatchFound)` | `void` | Both | Fires when the filtered list is empty and the `min-chars` threshold is met — use it to show an "Add new…" affordance |
 
 The `(valueSelected)` payload:
 
@@ -189,25 +229,6 @@ interface NguiAutoCompleteSelection<T = any> {
   fromSource: boolean; // true = picked from [source]; false = typed by the user
 }
 ```
-
-### Component Inputs (`<ngui-auto-complete>`)
-
-All directive inputs are supported plus:
-
-| Input | Type | Default | Description |
-|-------|------|---------|-------------|
-| `value` | `any` | — | Two-way bindable selected value: `[(value)]="myValue"` |
-| `show-input-tag` | `boolean` | `true` | Render an `<input>` inside the component |
-| `show-dropdown-on-init` | `boolean` | `false` | Open dropdown immediately when component appears |
-| `placeholder` | `string` | — | Placeholder text for the internal input |
-
-> **Note:** for the standalone component, `open-direction="up"` renders the dropdown above the input via
-> CSS; `auto`/`down` keep it below. The viewport-aware `auto` flip applies to the directive usage.
-
-### Component Outputs
-
-Same as the directive: `(valueSelected)` emits `NguiAutoCompleteSelection` (see above) and `(noMatchFound)`
-emits `void`. For just the value, prefer `[(value)]`.
 
 ### Type inference
 

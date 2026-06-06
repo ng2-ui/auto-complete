@@ -106,7 +106,7 @@ body {
 	.demo-area {
 		padding: 12px 0;
 
-		input:not(.mat-mdc-input-element) {
+		input:not(.mat-mdc-input-element):not([type='checkbox']) {
 			width: 100%;
 			padding: 8px 12px;
 			border: 1px solid rgba(0, 0, 0, 0.23);

@@ -15,7 +15,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NguiAutoCompleteComponent } from './auto-complete.component';
+import { NguiAutoCompleteComponent, NguiAutoCompleteSelection } from './auto-complete.component';
 
 @Directive({
 	// eslint-disable-next-line @angular-eslint/directive-selector -- public API selector is kebab-case by design
@@ -36,19 +36,20 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 	public source = input<any>();
 	public pathToData = input('', { alias: 'path-to-data' });
 	public minChars = input(0, { alias: 'min-chars', transform: numberAttribute });
-	public displayPropertyName = input('', { alias: 'display-property-name' });
+	// Controls the text shown in the input after selecting an object: a property name
+	// (e.g. `display-with="name"`) or a function (`[display-with]="(item) => …"`).
+	public displayWith = input<string | ((item: any) => string) | undefined>(undefined, { alias: 'display-with' });
 	public acceptUserInput = input(true, { alias: 'accept-user-input', transform: booleanAttribute });
 	// 0 means "no limit" (the `if (maxNumList())` guard treats 0 as falsy).
 	public maxNumList = input(0, { alias: 'max-num-list', transform: numberAttribute });
 	public selectValueOf = input('', { alias: 'select-value-of' });
-	public loadingTemplate = input<string | null>(null, { alias: 'loading-template' });
+	public loadingTemplate = input<TemplateRef<void> | null>(null);
 	public listFormatter = input<((arg: any) => string) | string | undefined>(undefined, { alias: 'list-formatter' });
 	public loadingText = input('Loading', { alias: 'loading-text' });
 	public blankOptionText = input('', { alias: 'blank-option-text' });
 	// Empty string and "unset" mean different things here: '' suppresses the no-match row,
 	// `undefined` shows the default text — so this input stays optional rather than defaulting.
 	public noMatchFoundText = input<string | undefined>(undefined, { alias: 'no-match-found-text' });
-	public valueFormatter = input<string | ((item: any) => string) | undefined>(undefined, { alias: 'value-formatter' });
 	public tabToSelect = input(true, { alias: 'tab-to-select', transform: booleanAttribute });
 	public selectOnBlur = input(false, { alias: 'select-on-blur', transform: booleanAttribute });
 	public matchFormatted = input(false, { alias: 'match-formatted', transform: booleanAttribute });
@@ -56,23 +57,21 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 	public openOnFocus = input(true, { alias: 'open-on-focus', transform: booleanAttribute });
 	public closeOnFocusOut = input(true, { alias: 'close-on-focusout', transform: booleanAttribute });
 	public reFocusAfterSelect = input(true, { alias: 're-focus-after-select', transform: booleanAttribute });
-	public headerItemTemplate = input<string | null>(null, { alias: 'header-item-template' });
 	public ignoreAccents = input(true, { alias: 'ignore-accents', transform: booleanAttribute });
-	// Angular template alternatives to the string `list-formatter` / `header-item-template`,
-	// forwarded to the dropdown component (they take precedence when provided).
+	// `ng-template`s forwarded to the dropdown component (itemTemplate takes precedence over the
+	// string `list-formatter`; headerTemplate renders a non-selectable header row).
 	public itemTemplate = input<TemplateRef<{ $implicit: any; index: number }> | null>(null);
 	public headerTemplate = input<TemplateRef<void> | null>(null);
 
 	public zIndex = input(1, { alias: 'z-index', transform: numberAttribute });
-	public isRtl = input(false, { alias: 'is-rtl', transform: booleanAttribute });
 	// 'down' / 'up' force the dropdown below / above the input; 'auto' (default) opens
 	// below unless the input sits near the bottom of the viewport.
 	public openDirection = input<'auto' | 'up' | 'down'>('auto', { alias: 'open-direction' });
 
-	// Fired when a custom (not-in-list) value is committed. The value binding is handled by
-	// Angular forms through the ControlValueAccessor below (use `[(ngModel)]`, `[formControl]`
-	// or `formControlName`), so there is no separate value-change output.
-	public customSelected = output<any>();
+	// Fires when the user commits a value (a list pick or an accepted custom value); `fromSource`
+	// distinguishes the two. The value itself also flows through Angular forms via the
+	// ControlValueAccessor below (`[(ngModel)]`, `[formControl]` or `formControlName`).
+	public valueSelected = output<NguiAutoCompleteSelection>();
 	public noMatchFound = output<void>();
 
 	private componentRef: ComponentRef<NguiAutoCompleteComponent>;
@@ -204,7 +203,7 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 		this.componentRef.setInput('max-num-list', this.maxNumList());
 
 		this.componentRef.setInput('loading-text', this.loadingText());
-		this.componentRef.setInput('loading-template', this.loadingTemplate());
+		this.componentRef.setInput('loadingTemplate', this.loadingTemplate());
 		this.componentRef.setInput('list-formatter', this.listFormatter());
 		this.componentRef.setInput('blank-option-text', this.blankOptionText());
 		this.componentRef.setInput('no-match-found-text', this.noMatchFoundText());
@@ -212,15 +211,13 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 		this.componentRef.setInput('select-on-blur', this.selectOnBlur());
 		this.componentRef.setInput('match-formatted', this.matchFormatted());
 		this.componentRef.setInput('auto-select-first-item', this.autoSelectFirstItem());
-		this.componentRef.setInput('header-item-template', this.headerItemTemplate());
 		this.componentRef.setInput('itemTemplate', this.itemTemplate());
 		this.componentRef.setInput('headerTemplate', this.headerTemplate());
 		this.componentRef.setInput('ignore-accents', this.ignoreAccents());
 
 		this.dropdownSubs.unsubscribe();
 		this.dropdownSubs = new Subscription();
-		this.dropdownSubs.add(component.valueSelected.subscribe(this.selectNewValue));
-		this.dropdownSubs.add(component.customSelected.subscribe(this.selectCustomValue));
+		this.dropdownSubs.add(component.valueSelected.subscribe(this.onSelection));
 		this.dropdownSubs.add(component.noMatchFound.subscribe(() => this.noMatchFound.emit()));
 
 		this.acDropdownEl = this.componentRef.location.nativeElement;
@@ -251,7 +248,7 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 			this.onTouched();
 
 			if (this.selectOnBlur()) {
-				component.selectOne(component.filteredList()[component.itemIndex()]);
+				component.selectOne(component.filteredList()[component.itemIndex()], component.itemIndex() ?? -1);
 			}
 
 			if (this.closeOnFocusOut()) {
@@ -287,12 +284,13 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 		if (this.componentRef) {
 			/* setting width/height auto complete */
 			const thisInputElBCR = this.inputEl.getBoundingClientRect();
-			const directionOfStyle = this.isRtl() ? 'right' : 'left';
 
 			this.acDropdownEl.style.width = thisInputElBCR.width + 'px';
 			this.acDropdownEl.style.position = 'absolute';
 			this.acDropdownEl.style.zIndex = '' + this.zIndex();
-			this.acDropdownEl.style[directionOfStyle] = '0';
+			// Anchor on the leading edge; `inset-inline-start` follows the element's direction
+			// (LTR → left, RTL → right) automatically, so RTL needs no detection.
+			this.acDropdownEl.style.insetInlineStart = '0';
 			this.acDropdownEl.style.display = 'inline-block';
 
 			// Reset any previous vertical anchor so re-styling is deterministic.
@@ -323,24 +321,12 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 	public setToStringFunction(item: any): any {
 		if (item && typeof item === 'object') {
 			let displayVal;
-			const valueFormatter = this.valueFormatter();
-			const listFormatter = this.listFormatter();
+			const displayWith = this.displayWith();
 
-			if (typeof valueFormatter === 'string') {
-				const matches = valueFormatter.match(/[a-zA-Z0-9_\$]+/g);
-				let formatted = valueFormatter;
-				if (matches && typeof item !== 'string') {
-					matches.forEach((key) => {
-						formatted = formatted.replace(key, item[key]);
-					});
-				}
-				displayVal = formatted;
-			} else if (typeof valueFormatter === 'function') {
-				displayVal = valueFormatter(item);
-			} else if (this.displayPropertyName()) {
-				displayVal = item[this.displayPropertyName()];
-			} else if (typeof listFormatter === 'string' && listFormatter.match(/^\w+$/)) {
-				displayVal = item[listFormatter];
+			if (typeof displayWith === 'function') {
+				displayVal = displayWith(item);
+			} else if (typeof displayWith === 'string' && displayWith) {
+				displayVal = item[displayWith];
 			} else {
 				displayVal = item.value;
 			}
@@ -349,7 +335,16 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 		return item;
 	}
 
-	public selectNewValue = (item: any) => {
+	// Route the dropdown's unified selection event to the matching handler.
+	private onSelection = (selection: NguiAutoCompleteSelection) => {
+		if (selection.fromSource) {
+			this.selectNewValue(selection.item, selection.index);
+		} else {
+			this.selectCustomValue(selection.value);
+		}
+	};
+
+	public selectNewValue = (item: any, index = -1) => {
 		// make displayable value
 		if (item && typeof item === 'object') {
 			item = this.setToStringFunction(item);
@@ -366,6 +361,7 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 		this.value = val;
 		this.onChange(val);
 		this.onTouched();
+		this.valueSelected.emit({ value: val, item, index, fromSource: true });
 		this.hideAutoCompleteDropdown();
 		setTimeout(() => {
 			if (this.reFocusAfterSelect()) {
@@ -377,7 +373,7 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 	};
 
 	public selectCustomValue = (text: string) => {
-		this.customSelected.emit(text);
+		this.valueSelected.emit({ value: text, item: text, index: -1, fromSource: false });
 		this.hideAutoCompleteDropdown();
 		setTimeout(() => {
 			if (this.reFocusAfterSelect()) {

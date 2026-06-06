@@ -28,11 +28,36 @@ and this project follows [Angular version numbers](https://angular.dev/reference
   - **Wrapper-`<div>` usage:** bind the value on the host
     (`<div ngui-auto-complete [(ngModel)]="x"><input></div>`) instead of on a separate inner `<input>`.
     Direct `<input ngui-auto-complete [(ngModel)]="x">` is unchanged.
-- **Removed the unused `textEntered` output** from `NguiAutoCompleteComponent` (it was never emitted).
+- **Unified the selection outputs into one `(valueSelected)` event.** `valueSelected` + `customSelected`
+  are merged into a single `(valueSelected)` (on both the component and directive) carrying
+  `NguiAutoCompleteSelection { value, item, index, fromSource }` — `fromSource` is `true` for a list pick,
+  `false` for a typed value. `(customSelected)` is removed (check `fromSource: false`). The payload changed
+  from the bare value to this object, so `(valueSelected)="x = $event"` → `(valueSelected)="x = $event.value"`
+  (or use `[(ngModel)]` / `[(value)]` for the value). The never-emitted `textEntered` output is also
+  removed. `(noMatchFound)` is unchanged.
+- **Consolidated value display into one `display-with` input.** `display-property-name` and the
+  string-template `value-formatter` are replaced by a single **`display-with`** that accepts either a
+  property name or a function: `display-with="name"` or `[display-with]="(item) => …"`. (`list-formatter`
+  still formats the dropdown rows.) Migrate `display-property-name="name"` → `display-with="name"`, and
+  `value-formatter="(key) name"` → `[display-with]="(item) => '(' + item.key + ') ' + item.name"`.
+- **Removed the `is-rtl` input.** Direction is now auto-detected from the input's computed direction, so
+  an ancestor `dir="rtl"` (or the document direction) positions the dropdown correctly on its own — no
+  input and no extra dependency. Replace `[is-rtl]="true"` with `dir="rtl"` on the element or an ancestor.
+- **Replaced the `innerHTML` string templates with `TemplateRef`s.** The string `loading-template` and
+  `header-item-template` inputs are removed. Use the `headerTemplate` `TemplateRef` (already available) and
+  the new `loadingTemplate` `TemplateRef` (`loading-text` remains for the simple case). This also removes
+  an `innerHTML` sink.
 
 ### Added
 - **`[(value)]` two-way binding on `NguiAutoCompleteComponent`.** The standalone component now exposes a
   `value` model — e.g. `<ngui-auto-complete [(value)]="myValue">`. `(valueSelected)` continues to fire.
+- **`NguiAutoCompleteSelection<T>`** interface exported for the `(valueSelected)` payload
+  (`{ value, item, index, fromSource }`).
+- **Generic `NguiAutoCompleteComponent<T = any>`.** Binding a typed `[source]` (array or function)
+  infers the item type, so `[(value)]`, `(valueSelected)` (`NguiAutoCompleteSelection<T>`) and the
+  `itemTemplate` context are all typed without any annotation. Defaults to `any`, so existing templates
+  are unaffected. The directive stays loosely typed (Angular can't infer generics for an attribute
+  directive in templates).
 
 ### Changed
 - **Upgraded to Angular 21** (`@angular/*` 21.2.x, `@angular/material` + `@angular/cdk` 21.2.x).

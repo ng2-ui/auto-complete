@@ -16,6 +16,18 @@ import {
 } from '@angular/core';
 import { NguiAutoCompleteService } from './auto-complete.service';
 import { Observable } from 'rxjs';
+
+/** Payload emitted by `(valueSelected)` when the user commits a value. */
+export interface NguiAutoCompleteSelection<T = any> {
+	/** The committed value — the same value `[(ngModel)]` / `[(value)]` receives. */
+	value: T;
+	/** The full picked object (or the typed text for a custom value). */
+	item: T;
+	/** Row position in the shown list; `-1` when the value was typed (`fromSource: false`). */
+	index: number;
+	/** `true` when the user picked a value from `[source]`; `false` when they typed their own. */
+	fromSource: boolean;
+}
 import { FormsModule } from '@angular/forms';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 
@@ -28,15 +40,17 @@ import { NgClass, NgTemplateOutlet } from '@angular/common';
 	providers: [NguiAutoCompleteService],
 	imports: [FormsModule, NgClass, NgTemplateOutlet],
 })
-export class NguiAutoCompleteComponent implements OnInit {
+export class NguiAutoCompleteComponent<T = any> implements OnInit {
 	autoComplete = inject(NguiAutoCompleteService);
 
 	/**
 	 * public input properties
 	 */
 	public autocomplete = input(false, { transform: booleanAttribute });
-	public listFormatter = input<((arg: any) => string) | undefined>(undefined, { alias: 'list-formatter' });
-	public source = input<any>();
+	public listFormatter = input<((arg: T) => string) | undefined>(undefined, { alias: 'list-formatter' });
+	// Local array, remote URL string, or a function returning an `Observable` of items.
+	// Binding a typed array/function (e.g. `[source]="cities"`) lets Angular infer `T`.
+	public source = input<T[] | string | ((keyword: string) => Observable<T[]>) | undefined>(undefined);
 	public pathToData = input('', { alias: 'path-to-data' });
 	public minChars = input(0, { alias: 'min-chars', transform: numberAttribute });
 	public placeholder = input('');
@@ -46,7 +60,7 @@ export class NguiAutoCompleteComponent implements OnInit {
 	public noMatchFoundText = input<string | undefined>(undefined, { alias: 'no-match-found-text' });
 	public acceptUserInput = input(true, { alias: 'accept-user-input', transform: booleanAttribute });
 	public loadingText = input('Loading', { alias: 'loading-text' });
-	public loadingTemplate = input<string | null>(null, { alias: 'loading-template' });
+	public loadingTemplate = input<TemplateRef<void> | null>(null);
 	// 0 means "no limit" (the `if (maxNumList())` guard treats 0 as falsy).
 	public maxNumList = input(0, { alias: 'max-num-list', transform: numberAttribute });
 	public showInputTag = input(true, { alias: 'show-input-tag', transform: booleanAttribute });
@@ -56,22 +70,22 @@ export class NguiAutoCompleteComponent implements OnInit {
 	public autoSelectFirstItem = input(false, { alias: 'auto-select-first-item', transform: booleanAttribute });
 	public selectOnBlur = input(false, { alias: 'select-on-blur', transform: booleanAttribute });
 	public reFocusAfterSelect = input(true, { alias: 're-focus-after-select', transform: booleanAttribute });
-	public headerItemTemplate = input<string | null>(null, { alias: 'header-item-template' });
 	public ignoreAccents = input(true, { alias: 'ignore-accents', transform: booleanAttribute });
-	// Angular template alternatives to the string `list-formatter` / `header-item-template`.
-	// When provided they take precedence; the item template receives the item as `$implicit`
-	// and the row index as `index`.
-	public itemTemplate = input<TemplateRef<{ $implicit: any; index: number }> | null>(null);
+	// `ng-template`s for custom rendering. `itemTemplate` (takes precedence over the string
+	// `list-formatter`) receives the item as `$implicit` and the row index as `index`;
+	// `headerTemplate` renders a non-selectable header row.
+	public itemTemplate = input<TemplateRef<{ $implicit: T; index: number }> | null>(null);
 	public headerTemplate = input<TemplateRef<void> | null>(null);
 	// When used as a standalone component (not via the directive), `up` renders the
 	// dropdown above the input; `down`/`auto` keep it below.
 	public openDirection = input<'auto' | 'up' | 'down'>('auto', { alias: 'open-direction' });
 
 	// Two-way bindable selected value: `[(value)]="myValue"`.
-	public value = model<any>();
+	public value = model<T>();
 
-	public valueSelected = output<any>();
-	public customSelected = output<any>();
+	// Fires when the user commits a value (a list pick or an accepted custom value); `fromSource`
+	// distinguishes the two. The bare value is also available via `[(value)]`.
+	public valueSelected = output<NguiAutoCompleteSelection<T>>();
 	public noMatchFound = output<void>();
 
 	public autoCompleteInput = viewChild<ElementRef>('autoCompleteInput');
@@ -80,7 +94,7 @@ export class NguiAutoCompleteComponent implements OnInit {
 	public dropdownVisible = signal(false);
 	public isLoading = signal(false);
 
-	public filteredList = signal<any[]>([]);
+	public filteredList = signal<T[]>([]);
 	public minCharsEntered = signal(false);
 	public itemIndex = signal<number | null>(null);
 	public keyword: string;
@@ -110,7 +124,9 @@ export class NguiAutoCompleteComponent implements OnInit {
 	 * user enters into input el, shows list to select, then select one
 	 */
 	ngOnInit(): void {
-		this.autoComplete.source = this.source();
+		// The service only dereferences `source` as a URL string (for remote fetches); array/function
+		// sources are handled in `reloadList` and never reach `getRemoteData`.
+		this.autoComplete.source = this.source() as string;
 		this.autoComplete.pathToData = this.pathToData();
 		this.autoComplete.listFormatter = this.listFormatter();
 		if (this.autoSelectFirstItem()) {
@@ -149,7 +165,7 @@ export class NguiAutoCompleteComponent implements OnInit {
 		this.dropdownVisible.set(false);
 	}
 
-	public findItemFromSelectValue(selectText: string): any {
+	public findItemFromSelectValue(selectText: string): T | null {
 		const matchingItems = this.filteredList().filter((item) => '' + item === selectText);
 		return matchingItems.length ? matchingItems[0] : null;
 	}
@@ -169,7 +185,7 @@ export class NguiAutoCompleteComponent implements OnInit {
 		if (this.isSrcArr()) {
 			// local source
 			this.isLoading.set(false);
-			let list = this.autoComplete.filter(source, keyword, this.matchFormatted(), this.ignoreAccents());
+			let list = this.autoComplete.filter(source as T[], keyword, this.matchFormatted(), this.ignoreAccents());
 			if (maxNumList) {
 				list = list.slice(0, maxNumList);
 			}
@@ -227,18 +243,19 @@ export class NguiAutoCompleteComponent implements OnInit {
 		}
 	}
 
-	public selectOne(data: any) {
+	public selectOne(data: any, index = -1) {
 		if (!!data || data === '') {
 			this.value.set(data);
-			this.valueSelected.emit(data);
+			this.valueSelected.emit({ value: data, item: data, index, fromSource: true });
 		} else {
-			this.customSelected.emit(this.keyword);
+			// A typed custom value: the keyword text stands in for `T` (only meaningful when `fromSource` is false).
+			this.valueSelected.emit({ value: this.keyword as T, item: this.keyword as T, index: -1, fromSource: false });
 		}
 	}
 
 	public blurHandler(evt: any) {
 		if (this.selectOnBlur()) {
-			this.selectOne(this.filteredList()[this.itemIndex()]);
+			this.selectOne(this.filteredList()[this.itemIndex()], this.itemIndex() ?? -1);
 		}
 
 		this.hideDropdownList();
@@ -279,14 +296,14 @@ export class NguiAutoCompleteComponent implements OnInit {
 
 			case 13: // ENTER, choose it!!
 				if (this.selectOnEnter) {
-					this.selectOne(this.filteredList()[this.itemIndex()]);
+					this.selectOne(this.filteredList()[this.itemIndex()], this.itemIndex() ?? -1);
 				}
 				evt.preventDefault();
 				break;
 
 			case 9: // TAB, choose if tab-to-select is enabled
 				if (this.tabToSelect()) {
-					this.selectOne(this.filteredList()[this.itemIndex()]);
+					this.selectOne(this.filteredList()[this.itemIndex()], this.itemIndex() ?? -1);
 				}
 				break;
 		}

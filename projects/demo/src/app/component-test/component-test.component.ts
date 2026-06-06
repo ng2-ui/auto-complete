@@ -26,7 +26,6 @@ export class ComponentTestComponent {
 	appSvc = inject(AppService);
 
 	public showAutocomplete = false;
-	public loadingTemplate = '<span style="padding:8px;color:#888">Searching...</span>';
 	public addrs: any[] = [{ display_name: 'Berlin, Germany' }, { display_name: 'London, United Kingdom' }];
 
 	myModel;
@@ -50,10 +49,9 @@ export class ComponentTestComponent {
 
   @if (showAutocomplete) {
     <ngui-auto-complete
-      (valueSelected)="addToAddress($event)"
+      (valueSelected)="addToAddress($event.value)"
       [accept-user-input]="true"
       [source]="appSvc.getAddressUrl()"
-      display-property-name="display_name"
       [list-formatter]="myListFormatter"
       loading-text="Searching..."
       max-num-list="5"
@@ -87,8 +85,7 @@ export class ComponentTestComponent {
     [show-dropdown-on-init]="true"
     [show-input-tag]="false"
     [source]="people"
-    display-property-name="name"
-    (valueSelected)="tplModel = $event"
+    (valueSelected)="tplModel = $event.value"
     [headerTemplate]="peopleHead"
     [itemTemplate]="peopleRow">
   </ngui-auto-complete>

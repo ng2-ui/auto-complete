@@ -64,12 +64,69 @@ It duplicated `(ngModelChange)`. Use `(ngModelChange)` or, for reactive forms, t
 + <input ngui-auto-complete [(ngModel)]="v" (ngModelChange)="onChange($event)" [source]="s" />
 ```
 
-`(customSelected)` (custom, not-in-list value) and `(noMatchFound)` are unchanged.
+### Outputs merged: `valueSelected` + `customSelected` → one `(valueSelected)`
 
-### Removed: `(textEntered)` output on `NguiAutoCompleteComponent`
+The two selection outputs are now a single `(valueSelected)` carrying
+`NguiAutoCompleteSelection { value, item, index, fromSource }`. `(customSelected)` and the never-emitted
+`(textEntered)` are removed; `(noMatchFound)` is unchanged.
 
-It was never emitted, so it had no effect. Use `(valueSelected)` / `[(value)]` (see below) and
-`(customSelected)`.
+```diff
+- <input ngui-auto-complete (valueSelected)="onPick($event)" (customSelected)="onCustom($event)" [source]="s" [(ngModel)]="v" />
++ <input ngui-auto-complete (valueSelected)="onSelect($event)" [source]="s" [(ngModel)]="v" />
+```
+
+```ts
+onSelect(e: NguiAutoCompleteSelection) {
+  if (e.fromSource) {
+    // picked e.item from the list
+  } else {
+    // user typed a custom value: e.value
+  }
+}
+```
+
+The payload of `(valueSelected)` also changed from the bare value to that object, so a plain
+`(valueSelected)="x = $event"` becomes `(valueSelected)="x = $event.value"` (or use `[(ngModel)]` / `[(value)]`).
+
+### Display formatting: `display-property-name` + `value-formatter` → `display-with`
+
+The selected-value display is now controlled by one input, `display-with`, which takes either a property
+name or a function. (`list-formatter` still formats the dropdown rows.)
+
+```diff
+- <input ngui-auto-complete display-property-name="name" [source]="s" [(ngModel)]="v" />
++ <input ngui-auto-complete display-with="name" [source]="s" [(ngModel)]="v" />
+```
+
+```diff
+- <input ngui-auto-complete value-formatter="(key) name" [source]="s" [(ngModel)]="v" />
++ <input ngui-auto-complete [display-with]="formatKeyName" [source]="s" [(ngModel)]="v" />
+  // component: formatKeyName = (item) => `(${item.key}) ${item.name}`;
+```
+
+### Removed: `is-rtl` input — RTL is auto-detected
+
+Direction now follows the input's computed direction, so put `dir="rtl"` on the element or any ancestor
+(or set the document direction) and the dropdown anchors correctly on its own.
+
+```diff
+- <input ngui-auto-complete [is-rtl]="true" [source]="s" [(ngModel)]="v" />
++ <div dir="rtl">
++   <input ngui-auto-complete [source]="s" [(ngModel)]="v" />
++ </div>
+```
+
+### String templates → `TemplateRef`s: `loading-template` & `header-item-template`
+
+The `innerHTML` string inputs are replaced by `ng-template`s: use the existing `headerTemplate` and the
+new `loadingTemplate`. (`loading-text` still covers the plain-text loading case.)
+
+```diff
+- <input ngui-auto-complete loading-template="<i>Loading…</i>" header-item-template="<b>Results</b>" [source]="s" [(ngModel)]="v" />
++ <input ngui-auto-complete [loadingTemplate]="loadingTpl" [headerTemplate]="headerTpl" [source]="s" [(ngModel)]="v" />
++ <ng-template #loadingTpl><i>Loading…</i></ng-template>
++ <ng-template #headerTpl><b>Results</b></ng-template>
+```
 
 ### New: `[(value)]` on `NguiAutoCompleteComponent` (optional)
 

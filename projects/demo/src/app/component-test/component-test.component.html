@@ -26,17 +26,17 @@
 					}
 					@if (showAutocomplete) {
 						<ngui-auto-complete
-							(valueSelected)="addToAddress($event)"
+							(valueSelected)="addToAddress($event.value)"
 							[accept-user-input]="true"
 							[source]="appSvc.getAddressUrl()"
-							display-property-name="display_name"
 							[list-formatter]="myListFormatter"
-							[loading-template]="loadingTemplate"
+							[loadingTemplate]="loadingTpl"
 							max-num-list="5"
 							min-chars="2"
 							no-match-found-text="No Match Found"
 							placeholder="Enter a place name (min. 2 chars)">
 						</ngui-auto-complete>
+						<ng-template #loadingTpl><span style="padding: 8px; color: #888">Searching…</span></ng-template>
 					}
 				</div>
 			</div>
@@ -57,7 +57,12 @@
 		</mat-card-header>
 		<mat-card-content>
 			<div class="demo-area">
-				<input [(ngModel)]="myModel" (focus)="showMe = true" (blur)="showMe = false" placeholder="click to open dropdown" />
+				<input
+					name="focusValue"
+					[(ngModel)]="myModel"
+					(focus)="showMe = true"
+					(blur)="showMe = false"
+					placeholder="click to open dropdown" />
 				@if (showMe) {
 					<ngui-auto-complete [show-dropdown-on-init]="true" [(value)]="myModel" [show-input-tag]="false" [source]="[1, 2, 3, 4, 5]">
 					</ngui-auto-complete>
@@ -86,14 +91,19 @@
 		</mat-card-header>
 		<mat-card-content>
 			<div class="demo-area">
-				<input [ngModel]="tplModel?.name" (focus)="showTpl = true" (blur)="showTpl = false" readonly placeholder="focus to browse people" />
+				<input
+					name="tplName"
+					[ngModel]="tplModel?.name"
+					(focus)="showTpl = true"
+					(blur)="showTpl = false"
+					readonly
+					placeholder="focus to browse people" />
 				@if (showTpl) {
 					<ngui-auto-complete
 						[show-dropdown-on-init]="true"
 						[show-input-tag]="false"
 						[source]="people"
-						display-property-name="name"
-						(valueSelected)="tplModel = $event"
+						(valueSelected)="tplModel = $event.value"
 						[headerTemplate]="peopleHead"
 						[itemTemplate]="peopleRow">
 					</ngui-auto-complete>

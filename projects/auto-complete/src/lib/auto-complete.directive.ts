@@ -207,8 +207,11 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 		this.componentRef = this.overlayRef.attach(new ComponentPortal(NguiAutoCompleteComponent));
 
 		const component = this.componentRef.instance;
-		// The host is inline by default; make it fill the overlay's (input-matched) width.
-		(this.componentRef.location.nativeElement as HTMLElement).style.display = 'block';
+		// The host is an inline custom element and the overlay pane is a flex container, so it would
+		// otherwise shrink to its content. Force it to fill the overlay's (input-matched) width.
+		const host = this.componentRef.location.nativeElement as HTMLElement;
+		host.style.display = 'block';
+		host.style.width = '100%';
 		component.keyword = this.inputEl.value;
 
 		// Forward inputs to the dynamically created dropdown component. Signal inputs are

@@ -24,7 +24,10 @@
 	background-color: #fff;
 	margin: 0;
 	width: 100%;
-	max-height: 256px;
+	// Overridable cap so long lists don't cover the page; set `--ngui-ac-max-height` (e.g. on
+	// :root, since the directive renders the dropdown in an overlay at the document root) to change
+	// it, or `--ngui-ac-max-height: none` to remove it.
+	max-height: var(--ngui-ac-max-height, 256px);
 	overflow-y: auto;
 	list-style-type: none;
 	padding: 0;

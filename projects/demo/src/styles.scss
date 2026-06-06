@@ -168,50 +168,49 @@ body {
 			word-break: break-word;
 		}
 	}
+}
 
-	// Grid demo specific styles
-	.header-row {
-		background: #455a64;
-		color: white;
-		padding: 4px 0;
-		border-radius: 2px;
-		font-size: 12px;
-		font-weight: 500;
-	}
+// Dropdown content produced by `list-formatter` strings and header templates. The directive renders
+// the dropdown in a CDK overlay at the document root, so this content lives outside any component's
+// style scope and must be styled globally (not nested under `.demo-card`).
+.header-row {
+	background: #455a64;
+	color: white;
+	padding: 4px 0;
+	border-radius: 2px;
+	font-size: 12px;
+	font-weight: 500;
+}
 
-	.data-row {
-		font-size: 12px;
-		border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+.data-row {
+	font-size: 12px;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 
-		&:last-child {
-			border-bottom: none;
-		}
-	}
-
-	.col-1 {
-		display: inline-block;
-		width: 90px;
-		padding: 2px 6px;
-		border-left: 1px solid rgba(0, 0, 0, 0.12);
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
-
-	.col-2 {
-		display: inline-block;
-		width: 160px;
-		padding: 2px 6px;
-		border-left: 1px solid rgba(0, 0, 0, 0.12);
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
+	&:last-child {
+		border-bottom: none;
 	}
 }
 
-// Dropdown row content produced by `list-formatter` strings. These are rendered into the
-// library dropdown via [innerHtml], so they live outside any component's style scope and
-// must be styled globally.
+.col-1 {
+	display: inline-block;
+	width: 90px;
+	padding: 2px 6px;
+	border-inline-start: 1px solid rgba(0, 0, 0, 0.12);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.col-2 {
+	display: inline-block;
+	width: 160px;
+	padding: 2px 6px;
+	border-inline-start: 1px solid rgba(0, 0, 0, 0.12);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
 .amount-cell {
 	text-align: end;
 }

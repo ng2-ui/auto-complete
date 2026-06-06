@@ -26,6 +26,11 @@ The directive positions its dropdown with the [CDK Overlay](https://material.ang
 @import '@angular/cdk/overlay-prebuilt.css';
 ```
 
+> **Styling the dropdown:** because the directive renders its dropdown in an overlay at the document root,
+> any custom dropdown styles (e.g. classes used by a `list-formatter` or template) must be **global**, not
+> scoped to an ancestor of the input. The dropdown's height is capped by `--ngui-ac-max-height` (default
+> `256px`) — set it on `:root` to change it, or `--ngui-ac-max-height: none` to remove the cap.
+
 ## Setup
 
 ### Standalone (Angular 21+)

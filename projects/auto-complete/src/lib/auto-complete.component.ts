@@ -112,7 +112,7 @@ export class NguiAutoCompleteComponent<T = any> implements OnInit {
 	private timer = 0;
 
 	private delay = (() => {
-		let timer: any = null;
+		let timer: ReturnType<typeof setTimeout> | undefined;
 		return (callback: any, ms: number) => {
 			clearTimeout(timer);
 			timer = setTimeout(callback, ms);
@@ -335,7 +335,7 @@ export class NguiAutoCompleteComponent<T = any> implements OnInit {
 		}
 	}
 
-	public trackByIndex(index: number, item: any) {
+	public trackByIndex(index: number, item: T) {
 		return index;
 	}
 

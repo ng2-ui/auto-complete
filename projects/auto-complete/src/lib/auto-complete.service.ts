@@ -12,7 +12,7 @@ export class NguiAutoCompleteService {
 	public listFormatter: ((arg: any) => string) | undefined;
 
 	public filter(list: any[], keyword: string, matchFormatted: boolean, accentInsensitive: boolean) {
-		const objectString = (el: any) => (matchFormatted ? this.getFormattedListItem(el).toLowerCase() : JSON.stringify(el).toLowerCase());
+		const objectString = (el: unknown) => (matchFormatted ? this.getFormattedListItem(el).toLowerCase() : JSON.stringify(el).toLowerCase());
 		const loweredKeyword = keyword.toLowerCase();
 
 		return accentInsensitive

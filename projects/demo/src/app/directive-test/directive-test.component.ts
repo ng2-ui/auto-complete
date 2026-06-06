@@ -326,7 +326,7 @@ export class DirectiveTestComponent {
 		return `<div class="amount-cell">${data}</div>`;
 	}
 
-	public json(obj: any) {
+	public json(obj: unknown) {
 		return JSON.stringify(obj, null, '  ');
 	}
 }

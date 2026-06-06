@@ -21,6 +21,16 @@ input:not([mat-input]):not([type='checkbox']) {
 	}
 }
 
+// Material Integration card: let the form field fill the demo area.
+.demo-area mat-form-field {
+	width: 100%;
+}
+
+// RTL card: align inline content to the reading direction (logical: start === right under dir="rtl").
+.rtl-demo {
+	text-align: start;
+}
+
 // Limit max-height on the first two string examples
 .demo-1 .ngui-auto-complete > ul {
 	max-height: 120px;

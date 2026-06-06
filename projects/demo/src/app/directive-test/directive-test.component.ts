@@ -188,6 +188,7 @@ export class DirectiveTestComponent {
              [(ngModel)]="amount"
              [source]="arrayOfNumbers"
              [list-formatter]="rightAligned"
+             z-index="10"
              placeholder="amount"/>
       <span matSuffix>.00</span>
    </mat-form-field>
@@ -304,8 +305,8 @@ export class DirectiveTestComponent {
 
 	public renderBook(data: any): string {
 		const author = data.author_name?.length ? data.author_name[0] : 'Unknown author';
-		return `<b style="display:block">${data.title}</b>
-            <small style="color:#888">${author}</small>`;
+		return `<b class="book-title">${data.title}</b>
+            <small class="book-author">${author}</small>`;
 	}
 
 	public renderCity(data: any): string {
@@ -321,7 +322,7 @@ export class DirectiveTestComponent {
 	}
 
 	public rightAligned(data: any): string {
-		return `<div style="text-align:right">${data}.00</div>`;
+		return `<div class="amount-cell">${data}.00</div>`;
 	}
 
 	public json(obj) {

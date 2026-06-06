@@ -210,7 +210,7 @@
 		</mat-card-header>
 		<mat-card-content>
 			<div class="demo-area">
-				<mat-form-field appearance="outline" style="width: 100%">
+				<mat-form-field appearance="outline">
 					<mat-icon fontIcon="attach_money" matPrefix></mat-icon>
 					<input
 						matInput
@@ -219,6 +219,7 @@
 						[(ngModel)]="amount"
 						[source]="arrayOfNumbers"
 						[list-formatter]="rightAligned"
+						z-index="10"
 						placeholder="amount" />
 					<span matSuffix>.00</span>
 				</mat-form-field>
@@ -273,7 +274,7 @@
 			</mat-card-subtitle>
 		</mat-card-header>
 		<mat-card-content>
-			<div class="demo-area" dir="rtl" style="text-align: right">
+			<div class="demo-area rtl-demo" dir="rtl">
 				<div
 					ngui-auto-complete
 					[source]="arrayOfArabicStrings"
@@ -307,7 +308,6 @@
 			<div class="demo-area">
 				<input
 					ngui-auto-complete
-					style="width: 100%"
 					name="city"
 					[(ngModel)]="city"
 					[source]="arrayOfCities"

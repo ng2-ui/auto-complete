@@ -78,15 +78,15 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 	public valueSelected = output<NguiAutoCompleteSelection>();
 	public noMatchFound = output<void>();
 
-	private componentRef: ComponentRef<NguiAutoCompleteComponent>;
+	private componentRef?: ComponentRef<NguiAutoCompleteComponent>;
 	private overlayRef: OverlayRef | null = null;
 	private el: HTMLElement;
-	private inputEl: HTMLInputElement;
+	private inputEl!: HTMLInputElement;
 	private value: any;
 	private revertValue: any;
-	private dropdownJustHidden: boolean;
+	private dropdownJustHidden = false;
 	private scheduledBlurHandler: any;
-	private documentClickListener: (e: MouseEvent) => any;
+	private documentClickListener!: (e: MouseEvent) => any;
 	private dropdownSubs = new Subscription();
 
 	// ControlValueAccessor callbacks (registered by Angular forms).
@@ -115,7 +115,7 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 	ngAfterViewInit() {
 		// if this element is not an input tag, move dropdown after input tag
 		// so that it displays correctly
-		this.inputEl = this.el.tagName === 'INPUT' ? (this.el as HTMLInputElement) : this.el.querySelector('input');
+		this.inputEl = this.el.tagName === 'INPUT' ? (this.el as HTMLInputElement) : (this.el.querySelector('input') as HTMLInputElement);
 
 		// Render any value Angular forms wrote before the input element was available.
 		this.renderInputValue(this.value);
@@ -265,7 +265,7 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 			this.onTouched();
 
 			if (this.selectOnBlur()) {
-				component.selectOne(component.filteredList()[component.itemIndex()], component.itemIndex() ?? -1);
+				component.selectOne(component.filteredList()[component.itemIndex() ?? -1], component.itemIndex() ?? -1);
 			}
 
 			if (this.closeOnFocusOut()) {

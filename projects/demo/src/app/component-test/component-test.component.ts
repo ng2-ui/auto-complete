@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { AppService } from '../app.service';
+import { AppService, Place } from '../app.service';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
 import { NguiAutoCompleteComponent } from 'auto-complete';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
@@ -26,11 +26,11 @@ export class ComponentTestComponent {
 	appSvc = inject(AppService);
 
 	public showAutocomplete = false;
-	public addrs: any[] = [{ display_name: 'Berlin, Germany' }, { display_name: 'London, United Kingdom' }];
+	public addrs: Place[] = [{ display_name: 'Berlin, Germany' }, { display_name: 'London, United Kingdom' }];
 
-	myModel;
-	showMe;
-	tplModel;
+	myModel: any;
+	showMe = false;
+	tplModel: any;
 	showTpl = false;
 	public people: any[] = [
 		{ name: 'Ada Lovelace', role: 'Mathematician', year: 1815 },
@@ -95,8 +95,9 @@ export class ComponentTestComponent {
   <strong>{{ i + 1 }}. {{ person.name }}</strong> — {{ person.role }} ({{ person.year }})
 </ng-template>`;
 
-	public addToAddress(addr: any): void {
-		this.addrs.push(addr);
+	public addToAddress(addr: Place | string): void {
+		// `accept-user-input` is on, so a typed custom value arrives as a plain string.
+		this.addrs.push(typeof addr === 'string' ? { display_name: addr } : addr);
 		this.showAutocomplete = false;
 	}
 
@@ -105,7 +106,7 @@ export class ComponentTestComponent {
 		event.stopPropagation();
 	}
 
-	public myListFormatter(data: any): string {
-		return data['display_name'];
+	public myListFormatter(data: Place): string {
+		return data.display_name;
 	}
 }

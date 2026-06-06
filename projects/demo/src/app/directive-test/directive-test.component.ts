@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, inject } from '@angular/core';
-import { AppService } from '../app.service';
+import { AppService, Book, Place } from '../app.service';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
 import { NguiAutoCompleteDirective } from 'auto-complete';
 import { FormsModule } from '@angular/forms';
@@ -94,9 +94,9 @@ export class DirectiveTestComponent {
 	public word = 'is'; // basic string list (cards 1 & 2)
 	public idValue = { id: 1, value: 'One' }; // id/value objects
 	public keyName = { key: 3, name: 'Key Three' }; // key/name objects
-	public place; // remote address (HTTP source)
-	public book; // remote book (Observable source)
-	public amount; // Angular Material integration
+	public place?: Place | string; // remote address (URL source); string when a custom value is typed
+	public book?: Book | string; // remote book (Observable source); string when a custom value is typed
+	public amount: any; // Angular Material integration
 	public autoSelectWord = ''; // auto-select-first-item
 	public rtlCity = ''; // RTL
 	public city = ''; // grid-style cities
@@ -302,7 +302,7 @@ export class DirectiveTestComponent {
 
 	public formatKeyName = (item: any): string => `(${item.key}) ${item.name}`;
 
-	public renderBook(data: any): string {
+	public renderBook(data: Book): string {
 		const author = data.author_name?.length ? data.author_name[0] : 'Unknown author';
 		return `<b class="book-title">${data.title}</b>
             <small class="book-author">${author}</small>`;
@@ -326,7 +326,7 @@ export class DirectiveTestComponent {
 		return `<div class="amount-cell">${data}</div>`;
 	}
 
-	public json(obj) {
+	public json(obj: unknown) {
 		return JSON.stringify(obj, null, '  ');
 	}
 }

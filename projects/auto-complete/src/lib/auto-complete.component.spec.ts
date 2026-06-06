@@ -84,7 +84,7 @@ describe('NguiAutoCompleteComponent', () => {
 })
 class TemplateHostComponent {
 	source = ['Alpha', 'Beta'];
-	@ViewChild(NguiAutoCompleteComponent) autoComplete: NguiAutoCompleteComponent;
+	@ViewChild(NguiAutoCompleteComponent) autoComplete!: NguiAutoCompleteComponent;
 }
 
 describe('NguiAutoCompleteComponent itemTemplate', () => {

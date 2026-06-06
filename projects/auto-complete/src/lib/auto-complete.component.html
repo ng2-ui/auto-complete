@@ -4,12 +4,14 @@
 		<input
 			#autoCompleteInput
 			class="keyword"
+			[id]="inputId"
 			[attr.autocomplete]="autocomplete() ? 'null' : 'off'"
 			placeholder="{{ placeholder() }}"
 			(focus)="showDropdownList($event)"
 			(blur)="blurHandler($event)"
 			(keydown)="inputElKeyHandler($event)"
 			(input)="reloadListInDelay($event)"
+			[ngModelOptions]="{ standalone: true }"
 			[(ngModel)]="keyword" />
 	}
 

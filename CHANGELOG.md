@@ -79,6 +79,12 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 - The "drop-up" dropdown now anchors with the logical `inset-inline-start` instead of `left`, so it sits
   on the correct edge under RTL (matching the directive's positioning). No API change.
 
+### Fixed
+- **Internal keyword input a11y.** The component's internal input (rendered when `show-input-tag`) now
+  carries a unique `id`, clearing the browser's "a form field element should have an id or name" warning.
+  It is bound `standalone`, so it never registers into a consumer's parent `<form>` (no stray
+  `keyword` control) — which also fixes a latent error when the component was used inside a `<form>`.
+
 ### Internal (development tooling only — no impact on consumers)
 - `ng update` to Angular 21: `@angular/cli` + `@angular-devkit/build-angular` 21.2.x,
   `ng-packagr` 21.2.5, TypeScript 5.9.3. The demo `bootstrapApplication` now provides

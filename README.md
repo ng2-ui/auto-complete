@@ -301,7 +301,7 @@ variables on an ancestor of the input won't reach it.
 ## Angular Version Compatibility
 
 This library follows Angular's versioning: **`@ngui/auto-complete@N.x` supports Angular N**.
-Install the version matching your Angular major (e.g. Angular 21 → `npm install @ngui/auto-complete@21`).
+Install the version matching your Angular major (e.g. Angular 22 → `npm install @ngui/auto-complete@22`).
 
 ---
 

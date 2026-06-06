@@ -7,13 +7,35 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 
 ---
 
-## [21.0.1] — unreleased
+## [22.0.0] — unreleased
+
+A framework-only major: the public API is unchanged from 21.x. The only consumer-visible change is the
+bumped Angular peer requirement.
+
+> Includes the changes previously staged for an (unreleased) 21.0.1 — TypeScript `strict` mode, strict
+> template type-checking and the package `funding` field — which ship here instead.
+
+### ⚠️ BREAKING CHANGES
+- **Requires Angular 22.** `peerDependencies` now require `@angular/cdk`, `@angular/common` and
+  `@angular/core` `^22.0.0`. Angular 21 and older projects must stay on `@ngui/auto-complete@21` (or the
+  matching major).
+
+### Added
+- **Funding metadata.** The published `package.json` now carries a `funding` field (GitHub Sponsors +
+  PayPal), surfaced on the npm page and via `npm fund` (#501).
 
 ### Internal (development tooling only — no impact on consumers)
+- `ng update` to Angular 22: `@angular/cli` + `@angular/build` 22.0.0, `@angular/cdk` + `@angular/material`
+  22.0.0, `ng-packagr` 22.0.0, TypeScript 6.0.x.
+- **TypeScript 6.0 config.** TS 6 deprecates `baseUrl`, so the root `tsconfig.json` drops it and uses
+  relative `paths` instead.
+- **Enabled TypeScript `strict` mode** (`strict: true`) and tightened types accordingly — replacing
+  remaining `any`s with precise types (e.g. `ReturnType<typeof setTimeout>`, generics, `unknown`) and
+  adding null-safety guards. No public API or runtime behavior change (#500).
 - **Enabled strict template type-checking** (`strictTemplates: true` in the root `angularCompilerOptions`),
-  the natural companion to the `strict: true` adopted in 21.0.0. The library compiles cleanly under it; the
-  only fix needed was a more precise type on a demo field (`open-direction` binding). No public API or
-  runtime behavior change — this only tightens the library's own build.
+  the natural companion to `strict` above. The library compiles cleanly under it; the only fix needed was a
+  more precise type on a demo field (`open-direction` binding). No public API or runtime behavior change —
+  this only tightens the library's own build (#503).
 
 ---
 

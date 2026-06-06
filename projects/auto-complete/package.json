@@ -12,6 +12,16 @@
     "url": "https://github.com/ng2-ui/auto-complete/issues"
   },
   "homepage": "https://github.com/ng2-ui/auto-complete#readme",
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/almothafar"
+    },
+    {
+      "type": "individual",
+      "url": "https://paypal.me/almothafar"
+    }
+  ],
   "keywords": [
     "angular",
     "auto-complete",

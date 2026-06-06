@@ -26,6 +26,13 @@ input:not([mat-input]):not([type='checkbox']) {
 	width: 100%;
 }
 
+// Right-align the amount input so the selected value lines up with the right-aligned
+// dropdown rows (.amount-cell). (Dropdown stacking inside mat-form-field is handled by
+// the CDK Overlay migration, not here.)
+.material-demo .mat-mdc-input-element {
+	text-align: end;
+}
+
 // RTL card: align inline content to the reading direction (logical: start === right under dir="rtl").
 .rtl-demo {
 	text-align: start;

@@ -188,7 +188,6 @@ export class DirectiveTestComponent {
              [(ngModel)]="amount"
              [source]="arrayOfNumbers"
              [list-formatter]="rightAligned"
-             z-index="10"
              placeholder="amount"/>
       <span matSuffix>.00</span>
    </mat-form-field>
@@ -322,7 +321,9 @@ export class DirectiveTestComponent {
 	}
 
 	public rightAligned(data: any): string {
-		return `<div class="amount-cell">${data}.00</div>`;
+		// The field shows "$" (prefix) and ".00" (suffix), so the row only needs the bare,
+		// right-aligned number — matching what lands in the input after selection.
+		return `<div class="amount-cell">${data}</div>`;
 	}
 
 	public json(obj) {

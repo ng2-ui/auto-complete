@@ -209,7 +209,7 @@
 			</mat-card-subtitle>
 		</mat-card-header>
 		<mat-card-content>
-			<div class="demo-area">
+			<div class="demo-area material-demo">
 				<mat-form-field appearance="outline">
 					<mat-icon fontIcon="attach_money" matPrefix></mat-icon>
 					<input
@@ -219,7 +219,6 @@
 						[(ngModel)]="amount"
 						[source]="arrayOfNumbers"
 						[list-formatter]="rightAligned"
-						z-index="10"
 						placeholder="amount" />
 					<span matSuffix>.00</span>
 				</mat-form-field>

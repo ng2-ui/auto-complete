@@ -15,8 +15,20 @@ A versatile Angular autocomplete library that works as both a **directive** (att
 ## Installation
 
 ```bash
-npm install @ngui/auto-complete
+npm install @ngui/auto-complete @angular/cdk
 ```
+
+The directive positions its dropdown with the [CDK Overlay](https://material.angular.io/cdk/overlay), so
+`@angular/cdk` is a peer dependency and your app must include the CDK overlay styles **once**:
+
+```scss
+/* styles.scss — skip this if you already import an Angular Material theme (it bundles them) */
+@import '@angular/cdk/overlay-prebuilt.css';
+```
+
+> **Styling the dropdown:** because the directive renders its dropdown in an overlay at the document root,
+> any custom dropdown styles (e.g. classes used by a `list-formatter` or template) must be **global**, not
+> scoped to an ancestor of the input. See [Theming](#theming) to restyle it with CSS variables.
 
 ## Setup
 
@@ -204,11 +216,12 @@ Interaction and selection behavior.
 
 | Option | Type | Default | Applies to | Description |
 |--------|------|---------|------------|-------------|
-| `open-direction` | `'auto' \| 'up' \| 'down'` | `'auto'` | Both | Force the dropdown above (`up`) or below (`down`). For the directive, `auto` opens below unless the input is near the bottom of the viewport; for the component, `up` renders above via CSS and `auto`/`down` keep it below |
-| `z-index` | `number` | `1` | Directive | CSS `z-index` of the dropdown |
+| `open-direction` | `'auto' \| 'up' \| 'down'` | `'auto'` | Both | Preferred side. For the directive (CDK overlay) `up`/`down` set the preference and the overlay still flips when there isn't room; for the component, `up` renders above via CSS and `auto`/`down` keep it below |
+| `z-index` | `number` | `1` | Directive | z-index of the dropdown overlay. Rarely needed — the CDK overlay already renders above page content; only useful to order overlapping overlays |
 
-> **RTL:** there is no RTL input — the dropdown anchors via logical CSS (`inset-inline-start`), so an
-> ancestor `dir="rtl"` (or the document direction) positions it correctly on its own.
+> **RTL:** there is no RTL input — the directive's overlay follows the input's computed direction, and the
+> component's drop-up anchors via logical CSS (`inset-inline-start`). Just set `dir="rtl"` on the element or
+> an ancestor (or the document direction).
 
 ### Events
 
@@ -250,6 +263,38 @@ onPick(e: NguiAutoCompleteSelection<City>) { /* e.item is City */ }
 It defaults to `any`, so existing templates are unaffected. The directive (`[ngui-auto-complete]`) stays
 loosely typed — Angular can't infer a generic for an attribute directive in templates, so its
 `(valueSelected)` payload is `NguiAutoCompleteSelection<any>`.
+
+---
+
+## Theming
+
+Restyle the dropdown by overriding these CSS variables. Each has a sensible default, so set only what you
+need. Set them on `:root` — the directive's dropdown renders in an overlay at the document root, so
+variables on an ancestor of the input won't reach it.
+
+| Variable | Default | Controls |
+|----------|---------|----------|
+| `--ngui-ac-background` | `#fff` | Dropdown background |
+| `--ngui-ac-color` | `inherit` | Text color |
+| `--ngui-ac-border` | `1px solid rgba(0,0,0,.12)` | Dropdown border |
+| `--ngui-ac-border-radius` | `4px` | Corner radius |
+| `--ngui-ac-shadow` | `0 4px 12px rgba(0,0,0,.15)` | Elevation shadow |
+| `--ngui-ac-max-height` | `256px` | Height cap (`none` to remove) |
+| `--ngui-ac-item-padding` | `6px 12px` | Row padding (density) |
+| `--ngui-ac-item-border` | `1px solid rgba(0,0,0,.06)` | Row divider |
+| `--ngui-ac-hover-background` | `rgba(0,0,0,.06)` | Row hover background |
+| `--ngui-ac-selected-background` | `rgba(0,0,0,.1)` | Highlighted row background |
+
+```scss
+/* e.g. a dark dropdown */
+:root {
+  --ngui-ac-background: #2b2b2b;
+  --ngui-ac-color: #eee;
+  --ngui-ac-item-border: 1px solid rgba(255, 255, 255, 0.08);
+  --ngui-ac-hover-background: rgba(255, 255, 255, 0.08);
+  --ngui-ac-selected-background: rgba(255, 255, 255, 0.16);
+}
+```
 
 ---
 

@@ -43,4 +43,23 @@ describe('NguiAutoCompleteDirective (ControlValueAccessor)', () => {
 		expect(fixture.componentInstance.value).toBe('Beta');
 		fixture.destroy();
 	}));
+
+	it('opens the dropdown in a CDK overlay on focus and removes it on hide', fakeAsync(() => {
+		const fixture = TestBed.createComponent(HostComponent);
+		fixture.detectChanges();
+		tick();
+
+		const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+		input.dispatchEvent(new Event('focus'));
+		tick();
+
+		expect(document.querySelector('.cdk-overlay-pane ngui-auto-complete')).toBeTruthy();
+
+		const directive = fixture.debugElement.query(By.directive(NguiAutoCompleteDirective)).injector.get(NguiAutoCompleteDirective);
+		directive.hideAutoCompleteDropdown();
+		tick(100); // dropdownJustHidden reset timer
+
+		expect(document.querySelector('.cdk-overlay-pane ngui-auto-complete')).toBeFalsy();
+		fixture.destroy();
+	}));
 });

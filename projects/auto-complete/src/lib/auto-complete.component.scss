@@ -20,14 +20,22 @@
 	background-clip: content-box;
 }
 
+// Theming hooks: override any `--ngui-ac-*` variable to restyle the dropdown (e.g. for brand colors
+// or dark mode). The directive renders the dropdown in an overlay at the document root, so set these
+// on `:root` (not on an ancestor of the input) for them to take effect.
 .ngui-auto-complete > ul {
-	background-color: #fff;
+	background-color: var(--ngui-ac-background, #fff);
+	color: var(--ngui-ac-color, inherit);
 	margin: 0;
 	width: 100%;
+	// `--ngui-ac-max-height: none` removes the cap.
+	max-height: var(--ngui-ac-max-height, 256px);
 	overflow-y: auto;
 	list-style-type: none;
 	padding: 0;
-	border: 1px solid #ccc;
+	border: var(--ngui-ac-border, 1px solid rgba(0, 0, 0, 0.12));
+	border-radius: var(--ngui-ac-border-radius, 4px);
+	box-shadow: var(--ngui-ac-shadow, 0 4px 12px rgba(0, 0, 0, 0.15));
 	box-sizing: border-box;
 	animation: slideDown 0.1s;
 }
@@ -45,12 +53,13 @@
 }
 
 .ngui-auto-complete > ul li {
-	padding: 2px 5px;
-	border-bottom: 1px solid #eee;
+	padding: var(--ngui-ac-item-padding, 6px 12px);
+	border-bottom: var(--ngui-ac-item-border, 1px solid rgba(0, 0, 0, 0.06));
+	cursor: pointer;
 }
 
 .ngui-auto-complete > ul li.selected {
-	background-color: #ccc;
+	background-color: var(--ngui-ac-selected-background, rgba(0, 0, 0, 0.1));
 }
 
 .ngui-auto-complete > ul li:last-child {
@@ -58,5 +67,5 @@
 }
 
 .ngui-auto-complete > ul li:not(.header-item):hover {
-	background-color: #ccc;
+	background-color: var(--ngui-ac-hover-background, rgba(0, 0, 0, 0.06));
 }

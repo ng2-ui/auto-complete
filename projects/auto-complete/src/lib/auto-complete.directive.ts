@@ -13,6 +13,8 @@ import {
 	input,
 	output,
 } from '@angular/core';
+import { ConnectedPosition, Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
 import { Subscription } from 'rxjs';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NguiAutoCompleteComponent, NguiAutoCompleteSelection } from './auto-complete.component';
@@ -30,6 +32,7 @@ import { NguiAutoCompleteComponent, NguiAutoCompleteSelection } from './auto-com
 })
 export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor {
 	viewContainerRef = inject(ViewContainerRef);
+	private overlay = inject(Overlay);
 
 	public autocomplete = input(false, { transform: booleanAttribute });
 	public autoCompletePlaceholder = input('', { alias: 'auto-complete-placeholder' });
@@ -76,9 +79,8 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 	public noMatchFound = output<void>();
 
 	private componentRef: ComponentRef<NguiAutoCompleteComponent>;
-	private wrapperEl: HTMLElement;
+	private overlayRef: OverlayRef | null = null;
 	private el: HTMLElement;
-	private acDropdownEl: HTMLElement;
 	private inputEl: HTMLInputElement;
 	private value: any;
 	private revertValue: any;
@@ -108,12 +110,6 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 		};
 
 		document.addEventListener('click', this.documentClickListener);
-		// wrap this element with <div class="ngui-auto-complete">
-		this.wrapperEl = document.createElement('div');
-		this.wrapperEl.className = 'ngui-auto-complete-wrapper';
-		this.wrapperEl.style.position = 'relative';
-		this.el.parentElement.insertBefore(this.wrapperEl, this.el.nextSibling);
-		this.wrapperEl.appendChild(this.el);
 	}
 
 	ngAfterViewInit() {
@@ -146,9 +142,11 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 
 	ngOnDestroy(): void {
 		this.dropdownSubs.unsubscribe();
-		if (this.componentRef) {
-			this.componentRef.destroy();
+		if (this.overlayRef) {
+			this.overlayRef.dispose();
+			this.overlayRef = null;
 		}
+		this.componentRef = undefined;
 		if (this.documentClickListener) {
 			document.removeEventListener('click', this.documentClickListener);
 		}
@@ -180,7 +178,7 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 		this.renderValue(item === null || item === undefined ? '' : item);
 	}
 
-	// show auto-complete list below the current element
+	// show auto-complete list anchored to the current element via a CDK overlay
 	public showAutoCompleteDropdown = (event?: any): void => {
 		if (this.dropdownJustHidden) {
 			return;
@@ -188,9 +186,32 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 		this.hideAutoCompleteDropdown();
 		this.scheduledBlurHandler = null;
 
-		this.componentRef = this.viewContainerRef.createComponent(NguiAutoCompleteComponent);
+		// Render the dropdown in a CDK overlay anchored to the input. The overlay lives at the
+		// document root, so it escapes any ancestor's clipping / stacking context (e.g. a
+		// mat-form-field), and the position strategy flips it above/below on overflow.
+		this.overlayRef = this.overlay.create({
+			width: this.inputEl.getBoundingClientRect().width,
+			scrollStrategy: this.overlay.scrollStrategies.reposition(),
+			direction: (getComputedStyle(this.inputEl).direction as 'ltr' | 'rtl') || 'ltr',
+			positionStrategy: this.overlay
+				.position()
+				.flexibleConnectedTo(this.inputEl)
+				.withFlexibleDimensions(false)
+				.withPush(false)
+				.withPositions(this.dropdownPositions()),
+		});
+		// Honour the z-index input within the overlay layer (rarely needed — the overlay already
+		// renders above page content; useful only to order overlapping overlays).
+		this.overlayRef.hostElement.style.zIndex = '' + this.zIndex();
+
+		this.componentRef = this.overlayRef.attach(new ComponentPortal(NguiAutoCompleteComponent));
 
 		const component = this.componentRef.instance;
+		// The host is an inline custom element and the overlay pane is a flex container, so it would
+		// otherwise shrink to its content. Force it to fill the overlay's (input-matched) width.
+		const host = this.componentRef.location.nativeElement as HTMLElement;
+		host.style.display = 'block';
+		host.style.width = '100%';
 		component.keyword = this.inputEl.value;
 
 		// Forward inputs to the dynamically created dropdown component. Signal inputs are
@@ -221,27 +242,22 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 		this.dropdownSubs.add(component.valueSelected.subscribe(this.onSelection));
 		this.dropdownSubs.add(component.noMatchFound.subscribe(() => this.noMatchFound.emit()));
 
-		this.acDropdownEl = this.componentRef.location.nativeElement;
-		this.acDropdownEl.style.display = 'none';
-
-		// if this element is not an input tag, move dropdown after input tag
-		// so that it displays correctly
-
-		// TODO: confirm with owners
-		// with some reason, viewContainerRef.createComponent is creating element
-		// to parent div which is created by us on ngOnInit, please try this with demo
-
-		// if (this.el.tagName !== 'INPUT' && this.acDropdownEl) {
-		this.inputEl.parentElement.insertBefore(this.acDropdownEl, this.inputEl.nextSibling);
-		// }
 		this.revertValue = typeof this.revertValue !== 'undefined' ? this.revertValue : '';
 
 		setTimeout(() => {
 			component.reloadList(this.inputEl.value);
-			this.styleAutoCompleteDropdown();
 			component.dropdownVisible.set(true);
+			this.overlayRef?.updatePosition();
 		});
 	};
+
+	// Preferred connected positions, ordered by `open-direction`. CDK falls through the list and
+	// flips on overflow; `auto`/`down` prefer below, `up` prefers above.
+	private dropdownPositions(): ConnectedPosition[] {
+		const below: ConnectedPosition = { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top' };
+		const above: ConnectedPosition = { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom' };
+		return this.openDirection() === 'up' ? [above, below] : [below, above];
+	}
 
 	public blurHandler(event: any) {
 		if (this.componentRef) {
@@ -266,7 +282,10 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 				currentItem = this.componentRef.instance.findItemFromSelectValue(this.inputEl.value);
 			}
 			this.dropdownSubs.unsubscribe();
-			this.componentRef.destroy();
+			if (this.overlayRef) {
+				this.overlayRef.dispose();
+				this.overlayRef = null;
+			}
 			this.componentRef = undefined;
 
 			if (this.inputEl && hasRevertValue && this.acceptUserInput() === false && currentItem === null && this.inputEl.value !== '') {
@@ -280,44 +299,6 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 		this.dropdownJustHidden = true;
 		setTimeout(() => (this.dropdownJustHidden = false), 100);
 	};
-
-	public styleAutoCompleteDropdown = () => {
-		if (this.componentRef) {
-			/* setting width/height auto complete */
-			const thisInputElBCR = this.inputEl.getBoundingClientRect();
-
-			this.acDropdownEl.style.width = thisInputElBCR.width + 'px';
-			this.acDropdownEl.style.position = 'absolute';
-			this.acDropdownEl.style.zIndex = '' + this.zIndex();
-			// Anchor on the leading edge; `inset-inline-start` follows the element's direction
-			// (LTR → left, RTL → right) automatically, so RTL needs no detection.
-			this.acDropdownEl.style.insetInlineStart = '0';
-			this.acDropdownEl.style.display = 'inline-block';
-
-			// Reset any previous vertical anchor so re-styling is deterministic.
-			this.acDropdownEl.style.top = '';
-			this.acDropdownEl.style.bottom = '';
-
-			if (this.shouldOpenUp(thisInputElBCR)) {
-				this.acDropdownEl.style.bottom = `${thisInputElBCR.height}px`;
-			} else {
-				this.acDropdownEl.style.top = `${thisInputElBCR.height}px`;
-			}
-		}
-	};
-
-	// Resolve the vertical opening direction honouring the `open-direction` input.
-	// 'auto' keeps the historic heuristic: open above only when the input is within
-	// ~100px of the viewport bottom.
-	private shouldOpenUp(inputBCR: DOMRect): boolean {
-		if (this.openDirection() === 'up') {
-			return true;
-		}
-		if (this.openDirection() === 'down') {
-			return false;
-		}
-		return inputBCR.bottom + 100 > window.innerHeight;
-	}
 
 	public setToStringFunction(item: any): any {
 		if (item && typeof item === 'object') {

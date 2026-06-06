@@ -159,7 +159,7 @@ Where suggestions come from and how the keyword is matched.
 
 | Option | Type | Default | Applies to | Description |
 |--------|------|---------|------------|-------------|
-| `source` | `T[] \| string \| ((keyword) => Observable<T[]>)` | — | Both | **Required.** Local array, URL string, or a function returning an `Observable` |
+| `source` | `T[] \| string \| ((keyword) => Observable<T[]>)` | — | Both | **Required** (`input.required` — omitting `[source]` is a compile-time error). Local array, URL string, or a function returning an `Observable` |
 | `path-to-data` | `string` | — | Both | Dot-path to the array in an HTTP response, e.g. `data.results` |
 | `min-chars` | `number` | `0` | Both | Minimum characters before fetching/filtering |
 | `max-num-list` | `number` | unlimited | Both | Maximum number of suggestions to show |

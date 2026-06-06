@@ -33,7 +33,8 @@ export class NguiAutoCompleteDirective implements OnInit, AfterViewInit, OnDestr
 
 	public autocomplete = input(false, { transform: booleanAttribute });
 	public autoCompletePlaceholder = input('', { alias: 'auto-complete-placeholder' });
-	public source = input<any>();
+	// Required — array, URL string, or a function returning an `Observable`.
+	public source = input.required<any>();
 	public pathToData = input('', { alias: 'path-to-data' });
 	public minChars = input(0, { alias: 'min-chars', transform: numberAttribute });
 	// Controls the text shown in the input after selecting an object: a property name

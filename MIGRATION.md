@@ -11,6 +11,24 @@ tracks the supported Angular major (`@ngui/auto-complete@N` ⇒ Angular `N`).
 
 Update Angular to 21 first. Angular 20 and older projects must stay on `@ngui/auto-complete@20`.
 
+### New `@angular/cdk` peer dependency + CDK overlay styles
+
+The directive now positions its dropdown with the CDK Overlay, so install `@angular/cdk` and include the
+CDK overlay styles **once** in your global stylesheet. If you already use Angular Material's theme, the
+overlay styles are bundled and you only need the package.
+
+```bash
+npm install @angular/cdk
+```
+
+```scss
+/* styles.scss — only if you are NOT importing an Angular Material theme */
+@import '@angular/cdk/overlay-prebuilt.css';
+```
+
+Without these styles the dropdown still works but won't be positioned. In return, the dropdown now escapes
+ancestor clipping/stacking (e.g. inside a `mat-form-field`) and flips on overflow on its own.
+
 ### `NguiAutoCompleteModule` was removed
 
 Import the standalone component/directive directly.

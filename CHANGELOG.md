@@ -51,6 +51,11 @@ and this project follows [Angular version numbers](https://angular.dev/reference
   (it was always required in practice — the control does nothing without it). Omitting `[source]` is now a
   compile-time error under strict templates (and a runtime error otherwise) instead of silently doing
   nothing. Just ensure every `[ngui-auto-complete]` / `<ngui-auto-complete>` has a `[source]`.
+- **New `@angular/cdk` peer dependency (directive dropdown now uses the CDK Overlay).** The
+  `[ngui-auto-complete]` directive renders its dropdown through `@angular/cdk/overlay` instead of inserting
+  an absolutely-positioned element next to the input. You must install `@angular/cdk@^21` and include the
+  CDK overlay styles **once** in your app — either `@import '@angular/cdk/overlay-prebuilt.css';` or any
+  `@angular/material` theme (which already bundles them). See [`MIGRATION.md`](./MIGRATION.md).
 
 ### Added
 - **`[(value)]` two-way binding on `NguiAutoCompleteComponent`.** The standalone component now exposes a
@@ -82,6 +87,12 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 - Bumped the library's own `tslib` dependency floor to `^2.8.1`.
 - The "drop-up" dropdown now anchors with the logical `inset-inline-start` instead of `left`, so it sits
   on the correct edge under RTL (matching the directive's positioning). No API change.
+- **CDK Overlay positioning (directive).** The dropdown now renders in a CDK overlay at the document root,
+  so it escapes ancestor clipping / stacking contexts (e.g. inside a `mat-form-field` or a card with
+  `overflow: hidden`) and flips above/below automatically on overflow. As a result, `open-direction` is now
+  a *preference* (the overlay still flips when there isn't room), and `z-index` is rarely needed (the
+  overlay already layers above page content; it now only orders overlapping overlays). RTL follows the
+  input's computed direction.
 
 ### Fixed
 - **Internal keyword input a11y.** The component's internal input (rendered when `show-input-tag`) now

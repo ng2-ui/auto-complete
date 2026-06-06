@@ -15,7 +15,15 @@ A versatile Angular autocomplete library that works as both a **directive** (att
 ## Installation
 
 ```bash
-npm install @ngui/auto-complete
+npm install @ngui/auto-complete @angular/cdk
+```
+
+The directive positions its dropdown with the [CDK Overlay](https://material.angular.io/cdk/overlay), so
+`@angular/cdk` is a peer dependency and your app must include the CDK overlay styles **once**:
+
+```scss
+/* styles.scss — skip this if you already import an Angular Material theme (it bundles them) */
+@import '@angular/cdk/overlay-prebuilt.css';
 ```
 
 ## Setup
@@ -204,11 +212,12 @@ Interaction and selection behavior.
 
 | Option | Type | Default | Applies to | Description |
 |--------|------|---------|------------|-------------|
-| `open-direction` | `'auto' \| 'up' \| 'down'` | `'auto'` | Both | Force the dropdown above (`up`) or below (`down`). For the directive, `auto` opens below unless the input is near the bottom of the viewport; for the component, `up` renders above via CSS and `auto`/`down` keep it below |
-| `z-index` | `number` | `1` | Directive | CSS `z-index` of the dropdown |
+| `open-direction` | `'auto' \| 'up' \| 'down'` | `'auto'` | Both | Preferred side. For the directive (CDK overlay) `up`/`down` set the preference and the overlay still flips when there isn't room; for the component, `up` renders above via CSS and `auto`/`down` keep it below |
+| `z-index` | `number` | `1` | Directive | z-index of the dropdown overlay. Rarely needed — the CDK overlay already renders above page content; only useful to order overlapping overlays |
 
-> **RTL:** there is no RTL input — the dropdown anchors via logical CSS (`inset-inline-start`), so an
-> ancestor `dir="rtl"` (or the document direction) positions it correctly on its own.
+> **RTL:** there is no RTL input — the directive's overlay follows the input's computed direction, and the
+> component's drop-up anchors via logical CSS (`inset-inline-start`). Just set `dir="rtl"` on the element or
+> an ancestor (or the document direction).
 
 ### Events
 

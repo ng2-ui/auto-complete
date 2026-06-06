@@ -106,7 +106,7 @@ export class DirectiveTestComponent {
 	public directionWord = ''; // open-direction
 
 	public noMatchVisible = false;
-	public openDir = 'auto';
+	public openDir: 'auto' | 'up' | 'down' = 'auto';
 
 	// Bound to the live "accept-user-input" toggles in two of the cards.
 	public tagAcceptInput = true;

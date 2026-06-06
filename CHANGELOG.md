@@ -7,6 +7,16 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 
 ---
 
+## [21.0.1] — unreleased
+
+### Internal (development tooling only — no impact on consumers)
+- **Enabled strict template type-checking** (`strictTemplates: true` in the root `angularCompilerOptions`),
+  the natural companion to the `strict: true` adopted in 21.0.0. The library compiles cleanly under it; the
+  only fix needed was a more precise type on a demo field (`open-direction` binding). No public API or
+  runtime behavior change — this only tightens the library's own build.
+
+---
+
 ## [21.0.0] — 2026-06-04
 
 ### ⚠️ BREAKING CHANGES

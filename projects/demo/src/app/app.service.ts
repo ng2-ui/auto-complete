@@ -2,17 +2,27 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+/** A single book result from the Open Library search API (only the fields we request). */
+export interface Book {
+	title: string;
+	author_name?: string[];
+}
+
+/** Open Library search response shape (`docs` is the array the autocomplete reads via `path-to-data`). */
+export interface BookSearchResponse {
+	docs: Book[];
+}
+
 @Injectable()
 export class AppService {
 	private _http = inject(HttpClient);
 
 	/**
 	 * Search books via Open Library (no API key required).
-	 * Response shape: { docs: [{ title, author_name[] }] }
 	 */
-	public findBooks = (keyword: string): Observable<any> => {
+	public findBooks = (keyword: string): Observable<BookSearchResponse> => {
 		const q = encodeURIComponent(keyword);
-		return this._http.get<any>(`https://openlibrary.org/search.json?q=${q}&fields=title,author_name&limit=8`);
+		return this._http.get<BookSearchResponse>(`https://openlibrary.org/search.json?q=${q}&fields=title,author_name&limit=8`);
 	};
 
 	/**

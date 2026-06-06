@@ -31,6 +31,9 @@ export interface NguiAutoCompleteSelection<T = any> {
 import { FormsModule } from '@angular/forms';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 
+// Per-instance counter for a unique id on the internal keyword input (see `inputId`).
+let nextUniqueId = 0;
+
 @Component({
 	selector: 'ngui-auto-complete',
 	templateUrl: './auto-complete.component.html',
@@ -98,6 +101,11 @@ export class NguiAutoCompleteComponent<T = any> implements OnInit {
 	public minCharsEntered = signal(false);
 	public itemIndex = signal<number | null>(null);
 	public keyword: string;
+
+	// Unique id for the internal keyword input so it satisfies the "form field should have an
+	// id or name" a11y check without a `name` (a named control would register the keyword field
+	// into a consumer's parent form — the input is kept `standalone` for the same reason).
+	public readonly inputId = `ngui-auto-complete-input-${nextUniqueId++}`;
 
 	private el: HTMLElement; // this component  element `<ngui-auto-complete>`
 	private timer = 0;

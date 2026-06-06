@@ -35,6 +35,13 @@ describe('NguiAutoCompleteComponent', () => {
 		expect(component.acceptUserInput()).toBe(true);
 	});
 
+	it('should give the internal keyword input a unique id and no name attribute (a11y, form-safe)', () => {
+		const input: HTMLInputElement = fixture.nativeElement.querySelector('input.keyword');
+		expect(input.id).toBe(component.inputId);
+		expect(input.id).toMatch(/^ngui-auto-complete-input-\d+$/);
+		expect(input.hasAttribute('name')).toBe(false);
+	});
+
 	it('should default open-direction to "auto" and not mark the dropdown as dropup', () => {
 		component.dropdownVisible.set(true);
 		fixture.detectChanges();

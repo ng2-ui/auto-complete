@@ -24,10 +24,13 @@
 	background-color: #fff;
 	margin: 0;
 	width: 100%;
+	max-height: 256px;
 	overflow-y: auto;
 	list-style-type: none;
 	padding: 0;
-	border: 1px solid #ccc;
+	border: 1px solid rgba(0, 0, 0, 0.12);
+	border-radius: 4px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 	box-sizing: border-box;
 	animation: slideDown 0.1s;
 }
@@ -45,12 +48,13 @@
 }
 
 .ngui-auto-complete > ul li {
-	padding: 2px 5px;
-	border-bottom: 1px solid #eee;
+	padding: 6px 12px;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+	cursor: pointer;
 }
 
 .ngui-auto-complete > ul li.selected {
-	background-color: #ccc;
+	background-color: rgba(0, 0, 0, 0.1);
 }
 
 .ngui-auto-complete > ul li:last-child {
@@ -58,5 +62,5 @@
 }
 
 .ngui-auto-complete > ul li:not(.header-item):hover {
-	background-color: #ccc;
+	background-color: rgba(0, 0, 0, 0.06);
 }

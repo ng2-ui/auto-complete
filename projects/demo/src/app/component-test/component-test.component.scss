@@ -19,3 +19,9 @@ input:not([mat-input]) {
 		box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.15);
 	}
 }
+
+// Loading row shown via [loadingTemplate]
+.loading-hint {
+	padding: 8px;
+	color: #888;
+}

@@ -209,6 +209,21 @@ body {
 	}
 }
 
+// Dropdown row content produced by `list-formatter` strings. These are rendered into the
+// library dropdown via [innerHtml], so they live outside any component's style scope and
+// must be styled globally.
+.amount-cell {
+	text-align: end;
+}
+
+.book-title {
+	display: block;
+}
+
+.book-author {
+	color: #888;
+}
+
 // Component test specific
 .addr-chip {
 	display: inline-flex;

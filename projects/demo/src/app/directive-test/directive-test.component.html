@@ -209,8 +209,8 @@
 			</mat-card-subtitle>
 		</mat-card-header>
 		<mat-card-content>
-			<div class="demo-area">
-				<mat-form-field appearance="outline" style="width: 100%">
+			<div class="demo-area material-demo">
+				<mat-form-field appearance="outline">
 					<mat-icon fontIcon="attach_money" matPrefix></mat-icon>
 					<input
 						matInput
@@ -273,7 +273,7 @@
 			</mat-card-subtitle>
 		</mat-card-header>
 		<mat-card-content>
-			<div class="demo-area" dir="rtl" style="text-align: right">
+			<div class="demo-area rtl-demo" dir="rtl">
 				<div
 					ngui-auto-complete
 					[source]="arrayOfArabicStrings"
@@ -307,7 +307,6 @@
 			<div class="demo-area">
 				<input
 					ngui-auto-complete
-					style="width: 100%"
 					name="city"
 					[(ngModel)]="city"
 					[source]="arrayOfCities"

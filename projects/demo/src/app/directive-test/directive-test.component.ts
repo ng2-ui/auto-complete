@@ -304,8 +304,8 @@ export class DirectiveTestComponent {
 
 	public renderBook(data: any): string {
 		const author = data.author_name?.length ? data.author_name[0] : 'Unknown author';
-		return `<b style="display:block">${data.title}</b>
-            <small style="color:#888">${author}</small>`;
+		return `<b class="book-title">${data.title}</b>
+            <small class="book-author">${author}</small>`;
 	}
 
 	public renderCity(data: any): string {
@@ -321,7 +321,9 @@ export class DirectiveTestComponent {
 	}
 
 	public rightAligned(data: any): string {
-		return `<div style="text-align:right">${data}.00</div>`;
+		// The field shows "$" (prefix) and ".00" (suffix), so the row only needs the bare,
+		// right-aligned number — matching what lands in the input after selection.
+		return `<div class="amount-cell">${data}</div>`;
 	}
 
 	public json(obj) {

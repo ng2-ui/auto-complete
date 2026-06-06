@@ -101,7 +101,7 @@ export class NguiAutoCompleteComponent<T = any> implements OnInit {
 	public filteredList = signal<T[]>([]);
 	public minCharsEntered = signal(false);
 	public itemIndex = signal<number | null>(null);
-	public keyword: string;
+	public keyword = '';
 
 	// Unique id for the internal keyword input so it satisfies the "form field should have an
 	// id or name" a11y check without a `name` (a named control would register the keyword field
@@ -112,7 +112,7 @@ export class NguiAutoCompleteComponent<T = any> implements OnInit {
 	private timer = 0;
 
 	private delay = (() => {
-		let timer = null;
+		let timer: any = null;
 		return (callback: any, ms: number) => {
 			clearTimeout(timer);
 			timer = setTimeout(callback, ms);
@@ -264,7 +264,7 @@ export class NguiAutoCompleteComponent<T = any> implements OnInit {
 
 	public blurHandler(evt: any) {
 		if (this.selectOnBlur()) {
-			this.selectOne(this.filteredList()[this.itemIndex()], this.itemIndex() ?? -1);
+			this.selectOne(this.filteredList()[this.itemIndex() ?? -1], this.itemIndex() ?? -1);
 		}
 
 		this.hideDropdownList();
@@ -288,8 +288,8 @@ export class NguiAutoCompleteComponent<T = any> implements OnInit {
 					return;
 				}
 				this.selectOnEnter = true;
-				this.itemIndex.set((totalNumItem + this.itemIndex() - 1) % totalNumItem);
-				this.scrollToView(this.itemIndex());
+				this.itemIndex.set((totalNumItem + (this.itemIndex() ?? 0) - 1) % totalNumItem);
+				this.scrollToView(this.itemIndex() ?? 0);
 				break;
 
 			case 40: // DOWN, select the next li el or the first one
@@ -298,28 +298,32 @@ export class NguiAutoCompleteComponent<T = any> implements OnInit {
 				}
 				this.selectOnEnter = true;
 				this.dropdownVisible.set(true);
-				const sum = this.itemIndex() === null ? 0 : this.itemIndex() + 1;
+				const current = this.itemIndex();
+				const sum = current === null ? 0 : current + 1;
 				this.itemIndex.set((totalNumItem + sum) % totalNumItem);
-				this.scrollToView(this.itemIndex());
+				this.scrollToView(this.itemIndex() ?? 0);
 				break;
 
 			case 13: // ENTER, choose it!!
 				if (this.selectOnEnter) {
-					this.selectOne(this.filteredList()[this.itemIndex()], this.itemIndex() ?? -1);
+					this.selectOne(this.filteredList()[this.itemIndex() ?? -1], this.itemIndex() ?? -1);
 				}
 				evt.preventDefault();
 				break;
 
 			case 9: // TAB, choose if tab-to-select is enabled
 				if (this.tabToSelect()) {
-					this.selectOne(this.filteredList()[this.itemIndex()], this.itemIndex() ?? -1);
+					this.selectOne(this.filteredList()[this.itemIndex() ?? -1], this.itemIndex() ?? -1);
 				}
 				break;
 		}
 	};
 
-	public scrollToView(index) {
-		const container = this.autoCompleteContainer().nativeElement;
+	public scrollToView(index: number) {
+		const container = this.autoCompleteContainer()?.nativeElement;
+		if (!container) {
+			return;
+		}
 		const ul = container.querySelector('ul');
 		const li = ul.querySelector('li'); // just sample the first li to get height
 		const liHeight = li.offsetHeight;
@@ -331,7 +335,7 @@ export class NguiAutoCompleteComponent<T = any> implements OnInit {
 		}
 	}
 
-	public trackByIndex(index, item) {
+	public trackByIndex(index: number, item: any) {
 		return index;
 	}
 

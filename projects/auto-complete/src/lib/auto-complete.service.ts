@@ -7,12 +7,12 @@ import { map } from 'rxjs/operators';
 export class NguiAutoCompleteService {
 	private http = inject(HttpClient, { optional: true });
 
-	public source: string;
-	public pathToData: string;
+	public source!: string;
+	public pathToData = '';
 	public listFormatter: ((arg: any) => string) | undefined;
 
 	public filter(list: any[], keyword: string, matchFormatted: boolean, accentInsensitive: boolean) {
-		const objectString = (el) => (matchFormatted ? this.getFormattedListItem(el).toLowerCase() : JSON.stringify(el).toLowerCase());
+		const objectString = (el: any) => (matchFormatted ? this.getFormattedListItem(el).toLowerCase() : JSON.stringify(el).toLowerCase());
 		const loweredKeyword = keyword.toLowerCase();
 
 		return accentInsensitive
@@ -71,7 +71,7 @@ export class NguiAutoCompleteService {
 			map((list) => {
 				if (this.pathToData) {
 					const paths = this.pathToData.split('.');
-					paths.forEach((prop) => (list = list[prop]));
+					paths.forEach((prop) => (list = (list as any)[prop]));
 				}
 
 				return list;

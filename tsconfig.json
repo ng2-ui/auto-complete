@@ -27,7 +27,8 @@
         "docs"
       ]
     },
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "strict": true
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

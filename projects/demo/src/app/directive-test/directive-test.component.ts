@@ -94,9 +94,9 @@ export class DirectiveTestComponent {
 	public word = 'is'; // basic string list (cards 1 & 2)
 	public idValue = { id: 1, value: 'One' }; // id/value objects
 	public keyName = { key: 3, name: 'Key Three' }; // key/name objects
-	public place; // remote address (HTTP source)
-	public book; // remote book (Observable source)
-	public amount; // Angular Material integration
+	public place: any; // remote address (HTTP source)
+	public book: any; // remote book (Observable source)
+	public amount: any; // Angular Material integration
 	public autoSelectWord = ''; // auto-select-first-item
 	public rtlCity = ''; // RTL
 	public city = ''; // grid-style cities
@@ -326,7 +326,7 @@ export class DirectiveTestComponent {
 		return `<div class="amount-cell">${data}</div>`;
 	}
 
-	public json(obj) {
+	public json(obj: any) {
 		return JSON.stringify(obj, null, '  ');
 	}
 }

@@ -28,9 +28,9 @@ export class ComponentTestComponent {
 	public showAutocomplete = false;
 	public addrs: any[] = [{ display_name: 'Berlin, Germany' }, { display_name: 'London, United Kingdom' }];
 
-	myModel;
-	showMe;
-	tplModel;
+	myModel: any;
+	showMe = false;
+	tplModel: any;
 	showTpl = false;
 	public people: any[] = [
 		{ name: 'Ada Lovelace', role: 'Mathematician', year: 1815 },

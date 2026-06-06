@@ -209,6 +209,27 @@ All directive inputs are supported plus:
 Same as the directive: `(valueSelected)` emits `NguiAutoCompleteSelection` (see above) and `(noMatchFound)`
 emits `void`. For just the value, prefer `[(value)]`.
 
+### Type inference
+
+`NguiAutoCompleteComponent<T = any>` is generic. Bind a typed `[source]` (a typed array or a function
+returning `Observable<T[]>`) and Angular infers the item type — `[(value)]`, `(valueSelected)`
+(`NguiAutoCompleteSelection<T>`) and the `itemTemplate` context are then all typed with no extra
+annotation:
+
+```html
+<ngui-auto-complete [source]="cities" [(value)]="city" (valueSelected)="onPick($event)"></ngui-auto-complete>
+```
+
+```typescript
+cities: City[] = [/* … */];
+city?: City;
+onPick(e: NguiAutoCompleteSelection<City>) { /* e.item is City */ }
+```
+
+It defaults to `any`, so existing templates are unaffected. The directive (`[ngui-auto-complete]`) stays
+loosely typed — Angular can't infer a generic for an attribute directive in templates, so its
+`(valueSelected)` payload is `NguiAutoCompleteSelection<any>`.
+
 ---
 
 ## Angular Version Compatibility

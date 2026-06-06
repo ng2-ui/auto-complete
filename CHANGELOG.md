@@ -53,6 +53,11 @@ and this project follows [Angular version numbers](https://angular.dev/reference
   `value` model — e.g. `<ngui-auto-complete [(value)]="myValue">`. `(valueSelected)` continues to fire.
 - **`NguiAutoCompleteSelection<T>`** interface exported for the `(valueSelected)` payload
   (`{ value, item, index, fromSource }`).
+- **Generic `NguiAutoCompleteComponent<T = any>`.** Binding a typed `[source]` (array or function)
+  infers the item type, so `[(value)]`, `(valueSelected)` (`NguiAutoCompleteSelection<T>`) and the
+  `itemTemplate` context are all typed without any annotation. Defaults to `any`, so existing templates
+  are unaffected. The directive stays loosely typed (Angular can't infer generics for an attribute
+  directive in templates).
 
 ### Changed
 - **Upgraded to Angular 21** (`@angular/*` 21.2.x, `@angular/material` + `@angular/cdk` 21.2.x).

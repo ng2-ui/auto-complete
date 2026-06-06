@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NguiAutoCompleteComponent } from './auto-complete.component';
+import { NguiAutoCompleteComponent, NguiAutoCompleteSelection } from './auto-complete.component';
 
 describe('NguiAutoCompleteComponent', () => {
 	let component: NguiAutoCompleteComponent;
@@ -98,6 +98,42 @@ describe('NguiAutoCompleteComponent itemTemplate', () => {
 		expect(rows[0].textContent.trim()).toBe('custom:Alpha:0');
 		expect(rows[1].textContent.trim()).toBe('custom:Beta:1');
 
+		fixture.destroy();
+	});
+});
+
+interface City {
+	name: string;
+	country: string;
+}
+
+// Compile-time proof that the component is generic: binding a typed `[source]` infers `T = City`,
+// so `(valueSelected)` is `NguiAutoCompleteSelection<City>` and `[(value)]` is `City`. The let-vars
+// in the item template are typed too (`item.name` would not compile if inference were lost). If the
+// generic regressed to `any`, this host's strict template type-check would still pass — but the typed
+// handler signature below would fail to compile, which is the guarantee we want.
+@Component({
+	imports: [NguiAutoCompleteComponent],
+	template: `
+		<ngui-auto-complete [source]="cities" [(value)]="selected" (valueSelected)="onSelect($event)" [itemTemplate]="row"></ngui-auto-complete>
+		<ng-template #row let-item let-i="index">{{ i }}:{{ item.name }} ({{ item.country }})</ng-template>
+	`,
+})
+class TypedHostComponent {
+	cities: City[] = [{ name: 'Amman', country: 'JO' }];
+	selected?: City;
+	picked?: City;
+
+	onSelect(e: NguiAutoCompleteSelection<City>): void {
+		this.picked = e.item;
+	}
+}
+
+describe('NguiAutoCompleteComponent generic typing', () => {
+	it('infers the item type from a typed source', () => {
+		const fixture = TestBed.createComponent(TypedHostComponent);
+		fixture.detectChanges();
+		expect(fixture.componentInstance).toBeTruthy();
 		fixture.destroy();
 	});
 });

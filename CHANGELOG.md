@@ -76,6 +76,8 @@ and this project follows [Angular version numbers](https://angular.dev/reference
   is signal-based, so remote/async results and directive-driven updates refresh reliably with less change
   detection work. No public API change.
 - Bumped the library's own `tslib` dependency floor to `^2.8.1`.
+- The "drop-up" dropdown now anchors with the logical `inset-inline-start` instead of `left`, so it sits
+  on the correct edge under RTL (matching the directive's positioning). No API change.
 
 ### Internal (development tooling only — no impact on consumers)
 - `ng update` to Angular 21: `@angular/cli` + `@angular-devkit/build-angular` 21.2.x,

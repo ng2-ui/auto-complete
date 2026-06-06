@@ -39,7 +39,9 @@
 .ngui-auto-complete > ul.dropup {
 	position: absolute;
 	bottom: 100%;
-	left: 0;
+	// Logical inline-start anchors LTR→left / RTL→right automatically (matches the
+	// directive's inset-inline-start positioning), so RTL needs no override.
+	inset-inline-start: 0;
 }
 
 .ngui-auto-complete > ul li {

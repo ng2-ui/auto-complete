@@ -13,6 +13,11 @@ export interface BookSearchResponse {
 	docs: Book[];
 }
 
+/** A place result from the Nominatim/OpenStreetMap search (only the field the demo uses). */
+export interface Place {
+	display_name: string;
+}
+
 @Injectable()
 export class AppService {
 	private _http = inject(HttpClient);
@@ -28,9 +33,9 @@ export class AppService {
 	/**
 	 * Address search via Nominatim / OpenStreetMap (no API key required).
 	 * URL string source — replace :my_own_keyword with the typed text.
-	 * Response is a plain array; each item has a `display_name` field.
+	 * Response is a plain array of {@link Place}.
 	 */
-	public getAddressUrl = () => {
+	public getAddressUrl = (): string => {
 		return 'https://nominatim.openstreetmap.org/search?q=:my_own_keyword&format=json&addressdetails=0&limit=8';
 	};
 }

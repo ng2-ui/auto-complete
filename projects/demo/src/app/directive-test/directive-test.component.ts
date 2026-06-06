@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, inject } from '@angular/core';
-import { AppService, Book } from '../app.service';
+import { AppService, Book, Place } from '../app.service';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
 import { NguiAutoCompleteDirective } from 'auto-complete';
 import { FormsModule } from '@angular/forms';
@@ -94,7 +94,7 @@ export class DirectiveTestComponent {
 	public word = 'is'; // basic string list (cards 1 & 2)
 	public idValue = { id: 1, value: 'One' }; // id/value objects
 	public keyName = { key: 3, name: 'Key Three' }; // key/name objects
-	public place: any; // remote address (HTTP source)
+	public place?: Place | string; // remote address (URL source); string when a custom value is typed
 	public book?: Book | string; // remote book (Observable source); string when a custom value is typed
 	public amount: any; // Angular Material integration
 	public autoSelectWord = ''; // auto-select-first-item

@@ -28,8 +28,7 @@ The directive positions its dropdown with the [CDK Overlay](https://material.ang
 
 > **Styling the dropdown:** because the directive renders its dropdown in an overlay at the document root,
 > any custom dropdown styles (e.g. classes used by a `list-formatter` or template) must be **global**, not
-> scoped to an ancestor of the input. The dropdown's height is capped by `--ngui-ac-max-height` (default
-> `256px`) — set it on `:root` to change it, or `--ngui-ac-max-height: none` to remove the cap.
+> scoped to an ancestor of the input. See [Theming](#theming) to restyle it with CSS variables.
 
 ## Setup
 
@@ -264,6 +263,37 @@ onPick(e: NguiAutoCompleteSelection<City>) { /* e.item is City */ }
 It defaults to `any`, so existing templates are unaffected. The directive (`[ngui-auto-complete]`) stays
 loosely typed — Angular can't infer a generic for an attribute directive in templates, so its
 `(valueSelected)` payload is `NguiAutoCompleteSelection<any>`.
+
+---
+
+## Theming
+
+Restyle the dropdown by overriding these CSS variables. Each has a sensible default, so set only what you
+need. Set them on `:root` — the directive's dropdown renders in an overlay at the document root, so
+variables on an ancestor of the input won't reach it.
+
+| Variable | Default | Controls |
+|----------|---------|----------|
+| `--ngui-ac-background` | `#fff` | Dropdown background |
+| `--ngui-ac-color` | `inherit` | Text color |
+| `--ngui-ac-border` | `1px solid rgba(0,0,0,.12)` | Dropdown border |
+| `--ngui-ac-border-radius` | `4px` | Corner radius |
+| `--ngui-ac-shadow` | `0 4px 12px rgba(0,0,0,.15)` | Elevation shadow |
+| `--ngui-ac-max-height` | `256px` | Height cap (`none` to remove) |
+| `--ngui-ac-item-border` | `1px solid rgba(0,0,0,.06)` | Row divider |
+| `--ngui-ac-hover-background` | `rgba(0,0,0,.06)` | Row hover background |
+| `--ngui-ac-selected-background` | `rgba(0,0,0,.1)` | Highlighted row background |
+
+```scss
+/* e.g. a dark dropdown */
+:root {
+  --ngui-ac-background: #2b2b2b;
+  --ngui-ac-color: #eee;
+  --ngui-ac-item-border: 1px solid rgba(255, 255, 255, 0.08);
+  --ngui-ac-hover-background: rgba(255, 255, 255, 0.08);
+  --ngui-ac-selected-background: rgba(255, 255, 255, 0.16);
+}
+```
 
 ---
 

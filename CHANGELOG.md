@@ -94,9 +94,12 @@ and this project follows [Angular version numbers](https://angular.dev/reference
   overlay already layers above page content; it now only orders overlapping overlays). RTL follows the
   input's computed direction. **Note:** because the dropdown is at the document root, custom dropdown
   styles (e.g. classes from a `list-formatter`) must be global, not scoped to an ancestor of the input.
-- **Refreshed dropdown styling.** The dropdown now has a subtle elevation, rounded corners, a softer
-  border and roomier rows, and a default height cap via the overridable `--ngui-ac-max-height` CSS variable
-  (default `256px`; set `--ngui-ac-max-height: none` to remove it). Applies to the directive and component.
+- **Refreshed, themeable dropdown styling.** The dropdown now has a subtle elevation, rounded corners, a
+  softer border and roomier rows. Appearance is exposed through CSS variables — `--ngui-ac-background`,
+  `--ngui-ac-color`, `--ngui-ac-border`, `--ngui-ac-border-radius`, `--ngui-ac-shadow`,
+  `--ngui-ac-max-height` (`none` to remove the cap), `--ngui-ac-item-border`, `--ngui-ac-hover-background`
+  and `--ngui-ac-selected-background` — each with a sensible default (set them on `:root`). See the
+  README "Theming" section. Applies to the directive and component.
 
 ### Fixed
 - **Internal keyword input a11y.** The component's internal input (rendered when `show-input-tag`) now

@@ -280,6 +280,7 @@ variables on an ancestor of the input won't reach it.
 | `--ngui-ac-border-radius` | `4px` | Corner radius |
 | `--ngui-ac-shadow` | `0 4px 12px rgba(0,0,0,.15)` | Elevation shadow |
 | `--ngui-ac-max-height` | `256px` | Height cap (`none` to remove) |
+| `--ngui-ac-item-padding` | `6px 12px` | Row padding (density) |
 | `--ngui-ac-item-border` | `1px solid rgba(0,0,0,.06)` | Row divider |
 | `--ngui-ac-hover-background` | `rgba(0,0,0,.06)` | Row hover background |
 | `--ngui-ac-selected-background` | `rgba(0,0,0,.1)` | Highlighted row background |

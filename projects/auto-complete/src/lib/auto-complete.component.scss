@@ -53,7 +53,7 @@
 }
 
 .ngui-auto-complete > ul li {
-	padding: 6px 12px;
+	padding: var(--ngui-ac-item-padding, 6px 12px);
 	border-bottom: var(--ngui-ac-item-border, 1px solid rgba(0, 0, 0, 0.06));
 	cursor: pointer;
 }

@@ -52,8 +52,9 @@ export class NguiAutoCompleteComponent<T = any> implements OnInit {
 	public autocomplete = input(false, { transform: booleanAttribute });
 	public listFormatter = input<((arg: T) => string) | undefined>(undefined, { alias: 'list-formatter' });
 	// Local array, remote URL string, or a function returning an `Observable` of items.
-	// Binding a typed array/function (e.g. `[source]="cities"`) lets Angular infer `T`.
-	public source = input<T[] | string | ((keyword: string) => Observable<T[]>) | undefined>(undefined);
+	// Required — the component does nothing without it. Binding a typed array/function
+	// (e.g. `[source]="cities"`) lets Angular infer `T`.
+	public source = input.required<T[] | string | ((keyword: string) => Observable<T[]>)>();
 	public pathToData = input('', { alias: 'path-to-data' });
 	public minChars = input(0, { alias: 'min-chars', transform: numberAttribute });
 	public placeholder = input('');

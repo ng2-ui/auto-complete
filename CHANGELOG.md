@@ -47,6 +47,10 @@ and this project follows [Angular version numbers](https://angular.dev/reference
   `header-item-template` inputs are removed. Use the `headerTemplate` `TemplateRef` (already available) and
   the new `loadingTemplate` `TemplateRef` (`loading-text` remains for the simple case). This also removes
   an `innerHTML` sink.
+- **`source` is now a required input.** `source` uses `input.required` on both the component and directive
+  (it was always required in practice — the control does nothing without it). Omitting `[source]` is now a
+  compile-time error under strict templates (and a runtime error otherwise) instead of silently doing
+  nothing. Just ensure every `[ngui-auto-complete]` / `<ngui-auto-complete>` has a `[source]`.
 
 ### Added
 - **`[(value)]` two-way binding on `NguiAutoCompleteComponent`.** The standalone component now exposes a

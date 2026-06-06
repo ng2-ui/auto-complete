@@ -136,6 +136,17 @@ The standalone component gained a two-way `value` model. `(valueSelected)` still
 <ngui-auto-complete [source]="myArray" [show-input-tag]="false" [(value)]="myValue"></ngui-auto-complete>
 ```
 
+### `source` is now required
+
+`source` is declared with `input.required` on both the directive and component. It was always required in
+practice, but omitting it used to fail silently; now it is a compile-time error (strict templates) or a
+runtime error. The fix is simply to provide `[source]` everywhere — no change is needed if you already do.
+
+```diff
+- <input ngui-auto-complete [(ngModel)]="v" />
++ <input ngui-auto-complete [(ngModel)]="v" [source]="mySource" />
+```
+
 ### Note: signal-based inputs (only affects programmatic access)
 
 All inputs are now signal `input()`s. Template bindings and their names/aliases are unchanged. Only code

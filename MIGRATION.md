@@ -5,6 +5,24 @@ tracks the supported Angular major (`@ngui/auto-complete@N` ⇒ Angular `N`).
 
 ---
 
+## v21 → v22
+
+A framework-only major — there are **no public API changes**. Upgrading is just bumping Angular.
+
+### Requires Angular 22
+
+Update Angular (and `@angular/cdk`) to 22 first, then install the matching library major. Angular 21 and
+older projects must stay on `@ngui/auto-complete@21`.
+
+```bash
+ng update @angular/core@22 @angular/cli@22 @angular/cdk@22
+npm install @ngui/auto-complete@22
+```
+
+Everything else — inputs, outputs, templates, theming, the CDK overlay setup from v21 — is unchanged.
+
+---
+
 ## v20 → v21
 
 ### Requires Angular 21

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { ComponentTestComponent } from './component-test.component';
@@ -14,7 +14,7 @@ describe('ComponentTestComponent', () => {
 	beforeEach(waitForAsync(() => {
 		TestBed.configureTestingModule({
 			imports: [FormsModule, ComponentTestComponent],
-			providers: [AppService, provideHttpClient(), provideHttpClientTesting()],
+			providers: [AppService, provideHttpClient(withXhr()), provideHttpClientTesting()],
 			schemas: [NO_ERRORS_SCHEMA],
 		}).compileComponents();
 	}));

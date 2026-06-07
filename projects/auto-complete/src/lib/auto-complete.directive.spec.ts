@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -7,6 +7,7 @@ import { NguiAutoCompleteDirective } from './auto-complete.directive';
 
 @Component({
 	imports: [NguiAutoCompleteDirective, FormsModule],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `<input ngui-auto-complete [(ngModel)]="value" [source]="source" />`,
 })
 class HostComponent {

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
 import { BUILD_INFO } from './build-info';
 import { MatToolbar } from '@angular/material/toolbar';
@@ -11,6 +11,7 @@ import { DatePipe } from '@angular/common';
 	selector: 'app-root',
 	templateUrl: './app.component.html',
 	styleUrls: ['./app.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [MatToolbar, MatIcon, MatButton, MatTabNav, MatTabLink, RouterLinkActive, RouterLink, MatTabNavPanel, RouterOutlet, DatePipe],
 })
 export class AppComponent {

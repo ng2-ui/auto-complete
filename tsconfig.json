@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "esModuleInterop": true,
@@ -20,11 +19,11 @@
     ],
     "paths": {
       "auto-complete": [
-        "dist/auto-complete",
-        "dist/"
+        "./dist/auto-complete",
+        "./dist/"
       ],
       "demo": [
-        "docs"
+        "./docs"
       ]
     },
     "useDefineForClassFields": false,

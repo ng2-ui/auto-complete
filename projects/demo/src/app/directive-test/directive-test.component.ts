@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, inject } from '@angular/core';
+import { Component, ViewEncapsulation, inject, ChangeDetectionStrategy } from '@angular/core';
 import { AppService, Book, Place } from '../app.service';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
 import { NguiAutoCompleteDirective } from 'auto-complete';
@@ -15,6 +15,7 @@ import { JsonPipe } from '@angular/common';
 	templateUrl: './directive-test.component.html',
 	styleUrls: ['./directive-test.component.scss'],
 	encapsulation: ViewEncapsulation.None,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [
 		MatCard,
 		MatCardHeader,

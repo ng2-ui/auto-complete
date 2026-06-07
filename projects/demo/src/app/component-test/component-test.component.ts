@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { AppService, Place } from '../app.service';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
 import { NguiAutoCompleteComponent } from 'auto-complete';
@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 	selector: 'app-component-test',
 	templateUrl: './component-test.component.html',
 	styleUrls: ['./component-test.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [
 		MatCard,
 		MatCardHeader,

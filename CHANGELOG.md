@@ -12,17 +12,10 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 A framework-only major: the public API is unchanged from 21.x. The only consumer-visible change is the
 bumped Angular peer requirement.
 
-> Includes the changes previously staged for an (unreleased) 21.0.1 — TypeScript `strict` mode, strict
-> template type-checking and the package `funding` field — which ship here instead.
-
 ### ⚠️ BREAKING CHANGES
 - **Requires Angular 22.** `peerDependencies` now require `@angular/cdk`, `@angular/common` and
   `@angular/core` `^22.0.0`. Angular 21 and older projects must stay on `@ngui/auto-complete@21` (or the
   matching major).
-
-### Added
-- **Funding metadata.** The published `package.json` now carries a `funding` field (GitHub Sponsors +
-  PayPal), surfaced on the npm page and via `npm fund` (#501).
 
 ### Internal (development tooling only — no impact on consumers)
 - `ng update` to Angular 22: `@angular/cli` + `@angular/build` 22.0.0, `@angular/cdk` + `@angular/material`

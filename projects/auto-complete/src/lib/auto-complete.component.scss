@@ -24,6 +24,12 @@
 // or dark mode). The directive renders the dropdown in an overlay at the document root, so set these
 // on `:root` (not on an ancestor of the input) for them to take effect.
 .ngui-auto-complete > ul {
+	// Float the list below the input so it overlays following content instead of pushing it down
+	// (which would expand the host and scroll the page). The `.dropup` variant flips this above.
+	position: absolute;
+	top: 100%;
+	inset-inline-start: 0;
+	z-index: var(--ngui-ac-z-index, 10);
 	background-color: var(--ngui-ac-background, #fff);
 	color: var(--ngui-ac-color, inherit);
 	margin: 0;
@@ -45,11 +51,17 @@
 }
 
 .ngui-auto-complete > ul.dropup {
-	position: absolute;
+	// Flip above the input. `inset-inline-start: 0` is inherited from the base rule and
+	// anchors LTR→left / RTL→right automatically, so RTL needs no override.
+	top: auto;
 	bottom: 100%;
-	// Logical inline-start anchors LTR→left / RTL→right automatically (matches the
-	// directive's inset-inline-start positioning), so RTL needs no override.
-	inset-inline-start: 0;
+}
+
+// The directive renders this component inside a CDK overlay, which already floats the list at the
+// document root and must measure its height to flip/reposition on overflow. Keep the list in
+// normal flow there so the overlay pane sizes to it (the standalone component is never in a pane).
+.cdk-overlay-pane .ngui-auto-complete > ul {
+	position: static;
 }
 
 .ngui-auto-complete > ul li {

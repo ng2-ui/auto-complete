@@ -337,7 +337,8 @@ npm start
 
 ```bash
 # 1. Update version in projects/auto-complete/package.json
-# 2. Build the library and copy README/CHANGELOG/LICENSE into dist/
+# 2. Build the library. This also copies README/CHANGELOG/MIGRATION/LICENSE
+#    into dist/ for you (via the copy-lib script).
 npm run build-lib:prod
 
 # 3. Move into the built output — do NOT run npm publish from the project root

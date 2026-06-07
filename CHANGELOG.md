@@ -47,6 +47,12 @@ bumped Angular peer requirement and one dropdown-positioning fix (below).
   `OnPush`, never shipped `zone.js`), so this is purely a demo/test change with no consumer impact. The few
   `fakeAsync`/`waitForAsync` specs (which still require `zone.js`) were rewritten to plain `async`/`await`.
 - Bumped `jasmine-core` to 6.3.x (dev/test only).
+- **Migrated the build to the `@angular/build` builders.** `angular.json` now uses `@angular/build:*`
+  (`application`, `dev-server`, `ng-packagr`, `karma`, `extract-i18n`) instead of the deprecated
+  `@angular-devkit/build-angular:*` aliases, and the `karma.conf.js` files drop the old framework/plugin
+  (the new karma builder wires these in itself). Removing the `@angular-devkit/build-angular` package
+  (replaced by `@angular/build`) drops the legacy Webpack toolchain — ~370 fewer installed packages and 0
+  audit vulnerabilities. Build output is unchanged.
 
 ---
 

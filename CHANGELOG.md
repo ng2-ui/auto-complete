@@ -7,7 +7,7 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 
 ---
 
-## [22.0.0] — unreleased
+## [22.0.0] — 2026-06-07
 
 A framework-only major: the public API is unchanged from 21.x. The consumer-visible changes are the
 bumped Angular peer requirement and one dropdown-positioning fix (below).

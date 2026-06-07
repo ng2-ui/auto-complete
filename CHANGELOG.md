@@ -7,7 +7,7 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 
 ---
 
-## [22.0.0] — unreleased
+## [22.0.0] — 2026-06-07
 
 A framework-only major: the public API is unchanged from 21.x. The consumer-visible changes are the
 bumped Angular peer requirement and one dropdown-positioning fix (below).
@@ -53,6 +53,9 @@ bumped Angular peer requirement and one dropdown-positioning fix (below).
   (the new karma builder wires these in itself). Removing the `@angular-devkit/build-angular` package
   (replaced by `@angular/build`) drops the legacy Webpack toolchain — ~370 fewer installed packages and 0
   audit vulnerabilities. Build output is unchanged.
+- Fixed the Cypress e2e config for TypeScript 6: `projects/demo/cypress/tsconfig.json` now sets an explicit
+  `rootDir`, which TS 6 requires (`TS5011`) when an `outDir` is inherited and the included files span more
+  than one directory. Without it, `npm run cypress:run` failed to compile the spec. Dev/test only.
 
 ---
 

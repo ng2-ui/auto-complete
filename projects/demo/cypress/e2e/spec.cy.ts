@@ -9,13 +9,13 @@ describe('Smoke Tests', () => {
 		cy.get('app-directive-test').should('exist');
 		cy.get('app-component-test').should('not.exist');
 		// one mat-card per directive demo
-		cy.get('app-directive-test').find('mat-card').its('length').should('eq', 13);
+		cy.get('app-directive-test').find('mat-card').its('length').should('eq', 14);
 
 		// switch to the Component tab
 		cy.get('.mat-mdc-tab-links').find('a').contains('Component').click();
 		cy.get('app-component-test').should('exist');
 		cy.get('app-directive-test').should('not.exist');
-		cy.get('app-component-test').find('mat-card').its('length').should('eq', 2);
+		cy.get('app-component-test').find('mat-card').its('length').should('eq', 3);
 
 		// switch back to the Directive tab
 		cy.get('.mat-mdc-tab-links').find('a').contains('Directive').click();

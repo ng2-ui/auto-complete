@@ -8,6 +8,9 @@
     "types": [
       "cypress"
     ],
-    "sourceMap": false
+    "sourceMap": false,
+    // TS 6 turns the ambiguous output layout (TS5011) into an error: this config's files span
+    // `cypress/` and `../cypress.config.ts`, so pin the root explicitly to `projects/demo`.
+    "rootDir": ".."
   }
 }

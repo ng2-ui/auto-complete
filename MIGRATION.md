@@ -19,7 +19,11 @@ ng update @angular/core@22 @angular/cli@22 @angular/cdk@22
 npm install @ngui/auto-complete@22
 ```
 
-Everything else — inputs, outputs, templates, theming, the CDK overlay setup from v21 — is unchanged.
+Inputs, outputs, templates and the CDK overlay setup from v21 are unchanged. The only consumer-visible
+behaviour change is a fix: the **standalone `<ngui-auto-complete>` dropdown now floats over the content
+below it** instead of pushing it down (matching the directive and the existing drop-up). The float layer
+uses `z-index: var(--ngui-ac-z-index, 10)` — override the new `--ngui-ac-z-index` theming variable if it
+collides with other stacked UI.
 
 ### Zoneless apps are fully supported
 

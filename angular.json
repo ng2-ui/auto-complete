@@ -62,9 +62,6 @@
             },
             "baseHref": "/auto-complete/",
             "index": "projects/demo/src/index.html",
-            "polyfills": [
-              "projects/demo/src/polyfills.ts"
-            ],
             "tsConfig": "projects/demo/tsconfig.app.json",
             "assets": [
               "projects/demo/src/favicon.ico",
@@ -133,7 +130,6 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "projects/demo/src/test.ts",
-            "polyfills": "projects/demo/src/polyfills.ts",
             "tsConfig": "projects/demo/tsconfig.spec.json",
             "karmaConfig": "projects/demo/karma.conf.js",
             "assets": [

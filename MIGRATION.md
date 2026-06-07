@@ -21,6 +21,12 @@ npm install @ngui/auto-complete@22
 
 Everything else — inputs, outputs, templates, theming, the CDK overlay setup from v21 — is unchanged.
 
+### Zoneless apps are fully supported
+
+Angular 22 is zoneless by default. The library is built on signals and `OnPush` and never depended on
+`zone.js`, so it works as-is whether your app uses `provideZonelessChangeDetection()` or keeps `zone.js`.
+No action needed.
+
 ---
 
 ## v20 → v21

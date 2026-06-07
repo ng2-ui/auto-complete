@@ -280,6 +280,7 @@ variables on an ancestor of the input won't reach it.
 | `--ngui-ac-border-radius` | `4px` | Corner radius |
 | `--ngui-ac-shadow` | `0 4px 12px rgba(0,0,0,.15)` | Elevation shadow |
 | `--ngui-ac-max-height` | `256px` | Height cap (`none` to remove) |
+| `--ngui-ac-z-index` | `10` | Stacking order of the floating list (standalone `<ngui-auto-complete>`; the directive's overlay uses the `z-index` input instead) |
 | `--ngui-ac-item-padding` | `6px 12px` | Row padding (density) |
 | `--ngui-ac-item-border` | `1px solid rgba(0,0,0,.06)` | Row divider |
 | `--ngui-ac-hover-background` | `rgba(0,0,0,.06)` | Row hover background |

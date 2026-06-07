@@ -9,13 +9,21 @@ and this project follows [Angular version numbers](https://angular.dev/reference
 
 ## [22.0.0] — unreleased
 
-A framework-only major: the public API is unchanged from 21.x. The only consumer-visible change is the
-bumped Angular peer requirement.
+A framework-only major: the public API is unchanged from 21.x. The consumer-visible changes are the
+bumped Angular peer requirement and one dropdown-positioning fix (below).
 
 ### ⚠️ BREAKING CHANGES
 - **Requires Angular 22.** `peerDependencies` now require `@angular/cdk`, `@angular/common` and
   `@angular/core` `^22.0.0`. Angular 21 and older projects must stay on `@ngui/auto-complete@21` (or the
   matching major).
+
+### Fixed
+- **Standalone `<ngui-auto-complete>` dropdown now overlays the content below it instead of pushing it
+  down.** When opening downward (the default), the list was rendered in normal document flow, so it grew
+  its host and could scroll the page; it now floats (`position: absolute; top: 100%`), matching the
+  existing upward (`dropup`) behavior. The directive's CDK-overlay path is unchanged. The float layer uses
+  `z-index: var(--ngui-ac-z-index, 10)`, so you can override `--ngui-ac-z-index` if it collides with other
+  stacked UI.
 
 ### Internal (development tooling only — no impact on consumers)
 - `ng update` to Angular 22: `@angular/cli` + `@angular/build` 22.0.0, `@angular/cdk` + `@angular/material`

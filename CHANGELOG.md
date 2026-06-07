@@ -32,6 +32,13 @@ bumped Angular peer requirement.
   the natural companion to `strict` above. The library compiles cleanly under it; the only fix needed was a
   more precise type on a demo field (`open-direction` binding). No public API or runtime behavior change —
   this only tightens the library's own build (#503).
+- **Went fully zoneless.** Angular 22 is zoneless by default, so `zone.js` is removed entirely: the demo app
+  bootstraps with `provideZonelessChangeDetection()` (`zone.js` polyfill dropped from `angular.json`), the
+  unit-test harness drops `zone.js/testing` and configures `provideZonelessChangeDetection()` in `TestBed`,
+  and `zone.js` is removed from dependencies. The published library was already zoneless-ready (signals +
+  `OnPush`, never shipped `zone.js`), so this is purely a demo/test change with no consumer impact. The few
+  `fakeAsync`/`waitForAsync` specs (which still require `zone.js`) were rewritten to plain `async`/`await`.
+- Bumped `jasmine-core` to 6.3.x (dev/test only).
 
 ---
 

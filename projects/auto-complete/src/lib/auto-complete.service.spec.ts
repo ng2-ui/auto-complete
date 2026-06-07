@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 import { NguiAutoCompleteService } from './auto-complete.service';
 
@@ -7,7 +8,7 @@ describe('NguiAutoCompleteService', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [NguiAutoCompleteService],
+			providers: [provideZonelessChangeDetection(), NguiAutoCompleteService],
 		});
 		service = TestBed.inject(NguiAutoCompleteService);
 	});

@@ -1,4 +1,4 @@
-import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy, provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -11,6 +11,7 @@ describe('NguiAutoCompleteComponent', () => {
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			imports: [NguiAutoCompleteComponent],
+			providers: [provideZonelessChangeDetection()],
 		}).compileComponents();
 
 		fixture = TestBed.createComponent(NguiAutoCompleteComponent);
@@ -89,6 +90,10 @@ class TemplateHostComponent {
 }
 
 describe('NguiAutoCompleteComponent itemTemplate', () => {
+	beforeEach(() => {
+		TestBed.configureTestingModule({ providers: [provideZonelessChangeDetection()] });
+	});
+
 	it('should render each row with the provided item template', () => {
 		const fixture = TestBed.createComponent(TemplateHostComponent);
 		fixture.detectChanges();
@@ -139,6 +144,10 @@ class TypedHostComponent {
 }
 
 describe('NguiAutoCompleteComponent generic typing', () => {
+	beforeEach(() => {
+		TestBed.configureTestingModule({ providers: [provideZonelessChangeDetection()] });
+	});
+
 	it('infers the item type from a typed source', () => {
 		const fixture = TestBed.createComponent(TypedHostComponent);
 		fixture.detectChanges();

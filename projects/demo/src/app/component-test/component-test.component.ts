@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 	selector: 'app-component-test',
 	templateUrl: './component-test.component.html',
 	styleUrls: ['./component-test.component.scss'],
-	changeDetection: ChangeDetectionStrategy.Eager,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [
 		MatCard,
 		MatCardHeader,

@@ -11,7 +11,7 @@ import { DatePipe } from '@angular/common';
 	selector: 'app-root',
 	templateUrl: './app.component.html',
 	styleUrls: ['./app.component.scss'],
-	changeDetection: ChangeDetectionStrategy.Eager,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [MatToolbar, MatIcon, MatButton, MatTabNav, MatTabLink, RouterLinkActive, RouterLink, MatTabNavPanel, RouterOutlet, DatePipe],
 })
 export class AppComponent {

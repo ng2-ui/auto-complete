@@ -77,7 +77,7 @@ describe('NguiAutoCompleteComponent', () => {
 
 @Component({
 	imports: [NguiAutoCompleteComponent],
-	changeDetection: ChangeDetectionStrategy.Eager,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<ngui-auto-complete [source]="source" [itemTemplate]="tpl"></ngui-auto-complete>
 		<ng-template #tpl let-item let-i="index">custom:{{ item }}:{{ i }}</ng-template>
@@ -122,7 +122,7 @@ interface City {
 // handler signature below would fail to compile, which is the guarantee we want.
 @Component({
 	imports: [NguiAutoCompleteComponent],
-	changeDetection: ChangeDetectionStrategy.Eager,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<ngui-auto-complete [source]="cities" [(value)]="selected" (valueSelected)="onSelect($event)" [itemTemplate]="row"></ngui-auto-complete>
 		<ng-template #row let-item let-i="index">{{ i }}:{{ item.name }} ({{ item.country }})</ng-template>

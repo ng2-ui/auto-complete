@@ -7,7 +7,7 @@ import { NguiAutoCompleteDirective } from './auto-complete.directive';
 
 @Component({
 	imports: [NguiAutoCompleteDirective, FormsModule],
-	changeDetection: ChangeDetectionStrategy.Eager,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `<input ngui-auto-complete [(ngModel)]="value" [source]="source" />`,
 })
 class HostComponent {

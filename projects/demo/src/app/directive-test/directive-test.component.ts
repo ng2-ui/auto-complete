@@ -15,7 +15,7 @@ import { JsonPipe } from '@angular/common';
 	templateUrl: './directive-test.component.html',
 	styleUrls: ['./directive-test.component.scss'],
 	encapsulation: ViewEncapsulation.None,
-	changeDetection: ChangeDetectionStrategy.Eager,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [
 		MatCard,
 		MatCardHeader,

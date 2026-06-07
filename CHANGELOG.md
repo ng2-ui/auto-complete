@@ -26,7 +26,10 @@ bumped Angular peer requirement.
 
 ### Internal (development tooling only — no impact on consumers)
 - `ng update` to Angular 22: `@angular/cli` + `@angular/build` 22.0.0, `@angular/cdk` + `@angular/material`
-  22.0.0, `ng-packagr` 22.0.0, TypeScript 6.0.x.
+  22.0.0, `ng-packagr` 22.0.0, `angular-eslint` 22.0.0, TypeScript 6.0.x.
+- **Adopted `ChangeDetectionStrategy.OnPush`** in the demo app and the spec test-host components, satisfying
+  angular-eslint 22's new recommended `prefer-on-push-component-change-detection` rule with no opt-outs
+  (the published library component was already `OnPush`).
 - **TypeScript 6.0 config.** TS 6 deprecates `baseUrl`, so the root `tsconfig.json` drops it and uses
   relative `paths` instead.
 - **Enabled TypeScript `strict` mode** (`strict: true`) and tightened types accordingly — replacing

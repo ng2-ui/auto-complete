@@ -1,6 +1,5 @@
 import { enableProdMode, provideZonelessChangeDetection } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { provideRouter, withHashLocation } from '@angular/router';
 
@@ -18,7 +17,6 @@ bootstrapApplication(AppComponent, {
 		provideZonelessChangeDetection(),
 		provideRouter(routes, withHashLocation()),
 		provideHttpClient(withXhr(), withInterceptorsFromDi()),
-		provideAnimations(),
 		AppService,
 	],
 }).catch((err) => console.error(err));

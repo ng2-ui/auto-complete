@@ -35,7 +35,6 @@
     "@angular/forms": "^22.0.2",
     "@angular/material": "^22.0.2",
     "@angular/platform-browser": "^22.0.2",
-    "@angular/platform-browser-dynamic": "^22.0.2",
     "@angular/router": "^22.0.2",
     "rxjs": "~7.8.2",
     "tslib": "^2.8.1"
@@ -47,7 +46,6 @@
     "@angular/language-service": "^22.0.2",
     "@cypress/schematic": "^5.0.0",
     "@eslint/js": "^10.0.1",
-    "@types/jasmine": "~6.0.0",
     "@types/node": "^26.0.0",
     "angular-eslint": "^22.0.0",
     "copyfiles": "^2.4.1",
@@ -55,19 +53,13 @@
     "eslint": "^10.5.0",
     "eslint-plugin-cypress": "^6.4.1",
     "husky": "^9.1.7",
-    "istanbul-lib-instrument": "^6.0.3",
-    "jasmine-core": "~6.3.0",
-    "jasmine-spec-reporter": "~7.0.0",
-    "karma": "~6.4.4",
-    "karma-chrome-launcher": "~3.2.0",
-    "karma-coverage": "^2.2.1",
-    "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "^2.2.0",
+    "jsdom": "^29.1.1",
     "lint-staged": "^17.0.8",
     "ng-packagr": "^22.0.0",
     "prettier": "^3.8.4",
     "ts-node": "~10.9.2",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.61.1"
+    "typescript-eslint": "^8.61.1",
+    "vitest": "^4.1.9"
   }
 }

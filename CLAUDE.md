@@ -25,8 +25,8 @@ npm install
 npm run build-lib:prod   # build the library to dist/ (run BEFORE build-docs / before testing the demo)
 npm run build-docs       # production build of the demo app into docs/
 npm run lint             # ng lint (ESLint flat config, eslint.config.js)
-npx ng test auto-complete --watch=false --browsers=ChromeHeadless
-npx ng test demo --watch=false --browsers=ChromeHeadless
+npx ng test auto-complete --watch=false   # Vitest + jsdom (@angular/build:unit-test, no browser)
+npx ng test demo --watch=false
 npm run format:check     # prettier --check (CI gate); npm run format to fix
 npm run cypress:run      # e2e
 ```
@@ -38,8 +38,8 @@ Before opening any PR for a code change, all must pass:
 1. `npm run build-lib:prod`
 2. `npm run build-docs` (watch for `NG8113` unused-import warnings)
 3. `npm run lint`
-4. `npx ng test auto-complete --watch=false --browsers=ChromeHeadless`
-5. `npx ng test demo --watch=false --browsers=ChromeHeadless`
+4. `npx ng test auto-complete --watch=false`
+5. `npx ng test demo --watch=false`
 6. `npm run format:check`
 
 ## How to work
@@ -78,6 +78,13 @@ Before opening any PR for a code change, all must pass:
   `NG0100` (`ExpressionChangedAfterItHasBeenChecked`).
 - On `ng update`, pin **all** `@angular/*` packages to the same major, and check the `package.json` diff for
   silently-narrowed `eslint`/`typescript-eslint` ranges.
+- **Unit tests run on Vitest + jsdom** via `@angular/build:unit-test` (no Karma, no `test.ts`). The builder
+  auto-initializes the Angular TestBed with Vitest `globals: true`, so specs use bare `describe/it/expect`
+  and there's no `initTestEnvironment`/`platform-browser-dynamic`. `tsconfig.spec.json` sets
+  `types: ["vitest/globals", "node"]`. **The base `tsconfig.json` must NOT set an explicit `typeRoots`** —
+  the builder's angular-compiler resolves `types` entries strictly against `typeRoots` (unlike `tsc`, which
+  falls back to module resolution), so a `node_modules/@types`-only `typeRoots` makes `vitest/globals`
+  unresolvable (`TS2304: Cannot find name 'expect'`).
 
 ## Capturing lessons
 

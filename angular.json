@@ -24,11 +24,10 @@
           "defaultConfiguration": "production"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/auto-complete/src/test.ts",
             "tsConfig": "projects/auto-complete/tsconfig.spec.json",
-            "karmaConfig": "projects/auto-complete/karma.conf.js"
+            "runner": "vitest"
           }
         },
         "lint": {
@@ -127,19 +126,10 @@
           }
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/demo/src/test.ts",
             "tsConfig": "projects/demo/tsconfig.spec.json",
-            "karmaConfig": "projects/demo/karma.conf.js",
-            "assets": [
-              "projects/demo/src/favicon.ico",
-              "projects/demo/src/assets"
-            ],
-            "styles": [
-              "projects/demo/src/styles.scss"
-            ],
-            "scripts": []
+            "runner": "vitest"
           }
         },
         "lint": {

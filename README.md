@@ -325,7 +325,7 @@ npm start
 | Script | Description |
 |--------|-------------|
 | `npm start` | Serve the demo app on port 4200 |
-| `npm test` | Run unit tests (Karma/Jasmine) |
+| `npm test` | Run unit tests (Vitest + jsdom) |
 | `npm run lint` | Lint all TypeScript and HTML |
 | `npm run build-lib:watch` | Build library in watch mode (for demo development) |
 | `npm run build-lib:prod` | Production library build |

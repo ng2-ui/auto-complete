@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up Node.js
         uses: actions/setup-node@v6
@@ -32,6 +32,12 @@ jobs:
 
       - name: Build library
         run: npm run build-lib:prod
+
+      - name: Test (library)
+        run: npx ng test auto-complete --watch=false
+
+      - name: Test (demo)
+        run: npx ng test demo --watch=false
 
       - name: Build demo docs
         run: npm run build-docs
@@ -54,7 +60,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Download docs artifact
         uses: actions/download-artifact@v8

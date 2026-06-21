@@ -54,7 +54,6 @@ npm run format:check
 - [ ] **CHANGELOG.md** updated (every user-facing change)
 - [ ] **README.md** updated (if the public API / usage changed)
 - [ ] Breaking changes are documented — **CHANGELOG.md** + **MIGRATION.md**, title marked `!` / `BREAKING CHANGE:` (or: this PR has none)
-- [ ] No generated `projects/demo/src/app/build-info.ts` timestamp committed (it's a placeholder)
 
 ## Related issues
 

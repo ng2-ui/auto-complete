@@ -6,6 +6,8 @@
 /out-tsc
 # Demo app build output — managed by CI deploy-docs job, never commit manually
 /docs
+# Generated at build time (postinstall / prebuild-docs / prestart) — never tracked
+/projects/demo/src/app/build-info.ts
 # Only exists if Bazel was run
 /bazel-out
 

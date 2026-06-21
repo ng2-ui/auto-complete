@@ -17,6 +17,8 @@ Angular CLI monorepo with two projects:
 The demo **consumes the built library from `dist/`**, not the source — rebuild the library before the demo
 (or your editor) reflects library changes. The library's major version tracks the supported Angular major
 (`@ngui/auto-complete@N` ⇒ Angular `N`); don't introduce a major that doesn't line up with an Angular major.
+When bumping the Angular major, also update the static **Angular badge** in `README.md` (it's hard-coded,
+e.g. `Angular-22`).
 
 ## Commands (from the repo root)
 

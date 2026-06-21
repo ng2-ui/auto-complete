@@ -1,10 +1,11 @@
 # @ngui/auto-complete
 
-[![CI](https://github.com/ng2-ui/auto-complete/actions/workflows/ci.yml/badge.svg)](https://github.com/ng2-ui/auto-complete/actions/workflows/ci.yml)
-[![npm version](https://img.shields.io/npm/v/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)
-[![npm downloads](https://img.shields.io/npm/dt/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)
-[![npm license](https://img.shields.io/npm/l/@ngui/auto-complete.svg)](https://www.npmjs.com/package/@ngui/auto-complete)
-[![GitHub issues](https://img.shields.io/github/issues/ng2-ui/auto-complete.svg)](https://github.com/ng2-ui/auto-complete/issues)
+[![CI](https://img.shields.io/github/actions/workflow/status/ng2-ui/auto-complete/ci.yml?branch=master&style=flat-square&logo=githubactions&logoColor=white&label=CI)](https://github.com/ng2-ui/auto-complete/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/@ngui/auto-complete?style=flat-square&logo=npm&color=cb3837)](https://www.npmjs.com/package/@ngui/auto-complete)
+[![npm downloads](https://img.shields.io/npm/dm/@ngui/auto-complete?style=flat-square&color=cb3837)](https://www.npmjs.com/package/@ngui/auto-complete)
+[![Angular](https://img.shields.io/badge/Angular-22-DD0031?style=flat-square&logo=angular&logoColor=white)](https://angular.dev)
+[![types](https://img.shields.io/npm/types/@ngui/auto-complete?style=flat-square)](https://www.npmjs.com/package/@ngui/auto-complete)
+[![license](https://img.shields.io/npm/l/@ngui/auto-complete?style=flat-square&color=blue)](LICENSE.md)
 
 A versatile Angular autocomplete library that works as both a **directive** (attached to any input) and a **standalone component**.
 

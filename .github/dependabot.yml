@@ -1,0 +1,76 @@
+version: 2
+
+updates:
+  # ── npm dependencies (Angular workspace) ──────────────────────────────
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'saturday'
+      time: '06:00'
+      timezone: 'Etc/UTC'
+    open-pull-requests-limit: 10
+    labels:
+      - 'dependencies'
+    commit-message:
+      prefix: 'chore(deps)'
+      prefix-development: 'chore(deps-dev)'
+    groups:
+      angular:
+        patterns:
+          - '@angular/*'
+          - '@angular-eslint/*'
+          - 'angular-eslint'
+          - 'ng-packagr'
+      linting:
+        patterns:
+          - 'eslint'
+          - '@eslint/*'
+          - 'typescript-eslint'
+          - '@typescript-eslint/*'
+          - 'eslint-plugin-*'
+      testing:
+        patterns:
+          - 'vitest'
+          - '@vitest/*'
+          - 'jsdom'
+          - 'cypress'
+          - '@cypress/*'
+      types:
+        patterns:
+          - '@types/*'
+    ignore:
+      # Angular majors must be done via `ng update` (it runs schematic migrations);
+      # Dependabot would only produce a broken partial bump. Remove these if you'd
+      # rather Dependabot surface (but not auto-fix) major Angular releases.
+      - dependency-name: '@angular/*'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@angular-eslint/*'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'angular-eslint'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'ng-packagr'
+        update-types: ['version-update:semver-major']
+      # TypeScript is locked to Angular's supported range (~6.0.x). Angular drives it;
+      # only allow patch bumps within 6.0.
+      - dependency-name: 'typescript'
+        update-types:
+          - 'version-update:semver-major'
+          - 'version-update:semver-minor'
+
+  # ── GitHub Actions (CI workflow) ──────────────────────────────────────
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'saturday'
+    open-pull-requests-limit: 5
+    labels:
+      - 'dependencies'
+      - 'github-actions'
+    commit-message:
+      prefix: 'ci(deps)'
+    groups:
+      github-actions:
+        patterns:
+          - '*'

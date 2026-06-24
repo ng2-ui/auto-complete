@@ -1,0 +1,14 @@
+# pnpm settings live here as of pnpm 11 (moved out of the package.json "pnpm" field).
+
+# Approve native build scripts to run on install (pnpm blocks them by default).
+allowBuilds:
+  '@parcel/watcher': true
+  cypress: true
+  esbuild: true
+  lmdb: true
+  msgpackr-extract: true
+
+# This repo intentionally tracks the latest Angular release (bumped via `ng update`),
+# so opt out of pnpm 11's "minimum release age" supply-chain gate, which would
+# otherwise hold back / churn the lockfile on freshly-published @angular/* versions.
+minimumReleaseAge: 0

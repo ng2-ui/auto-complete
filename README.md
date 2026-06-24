@@ -314,25 +314,27 @@ Install the version matching your Angular major (e.g. Angular 22 → `npm instal
 ```bash
 git clone https://github.com/ng2-ui/auto-complete.git
 cd auto-complete
-npm install
+pnpm install
 
 # Build library in watch mode, then in a second terminal start the demo app
-npm run build-lib:watch
-npm start
+pnpm run build-lib:watch
+pnpm start
 ```
+
+> This repo uses **pnpm**. Enable it with `corepack enable` (ships with Node).
 
 ### Available scripts
 
 | Script | Description |
 |--------|-------------|
-| `npm start` | Serve the demo app on port 4200 |
-| `npm test` | Run unit tests (Vitest + jsdom) |
-| `npm run lint` | Lint all TypeScript and HTML |
-| `npm run build-lib:watch` | Build library in watch mode (for demo development) |
-| `npm run build-lib:prod` | Production library build |
-| `npm run build-docs` | Build demo app for GitHub Pages deployment |
-| `npm run cypress:open` | Open Cypress e2e test runner |
-| `npm run cypress:run` | Run Cypress e2e tests headlessly |
+| `pnpm start` | Serve the demo app on port 4200 |
+| `pnpm test` | Run unit tests (Vitest + jsdom) |
+| `pnpm run lint` | Lint all TypeScript and HTML |
+| `pnpm run build-lib:watch` | Build library in watch mode (for demo development) |
+| `pnpm run build-lib:prod` | Production library build |
+| `pnpm run build-docs` | Build demo app for GitHub Pages deployment |
+| `pnpm run cypress:open` | Open Cypress e2e test runner |
+| `pnpm run cypress:run` | Run Cypress e2e tests headlessly |
 
 ### Publish a new version
 
@@ -340,7 +342,7 @@ npm start
 # 1. Update version in projects/auto-complete/package.json
 # 2. Build the library. This also copies README/CHANGELOG/MIGRATION/LICENSE
 #    into dist/ for you (via the copy-lib script).
-npm run build-lib:prod
+pnpm run build-lib:prod
 
 # 3. Move into the built output — do NOT run npm publish from the project root
 #    (the root package.json is private and will fail)

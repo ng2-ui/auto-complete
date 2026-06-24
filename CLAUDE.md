@@ -22,27 +22,29 @@ e.g. `Angular-22`).
 
 ## Commands (from the repo root)
 
+This repo uses **pnpm** (run `corepack enable` once; pnpm ships with Node).
+
 ```bash
-npm install
-npm run build-lib:prod   # build the library to dist/ (run BEFORE build-docs / before testing the demo)
-npm run build-docs       # production build of the demo app into docs/
-npm run lint             # ng lint (ESLint flat config, eslint.config.js)
-npx ng test auto-complete --watch=false   # Vitest + jsdom (@angular/build:unit-test, no browser)
-npx ng test demo --watch=false
-npm run format:check     # prettier --check (CI gate); npm run format to fix
-npm run cypress:run      # e2e
+pnpm install
+pnpm run build-lib:prod   # build the library to dist/ (run BEFORE build-docs / before testing the demo)
+pnpm run build-docs       # production build of the demo app into docs/
+pnpm run lint             # ng lint (ESLint flat config, eslint.config.js)
+pnpm exec ng test auto-complete --watch=false   # Vitest + jsdom (@angular/build:unit-test, no browser)
+pnpm exec ng test demo --watch=false
+pnpm run format:check     # prettier --check (CI gate); pnpm run format to fix
+pnpm run cypress:run      # e2e
 ```
 
 ## Pre-PR validation gate
 
 Before opening any PR for a code change, all must pass:
 
-1. `npm run build-lib:prod`
-2. `npm run build-docs` (watch for `NG8113` unused-import warnings)
-3. `npm run lint`
-4. `npx ng test auto-complete --watch=false`
-5. `npx ng test demo --watch=false`
-6. `npm run format:check`
+1. `pnpm run build-lib:prod`
+2. `pnpm run build-docs` (watch for `NG8113` unused-import warnings)
+3. `pnpm run lint`
+4. `pnpm exec ng test auto-complete --watch=false`
+5. `pnpm exec ng test demo --watch=false`
+6. `pnpm run format:check`
 
 ## How to work
 

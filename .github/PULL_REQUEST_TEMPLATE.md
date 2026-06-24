@@ -36,12 +36,12 @@ Write "None — internal only." if there is no consumer-facing impact.
 <!-- How a reviewer can verify this locally. The default gate for any code change: -->
 
 ```bash
-npm run build-lib:prod   # build the library first — the demo consumes the built dist
-npm run build-docs       # demo/docs build (watch for NG8113 unused-import warnings)
-npm run lint
-npx ng test auto-complete --watch=false --browsers=ChromeHeadless
-npx ng test demo --watch=false --browsers=ChromeHeadless
-npm run format:check
+pnpm run build-lib:prod   # build the library first — the demo consumes the built dist
+pnpm run build-docs       # demo/docs build (watch for NG8113 unused-import warnings)
+pnpm run lint
+pnpm exec ng test auto-complete --watch=false --browsers=ChromeHeadless
+pnpm exec ng test demo --watch=false --browsers=ChromeHeadless
+pnpm run format:check
 ```
 
 <!-- Add any manual steps / screenshots (especially for dropdown positioning or styling changes). -->

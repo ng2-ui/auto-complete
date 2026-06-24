@@ -7,8 +7,8 @@
     "ng": "ng",
     "prepare": "husky",
     "generate-build-info": "node scripts/generate-build-info.mjs",
-    "postinstall": "npm run generate-build-info",
-    "prestart": "npm run generate-build-info",
+    "postinstall": "node scripts/generate-build-info.mjs",
+    "prestart": "node scripts/generate-build-info.mjs",
     "start": "ng serve",
     "test": "ng test",
     "lint": "ng lint",
@@ -16,14 +16,15 @@
     "format:check": "prettier --check \"projects/**/*.{ts,html,scss}\"",
     "e2e": "ng e2e",
     "build-lib:watch": "ng build auto-complete --watch",
-    "build-lib:prod": "ng build auto-complete --configuration production && npm run copy-lib",
-    "prebuild-docs": "npm run generate-build-info",
+    "build-lib:prod": "ng build auto-complete --configuration production && pnpm run copy-lib",
+    "prebuild-docs": "node scripts/generate-build-info.mjs",
     "build-docs": "ng build demo --configuration production",
     "copy-lib": "copyfiles -f LICENSE.md README.md CHANGELOG.md MIGRATION.md dist/",
     "cypress:open": "ng run demo:cypress-open",
     "cypress:run": "ng run demo:cypress-run"
   },
   "private": true,
+  "packageManager": "pnpm@11.9.0",
   "lint-staged": {
     "projects/**/*.{ts,html,scss}": "prettier --write"
   },

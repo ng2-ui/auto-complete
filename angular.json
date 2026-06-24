@@ -178,6 +178,7 @@
     }
   },
   "cli": {
+    "packageManager": "pnpm",
     "schematicCollections": [
       "@cypress/schematic",
       "@angular-eslint/schematics",

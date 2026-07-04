@@ -51,8 +51,8 @@
     "angular-eslint": "^22.0.0",
     "copyfiles": "^2.4.1",
     "cypress": "^15.17.0",
-    "eslint": "^10.5.0",
-    "eslint-plugin-cypress": "^6.4.1",
+    "eslint": "^10.6.0",
+    "eslint-plugin-cypress": "^6.4.2",
     "husky": "^9.1.7",
     "jsdom": "^29.1.1",
     "lint-staged": "^17.0.8",
@@ -60,7 +60,7 @@
     "prettier": "^3.8.4",
     "ts-node": "~10.9.2",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.61.1",
+    "typescript-eslint": "^8.62.1",
     "vitest": "^4.1.9"
   }
 }

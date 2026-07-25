@@ -55,7 +55,7 @@
     "eslint-plugin-cypress": "^6.4.2",
     "husky": "^9.1.7",
     "jsdom": "^29.1.1",
-    "lint-staged": "^17.0.8",
+    "lint-staged": "^17.2.0",
     "ng-packagr": "^22.0.1",
     "prettier": "^3.9.5",
     "ts-node": "~10.9.2",

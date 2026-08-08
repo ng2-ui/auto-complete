@@ -52,7 +52,7 @@
     "copyfiles": "^2.4.1",
     "cypress": "^15.19.0",
     "eslint": "^10.8.0",
-    "eslint-plugin-cypress": "^6.4.3",
+    "eslint-plugin-cypress": "^6.4.4",
     "husky": "^9.1.7",
     "jsdom": "^30.0.1",
     "lint-staged": "^17.3.0",
@@ -60,7 +60,7 @@
     "prettier": "^3.9.6",
     "ts-node": "~10.9.2",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.65.0",
+    "typescript-eslint": "^8.66.0",
     "vitest": "^4.1.10"
   }
 }

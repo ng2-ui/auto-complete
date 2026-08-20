@@ -53,7 +53,7 @@ importers:
         version: 22.1.1
       '@cypress/schematic':
         specifier: ^5.0.0
-        version: 5.0.0(@angular/cli@22.1.3(@types/node@26.2.0)(chokidar@5.0.0)(supports-color@8.1.1))(@angular/core@22.1.1(@angular/compiler@22.1.1)(rxjs@7.8.2))(cypress@15.19.0)
+        version: 5.0.0(@angular/cli@22.1.3(@types/node@26.2.0)(chokidar@5.0.0)(supports-color@8.1.1))(@angular/core@22.1.1(@angular/compiler@22.1.1)(rxjs@7.8.2))(cypress@15.20.1)
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.8.1(supports-color@8.1.1))
@@ -67,8 +67,8 @@ importers:
         specifier: ^2.4.1
         version: 2.4.1
       cypress:
-        specifier: ^15.19.0
-        version: 15.19.0
+        specifier: ^15.20.1
+        version: 15.20.1
       eslint:
         specifier: ^10.8.1
         version: 10.8.1(supports-color@8.1.1)
@@ -2062,8 +2062,8 @@ packages:
     resolution: {integrity: sha512-4Dj6M28JB+oAH8kFkTLUo+a2jwOFkuqb3yucU0CANcRRUbxS0cP0nZYCGjcc3BNXwRIsUVmDGgzawme7zvJHvg==}
     engines: {node: '>=12'}
 
-  arch@2.2.0:
-    resolution: {integrity: sha512-Of/R0wqp83cgHozfIYLbBMnej79U/SVGOOyuB3VVFv1NRM/PSFMK12x9KVtiYzJqmnU5WR2qp0Z5rHb7sWGnFQ==}
+  arch@3.0.0:
+    resolution: {integrity: sha512-AmIAC+Wtm2AU8lGfTtHsw0Y9Qtftx2YXEEtiBP10xFUtMOA+sHHx6OAddyL52mUKh1vsXQ6/w1mVDptZCyUt4Q==}
 
   arg@4.1.3:
     resolution: {integrity: sha512-58S9QDqG0Xx27YwPSt9fJxivjYl432YCwfDMfZ+71RAqUrZef7LrKQZ3LHLOwCS4FLNBplP533Zx895SeOCHvA==}
@@ -2326,8 +2326,8 @@ packages:
     resolution: {integrity: sha512-wD5oz5xibMOPHzy13CyGmogB3phdvcDaB5t0W/Nr5Z2O/agcB8YwOz6e2Lsp10pNDzBoDO9nVa3RGs/2BttpHQ==}
     engines: {node: '>= 6'}
 
-  cypress@15.19.0:
-    resolution: {integrity: sha512-kjy1u3SWlMRWS5qffH3U+bXx1PqPP7qwhIzEY3UtERcW2r/8zy5uk6uSwa75pYXJyYFVP1SO8mAn/avZUvUbfg==}
+  cypress@15.20.1:
+    resolution: {integrity: sha512-7GV3O7vQQG+EVVv9BGs6lCHY49x25jVi/z1+zdjuuq/o3eZeDwmGPJpRYnOWeGvQxTCtkydXWHBPhV8xuGXPLg==}
     engines: {node: ^20.1.0 || ^22.0.0 || >=24.0.0}
     hasBin: true
 
@@ -2598,6 +2598,10 @@ packages:
 
   extsprintf@1.3.0:
     resolution: {integrity: sha512-11Ndz7Nv+mvAC1j0ktTa7fAb0vLyGGX+rMHNBYQviQDGU0Hw7lhctJANqbPhu9nV9/izT/IntTgZ7Im/9LJs9g==}
+    engines: {'0': node >=0.6.0}
+
+  extsprintf@1.4.1:
+    resolution: {integrity: sha512-Wrk35e8ydCKDj/ArClo1VrPVmN8zph5V4AtHwIuHhvMXsKf73UT3BOD+azBIW+3wOJ4FhEH7zyaJCFvChjYvMA==}
     engines: {'0': node >=0.6.0}
 
   fast-deep-equal@3.1.3:
@@ -3785,9 +3789,6 @@ packages:
       '@swc/wasm':
         optional: true
 
-  tslib@1.14.1:
-    resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
-
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
@@ -4517,11 +4518,11 @@ snapshots:
       tough-cookie: 5.1.2
       tunnel-agent: 0.6.0
 
-  '@cypress/schematic@5.0.0(@angular/cli@22.1.3(@types/node@26.2.0)(chokidar@5.0.0)(supports-color@8.1.1))(@angular/core@22.1.1(@angular/compiler@22.1.1)(rxjs@7.8.2))(cypress@15.19.0)':
+  '@cypress/schematic@5.0.0(@angular/cli@22.1.3(@types/node@26.2.0)(chokidar@5.0.0)(supports-color@8.1.1))(@angular/core@22.1.1(@angular/compiler@22.1.1)(rxjs@7.8.2))(cypress@15.20.1)':
     dependencies:
       '@angular/cli': 22.1.3(@types/node@26.2.0)(chokidar@5.0.0)(supports-color@8.1.1)
       '@angular/core': 22.1.1(@angular/compiler@22.1.1)(rxjs@7.8.2)
-      cypress: 15.19.0
+      cypress: 15.20.1
       jsonc-parser: 3.3.1
       rxjs: 7.8.2
       semver: 7.8.5
@@ -5705,7 +5706,7 @@ snapshots:
 
   ansi-styles@6.2.3: {}
 
-  arch@2.2.0: {}
+  arch@3.0.0: {}
 
   arg@4.1.3: {}
 
@@ -5952,14 +5953,14 @@ snapshots:
 
   css-what@7.0.0: {}
 
-  cypress@15.19.0:
+  cypress@15.20.1:
     dependencies:
       '@cypress/request': 4.0.1
       '@cypress/xvfb': 1.2.4(supports-color@8.1.1)
       '@types/sinonjs__fake-timers': 8.1.1
       '@types/sizzle': 2.3.10
       '@types/tmp': 0.2.6
-      arch: 2.2.0
+      arch: 3.0.0
       blob-util: 2.0.2
       bluebird: 3.7.2
       buffer: 5.7.1
@@ -5990,7 +5991,6 @@ snapshots:
       systeminformation: 5.33.1
       tmp: 0.2.7
       tree-kill: 1.2.2
-      tslib: 1.14.1
       untildify: 4.0.0
       yauzl: 3.4.0
 
@@ -6330,6 +6330,8 @@ snapshots:
   extend@3.0.2: {}
 
   extsprintf@1.3.0: {}
+
+  extsprintf@1.4.1: {}
 
   fast-deep-equal@3.1.3: {}
 
@@ -7598,8 +7600,6 @@ snapshots:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
 
-  tslib@1.14.1: {}
-
   tslib@2.8.1: {}
 
   tunnel-agent@0.6.0:
@@ -7665,7 +7665,7 @@ snapshots:
     dependencies:
       assert-plus: 1.0.0
       core-util-is: 1.0.2
-      extsprintf: 1.3.0
+      extsprintf: 1.4.1
 
   vite@8.1.5(@types/node@26.2.0)(esbuild@0.28.1)(less@4.9.0(supports-color@8.1.1))(sass@1.101.0)(yaml@2.9.0):
     dependencies:

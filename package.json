@@ -50,7 +50,7 @@
     "@types/node": "^26.5.0",
     "angular-eslint": "^22.2.0",
     "copyfiles": "^2.4.1",
-    "cypress": "^16.0.0",
+    "cypress": "^16.1.0",
     "eslint": "^10.9.1",
     "eslint-plugin-cypress": "^7.0.1",
     "husky": "^9.1.7",
@@ -61,6 +61,6 @@
     "ts-node": "~10.9.2",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.69.0",
-    "vitest": "^4.1.11"
+    "vitest": "^5.0.1"
   }
 }
